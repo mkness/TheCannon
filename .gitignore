@@ -1,0 +1,11 @@
+.??*
+*.pickle*
+*.fits*
+*~
+*.aux
+*.dvi
+*.log
+*.blg
+*.pyc
+documents/vc.tex
+documents/*.pdf
