@@ -1,7 +1,69 @@
+% This file is part of the Apogee project.
+% Copyright 2014 Melissa Ness and David W. Hogg.
+
 \documentclass[12pt, preprint]{aastex}
 
 \begin{document}
 
 Hello world
+
+\section{Introduction}
+
+Challenges of stellar parameter estimation.
+
+In principle there could be data-driven models.
+
+Data-driven models would permit ``label transfer''.
+
+APOGEE provides a great data set for exploring these issues.
+
+\section{Data}
+
+read in data; which files, etc.
+
+re-continuum-normalize; how?
+
+demonstrate that the normalization is good.
+
+meta-data on cluster stars; why do we believe it; table
+
+\section{Spectral model}
+
+linear model plus scatter.
+
+likelihood function.
+
+implementation and outputs, figures.
+
+is this a good model?
+
+\section{Parameter estimation}
+
+we want to label other stars
+
+index concept
+
+spectral fitting concept
+
+methodological details
+
+leave-one-out cross-validation on the training spectra
+
+leave-one-cluster-out cross-validation
+
+application to some example APOGEE targets
+
+comparison to ASPCAP
+
+\section{Discussion}
+
+Did it work and etc?
+
+Limitations of the training sample.
+
+Linear model is a very rigid assumption; obviously wrong.
+Generalize to a GP at every wavelength.
+
+Applications, esp chemical tagging
 
 \end{document}
