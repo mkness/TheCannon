@@ -6,6 +6,7 @@ Building data-driven models for APOGEE-2 data.
 
 - Melissa Ness (MPIA)
 - David W. Hogg (NYU; MPIA)
+- Hans-Walter Rix (MPIA)
 
 ## License
 
