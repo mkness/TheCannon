@@ -7,5 +7,5 @@
 *.log
 *.blg
 *.pyc
-documents/vc.tex
-documents/*.pdf
+vc.tex
+*.pdf
