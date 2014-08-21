@@ -1,0 +1,116 @@
+% This file is part of the Apogee project.
+% Copyright 2014 the authors.
+
+\documentclass[12pt, preprint]{aastex}
+
+\newcommand{\sectionname}{Section}
+\newcommand{\project}[1]{\textsl{#1}}
+
+\begin{document}
+
+\title{Data-driven stellar ages and chemical tags}
+\author{
+  some combination of DWH, MKN, HWR, and others
+}
+
+\begin{abstract}
+We perform simple age determinations and chemical tagging of stars
+without the use of \emph{any} stellar models or model spectra from
+libraries.
+\end{abstract}
+
+\section{introduction}
+
+The idea of chemical tagging is that every stellar birth environment
+(every molecular cloud) is expected to have slightly different
+chemical abundances in detail from every other birth environment, such
+that stars with common origins but different present-day phase-space
+locations can be identified by their surface chemical abundances.
+This potentially revolutionary scientific program has not yet
+delivered results, in part because it seems to require tens or
+hundreds of thousands of high resolution, high signal-to-noise stellar
+spectra, and in part because it requires stellar models good enough to
+make consistent measurements of abundances across a wide range of
+spectral types (temperatures and surface gravities).
+
+There are a range of near-future projects obtaining the required
+spectra, including \project{APOGEE} (cite) and \project{HERMES}
+(cite).  There are efforts to analyze and improve stellar models
+(cite).  However, it is possible at the present day---with spectra in
+hand and without trustworthy models at all---to assess the feasiblity
+of chemical tagging projects.  The idea of the present project is the
+following: If sufficient tagging information resides within high
+resolution and high signal-to-noise spectra, then that information
+will be visible in the spectra themselves.  Models might be required
+to \emph{interpret} the information, but they are not required to
+\emph{identify its existence}.  Since abundance measurements are made
+in the spectra, if the information to perform precise chemical tagging
+is not present in the spectra, it cannot be present in any abundance
+measurements derived therefrom.
+
+In what follows, we use machine-learning methods that have been
+designed to find structure in large, high dimensional data sets to
+look for structure in stellar spectra.  We perform a set of staged
+experiments, starting with simple projects to produce data-driven age
+indicators, alpha-abundance indicators, and cluster-membership
+indicators.  We finish with an assessment of the feasibility of the
+most ambitious chemical tagging programs.
+
+...Related prior work includes PCA, HMF, XD, SVM.  These all build
+data-driven models of non-trivial data sets, and all could be used
+here.  We are going to try to stick with methods that involve building
+probabilistic generative models...
+
+\section{generalities}
+
+Data-driven models can be implemented for problems like this in a
+number of ways.  In this \sectionname, we describe three formulations
+of the problems---as a set of classifications, as a regression, and as
+density estimation in data space---and remark on technical approaches
+for each formulation.
+
+\paragraph{classification formulation:}
+...Classification description of the problem.  We have stars from two
+clusters; we want to find the directions or subspace of the data space
+in which the clusters are \emph{predictably} best classified.  This
+method is supervised in that it requires cluster identities up-front
+(for at least some stars).  The harder classification problem is to
+take stars from one cluster and then stars from \emph{all other
+  sources}.  In what subspace are the stars from the cluster separated
+from everything else?  As for methods: Compare SVM with a (modified,
+heteroskedastic) Factor Analyzer; why is some modification of the FA
+so much better for this problem?
+
+\paragraph{regression formulation:}
+...Regression description of the problem.  We have stars in a range of
+ages or alpha-abundances, and we either start with known ages or alpha
+enhancements (the supervised version of the problem) or else we start
+with an emission-line or absorption-line profile that indicates age or
+alpha enhancement (the unsupervised version of the problem).  In the
+supervised version, we fit every star as a base spectrum plus age
+indicator components.  In the unsupervised version, we fit every star
+as a base spectrum plus known profile.  The base spectrum, in each
+case, is a data-driven model, or the best you can do with all the data
+you have ever seen.  HMF is good for this.  But if you want to
+marginalize out stellar base spectrum, then you need to build priors.
+Hierarchical is the best way to do that.
+
+\paragraph{density estimation formulation:}
+...Density estimation description of the problem.  We have a large
+number of stars and we try to describe the distribution in spectral
+space with a mixture of lines or hypersurfaces.  Show that the stars
+lie on a finite number (hundreds or thousands) of well-separated
+hypersurfaces and don't fill the bulk.  That's hard, but might be
+possible if you use existing models as a guide or initialization.
+
+\section{data and objectives}
+
+\section{results and discussion}
+
+\acknowledgements It is a pleasure to thank
+  Ross Fadely,
+  Rob Fergus,
+  Dan Foreman-Mackey
+for valuable discussions.
+
+\end{document}
