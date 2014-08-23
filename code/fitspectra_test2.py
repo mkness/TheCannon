@@ -56,8 +56,8 @@ def get_data():
   T_est,g_est,feh_est = np.loadtxt("starsin_test.txt", usecols = (4,6,8), unpack =1) 
   T_est,g_est,feh_est = np.loadtxt("starsin_test3.txt", usecols = (4,6,8), unpack =1) 
   T_est,g_est,feh_est = np.loadtxt("starsin_test2.txt", usecols = (4,6,8), unpack =1) 
-  T_est,g_est,feh_est = np.loadtxt("starsin_new_all_ordered.txt", usecols = (4,6,8), unpack =1) 
   T_est,g_est,feh_est = np.loadtxt("starsin_test2.txt", usecols = (4,6,8), unpack =1) 
+  T_est,g_est,feh_est = np.loadtxt("starsin_new_all_ordered.txt", usecols = (4,6,8), unpack =1) 
   #T_est = loadtxt("Temperature_Alonso.txt", usecols = (0,), unpack =1) 
   thismeta = np.array([T_est, feh_est, g_est])
   thismeta = [T_est, feh_est, g_est]
@@ -66,8 +66,8 @@ def get_data():
   a = open("starsin_test.txt", 'r')
   a = open("starsin_test3.txt", 'r')
   a = open("starsin_test2.txt", 'r')
-  a = open("starsin_new_all_ordered.txt", 'r')
   a = open("starsin_test2.txt", 'r')
+  a = open("starsin_new_all_ordered.txt", 'r')
   al = a.readlines() 
   bl = []
   for each in al:
@@ -169,8 +169,8 @@ def do_one_regression_at_fixed_scatter(data, predictors, scatter):
   MTCinvx = np.dot(M.T, Cinv * x)
   coeff = np.linalg.solve(MTCinvM, MTCinvx)
   # below is all new 
-  gp = GaussianProcess(corr='cubic', theta0=1e-2, thetaL=1e-4, thetaU=1e-1,
-                     random_start=100)
+  #gp = GaussianProcess(corr='cubic', theta0=1e-2, thetaL=1e-4, thetaU=1e-1,
+  #                   random_start=100)
   # I removed this below - thought we should be checking for nan not assert isfinite
   #assert np.all(np.isfinite(coeff)) 
   #chisq = sum(Cinv * (x - dot(M, coeff)) ** 2)

@@ -1,3 +1,4 @@
+# this is to get the params for a single value in the data file 
 # this file is part of the IR-XXX project
 # Copyright 2014 Melissa Ness
 
@@ -50,9 +51,9 @@ def getpar_one(coeffs,scatters,metaall, starnumber):
   testspectrum = the spectra we want to determine the parameters of 
   # inputs go here
   """
-  xdata = dataall[:,300,0] #testspectrum[:,0,0]
-  ydata = dataall[:,300,1]  #testspectrum[:,0,1]
-  ysigma = dataall[:,300,2] #testspectrum[:,0,2]
+  xdata = dataall[:,starnumber,0] #testspectrum[:,0,0]
+  ydata = dataall[:,starnumber,1]  #testspectrum[:,0,1]
+  ysigma = dataall[:,starnumber,2] #testspectrum[:,0,2]
   #bad3 = dataall[:,300,1] == 0. 
   #dataall[:,300,2][bad3] == 100000. 
   #ysigma[bad3] = 100000. #testspectrum[:,0,2]
@@ -60,13 +61,8 @@ def getpar_one(coeffs,scatters,metaall, starnumber):
   ydata_norm = ydata  - coeffs[:,0] 
   coeffs_reshape = coeffs[:,-3:]
   Cinv = 1. / (ysigma ** 2 + scatters ** 2)
-  #ind1 = logical_and(xdata > 16055, xdata < 16061) 
   xdata = array(xdata) 
-  ind1 = logical_and(xdata > 14400, xdata < 19780) 
-  #indb = logical_or(logical_and(xdata > 15894, xdata < 16389) , inda) 
-  #ind1 = logical_or(indb, indc)
-  #ind1 = logical_and(scatters < 0.08 , scatters > 0.0001) 
-  #ind1 =  scatters > 0.00010 
+  ind1 = logical_and(ydata > 0.95, ydata < 0.99) 
   #MCM_rotate = np.dot(coeffs_reshape[ind1].T, Cinv[:,None][ind1] * coeffs_reshape[ind1])
   #MCy_vals = np.dot(coeffs_reshape[ind1].T, Cinv[ind1] * ydata_norm[ind1]) 
   MCM_rotate = np.dot(coeffs_reshape.T, Cinv[:,None] * coeffs_reshape)
@@ -76,17 +72,6 @@ def getpar_one(coeffs,scatters,metaall, starnumber):
   print MCM_rotate, MCy_vals, Params 
   return Params,Cinv
 
-params_one,Cinv_Params = getpar_one(coeffs, scatters, metaall,"testspectrum.txt") 
+params_one,Cinv_Params = getpar_one(coeffs, scatters, metaall, 300) 
   
 
-#
-#
-#
-#dataall, metaall, predictors, count = get_data()
-#blob = do_regressions(dataall, predictors)
-#coeffs = np.array([b[0] for b in blob])
-#invcovs = np.array([b[1] for b in blob])
-#covs = np.array([np.linalg.inv(b[1]) for b in blob])
-#chis = np.array([b[2] for b in blob])
-#chisqs = np.array([np.dot(b[2],b[2]) - b[3] for b in blob]) # holy crap be careful
-#scatters = np.array([b[4] for b in blob])

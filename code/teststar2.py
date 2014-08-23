@@ -1,3 +1,4 @@
+# this is to test a field to get stellar parameters 
 import pyfits 
 import glob 
 import pickle
@@ -6,6 +7,7 @@ from scipy import ndimage
 import numpy as np
 from glob import glob 
 
+# this is the file with the list of continuumn normalised APOGEE fits files in a given field 
 testfile = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/stars_list_all.txt"
 #testfile = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/stars_list_some.txt"
 
@@ -58,10 +60,20 @@ def test_fits_list(filein):
 
   return testdata
 
-def return_test_params(filein,scatters,coeffs):
+#def return_test_params(filein,scatters,coeffs,weak_lower=0.935,weak_upper=0.99):
+#def return_test_params(filein,scatters,coeffs,weak_lower=0.935,weak_upper=0.99):
+#def return_test_params(filein,scatters,coeffs,weak_lower=0.960,weak_upper=.99):
+def return_test_params(filein,scatters,coeffs,weak_lower=0.0,weak_upper=1.99):
+    """
+    best log g = weak_lower = 0.95, weak_upper = 0.98
+    best teff = weak_lower = 0.95, weak_upper = 0.99
+    best_feh = weak_lower = 0.935, weak_upper = 0.98 
+    this returns the parameters for a field of data  - and normalises if it is not already normalised 
+    """
     testdata = test_fits_list(testfile) 
     nstars = shape(testdata)[1]
     Params_all = np.zeros((nstars,  3))
+    MCM_rotate_all = np.zeros((nstars, 3,3))
     for jj in range(0,nstars):
       xdata = testdata[:,jj,0]
       ydata = testdata[:,jj,1]
@@ -69,14 +81,7 @@ def return_test_params(filein,scatters,coeffs):
       coeffs_reshape = coeffs[:,-3:]
       ydata_norm = ydata  - coeffs[:,0] 
       coeffs_reshape = coeffs[:,-3:]
-      ind1 = logical_and(xdata > 15000, xdata < 18000) 
-      ind1 = logical_and(ydata > 0.90 , ydata < 1.0) 
-      ind1 = logical_and(ydata > 0.95 , ydata < 0.99)# 0.94 - 0.98/0.95 - 0.99 temp
-      ind1 = logical_and(ydata > 0.94 , ydata < 0.98)# 0.94 - 0.98/0.95 - 0.99 log g 
-      ind1 = logical_and(ydata > 0.95 , ydata < 0.98)# 0.94 - 0.98/0.95 - 0.99 log g 
-      ind1 = logical_and(ydata > 0.935 , ydata < 0.98)# 0.94 - 0.98/0.95 - 0.99 feh 
-      ind1 = logical_and(ydata > 0.935 , ydata < 0.98)# 0.94 - 0.98/0.95 - 0.99 feh 
-      #ind1 = logical_and(coeffs[:,0] > 0.955 , coeffs[:,0] < 0.98)# 0.94 - 0.98/0.95 - 0.99 feh 
+      ind1 = logical_and(ydata > weak_lower , ydata < weak_upper)
       Cinv = 1. / (ysigma ** 2 + scatters ** 2)
       MCM_rotate = np.dot(coeffs_reshape[ind1].T, Cinv[:,None][ind1] * coeffs_reshape[ind1])
       MCy_vals = np.dot(coeffs_reshape[ind1].T, Cinv[ind1] * ydata_norm[ind1]) 
@@ -86,13 +91,16 @@ def return_test_params(filein,scatters,coeffs):
       Params = Params + [mean(metaall[:,0]) , mean(metaall[:,1]), mean(metaall[:,2])] # must be synchronized with fitspectra.py 
       print Params
       Params_all[jj,:] = Params 
-    return Params_all , Cinv
+      MCM_rotate_all[jj,:,:] = MCM_rotate 
+    return Params_all , MCM_rotate_all
 
-params,Cinv_params = return_test_params(testfile,scatters,coeffs)
+params,icovs_params = return_test_params(testfile,scatters,coeffs)
+covs_params = np.linalg.inv(icovs_params) 
 params = array(params) 
 tme = params[:,0]
 gme = params[:,1]
 fehme = params[:,2]
+# below, this reads in ASPCAP values for comparison for plotting 
 testdir = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/"
 file2 = '4332_data_all_more.txt'
 file2in = testdir+file2

@@ -67,4 +67,4 @@ test = ax.imshow(image[:,index_use].T, cmap=plt.cm.bwr_r, interpolation="nearest
 cb = fig.colorbar(test) 
 #cb.set_label("arcsinh($\chi$)", fontsize = 20 ) 
 cb.set_label("data-mean", fontsize = 20 )
-
+fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/coeff_map.pdf', transparent=True, bbox_inches='tight', pad_inches=0)

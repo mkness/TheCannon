@@ -85,3 +85,37 @@ def plotdata(wl0, bw):
     fig.subplots_adjust(wspace=0)
     return 
 
+def plot_compare(): 
+    rcParams['figure.figsize'] = 10.0, 10.0
+    fig, temp = pyplot.subplots(3,1, sharex=False, sharey=False)
+    ax1 = temp[0]
+    ax2 = temp[1]
+    ax3 = temp[2]
+    params_labels = [params[:,0], params[:,1], params[:,2] , covs_params[:,0,0]**0.5, covs_params[:,1,1]**0.5, covs_params[:,2,2]**0.5 ]  
+    testdir = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/"
+    file2 = '4332_data_all_more.txt'
+    file2in = testdir+file2
+    t,t_err,g,g_err,feh,feh_err = loadtxt(file2in, usecols = (1,2,3,4,5,6), unpack =1) 
+    pick = logical_and(g > 0, logical_and(t_err < 300, feh > -4.0) ) 
+    cval = ['k', 'b', 'r'] 
+    input_ASPCAP = [t, g, feh, t_err, g_err, feh_err] 
+    cind = array(input_ASPCAP[1][pick])
+    s1 = ax1.scatter(input_ASPCAP[0][pick], params_labels[0][pick], c = cind, s = 30,alpha = 0.6, linewidths = 0  ) 
+    cT = fig.colorbar(s1,ax=ax1) 
+    a,b,c1 = ax1.errorbar(input_ASPCAP[0][pick], params_labels[0][pick],yerr= params_labels[3][pick],marker='',ls='',zorder=0, fmt = None,elinewidth = 1,capsize = 0)
+    a,b,c2 = ax1.errorbar(input_ASPCAP[0][pick], params_labels[0][pick], xerr=input_ASPCAP[3][pick],marker='',ls='',zorder=0, fmt = None,elinewidth = 1,capsize = 0)
+    g1_color = cT.to_rgba(cind) 
+    c1[0].set_color(g1_color)
+    c2[0].set_color(g1_color)
+    c_T.set_label("log g ASPCAP",fontsize = 20) 
+    ax1.plot([0,6000], [0,6000], linewidth = 0.5, color = 'k' ) 
+    ax1.set_xlim(3500, 5500) 
+    ax1.set_xlabel("ASPCAP Teff, [K]", fontsize = 20) 
+    ax1.set_ylabel("NHR+ Teff, [K]", fontsize = 20) 
+    ax1.set_ylim(min(tme)-250, max(tme)+250) 
+    # attach lines to plots
+    fig.subplots_adjust(hspace=0.4)
+    fig.subplots_adjust(wspace=0.3)
+    return 
+
+#plot_compare() 

@@ -37,6 +37,7 @@ rcParams['figure.figsize'] = 15.0, 10.0
 
 wl1,wl2,wl3,wl4,wl5,wl6 = 15392, 15697, 15958.8, 16208.6, 16120.4, 16169.5 
 def plotdata(wl0, bw): 
+    rcParams['figure.figsize'] = 15.0, 10.0
     #x, median_y, t_y, g_y,feh_y,chi_y = loadtxt('data_test.txt', usecols = (0,1,2,3,4,5), unpack =1) 
     fig, temp = pyplot.subplots(3,1, sharex=True, sharey=False)
     ax1 = temp[0]
@@ -63,12 +64,13 @@ def plotdata(wl0, bw):
     legend(numpoints=1)
 
     #ax3.legend(numpoints=1)
-    ax1.set_ylim(0,median(scatters)*10.) 
+    ax1.set_ylim(0,median(scatters)*4.5) 
     ax2.set_ylim(0.7,1.2) 
     ax3.set_ylim(np.median(coeffs[:,2])-15.0*np.std(coeffs[:,2][coeffs[:,2] < 1000]) ,np.median(coeffs[:,2])+15.0*np.std(coeffs[:,2][coeffs[:,2] < 1000])) 
-    #ax1.text(wl0-bw/2.+2., np.median(chisqs)*10. , "chi2  " , fontsize = 12) 
+    ax1.text(wl0-bw/2.+2., np.median(scatters)*3.5 , "scatter  " , fontsize = 12) 
     ax2.text(wl0-bw/2.+2., np.median(coeffs[:,0])*1.1, "mean spectra" , fontsize = 12) 
-    ax3.text(wl0-bw/2.+2., np.median(coeffs[:,2])*10. , "[Fe/H]  coeff, log g coeff, Teff coeff*1000" , fontsize = 12) 
+    ax2.text(wl0-bw/2.+2., np.median(coeffs[:,0])*1.1, "mean spectra" , fontsize = 12) 
+    ax3.text(wl0-bw/2.+2., np.median(coeffs[:,2])*25. , "[Fe/H]  coeff, log g coeff, Teff coeff*1000" , fontsize = 12) 
     
     # attach lines to plots
     axlist = [ax1,ax2,ax3]
@@ -84,5 +86,6 @@ def plotdata(wl0, bw):
 
     fig.subplots_adjust(hspace=0)
     fig.subplots_adjust(wspace=0)
+    fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example.pdf', transparent=True, bbox_inches='tight', pad_inches=0)
     return 
 

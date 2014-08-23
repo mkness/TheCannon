@@ -1,6 +1,7 @@
 # this file is part of the IR analysis project
 # Copyright 2014 Melissa Ness
 # use this one, unless you copy it Aug 18 2014 
+# need to add a test that the wavelength range is the same - and if it isn't interpolate to the same range 
 
 import pyfits 
 import glob 
