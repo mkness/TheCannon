@@ -2,30 +2,39 @@
 % Copyright 2014 the authors.
 
 \documentclass[12pt, preprint]{aastex}
+\input{vc}
 
 \newcommand{\sectionname}{Section}
 \newcommand{\project}[1]{\textsl{#1}}
 
 \begin{document}
 
-\title{Data-driven stellar ages and chemical tags}
+\title{Data-driven chemical tags for stars}
 \author{
   some combination of DWH, MKN, HWR, and others
 }
+\date{DRAFT / \gitdate\ / \githash\ / NOT FOR DISTRIBUTION}
 
 \begin{abstract}
-We perform simple age determinations and chemical tagging of stars
-without the use of \emph{any} stellar models or model spectra from
-libraries.
+Stars with common origins can be found if they can be tagged with
+sufficiently informative tags (chemical and other properties) that are
+invariant with time from birth to the present day.
+We perform an uninterpreted tagging of stars without the direct use of
+stellar models or model spectra from libraries.
+The principle is to construct temperature- and gravity-insenstive
+proximity measures in spectral space, and perform unsupervised
+clustering.
+Work on real and simulated spectra are promising.
 \end{abstract}
 
 \section{introduction}
 
-The idea of chemical tagging is that every stellar birth environment
-(every molecular cloud) is expected to have slightly different
-chemical abundances in detail from every other birth environment, such
-that stars with common origins but different present-day phase-space
-locations can be identified by their surface chemical abundances.
+The idea behind chemical tagging is that every stellar birth
+environment (every molecular cloud, say) is expected to have slightly
+different chemical abundances in detail from every other birth
+environment, such that stars with common origins but different
+present-day phase-space locations can in principle be identified by
+their surface chemical abundances (and possibly also ages).
 This potentially revolutionary scientific program has not yet
 delivered results, in part because it seems to require tens or
 hundreds of thousands of high resolution, high signal-to-noise stellar
@@ -33,33 +42,41 @@ spectra, and in part because it requires stellar models good enough to
 make consistent measurements of abundances across a wide range of
 spectral types (temperatures and surface gravities).
 
-There are a range of near-future projects obtaining the required
-spectra, including \project{APOGEE} (cite) and \project{HERMES}
-(cite).  There are efforts to analyze and improve stellar models
-(cite).  However, it is possible at the present day---with spectra in
+There are a range of new projects obtaining the required spectra,
+including \project{APOGEE} (cite) and \project{HERMES} (cite).
+There are many efforts to analyze and improve stellar models (cite).
+However, it is possible at the present day---with spectra in
 hand and without trustworthy models at all---to assess the feasiblity
-of chemical tagging projects.  The idea of the present project is the
-following: If sufficient tagging information resides within high
-resolution and high signal-to-noise spectra, then that information
-will be visible in the spectra themselves.  Models might be required
-to \emph{interpret} the information, but they are not required to
-\emph{identify its existence}.  Since abundance measurements are made
-in the spectra, if the information to perform precise chemical tagging
-is not present in the spectra, it cannot be present in any abundance
+of chemical tagging projects.
+The idea is the following:
+If sufficient information resides within high resolution and high
+signal-to-noise spectra to deliver informative tags, then that
+information will be visible in the spectra \emph{themselves}.
+To see that the spectra are informative does not (necessarily) require
+accurate models of those spectra.
+Models might be required to \emph{interpret} the information, but they
+are not required to \emph{identify its existence}.
+And of course the contrapositive is also true:
+Since abundance measurements are made using the spectral data, if the
+information to perform precise chemical tagging is \emph{not} present
+in the spectra themselves, it cannot be present in any abundance
 measurements derived therefrom.
 
-In what follows, we use machine-learning methods that have been
-designed to find structure in large, high dimensional data sets to
-look for structure in stellar spectra.  We perform a set of staged
-experiments, starting with simple projects to produce data-driven age
-indicators, alpha-abundance indicators, and cluster-membership
-indicators.  We finish with an assessment of the feasibility of the
-most ambitious chemical tagging programs.
+In what follows, we use (simple, straightforward) machine-learning
+methods that have been designed to find structure in large, high
+dimensional data sets to look for structure in stellar spectra.
+We design these methods to be maximally sensitive to stellar
+properties \emph{other} than temperature and surface gravity, since
+these properties have enormous range within any individual stellar
+population.
+The hope is that structure seen in the ``tangent space'' (as it were)
+to these properties will be some transformation of structure in the
+chemical properties of the stars (and ages).
 
 ...Related prior work includes PCA, HMF, XD, SVM.  These all build
 data-driven models of non-trivial data sets, and all could be used
 here.  We are going to try to stick with methods that involve building
-probabilistic generative models...
+probabilistic generative models, or approximations thereto...
 
 \section{generalities}
 
