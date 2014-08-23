@@ -19,7 +19,6 @@ def weighted_median(values, weights,quantile):
     return values[indx]
 
 
-#def get_continuum(dataall, delta_lambda=50):
 def get_continuum(dataall, delta_lambda=50):
     """
     ## inputs:
@@ -48,21 +47,24 @@ def get_continuum(dataall, delta_lambda=50):
     return continuum
 
 def get_data():
-  if glob.glob('normed_data.pickle'): # MOVE THIS WAY UP AND PICKLE metaall TOO
-    file_in2 = open('normed_data.pickle', 'r') 
-    dataall,metaall,predictors,count = pickle.load(file_in2)
-    file_in2.close()
-    return dataall, metaall, predictors, count
+  #if glob.glob('normed_data.pickle'): # MOVE THIS WAY UP AND PICKLE metaall TOO
+  #  file_in2 = open('normed_data.pickle', 'r') 
+  #  dataall,metaall,predictors,count = pickle.load(file_in2)
+  #  file_in2.close()
+  #  return dataall, metaall, predictors, count
   count = 0 
   T_est,g_est,feh_est = np.loadtxt("starsin_test.txt", usecols = (4,6,8), unpack =1) 
   T_est,g_est,feh_est = np.loadtxt("starsin_test2.txt", usecols = (4,6,8), unpack =1) 
+  T_est,g_est,feh_est = np.loadtxt("starsin_test3.txt", usecols = (4,6,8), unpack =1) 
+  T_est,g_est,feh_est = np.loadtxt("starsin_test2.txt", usecols = (4,6,8), unpack =1) 
   T_est,g_est,feh_est = np.loadtxt("starsin_new_all_ordered.txt", usecols = (4,6,8), unpack =1) 
-  #T_est  = loadtxt("Temperature_Alonso.txt", usecols = (0,), unpack =1) 
   thismeta = np.array([T_est, feh_est, g_est])
   thismeta = [T_est, feh_est, g_est]
   #a = open("starsin_new_all.txt", 'r')
   #a = open("starsin_M53_N6819.txt", 'r')
+  a = open("starsin_test2.txt", 'r')
   a = open("starsin_test.txt", 'r')
+  a = open("starsin_test3.txt", 'r')
   a = open("starsin_test2.txt", 'r')
   a = open("starsin_new_all_ordered.txt", 'r')
   al = a.readlines() 
@@ -112,21 +114,11 @@ def get_data():
     dataall[:, jj, 0] = xgrid1
     dataall[:, jj, 1] = y2new
     dataall[:, jj, 2] = sigma
-
     bad = np.logical_or(np.isnan(sigma), np.isnan(y2new)) 
     print "get_data(): fixing %d bad values" % np.sum(bad)
     dataall[bad, jj, 1] = 0.
     dataall[bad, jj, 2] = np.Inf
     bad = np.isinf(dataall[:, jj, 1])
-    ##bad = np.logical_or(np.isnan(dataall[:, jj, 2]), np.isnan(dataall[:, jj, 1])) 
-    #bad = np.logical_or(np.isnan(sigma), np.isnan(y2new)) 
-    #print "get_data(): fixing %d bad values" % np.sum(bad)
-    #dataall[bad, jj, 1] = 0.
-    #dataall[bad, jj, 2] = np.Inf
-    #bad = np.isinf(dataall[:, jj, 1])
-    #print "get_data(): fixing %d bad values" % np.sum(bad)
-    #dataall[bad, jj, 1] = 0.
-    #dataall[bad, jj, 2] = np.Inf
 
     for k in range(0,len(bl)): 
       metaall[k,0] = T_est[k] 
@@ -136,18 +128,32 @@ def get_data():
   continuum = get_continuum(dataall)
   dataall[:, :, 1] /= continuum
   dataall[:, :, 2] /= continuum
- # bad = np.logical_or(np.isnan(sigma), np.isnan(y2new)) 
   bad1 = np.isnan(dataall[:,:,1])
   dataall[bad1,1] = 0.
   bad2 = np.isnan(dataall[:,:,2])
-  dataall[bad2,2] = 1000000. #note if infinity falls over later 
-  #bad3 = dataall[:,:,1] == 0. 
-  #dataall[bad3,2] = 1000000. #note if infinity falls over later 
+  dataall[bad2,2] = 100000.0#np.Inf
+  #bad3 = dataall[:,:,2] == 0.
+  #dataall[bad3,2] = 100000.0#np.Inf
+  #bad = np.logical_or(np.isnan(dataall[:, jj, 2]), np.isnan(dataall[:, jj, 1])) 
   print "get_data(): fixing %d bad values" % np.sum(bad)
+  #dataall[bad, jj, 1] = 0.
+  #dataall[bad, jj, 2] = np.Inf
+  #bad = np.isinf(dataall[:, jj, 1])
+  #print "get_data(): fixing %d bad values" % np.sum(bad)
+  #dataall[bad, jj, 1] = 0.
+  #dataall[bad, jj, 2] = np.Inf
 
-  file_in = open('normed_data.pickle', 'w')  
-  pickle.dump((dataall,metaall, predictors, count),  file_in)
-  file_in.close()
+  #file_in = open('normed_data.pickle', 'w')  
+  #pickle.dump((dataall,metaall, predictors, count),  file_in)
+  #file_in.close()
+
+  #bad = np.where(continuum <= 0)
+  #dataall[bad][:,1] = 0.
+  #dataall[bad][:,2] = np.Inf
+  #bad = np.logical_not(np.isfinite(dataall[:, :, 1]))
+  #if np.sum(bad) > 0:
+  #  print "get_data(): found %d bad points" % np.sum(bad)
+  #  #assert False
   return dataall, metaall, predictors, count
 
 #def do_one_regression_at_fixed_scatter(data, predictors, scatter=0):
@@ -165,6 +171,7 @@ def do_one_regression_at_fixed_scatter(data, predictors, scatter):
   nobj, nmeta = metaall.shape
   assert data.shape == (nobj, 3)
   # least square fit
+  #Cinv = 1. / (data[:, 2] ** 2 + scatter**2)  # invvar slice of data
   Cinv = 1. / (data[:, 2] ** 2 +scatter**2)  # invvar slice of data
   M = predictors
   MTCinvM = np.dot(M.T, Cinv[:, None] * M) # craziness b/c Cinv isnt a matrix
@@ -219,6 +226,7 @@ def plot_one_fit(dataall, metaall, chisqs, coeffs, invcovs, index):
 #covars = np.array([linalg.inv(cinv) for cinv in invcovs]) 
 
 dataall, metaall, predictors, count = get_data()
+#do_one_regression(dataall[2804], predictors)
 blob = do_regressions(dataall, predictors)
 coeffs = np.array([b[0] for b in blob])
 invcovs = np.array([b[1] for b in blob])
@@ -226,5 +234,8 @@ covs = np.array([np.linalg.inv(b[1]) for b in blob])
 chis = np.array([b[2] for b in blob])
 chisqs = np.array([np.dot(b[2],b[2]) - b[3] for b in blob]) # holy crap be careful
 scatters = np.array([b[4] for b in blob])
+#predictions = [np.dot(cc, pp) for cc, pp in zip(coeffs, predictors)]
+#savetxt("data_test.txt", zip(dataall[:,0,0], coeffs[:,0], coeffs[:,1], coeffs[:,2], chisqs), fmt = "%s")
+#savetxt("data_test.txt", zip(coeffs[:,0], coeffs[:,1], coeffs[:,2], coeffs[:,3], chis, chisqs), fmt = "%s")
 
 
