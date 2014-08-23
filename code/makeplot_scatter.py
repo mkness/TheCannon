@@ -33,11 +33,11 @@ xminorLocator   = MultipleLocator(5)
 yminorLocator   = MultipleLocator(5)
 ymajorLocator   = MultipleLocator(50)
 xmajorLocator   = MultipleLocator(10)
-rcParams['figure.figsize'] = 15.0, 10.0
+rcParams['figure.figsize'] = 12.0, 10.0
 
 wl1,wl2,wl3,wl4,wl5,wl6 = 15392, 15697, 15958.8, 16208.6, 16120.4, 16169.5 
 def plotdata(wl0, bw): 
-    rcParams['figure.figsize'] = 15.0, 10.0
+    rcParams['figure.figsize'] = 13.0, 10.0
     #x, median_y, t_y, g_y,feh_y,chi_y = loadtxt('data_test.txt', usecols = (0,1,2,3,4,5), unpack =1) 
     fig, temp = pyplot.subplots(3,1, sharex=True, sharey=False)
     ax1 = temp[0]
@@ -86,6 +86,6 @@ def plotdata(wl0, bw):
 
     fig.subplots_adjust(hspace=0)
     fig.subplots_adjust(wspace=0)
-    fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example.pdf', transparent=True, bbox_inches='tight', pad_inches=0)
+    fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example.eps', transparent=True, bbox_inches='tight', pad_inches=0)
     return 
 

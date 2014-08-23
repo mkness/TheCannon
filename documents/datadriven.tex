@@ -103,62 +103,62 @@ Applications, esp chemical tagging
 \end{figure}
 
 \begin{figure}[h!]
-  \includegraphics[width=\hsize]{./plots/R1_example.pdf}
+  \includegraphics[width=\hsize]{./plots/R1_example.eps}
 \caption{The results from the linear regression across at 100 $\AA$ sample region of spectra. The top panel shows the scatter at each wavelength, the centre panel shows the mean spectrum derived from the training set and the bottom panel shows the coefficients fit in each dimension, \teff\, \logg\, [Fe/H]. Given additional labels it will be possible to include more dimensionality, for example [$\alpha$/Fe] and [X/Fe].}
 \label{fig:fits}
 \end{figure}
 
 \begin{figure}[h!]
-  \includegraphics[width=\hsize]{./plots/fits_all3.pdf}
+  \includegraphics[width=\hsize]{./plots/fits_all3.eps}
 \caption{\small{Comparison of our method with ASCAP results for the field 4332 (l,b) = (0,-5$^\circ$). The tight correlation in \teff\ and [Fe/H] suggests that these labels in the training set are very good. There is more scatter in the \logg\ panel that may not represent bad labels in the training set and therefore may not be accounted for in the non-linear model. Comparing Figure \ref{fig:index} with the bottom panel, the discontinuity at ASCAP [Fe/H] $\sim$ 0, is due to the non-linear behaviour of the [Fe/H] which is seen in the index, but which is not captured in our linear model (see Figure \ref{fig:index}).}}
 \label{fig:cal}
 \end{figure}
 
 \begin{figure}[h!]
-  \includegraphics[width=\hsize]{./plots/fits_all3_continuumcut.pdf}
+  \includegraphics[width=\hsize]{./plots/fits_all3_continuumcut.eps}
 \caption{\small{Comparison of our method with ASCAP results for the field 4332, using a continuum cut to select for the weak features and to exclude stronger lines. This was done to avoid the known effect of non-linearities in stronger absorption features and the cut implemented for this figure is 0.935 $<$ flux $<$ 0.99, equivalent to about 50\% of the flux of the median spectra. (note: both bounds are necessary to achieve these fits). Using weaker lines, a linear model is demonstrated to be a reasonably good model for the data. The scatter increases by about a factor of 2 in each dimension by adopting this continuum cut. }}
 \label{fig:cut1}
 \end{figure}
 
 \begin{figure}[h!]
-  \includegraphics[width=\hsize]{./plots/fits_all3_continuumcut2.pdf}
+  \includegraphics[width=\hsize]{./plots/fits_all3_continuumcut2.eps}
 \caption{\small{As for figure \ref{fig:cut1} but using a tighter continuum cut of 0.95 $<$ flux $<$ 0.99. This demonstrates that the information for the [Fe/H] characterisation is lost at this tighter cut on the continuum, it suggests that the sensitivity of the spectra to log g is lower at the low temperature end of the spectra and the information in temperature is fairly well recovered using a linear scale for this cut in flux. } }
 \label{fig:cut2}
 \end{figure}
 
 \begin{figure}[h!]
-  \includegraphics[width=\hsize]{./plots/coeff_map.pdf}
+  \includegraphics[width=\hsize]{./plots/coeff_map.eps}
 \caption{per pixel scaled residuals for stars ordered in [Fe/H], from the most metal poor at the bottom to the most metal rich at the top}
 \label{fig:coeff}
 \end{figure}
 
 \begin{figure}[h!]
-  \includegraphics[width=\hsize]{./plots/chi_map.pdf}
+  \includegraphics[width=\hsize]{./plots/chi_map.eps}
 \caption{Spectral Fingerprints for calibration clusters showing the chi2 coefficients for each star at each pixel separated into clusters from the most metal rich to the most metal poor (divided by horizontal lines) 
 \textbf{To do; put clusters + [Fe/H] on other y-axis)}}
 \label{fig:DNA}
 \end{figure}
 
 \begin{figure}[h!]
-  \includegraphics[width=\hsize]{./plots/normed_300.pdf}
+  \includegraphics[width=\hsize]{./plots/normed_300.eps}
 \caption{Sample continuum normalised spectra}
 \label{fig:DNA}
 \end{figure}
 
 \begin{figure}[h!]
-  \includegraphics[width=\hsize]{./plots/cal_feh.pdf}
+  \includegraphics[width=\hsize]{./plots/cal_feh.eps}
 \caption{Showing the spread of calibration stars in training set across [Fe/H] - sparse sampling is not a problem in the centre for this label}
 \label{fig:cal_feh}
 \end{figure}
 
 \begin{figure}[h!]
-  \includegraphics[width=\hsize]{./plots/cal_logg.pdf}
+  \includegraphics[width=\hsize]{./plots/cal_logg.eps}
 \caption{Showing the spread of calibration stars in training set across log g ; missing dwarf stars - would be very good to have these }
 \label{fig:cal_g}
 \end{figure}
 
 \begin{figure}[h!]
-  \includegraphics[width=\hsize]{./plots/cal_teff.pdf}
+  \includegraphics[width=\hsize]{./plots/cal_teff.eps}
 \caption{Showing the spread of calibration stars in training set across Teff ; missing dwarf stars - would be very good to have these }
 \label{fig:cal_teff}
 \end{figure}

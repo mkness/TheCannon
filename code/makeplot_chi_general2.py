@@ -68,4 +68,4 @@ test = ax.imshow(image2.T, cmap=plt.cm.RdBu, interpolation="nearest", vmin = -2,
 #test = ax.imshow(image[:,index_use].T, cmap=plt.cm.RdGy, interpolation="nearest", vmin = -5, vmax = 5 ,aspect = 'auto',origin = 'lower', extent = (wl.min(), wl.max(), 0, len(image.T))) 
 cb = fig.colorbar(test) 
 cb.set_label("arcsinh($\chi$)", fontsize = 20 ) 
-fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/chi_map.pdf', transparent=True, bbox_inches='tight', pad_inches=0)
+fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/chi_map.eps', transparent=True, bbox_inches='tight', pad_inches=0)
