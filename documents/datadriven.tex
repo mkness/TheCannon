@@ -73,8 +73,8 @@ a continuum-normalized flux measurement $y_{n\ell}$ at wavelength
 $\lambda_\ell$, and an associated uncertainty variance
 $\sigma_{n\ell}^2$ from finite photon counts and instrumental effects.
 If there are missing flux values in the training data, these can be
-handled by setting variances to infinity (or inverse variances to
-zero).
+handled by setting variances to something very large (or inverse
+variances to something very small).
 Each of the training spectra $n$ has $K$ tags $x_{nk}$, each of which
 is (for now) presumed to have negligible uncertainty.
 The general model is
@@ -162,10 +162,10 @@ what follows.
 
 In the test data there will be $M$ spectra $m$, each of which---as in
 the training data---has a continuum-normalized flux measurement
-$y_{m\ell}$ at each of many wavelengths $\lambda_\ell$, and an
+$y_{m\ell}$ at each of $L$ wavelengths $\lambda_\ell$, and an
 associated observational uncertainty variance $\sigma_{m\ell}^2$.
 Again, if there are missing flux values in the test data, these can be
-handled by setting variances to infinity.
+handled by setting variances to something very large.
 The difference between the training data and the test data is that the
 test data do not (yet) have known tags $x_{mk}$; we are going to infer
 these.
