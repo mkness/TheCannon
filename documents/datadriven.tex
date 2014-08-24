@@ -77,20 +77,47 @@ Each of the training spectra $n$ has $K$ tags $x_{nk}$, each of which
 is (for now) presumed to have negligible uncertainty.
 The general model is
 \begin{eqnarray}
-y_{n\ell} &=& Y_\ell(\setof{x_{nk}}_{k=1}^K) + \sqrt{s_\ell^2 + \sigma_{n\ell}^2}\,\xi_{n\ell}
+y_{n\ell} &=&
+ Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell) + \sqrt{s_\ell^2 + \sigma_{n\ell}^2}\,\xi_{n\ell}
 \quad ,
 \end{eqnarray}
-where $Y_\ell()$ is some (possibly complicated) function of the full
-set of $K$ tags, $s_\ell^2$ is an intrinsic variance for the model at
-wavelength $\lambda_\ell$, and $\xi_{n\ell}$ is a Gaussian random
-number with zero mean and unit variance.
+where $Y()$ is some (possibly complicated) function of the full set
+of $K$ tags, $\theta_\ell$ is the set of parameters controlling the
+function $Y()$ at wavelength $\lambda_\ell$, $s_\ell^2$ is an
+intrinsic variance for the model at wavelength $\lambda_\ell$, and
+$\xi_{n\ell}$ is a Gaussian random number with zero mean and unit
+variance.
 That is, we have assumed that the noise is Gaussian, zero mean, and
 independent for every measurement.
-
-The simplest model would be to set the functions $Y_\ell()$ to be
-linear functions of the tags, or
+This model leads to the single-pixel log-likelihood function
 \begin{eqnarray}
-Y_\ell(\setof{x_{nk}}_{k=1}^K) &=& a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
+\ln p(y_{n\ell}\given\theta_\ell,s_\ell^2) &=&
+ -\frac{1}{2}\ln(s_\ell^2 + \sigma_{n\ell}^2)
+ -\frac{1}{2}\frac{[y_{n\ell} - Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell)]^2}{s_\ell^2 + \sigma_{n\ell}^2}
+ +\mbox{const}
+\quad.
+\end{eqnarray}
+Since all the spectra and pixels are treated as independent, each
+wavelength $\lambda_\ell$ can have its parameters
+$[\theta_\ell,s_\ell^2]$ inferred independently, and all the
+individual-spectra log-likelihoods can be added together to make
+\begin{eqnarray}
+\ln p(\setof{y_{n\ell}}_{n=1}^N\given\theta_\ell,s_\ell^2) &=&
+ \sum_{n=1}^N \ln p(y_{n\ell}\given\theta_\ell,s_\ell^2)
+\label{eq:like}\quad.
+\end{eqnarray}
+We can set the parameters $[\theta_\ell,s_\ell^2]$ either by
+optimizing the likelihood (\ref{eq:like}) or by applying priors and
+performing some kind of probabilistic inference (with, say, Markov
+Chain Monte Carlo techniques).
+Here we will optimize for now.
+
+The simplest model would be to set the functions $Y()$ to be linear
+functions of the tags:
+\begin{eqnarray}
+Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell) &=& a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
+\\
+\theta_\ell &\equiv& \setof{a_{\ell k}}_{k=0}^K
 \quad ,
 \end{eqnarray}
 where the $\setof{a_{\ell k}}_{k=0}^K$ are linear coefficients, and
