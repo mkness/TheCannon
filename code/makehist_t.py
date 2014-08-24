@@ -1,6 +1,9 @@
 pick = logical_and(input_ASPCAP[1] > 0, logical_and(input_ASPCAP[3] < 300, input_ASPCAP[2] > -4.0) ) 
 x = input_ASPCAP[0][pick]
 y = params_labels[0][pick]
+yerr = params_labels[2+2][pick]
+xerr = input_ASPCAP[2+2][pick]
+c_val = input_ASPCAP[1][pick]
 
 starsin = open('starsin_new_all_ordered.txt','r') 
 al = starsin.readlines()
@@ -62,7 +65,17 @@ axHistx.xaxis.set_major_formatter(nullfmt)
 axHisty.yaxis.set_major_formatter(nullfmt)
 
 # the scatter plot:
-axScatter.scatter(x, y, c = input_ASPCAP[0][pick], s = 30)
+s1 = axScatter.scatter(x, y, c = c_val, s = 30)
+cind = c_val
+cax = axes([0.11, 0.55, 0.012, 0.18])
+a,b,c1 = axScatter.errorbar(x, y,yerr= yerr,marker='',ls='',zorder=0, fmt = None,elinewidth = 1,capsize = 0)
+a,b,c2 = axScatter.errorbar(x, y,xerr= xerr,marker='',ls='',zorder=0, fmt = None,elinewidth = 1,capsize = 0)
+c_T = colorbar(s1,cax=cax) 
+c_T.set_label('APSCAP logg', fontsize = 16,labelpad = 6) 
+g_color = c_T.to_rgba(cind) 
+c1[0].set_color(g_color)
+c2[0].set_color(g_color)
+
 
 # now determine nice limits by hand:
 binwidth = 50

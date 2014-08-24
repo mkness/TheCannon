@@ -62,8 +62,8 @@ def test_fits_list(filein):
 
 #def return_test_params(filein,scatters,coeffs,weak_lower=0.935,weak_upper=0.99):
 #def return_test_params(filein,scatters,coeffs,weak_lower=0.935,weak_upper=0.99):
-#def return_test_params(filein,scatters,coeffs,weak_lower=0.960,weak_upper=.99):
-def return_test_params(filein,scatters,coeffs,weak_lower=0.0,weak_upper=1.99):
+def return_test_params(filein,scatters,coeffs,weak_lower=0.960,weak_upper=.99):
+#def return_test_params(filein,scatters,coeffs,weak_lower=0.0,weak_upper=1.99):
     """
     best log g = weak_lower = 0.95, weak_upper = 0.98
     best teff = weak_lower = 0.95, weak_upper = 0.99
