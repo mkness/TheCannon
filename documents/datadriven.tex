@@ -3,6 +3,9 @@
 
 \documentclass[12pt, preprint]{aastex}
 
+\newcommand{\setof}[1]{\{#1\}}
+\newcommand{\mean}[1]{\overline{#1}}
+\newcommand{\given}{\,|\,}
 \newcommand{\teff}{\mbox{$\rm T_{eff}$}}
 \newcommand{\feh}{\mbox{$\rm [Fe/H]$}}
 \newcommand{\logg}{\mbox{$\rm \log g$}}
@@ -35,7 +38,7 @@ Motivated by the idea of fingerprinting spectra in the spirt of chemical tagging
 
 Proof-of-concept: 
 
-We identified a number of regions in APOGEE spectra that serve as relatively temperature and log g insensitive metallicity indicators that can be used to return an [Fe/H] for APOGEE spectra to an accuracy of $<$ 0.15 dex. From this first proof-of-concept phase, we have implemented a regression analysis in pixel or line space, to determine the coefficients or spectral regions that might serve as stellar parameter indicators.  We have a number of aims: (i) characterise the dependence of each pixel on the stellar parameters and identify the key regions of the spectra that are sensitive to the stellar parameters we wish to determine (Teff, log g, [Fe/H], [alpha/Fe]), (ii) use the fits to these regions (using calibration stars) as a baseline to derive the stellar parameters from any given APOGEE spectra and (iii) provide a tool to the community for implementation in the APOGEE-2 project + e.g. Hermes, where stellar parameters can be determined without explicit stellar models. Extensions of this are for individual abundance labels and heuristic index determination.\\
+We identified a number of regions in APOGEE spectra that serve as relatively temperature and log g insensitive metallicity indicators that can be used to return an [Fe/H] for APOGEE spectra to an accuracy of $<$ 0.15 dex. From this first proof-of-concept phase, we have implemented a regression analysis in pixel or line space, to determine the coefficients or spectral regions that might serve as stellar parameter indicators.  We have a number of aims: (i) characterise the dependence of each pixel on the stellar parameters and identify the key regions of the spectra that are sensitive to the stellar parameters we wish to determine (Teff, log g, [Fe/H], [alpha/Fe]), (ii) use the fits to these regions (using calibration stars) as a baseline to derive the stellar parameters from any given APOGEE spectra and (iii) provide a tool to the community for implementation in the APOGEE-2 project + e.g. Hermes, where stellar parameters can be determined without explicit stellar models. Extensions of this are for individual abundance labels and heuristic index determination.
 
 \section{Data}
 
@@ -49,33 +52,72 @@ meta-data on cluster stars; why do we believe it; table
 
 \section{Spectral model}
 
-linear model plus scatter.
+The model is that the observed, continuum-normalized spectrum, at each
+wavelength, can be explained as a linear combination of real-valued
+``tags'', or a linear combination of functions of those tags.
+Here the tags will be things like effective temperature $\teff$,
+logarithmic surface gravity $\logg$, and metallicity $\feh$.
+Additionally, the model is that at each wavelength, the observed
+spectrum will deviate from the linear combination by some additive
+noise contribution, some of which comes from photon noise and
+sky-subtraction noise and other instrumental contributions, and some
+of which is an intrinsic scatter, presumed independent at each
+wavelength.
+The model is built using ``training data'' (with known tags) and then
+used to tag (or infer tags for) the ``test data''.
 
-Subtract off and save mean values of meta-data.
+In the training data there will be $N$ spectra $n$, each of which has
+a continuum-normalized flux measurement $y_{n\ell}$ at wavelength
+$\lambda_\ell$, and an associated uncertainty variance
+$\sigma_{n\ell}^2$ from finite photon counts and instrumental effects.
+If there are missing flux values in the training data, these can be
+handled by setting variances to infinity (or inverse variances to
+zero).
+Each of the training spectra $n$ has $K$ tags $x_{nk}$, each of which
+is (for now) presumed to have negligible uncertainty.
+The general model is
+\begin{eqnarray}
+y_{n\ell} &=& Y_\ell(\setof{x_{nk}}_{k=1}^K) + \sqrt{s_\ell^2 + \sigma_{n\ell}^2}\,\xi_{n\ell}
+\quad ,
+\end{eqnarray}
+where $Y_\ell()$ is some (possibly complicated) function of the full
+set of $K$ tags, $s_\ell^2$ is an intrinsic variance for the model at
+wavelength $\lambda_\ell$, and $\xi_{n\ell}$ is a Gaussian random
+number with zero mean and unit variance.
+That is, we have assumed that the noise is Gaussian, zero mean, and
+independent for every measurement.
 
-likelihood function.
+The simplest model would be to set the functions $Y_\ell()$ to be
+linear functions of the tags, or
+\begin{eqnarray}
+Y_\ell(\setof{x_{nk}}_{k=1}^K) &=& a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
+\quad ,
+\end{eqnarray}
+where the $\setof{a_{\ell k}}_{k=0}^K$ are linear coefficients, and
+the $\mean{x_k}$ are offsets (possibly means of the training data) to
+keep the model ``pivoting'' around a reasonable point in tag space.
 
-implementation and outputs, figures.
+...likelihood function.
 
-is this a good model?
+...implementation and outputs, figures.
+
+...is this a good model?  No; how do we know?
+
+...Quadratic model...
 
 \section{Parameter estimation}
 
-we want to label other stars
-
-index concept
+we want to label other stars; introduce concept of test data.
 
 spectral fitting concept
 
-methodological details
+...why is linear so much easier than quadratic or GP?  Methodological details
 
 leave-one-out cross-validation on the training spectra
 
 leave-one-cluster-out cross-validation
 
-application to some example APOGEE targets
-
-comparison to ASPCAP
+application to some example APOGEE targets and comparison to ASPCAP
 
 \section{Discussion}
 
@@ -83,8 +125,14 @@ Did it work and etc?
 
 Limitations of the training sample.
 
-Linear model is a very rigid assumption; obviously wrong.
+Limitations of assuming the training sample has perfect tags.
+
+Linear (or quadratic) model is a very rigid assumption; obviously wrong.
 Generalize to a GP at every wavelength.
+
+Limitations of working at one wavelength at a time in model-building.
+
+Limitations of the inference procedure at tagging time
 
 Applications, esp chemical tagging
 
