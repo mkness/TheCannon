@@ -1,8 +1,18 @@
+params_labels = [params[:,0], params[:,1], params[:,2] , covs_params[:,0,0]**0.5, covs_params[:,1,1]**0.5, covs_params[:,2,2]**0.5 ]  
+testdir = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/"
+file2 = '4332_data_all_more.txt'
+file2in = testdir+file2
+t,t_err,g,g_err,feh,feh_err = loadtxt(file2in, usecols = (1,2,3,4,5,6), unpack =1) 
+
+pick = logical_and(g > 0, logical_and(t_err < 300, feh > -4.0) ) 
+cval = ['k', 'b', 'r'] 
+input_ASPCAP = [t, g, feh, t_err, g_err, feh_err] 
+input_ASPCAP = [t, g, feh, t_err, g_err, feh_err] 
 pick = logical_and(input_ASPCAP[1] > 0, logical_and(input_ASPCAP[3] < 300, input_ASPCAP[2] > -4.0) ) 
 x = input_ASPCAP[0][pick]
 y = params_labels[0][pick]
-yerr = params_labels[2+2][pick]
-xerr = input_ASPCAP[2+2][pick]
+yerr = params_labels[1+2][pick]
+xerr = input_ASPCAP[1+2][pick]
 c_val = input_ASPCAP[1][pick]
 
 starsin = open('starsin_new_all_ordered.txt','r') 
