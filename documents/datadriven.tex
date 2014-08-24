@@ -3,6 +3,10 @@
 
 \documentclass[12pt, preprint]{aastex}
 
+\input{vc}
+\newcommand{\sectionname}{Section}
+\newcommand{\documentname}{\textsl{Note}}
+
 \newcommand{\setof}[1]{\{#1\}}
 \newcommand{\mean}[1]{\overline{#1}}
 \newcommand{\given}{\,|\,}
@@ -11,8 +15,6 @@
 \newcommand{\logg}{\mbox{$\rm \log g$}}
 
 \begin{document}
-
-
 
 \section{Introduction}
 
@@ -79,7 +81,7 @@ The general model is
 \begin{eqnarray}
 y_{n\ell} &=&
  Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell) + \sqrt{s_\ell^2 + \sigma_{n\ell}^2}\,\xi_{n\ell}
-\quad ,
+\label{eq:model}\quad ,
 \end{eqnarray}
 where $Y()$ is some (possibly complicated) function of the full set
 of $K$ tags, $\theta_\ell$ is the set of parameters controlling the
@@ -92,10 +94,10 @@ independent for every measurement.
 This model leads to the single-pixel log-likelihood function
 \begin{eqnarray}
 \ln p(y_{n\ell}\given\theta_\ell,s_\ell^2) &=&
- -\frac{1}{2}\ln(s_\ell^2 + \sigma_{n\ell}^2)
  -\frac{1}{2}\frac{[y_{n\ell} - Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell)]^2}{s_\ell^2 + \sigma_{n\ell}^2}
- +\mbox{const}
-\quad.
+ -\frac{1}{2}\ln(s_\ell^2 + \sigma_{n\ell}^2)
+ -\frac{1}{2}\ln 2\pi
+\label{eq:like1}\quad.
 \end{eqnarray}
 Since all the spectra and pixels are treated as independent, each
 wavelength $\lambda_\ell$ can have its parameters
@@ -112,8 +114,20 @@ performing some kind of probabilistic inference (with, say, Markov
 Chain Monte Carlo techniques).
 Here we will optimize for now.
 
-The simplest model would be to set the functions $Y()$ to be linear
-functions of the tags:
+In this \sectionname, we are treating the function parameters
+$\theta_\ell$ and the scatter $s_\ell^2$ as free parameters, and the
+tags $x_{nk}$ as fixed.
+The likelihood function (\ref{eq:like}) is presented as being a
+function of these free parameters.
+In the next \sectionname, the tables will turn, and we will treat the
+function parameters $\theta_\ell$ and scatter $s_\ell^2$ as fixed and
+the tags $x_{nk}$ as parameters.
+The difference is that here we are treating the training data as
+having perfectly known tags, and later we will be inferring tags for
+new spectra.
+
+The simplest spectral model is that in which the functions $Y()$ are
+linear in the tags:
 \begin{eqnarray}
 Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell) &=& a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
 \\
@@ -126,8 +140,6 @@ keep the model ``pivoting'' around a reasonable point in tag space.
 
 ...interpretation of the coefficients as mean spectrum and derivatives.
 
-...likelihood function.
-
 ...implementation and outputs, figures.
 
 ...is this a good model?  No; how do we know?
@@ -136,9 +148,55 @@ keep the model ``pivoting'' around a reasonable point in tag space.
 
 \section{Parameter estimation}
 
-we want to label other stars; introduce concept of test data.
+In the previous \sectionname, we built data-driven spectral models
+from training data.
+These models have the property that, given tags, they can be used to
+predict continuum-normalized flux, up to observational and intrinsic
+scatter.
+In this \sectionname, we are going to solve the inverse problem; we
+are going to presume that we have spectra, but we don't have tags.
+In this case, we will use inference to obtain tags for the untagged
+spectra.
+These untagged spectra will be referred to as the ``test data'' in
+what follows.
 
-spectral fitting concept
+In the test data there will be $M$ spectra $m$, each of which---as in
+the training data---has a continuum-normalized flux measurement
+$y_{m\ell}$ at each of many wavelengths $\lambda_\ell$, and an
+associated observational uncertainty variance $\sigma_{m\ell}^2$.
+Again, if there are missing flux values in the test data, these can be
+handled by setting variances to infinity.
+The difference between the training data and the test data is that the
+test data do not (yet) have known tags $x_{mk}$; we are going to infer
+these.
+
+Just as in the previous \sectionname, our model is given in
+equation~(\ref{eq:model}).
+This model leads to the same likelihood function given in
+equations~(\ref{eq:like1}) and (\ref{eq:like}), but this time seen as
+being functions not of the function parameters $\theta_\ell$ and
+scatter $s_\ell^2$ but instead as functions of the \emph{tags}
+$x_{mk}$:
+\begin{eqnarray}
+\ln p(y_{m\ell}\given\setof{x_{mk}}_{k=1}^K) &=&
+ -\frac{1}{2}\frac{[y_{m\ell} - Y(\setof{x_{mk}}_{k=1}^K\given\theta_\ell)]^2}{s_\ell^2 + \sigma_{m\ell}^2}
+ -\frac{1}{2}\ln(s_\ell^2 + \sigma_{m\ell}^2)
+ -\frac{1}{2}\ln 2\pi
+\\
+\ln p(\setof{y_{m\ell}}_{\ell=1}^L\given\setof{x_{mk}}_{k=1}^K) &=&
+ \sum_{\ell=1}^L \ln p(y_{m\ell}\given\setof{x_{mk}}_{k=1}^K)
+\label{eq:taglike}\quad,
+\end{eqnarray}
+where the likelihood functions are given as a function of tags now,
+and the sum is now over the full set of $L$ wavelengths
+$\lambda_\ell$.
+These likelihood functions effectively assume that the function
+parameters $\theta_\ell$ and scatters $s_\ell^2$ are all known (from
+the training data).
+New tags $x_{mk}$ for object $m$ can be obtained either by maximizing
+the likelihood function (\ref{eq:taglike}), or else by applying priors
+and performing probabilistic inference.
+Here we will optimize for now.
 
 ...why is linear so much easier than quadratic or GP?  Methodological details
 
