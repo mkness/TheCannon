@@ -141,6 +141,8 @@ linear in the tags:
 \begin{eqnarray}
 Y(\set{x}_n\given\set{\theta}_\ell) &=& a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
 \label{eq:linear}\\
+\set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
+\\
 \set{\theta}_\ell &\equiv& [a_{\ell 0}, a_{\ell 1}, \cdots, a_{\ell K}]
 \quad ,
 \end{eqnarray}
@@ -202,8 +204,9 @@ $x_{mk}$:
 \quad,
 \end{eqnarray}
 where the likelihood functions are given as a function of tags now,
-and the sum is now over the full set of $L$ wavelengths
-$\lambda_\ell$.
+the sum is now over the full set of $L$ wavelengths
+$\lambda_\ell$, and the vector $\set{y}_m$ is the vector of fluxes from
+spectrum $m$ for all $L$ wavelengths $\lambda_\ell$.
 These likelihood functions effectively assume that the function
 parameters $\set{\theta}_\ell$ and scatters $s_\ell^2$ are all known (from
 the training data).
