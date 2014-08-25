@@ -8,4 +8,5 @@
 *.blg
 *.pyc
 vc.tex
+*.synctex.gz
 *.pdf

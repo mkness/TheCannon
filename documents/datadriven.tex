@@ -3,13 +3,18 @@
 
 \documentclass[12pt, preprint]{aastex}
 
+\input{vc}
+\newcommand{\sectionname}{Section}
+\newcommand{\documentname}{\textsl{Note}}
+
+\newcommand{\setof}[1]{\{#1\}}
+\newcommand{\mean}[1]{\overline{#1}}
+\newcommand{\given}{\,|\,}
 \newcommand{\teff}{\mbox{$\rm T_{eff}$}}
 \newcommand{\feh}{\mbox{$\rm [Fe/H]$}}
 \newcommand{\logg}{\mbox{$\rm \log g$}}
 
 \begin{document}
-
-
 
 \section{Introduction}
 
@@ -35,7 +40,7 @@ Motivated by the idea of fingerprinting spectra in the spirt of chemical tagging
 
 Proof-of-concept: 
 
-We identified a number of regions in APOGEE spectra that serve as relatively temperature and log g insensitive metallicity indicators that can be used to return an [Fe/H] for APOGEE spectra to an accuracy of $<$ 0.15 dex. From this first proof-of-concept phase, we have implemented a regression analysis in pixel or line space, to determine the coefficients or spectral regions that might serve as stellar parameter indicators.  We have a number of aims: (i) characterise the dependence of each pixel on the stellar parameters and identify the key regions of the spectra that are sensitive to the stellar parameters we wish to determine (Teff, log g, [Fe/H], [alpha/Fe]), (ii) use the fits to these regions (using calibration stars) as a baseline to derive the stellar parameters from any given APOGEE spectra and (iii) provide a tool to the community for implementation in the APOGEE-2 project + e.g. Hermes, where stellar parameters can be determined without explicit stellar models. Extensions of this are for individual abundance labels and heuristic index determination.\\
+We identified a number of regions in APOGEE spectra that serve as relatively temperature and log g insensitive metallicity indicators that can be used to return an [Fe/H] for APOGEE spectra to an accuracy of $<$ 0.15 dex. From this first proof-of-concept phase, we have implemented a regression analysis in pixel or line space, to determine the coefficients or spectral regions that might serve as stellar parameter indicators.  We have a number of aims: (i) characterise the dependence of each pixel on the stellar parameters and identify the key regions of the spectra that are sensitive to the stellar parameters we wish to determine (Teff, log g, [Fe/H], [alpha/Fe]), (ii) use the fits to these regions (using calibration stars) as a baseline to derive the stellar parameters from any given APOGEE spectra and (iii) provide a tool to the community for implementation in the APOGEE-2 project + e.g. Hermes, where stellar parameters can be determined without explicit stellar models. Extensions of this are for individual abundance labels and heuristic index determination.
 
 \section{Data}
 
@@ -49,33 +54,157 @@ meta-data on cluster stars; why do we believe it; table
 
 \section{Spectral model}
 
-linear model plus scatter.
+The model is that the observed, continuum-normalized spectrum, at each
+wavelength, can be explained as a linear combination of real-valued
+``tags'', or a linear combination of functions of those tags.
+Here the tags will be things like effective temperature $\teff$,
+logarithmic surface gravity $\logg$, and metallicity $\feh$.
+Additionally, the model is that at each wavelength, the observed
+spectrum will deviate from the linear combination by some additive
+noise contribution, some of which comes from photon noise and
+sky-subtraction noise and other instrumental contributions, and some
+of which is an intrinsic scatter, presumed independent at each
+wavelength.
+The model is built using ``training data'' (with known tags) and then
+used to tag (or infer tags for) the ``test data''.
 
-Subtract off and save mean values of meta-data.
+In the training data there will be $N$ spectra $n$, each of which has
+a continuum-normalized flux measurement $y_{n\ell}$ at wavelength
+$\lambda_\ell$, and an associated uncertainty variance
+$\sigma_{n\ell}^2$ from finite photon counts and instrumental effects.
+If there are missing flux values in the training data, these can be
+handled by setting variances to something very large (or inverse
+variances to something very small).
+Each of the training spectra $n$ has $K$ tags $x_{nk}$, each of which
+is (for now) presumed to have negligible uncertainty.
+The general model is
+\begin{eqnarray}
+y_{n\ell} &=&
+ Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell) + [s_\ell^2 + \sigma_{n\ell}^2]^{1/2}\,\xi_{n\ell}
+\label{eq:model}\quad ,
+\end{eqnarray}
+where $Y()$ is some (possibly complicated) function of the full set
+of $K$ tags, $\theta_\ell$ is the set of parameters controlling the
+function $Y()$ at wavelength $\lambda_\ell$, $s_\ell^2$ is an
+intrinsic variance for the model at wavelength $\lambda_\ell$, and
+$\xi_{n\ell}$ is a Gaussian random number with zero mean and unit
+variance.
+That is, we have assumed that the noise is Gaussian, zero mean, and
+independent for every measurement.
+This model leads to the single-pixel log-likelihood function
+\begin{eqnarray}
+\ln p(y_{n\ell}\given\theta_\ell,s_\ell^2) &=&
+ -\frac{1}{2}\frac{[y_{n\ell} - Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell)]^2}{s_\ell^2 + \sigma_{n\ell}^2}
+ -\frac{1}{2}\ln(s_\ell^2 + \sigma_{n\ell}^2)
+ -\frac{1}{2}\ln 2\pi
+\label{eq:like1}\quad.
+\end{eqnarray}
+Since all the spectra and pixels are treated as independent, each
+wavelength $\lambda_\ell$ can have its parameters
+$[\theta_\ell,s_\ell^2]$ inferred independently, and all the
+individual-spectra log-likelihoods can be added together to make
+\begin{eqnarray}
+\ln p(\setof{y_{n\ell}}_{n=1}^N\given\theta_\ell,s_\ell^2) &=&
+ \sum_{n=1}^N \ln p(y_{n\ell}\given\theta_\ell,s_\ell^2)
+\label{eq:like}\quad.
+\end{eqnarray}
+We can set the parameters $[\theta_\ell,s_\ell^2]$ either by
+optimizing the likelihood (\ref{eq:like}) or by applying priors and
+performing some kind of probabilistic inference (with, say, Markov
+Chain Monte Carlo techniques).
+Here we will optimize for now.
 
-likelihood function.
+In this \sectionname, we are treating the function parameters
+$\theta_\ell$ and the scatter $s_\ell^2$ as free parameters, and the
+tags $x_{nk}$ as fixed.
+The likelihood function (\ref{eq:like}) is presented as being a
+function of these free parameters.
+In the next \sectionname, the tables will turn, and we will treat the
+function parameters $\theta_\ell$ and scatter $s_\ell^2$ as fixed and
+the tags $x_{nk}$ as parameters.
+The difference is that here we are treating the training data as
+having perfectly known tags, and later we will be inferring tags for
+new spectra.
 
-implementation and outputs, figures.
+The simplest spectral model is that in which the functions $Y()$ are
+linear in the tags:
+\begin{eqnarray}
+Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell) &=& a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
+\\
+\theta_\ell &\equiv& \setof{a_{\ell k}}_{k=0}^K
+\quad ,
+\end{eqnarray}
+where the $\setof{a_{\ell k}}_{k=0}^K$ are linear coefficients, and
+the $\mean{x_k}$ are offsets (possibly means of the training data) to
+keep the model ``pivoting'' around a reasonable point in tag space.
 
-is this a good model?
+...interpretation of the coefficients as mean spectrum and derivatives.
+
+...implementation and outputs, figures.
+
+...is this a good model?  No; how do we know?
+
+...Quadratic model...
 
 \section{Parameter estimation}
 
-we want to label other stars
+In the previous \sectionname, we built data-driven spectral models
+from training data.
+These models have the property that, given tags, they can be used to
+predict continuum-normalized flux, up to observational and intrinsic
+scatter.
+In this \sectionname, we are going to solve the inverse problem; we
+are going to presume that we have spectra, but we don't have tags.
+In this case, we will use inference to obtain tags for the untagged
+spectra.
+These untagged spectra will be referred to as the ``test data'' in
+what follows.
 
-index concept
+In the test data there will be $M$ spectra $m$, each of which---as in
+the training data---has a continuum-normalized flux measurement
+$y_{m\ell}$ at each of $L$ wavelengths $\lambda_\ell$, and an
+associated observational uncertainty variance $\sigma_{m\ell}^2$.
+Again, if there are missing flux values in the test data, these can be
+handled by setting variances to something very large.
+The difference between the training data and the test data is that the
+test data do not (yet) have known tags $x_{mk}$; we are going to infer
+these.
 
-spectral fitting concept
+Just as in the previous \sectionname, our model is given in
+equation~(\ref{eq:model}).
+This model leads to the same likelihood function given in
+equations~(\ref{eq:like1}) and (\ref{eq:like}), but this time seen as
+being functions not of the function parameters $\theta_\ell$ and
+scatter $s_\ell^2$ but instead as functions of the \emph{tags}
+$x_{mk}$:
+\begin{eqnarray}
+\ln p(y_{m\ell}\given\setof{x_{mk}}_{k=1}^K) &=&
+ -\frac{1}{2}\frac{[y_{m\ell} - Y(\setof{x_{mk}}_{k=1}^K\given\theta_\ell)]^2}{s_\ell^2 + \sigma_{m\ell}^2}
+ -\frac{1}{2}\ln(s_\ell^2 + \sigma_{m\ell}^2)
+ -\frac{1}{2}\ln 2\pi
+\\
+\ln p(\setof{y_{m\ell}}_{\ell=1}^L\given\setof{x_{mk}}_{k=1}^K) &=&
+ \sum_{\ell=1}^L \ln p(y_{m\ell}\given\setof{x_{mk}}_{k=1}^K)
+\label{eq:taglike}\quad,
+\end{eqnarray}
+where the likelihood functions are given as a function of tags now,
+and the sum is now over the full set of $L$ wavelengths
+$\lambda_\ell$.
+These likelihood functions effectively assume that the function
+parameters $\theta_\ell$ and scatters $s_\ell^2$ are all known (from
+the training data).
+New tags $x_{mk}$ for object $m$ can be obtained either by maximizing
+the likelihood function (\ref{eq:taglike}), or else by applying priors
+and performing probabilistic inference.
+Here we will optimize for now.
 
-methodological details
+...why is linear so much easier than quadratic or GP?  Methodological details
 
 leave-one-out cross-validation on the training spectra
 
 leave-one-cluster-out cross-validation
 
-application to some example APOGEE targets
-
-comparison to ASPCAP
+application to some example APOGEE targets and comparison to ASPCAP
 
 \section{Discussion}
 
@@ -83,8 +212,14 @@ Did it work and etc?
 
 Limitations of the training sample.
 
-Linear model is a very rigid assumption; obviously wrong.
+Limitations of assuming the training sample has perfect tags.
+
+Linear (or quadratic) model is a very rigid assumption; obviously wrong.
 Generalize to a GP at every wavelength.
+
+Limitations of working at one wavelength at a time in model-building.
+
+Limitations of the inference procedure at tagging time
 
 Applications, esp chemical tagging
 
