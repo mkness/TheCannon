@@ -2,12 +2,13 @@
 % Copyright 2014 Melissa Ness and David W. Hogg.
 
 \documentclass[12pt, preprint]{aastex}
+\usepackage{bm}
 
 \input{vc}
 \newcommand{\sectionname}{Section}
 \newcommand{\documentname}{\textsl{Note}}
 
-\newcommand{\setof}[1]{\{#1\}}
+\newcommand{\set}[1]{\bm{#1}}
 \newcommand{\mean}[1]{\overline{#1}}
 \newcommand{\given}{\,|\,}
 \newcommand{\teff}{\mbox{$\rm T_{eff}$}}
@@ -80,11 +81,14 @@ is (for now) presumed to have negligible uncertainty.
 The general model is
 \begin{eqnarray}
 y_{n\ell} &=&
- Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell) + [s_\ell^2 + \sigma_{n\ell}^2]^{1/2}\,\xi_{n\ell}
-\label{eq:model}\quad ,
+ Y(\set{x}_n\given\set{\theta}_\ell) + [s_\ell^2 + \sigma_{n\ell}^2]^{1/2}\,\xi_{n\ell}
+\label{eq:model}\\
+\set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
+\quad,
 \end{eqnarray}
 where $Y()$ is some (possibly complicated) function of the full set
-of $K$ tags, $\theta_\ell$ is the set of parameters controlling the
+of $K$ tags, $\set{x}_n$ is a vector or blob of the $K$ tags for spectrum $n$,
+$\set{\theta}_\ell$ is the set of parameters controlling the
 function $Y()$ at wavelength $\lambda_\ell$, $s_\ell^2$ is an
 intrinsic variance for the model at wavelength $\lambda_\ell$, and
 $\xi_{n\ell}$ is a Gaussian random number with zero mean and unit
@@ -93,34 +97,40 @@ That is, we have assumed that the noise is Gaussian, zero mean, and
 independent for every measurement.
 This model leads to the single-pixel log-likelihood function
 \begin{eqnarray}
-\ln p(y_{n\ell}\given\theta_\ell,s_\ell^2) &=&
- -\frac{1}{2}\frac{[y_{n\ell} - Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell)]^2}{s_\ell^2 + \sigma_{n\ell}^2}
+\ln p(y_{n\ell}\given\set{\theta}_\ell,s_\ell^2) &=&
+ -\frac{1}{2}\frac{[y_{n\ell} - Y(\set{x}_n\given\set{\theta}_\ell)]^2}{s_\ell^2 + \sigma_{n\ell}^2}
  -\frac{1}{2}\ln(s_\ell^2 + \sigma_{n\ell}^2)
  -\frac{1}{2}\ln 2\pi
-\label{eq:like1}\quad.
+\label{eq:like1}\\
+\set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
+\quad.
 \end{eqnarray}
 Since all the spectra and pixels are treated as independent, each
 wavelength $\lambda_\ell$ can have its parameters
-$[\theta_\ell,s_\ell^2]$ inferred independently, and all the
+$[\set{\theta}_\ell,s_\ell^2]$ inferred independently, and all the
 individual-spectra log-likelihoods can be added together to make
 \begin{eqnarray}
-\ln p(\setof{y_{n\ell}}_{n=1}^N\given\theta_\ell,s_\ell^2) &=&
- \sum_{n=1}^N \ln p(y_{n\ell}\given\theta_\ell,s_\ell^2)
-\label{eq:like}\quad.
+\ln p(\set{y}_\ell\given\set{\theta}_\ell,s_\ell^2) &=&
+ \sum_{n=1}^N \ln p(y_{n\ell}\given\set{\theta}_\ell,s_\ell^2)
+\label{eq:like}\\
+\set{y}_\ell &\equiv& [y_{1\ell}, y_{2\ell}, \cdots, y_{N\ell}]
+\quad,
 \end{eqnarray}
-We can set the parameters $[\theta_\ell,s_\ell^2]$ either by
+where $\set{y}_\ell$ is the vector of spectral flux values for
+the $N$ objects all at wavelength $\lambda_\ell$.
+We can set the parameters $[\set{\theta}_\ell,s_\ell^2]$ either by
 optimizing the likelihood (\ref{eq:like}) or by applying priors and
 performing some kind of probabilistic inference (with, say, Markov
 Chain Monte Carlo techniques).
 Here we will optimize for now.
 
 In this \sectionname, we are treating the function parameters
-$\theta_\ell$ and the scatter $s_\ell^2$ as free parameters, and the
+$\set{\theta}_\ell$ and the scatter $s_\ell^2$ as free parameters, and the
 tags $x_{nk}$ as fixed.
 The likelihood function (\ref{eq:like}) is presented as being a
 function of these free parameters.
 In the next \sectionname, the tables will turn, and we will treat the
-function parameters $\theta_\ell$ and scatter $s_\ell^2$ as fixed and
+function parameters $\set{\theta}_\ell$ and scatter $s_\ell^2$ as fixed and
 the tags $x_{nk}$ as parameters.
 The difference is that here we are treating the training data as
 having perfectly known tags, and later we will be inferring tags for
@@ -129,12 +139,14 @@ new spectra.
 The simplest spectral model is that in which the functions $Y()$ are
 linear in the tags:
 \begin{eqnarray}
-Y(\setof{x_{nk}}_{k=1}^K\given\theta_\ell) &=& a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
+Y(\set{x}_n\given\set{\theta}_\ell) &=& a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
+\label{eq:linear}\\
+\set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
 \\
-\theta_\ell &\equiv& \setof{a_{\ell k}}_{k=0}^K
+\set{\theta}_\ell &\equiv& [a_{\ell 0}, a_{\ell 1}, \cdots, a_{\ell K}]
 \quad ,
 \end{eqnarray}
-where the $\setof{a_{\ell k}}_{k=0}^K$ are linear coefficients, and
+where the $a_{\ell k}$ are linear coefficients, and
 the $\mean{x_k}$ are offsets (possibly means of the training data) to
 keep the model ``pivoting'' around a reasonable point in tag space.
 
@@ -174,24 +186,29 @@ Just as in the previous \sectionname, our model is given in
 equation~(\ref{eq:model}).
 This model leads to the same likelihood function given in
 equations~(\ref{eq:like1}) and (\ref{eq:like}), but this time seen as
-being functions not of the function parameters $\theta_\ell$ and
+being functions not of the function parameters $\set{\theta}_\ell$ and
 scatter $s_\ell^2$ but instead as functions of the \emph{tags}
 $x_{mk}$:
 \begin{eqnarray}
-\ln p(y_{m\ell}\given\setof{x_{mk}}_{k=1}^K) &=&
- -\frac{1}{2}\frac{[y_{m\ell} - Y(\setof{x_{mk}}_{k=1}^K\given\theta_\ell)]^2}{s_\ell^2 + \sigma_{m\ell}^2}
+\ln p(y_{m\ell}\given\set{x}_m) &=&
+ -\frac{1}{2}\frac{[y_{m\ell} - Y(\set{x}_m\given\set{\theta}_\ell)]^2}{s_\ell^2 + \sigma_{m\ell}^2}
  -\frac{1}{2}\ln(s_\ell^2 + \sigma_{m\ell}^2)
  -\frac{1}{2}\ln 2\pi
 \\
-\ln p(\setof{y_{m\ell}}_{\ell=1}^L\given\setof{x_{mk}}_{k=1}^K) &=&
- \sum_{\ell=1}^L \ln p(y_{m\ell}\given\setof{x_{mk}}_{k=1}^K)
-\label{eq:taglike}\quad,
+\ln p(\set{y}_m\given\set{x}_m) &=&
+ \sum_{\ell=1}^L \ln p(y_{m\ell}\given\set{x}_m)
+\label{eq:taglike}\\
+\set{x}_m &\equiv& [x_{m1}, x_{m2}, \cdots, x_{mK}]
+\\
+\set{y}_m &\equiv& [y_{m1}, y_{m2}, \cdots, y_{mL}]
+\quad,
 \end{eqnarray}
 where the likelihood functions are given as a function of tags now,
-and the sum is now over the full set of $L$ wavelengths
-$\lambda_\ell$.
+the sum is now over the full set of $L$ wavelengths
+$\lambda_\ell$, and the vector $\set{y}_m$ is the vector of fluxes from
+spectrum $m$ for all $L$ wavelengths $\lambda_\ell$.
 These likelihood functions effectively assume that the function
-parameters $\theta_\ell$ and scatters $s_\ell^2$ are all known (from
+parameters $\set{\theta}_\ell$ and scatters $s_\ell^2$ are all known (from
 the training data).
 New tags $x_{mk}$ for object $m$ can be obtained either by maximizing
 the likelihood function (\ref{eq:taglike}), or else by applying priors
