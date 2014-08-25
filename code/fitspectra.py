@@ -1,16 +1,25 @@
-# this file is part of the IR analysis project
-# Copyright 2014 Melissa Ness
-# use this one, unless you copy it Aug 18 2014 
-# need to add a test that the wavelength range is the same - and if it isn't interpolate to the same range 
+"""
+This file is part of the IR analysis project.
+Copyright 2014 Melissa Ness.
 
-import pyfits 
+# to-do
+- need to add a test that the wavelength range is the same - and if it isn't interpolate to the same range 
+- format PEP8-ish (four-space tabs, for example)
+- take logg_cut as an input
+- extend to perform quadratic fitting
+"""
+
+from astropy.io import fits as pyfits 
+import scipy 
 import glob 
 import pickle
+import pylab 
 from scipy import interpolate 
 from scipy import ndimage 
 import numpy as np
+LARGE = 1e2 # sigma value to use for bad continuum-normalized data; MAGIC
 
-def weighted_median(values, weights,quantile):
+def weighted_median(values, weights, quantile):
     """
     """
     sindx = np.argsort(values)
@@ -19,9 +28,7 @@ def weighted_median(values, weights,quantile):
     indx = (sindx[cvalues > quantile])[0]
     return values[indx]
 
-
-#def get_continuum(dataall, delta_lambda=50):
-def get_continuum(dataall, delta_lambda=50):
+def continuum_normalize(dataall, delta_lambda=50):
     """
     ## inputs:
     dataall:       (Nlambda, Nstar, 3) wavelengths, flux densities, errors
@@ -30,10 +37,17 @@ def get_continuum(dataall, delta_lambda=50):
     ## output:
     continuum:     (Nlambda, Nstar) continuum level
 
+    ## comments:
+    * does a lot of stuff *other* than continuum normalization
+
     ## bugs:
     * for loops!
     """
     Nlambda, Nstar, foo = dataall.shape
+    # sanitize inputs
+    bad = np.where(np.isnan(dataall[:, :, 1]) + np.isinf(dataall[:, :, 1]) + (dataall[:, :, 2] <= 0.) + np.isnan(dataall[:, :, 2]) + np.isinf(dataall[:, :, 2]))
+    dataall[bad, 1] = 0.
+    dataall[bad, 2] = np.Inf
     continuum = np.zeros((Nlambda, Nstar))
     assert foo == 3
     for star in range(Nstar):
@@ -42,36 +56,74 @@ def get_continuum(dataall, delta_lambda=50):
             assert dataall[ll, star, 0] == lam
             indx = (np.where(abs(dataall[:, star, 0] - lam) < delta_lambda))[0]
             ivar = 1. / (dataall[indx, star, 2] ** 2)
-            ivar = array(ivar) 
-            bad = isinf(ivar)
-            ivar[bad] =1.
+            ivar = np.array(ivar)
             continuum[ll, star] = weighted_median(dataall[indx, star, 1], ivar, 0.90)
-    return continuum
+    # sanitize outputs
+    bad = np.where(continuum <= 0) 
+    continuum[bad] = 1.
+    dataall[:, :, 1] /= continuum
+    dataall[:, :, 2] /= continuum
+    dataall[bad, 1] = 0. 
+    dataall[bad, 2] = LARGE 
+    bad = np.where(dataall[:, :, 2] > LARGE) 
+    dataall[bad, 1] = 0. 
+    dataall[bad, 2] = LARGE 
+    return dataall 
 
-def get_data():
-  if glob.glob('normed_data.pickle'): # MOVE THIS WAY UP AND PICKLE metaall TOO
-    file_in2 = open('normed_data.pickle', 'r') 
-    dataall,metaall,predictors,count = pickle.load(file_in2)
+def get_normalized_test_data(testfile): 
+  """
+  ## inputs
+  the file in with the list of fits files want to test - if normed, move on, if not normed, norm it 
+  """
+  name = testfile.split('/')[-2]
+  if glob.glob(name+'.pickle'):
+    file_in2 = open(name+'.pickle', 'r') 
+    testdata = pickle.load(file_in2)
     file_in2.close()
-    return dataall, metaall, predictors, count
-  count = 0 
-  T_est,g_est,feh_est = np.loadtxt("starsin_test.txt", usecols = (4,6,8), unpack =1) 
-  T_est,g_est,feh_est = np.loadtxt("starsin_test2.txt", usecols = (4,6,8), unpack =1) 
-  T_est,g_est,feh_est = np.loadtxt("starsin_new_all_ordered.txt", usecols = (4,6,8), unpack =1) 
-  #T_est  = loadtxt("Temperature_Alonso.txt", usecols = (0,), unpack =1) 
-  thismeta = np.array([T_est, feh_est, g_est])
-  thismeta = [T_est, feh_est, g_est]
-  #a = open("starsin_new_all.txt", 'r')
-  #a = open("starsin_M53_N6819.txt", 'r')
-  a = open("starsin_test.txt", 'r')
-  a = open("starsin_test2.txt", 'r')
-  a = open("starsin_new_all_ordered.txt", 'r')
+    return testdata 
+
+  a = open(testfile, 'r')
+  al2 = a.readlines()
+  bl2 = []
+  for each in al2:
+    bl2.append(testdir+each.strip())
+  for jj,each in enumerate(bl2):
+      a = pyfits.open(each) 
+      ydata = a[1].data
+      ysigma = a[2].data
+      start_wl =  a[1].header['CRVAL1']
+      diff_wl = a[1].header['CDELT1']
+      if jj == 0:
+          nlam = len(a[1].data)
+          testdata = np.zeros((nlam, len(bl2), 3))
+      val = diff_wl*(nlam) + start_wl 
+      wl_full_log = np.arange(start_wl,val, diff_wl) 
+      wl_full = [10**aval for aval in wl_full_log]
+      xdata = wl_full
+      testdata[:, jj, 0] = xdata
+      testdata[:, jj, 1] = ydata
+      testdata[:, jj, 2] = ysigma
+  testdata = continuum_normalize(testdata) 
+  file_in = open(name+'.pickle', 'w')  
+  pickle.dump(testdata,  file_in)
+  file_in.close()
+  return testdata 
+
+def get_normalized_training_data():
+  if glob.glob('normed_data.pickle'): 
+        file_in2 = open('normed_data.pickle', 'r') 
+        dataall, metaall, labels = pickle.load(file_in2)
+        file_in2.close()
+        return dataall, metaall, labels
+  fn = "starsin_new_all_ordered.txt"
+  T_est,g_est,feh_est = np.loadtxt(fn, usecols = (4,6,8), unpack =1) 
+  labels = ["teff", "logg", "feh"]
+  a = open(fn, 'r') 
   al = a.readlines() 
   bl = []
   for each in al:
     bl.append(each.split()[0]) 
   for jj,each in enumerate(bl):
-    count = count+1
     each = each.strip('\n')
     a = pyfits.open(each) 
     b = pyfits.getheader(each) 
@@ -79,7 +131,7 @@ def get_data():
     diff_wl = a[1].header['CDELT1']
     print np.atleast_2d(a[1].data).shape
     if jj == 0:
-      nmeta = len(thismeta)
+      nmeta = len(labels)
       nlam = len(a[1].data)
     val = diff_wl*(nlam) + start_wl 
     wl_full_log = np.arange(start_wl,val, diff_wl) 
@@ -89,97 +141,72 @@ def get_data():
     assert len(ydata) == nlam
     wl_full = [10**aval for aval in wl_full_log]
     testdata = scipy.ndimage.gaussian_filter(ydata, 20 ) 
-    xdata= wl_full
-    xdata =np.array(xdata)
-    ydata =np.array(ydata)
-    ydata_err =np.array(ydata_err)
-    ydata_flag =np.array(ydata_err)
-    a1 = xdata
-    b1 = ydata
-    b2 = scipy.ndimage.gaussian_filter(b1,1) 
-    a1 = np.array(a1) 
-    b1 = np.array(b1) 
-    ynew = b2
-    y2new = b2
-    xgrid1 = a1 
+    xdata= np.array(wl_full)
+    ydata = np.array(ydata)
+    ydata_err = np.array(ydata_err)
     starname2 = each.split('.fits')[0]+'.txt'
     sigma = (np.atleast_2d(a[2].data))[0]# /y1
     if jj == 0:
-      npix = len(xgrid1) 
+      npix = len(xdata) 
       dataall = np.zeros((npix, len(bl), 3))
       metaall = np.ones((len(bl), nmeta))
     if jj > 0:
-      assert xgrid1[0] == dataall[0, 0, 0]
-    dataall[:, jj, 0] = xgrid1
-    dataall[:, jj, 1] = y2new
-    dataall[:, jj, 2] = sigma
+      assert xdata[0] == dataall[0, 0, 0]
 
-    bad = np.logical_or(np.isnan(sigma), np.isnan(y2new)) 
+    dataall[:, jj, 0] = xdata
+    dataall[:, jj, 1] = ydata
+    dataall[:, jj, 2] = sigma
+    bad = sigma <= 0.
     print "get_data(): fixing %d bad values" % np.sum(bad)
     dataall[bad, jj, 1] = 0.
-    dataall[bad, jj, 2] = np.Inf
-    bad = np.isinf(dataall[:, jj, 1])
-    ##bad = np.logical_or(np.isnan(dataall[:, jj, 2]), np.isnan(dataall[:, jj, 1])) 
-    #bad = np.logical_or(np.isnan(sigma), np.isnan(y2new)) 
-    #print "get_data(): fixing %d bad values" % np.sum(bad)
-    #dataall[bad, jj, 1] = 0.
-    #dataall[bad, jj, 2] = np.Inf
-    #bad = np.isinf(dataall[:, jj, 1])
-    #print "get_data(): fixing %d bad values" % np.sum(bad)
-    #dataall[bad, jj, 1] = 0.
-    #dataall[bad, jj, 2] = np.Inf
+    dataall[bad, jj, 2] = LARGE
+    bad = np.logical_or(np.isnan(sigma), np.isnan(ydata)) 
+    print "get_data(): fixing %d bad values" % np.sum(bad)
+    dataall[bad, jj, 1] = 0.
+    dataall[bad, jj, 2] = LARGE
+    bad = np.isinf(ydata)
+    print "get_data(): fixing %d bad values" % np.sum(bad)
+    dataall[bad, jj, 1] = 0.
+    dataall[bad, jj, 2] = LARGE
 
     for k in range(0,len(bl)): 
+        # must be synchronised with labels 
       metaall[k,0] = T_est[k] 
       metaall[k,1] = g_est[k] 
       metaall[k,2] = feh_est[k] 
-  predictors = np.hstack((np.ones((len(bl), 1)), metaall - np.mean(metaall, axis=0)[None, :]))
-  continuum = get_continuum(dataall)
-  dataall[:, :, 1] /= continuum
-  dataall[:, :, 2] /= continuum
- # bad = np.logical_or(np.isnan(sigma), np.isnan(y2new)) 
-  bad1 = np.isnan(dataall[:,:,1])
-  dataall[bad1,1] = 0.
-  bad2 = np.isnan(dataall[:,:,2])
-  dataall[bad2,2] = 1000000. #note if infinity falls over later 
-  #bad3 = dataall[:,:,1] == 0. 
-  #dataall[bad3,2] = 1000000. #note if infinity falls over later 
-  print "get_data(): fixing %d bad values" % np.sum(bad)
+  dataall = continuum_normalize(dataall)
+  offsets = np.mean(metaall, axis=0)
+  predictors = np.hstack((np.ones((len(metaall), 1)), metaall - offsets[None, :]))
 
   file_in = open('normed_data.pickle', 'w')  
-  pickle.dump((dataall,metaall, predictors, count),  file_in)
+  pickle.dump((dataall, metaall, labels),  file_in)
   file_in.close()
-  return dataall, metaall, predictors, count
+  return dataall, metaall, labels 
 
-#def do_one_regression_at_fixed_scatter(data, predictors, scatter=0):
 def do_one_regression_at_fixed_scatter(data, predictors, scatter):
-  """
-  ## inputs
-  - data [nobjs, 3] wavelengths, fluxes, invvars
-  - meta [nobjs, nmeta] Teff, Feh, etc, etc
-  - scatter
-  ## outputs
-  - chi-squared at best fit
-  - coefficients of the fit
-  - inverse covariance matrix for fit coefficients
-  """
-  nobj, nmeta = metaall.shape
-  assert data.shape == (nobj, 3)
-  # least square fit
-  Cinv = 1. / (data[:, 2] ** 2 +scatter**2)  # invvar slice of data
-  M = predictors
-  MTCinvM = np.dot(M.T, Cinv[:, None] * M) # craziness b/c Cinv isnt a matrix
-  x = data[:, 1] # intensity slice of data
-  MTCinvx = np.dot(M.T, Cinv * x)
-  coeff = np.linalg.solve(MTCinvM, MTCinvx)
-  # I removed this below - thought we should be checking for nan not assert isfinite
-  #assert np.all(np.isfinite(coeff)) 
-  #chisq = sum(Cinv * (x - dot(M, coeff)) ** 2)
-  #chiq_wl =Cinv * (x - dot(M, coeff)) ** 2
-  chi = np.sqrt(Cinv) * (x - np.dot(M, coeff)) 
-  logdet_Cinv = np.sum(np.log(Cinv)) 
-  # resid2 = sum( (x - dot(M, coeff)) ** 2)
-  return (coeff, MTCinvM, chi, logdet_Cinv )
+    """
+    ## inputs
+    - data [nobjs, 3] wavelengths, fluxes, invvars
+    - meta [nobjs, nmeta] Teff, Feh, etc, etc
+    - scatter
+    ## outputs
+    - chi-squared at best fit
+    - coefficients of the fit
+    - inverse covariance matrix for fit coefficients
+    """
+    nobj, nmeta = metaall.shape
+    assert data.shape == (nobj, 3)
+    # least square fit
+    Cinv = 1. / (data[:, 2] ** 2 +scatter**2)  # invvar slice of data
+    M = predictors
+    MTCinvM = np.dot(M.T, Cinv[:, None] * M) # craziness b/c Cinv isnt a matrix
+    x = data[:, 1] # intensity slice of data
+    MTCinvx = np.dot(M.T, Cinv * x)
+    coeff = np.linalg.solve(MTCinvM, MTCinvx)
+    assert np.all(np.isfinite(coeff)) 
+    chi = np.sqrt(Cinv) * (x - np.dot(M, coeff)) 
+    logdet_Cinv = np.sum(np.log(Cinv)) 
+    return (coeff, MTCinvM, chi, logdet_Cinv )
 
 def do_one_regression(data, metadata):
     """
@@ -194,7 +221,7 @@ def do_one_regression(data, metadata):
     if np.any(np.isnan(chis_eval)):
         s_best = np.exp(ln_s_values[-1])
         return do_one_regression_at_fixed_scatter(data, metadata, scatter = s_best) + (s_best, )
-    lowest = argmin(chis_eval)
+    lowest = np.argmin(chis_eval)
     if lowest == 0 or lowest == len(ln_s_values) + 1:
         s_best = np.exp(ln_s_values[lowest])
         return do_one_regression_at_fixed_scatter(data, metadata, scatter = s_best) + (s_best, )
@@ -208,24 +235,97 @@ def do_one_regression(data, metadata):
     return do_one_regression_at_fixed_scatter(data, metadata, scatter = s_best) + (s_best, )
 
 def do_regressions(dataall, predictors):
-  nlam, nobj, ndata = dataall.shape
-  nobj, npred = predictors.shape
-  predictorsall = np.zeros((nlam,nobj,npred))
-  predictorsall[:, :, :] = predictors[None, :, :]
-  return map(do_one_regression, dataall, predictorsall)
+    """
+    """
+    nlam, nobj, ndata = dataall.shape
+    nobj, npred = predictors.shape
+    predictorsall = np.zeros((nlam,nobj,npred))
+    predictorsall[:, :, :] = predictors[None, :, :]
+    return map(do_one_regression, dataall, predictorsall)
 
-def plot_one_fit(dataall, metaall, chisqs, coeffs, invcovs, index):
-  return None
+def read_and_train(dataall, metaall, order, fn, logg_cut=100., leave_out=None):
+    """
+    - `leave out` must be in the correct form to be an input to `np.delete`
+    """
+    good = (metaall[:, 1] < logg_cut)
+    dataall = dataall[:, good]
+    metaall = metaall[good]
 
-#covars = np.array([linalg.inv(cinv) for cinv in invcovs]) 
+    if leave_out is not None:
+        dataall = np.delete(dataall, leave_out, axis = 1) 
+        metaall = np.delete(metaall, leave_out, axis = 0) 
 
-dataall, metaall, predictors, count = get_data()
-blob = do_regressions(dataall, predictors)
-coeffs = np.array([b[0] for b in blob])
-invcovs = np.array([b[1] for b in blob])
-covs = np.array([np.linalg.inv(b[1]) for b in blob])
-chis = np.array([b[2] for b in blob])
-chisqs = np.array([np.dot(b[2],b[2]) - b[3] for b in blob]) # holy crap be careful
-scatters = np.array([b[4] for b in blob])
+    assert order == 1 # because we suck
+    if order == 1:
+        offsets = np.mean(metaall, axis=0)
+        predictors = np.hstack((np.ones((len(metaall), 1)), metaall - offsets[None, :]))
+
+    blob = do_regressions(dataall, predictors)
+    coeffs = np.array([b[0] for b in blob])
+    #invcovs = np.array([b[1] for b in blob])
+    covs = np.array([np.linalg.inv(b[1]) for b in blob])
+    #chis = np.array([b[2] for b in blob])
+    #chisqs = np.array([np.dot(b[2],b[2]) - b[3] for b in blob]) # holy crap be careful
+    scatters = np.array([b[4] for b in blob])
+
+    fd = open(fn, "w")
+    pickle.dump((dataall, metaall, labels, offsets, coeffs, covs, scatters), fd)
+    fd.close()
 
 
+def infer_tags(fn_pickle,testdata, weak_lower=-1,weak_upper=2):
+    """
+    best log g = weak_lower = 0.95, weak_upper = 0.98
+    best teff = weak_lower = 0.95, weak_upper = 0.99
+    best_feh = weak_lower = 0.935, weak_upper = 0.98 
+    this returns the parameters for a field of data  - and normalises if it is not already normalised 
+    this is slow because it reads a pickle file 
+    """
+    file_in = open(fn_pickle, 'r') 
+    dataall, metaall, labels, offsets, coeffs, covs, scatters = pickle.load(file_in)
+    file_in.close()
+    nstars = (testdata.shape)[1]
+    ntags = len(labels)
+    Params_all = np.zeros((nstars, ntags))
+    MCM_rotate_all = np.zeros((nstars, ntags, ntags))
+    for jj in range(0,nstars):
+      xdata = testdata[:,jj,0]
+      ydata = testdata[:,jj,1]
+      ysigma = testdata[:,jj,2]
+      coeffs_reshape = coeffs[:,-3:]
+      ydata_norm = ydata  - coeffs[:,0] 
+      coeffs_reshape = coeffs[:,-3:]
+      ind1 = np.logical_and(ydata > weak_lower , ydata < weak_upper)
+      Cinv = 1. / (ysigma ** 2 + scatters ** 2)
+      MCM_rotate = np.dot(coeffs_reshape[ind1].T, Cinv[:,None][ind1] * coeffs_reshape[ind1])
+      MCy_vals = np.dot(coeffs_reshape[ind1].T, Cinv[ind1] * ydata_norm[ind1]) 
+      Params = np.linalg.solve(MCM_rotate, MCy_vals)
+      Params = Params + offsets 
+      print Params
+      Params_all[jj,:] = Params 
+      MCM_rotate_all[jj,:,:] = MCM_rotate 
+    return Params_all , MCM_rotate_all
+
+if __name__ == "__main__":
+    dataall, metaall, labels = get_normalized_training_data()
+    read_and_train(dataall, metaall, 1,  "coeffs.pickle",logg_cut= 4.)
+    testfile = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/stars_list_all.txt"
+    testdataall = get_normalized_test_data(testfile)
+    testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall) 
+
+if False: 
+    params,icovs_params = return_test_params(testfile,scatters,coeffs)
+    covs_params = np.linalg.inv(icovs_params) 
+    params = array(params) 
+    tme = params[:,0]
+    gme = params[:,1]
+    fehme = params[:,2]
+    all_params = [ params[:,0], params[:,1], params[:,2], (covs_params**0.5)[:,0,0], (covs_params**0.5)[:,1,1], (covs_params**0.5)[:,2,2]] 
+    file_in = open('datain_self.pickle', 'w')  
+    pickle.dump((all_params), file_in) 
+    file_in.close()
+    # below, this reads in ASPCAP values for comparison for plotting 
+    testdir = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/"
+    file2 = '4332_data_all_more.txt'
+    file2in = testdir+file2
+    t,g,feh,feh_err = loadtxt(file2in, usecols = (1,3,5,6), unpack =1) 

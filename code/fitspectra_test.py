@@ -24,7 +24,6 @@ def get_continuum(dataall, delta_lambda=50):
     ## inputs:
     dataall:       (Nlambda, Nstar, 3) wavelengths, flux densities, errors
     delta_lambda:  half-width of meadian region in angstroms
-
     ## output:
     continuum:     (Nlambda, Nstar) continuum level
 
@@ -47,11 +46,11 @@ def get_continuum(dataall, delta_lambda=50):
     return continuum
 
 def get_data():
-  #if glob.glob('normed_data.pickle'): # MOVE THIS WAY UP AND PICKLE metaall TOO
-  #  file_in2 = open('normed_data.pickle', 'r') 
-  #  dataall,metaall,predictors,count = pickle.load(file_in2)
-  #  file_in2.close()
-  #  return dataall, metaall, predictors, count
+  if glob.glob('normed_data.pickle'): # MOVE THIS WAY UP AND PICKLE metaall TOO
+    file_in2 = open('normed_data.pickle', 'r') 
+    dataall,metaall,predictors,count = pickle.load(file_in2)
+    file_in2.close()
+    return dataall, metaall, predictors, count
   count = 0 
   T_est,g_est,feh_est = np.loadtxt("starsin_test.txt", usecols = (4,6,8), unpack =1) 
   T_est,g_est,feh_est = np.loadtxt("starsin_test2.txt", usecols = (4,6,8), unpack =1) 
@@ -143,9 +142,9 @@ def get_data():
   #dataall[bad, jj, 1] = 0.
   #dataall[bad, jj, 2] = np.Inf
 
-  #file_in = open('normed_data.pickle', 'w')  
-  #pickle.dump((dataall,metaall, predictors, count),  file_in)
-  #file_in.close()
+  file_in = open('normed_data.pickle', 'w')  
+  pickle.dump((dataall,metaall, predictors, count),  file_in)
+  file_in.close()
 
   #bad = np.where(continuum <= 0)
   #dataall[bad][:,1] = 0.

@@ -44,7 +44,7 @@ def readinspectra(filein1):
   return test_y
 
 # this is to return the parameters for all of the existing stars in the calibration   - this is not cross validation 
-def getpar_one(coeffs,scatters,metaall, starnumber): 
+def getpar_one(coeffs,scatters,metaall, starnumber,filename_in): 
   """
   return stellar parameters for a single or multiple input spectrum : this is not for cross validation this is just to see how it compares 
   inputs = all of the outputs from the fitspectra, the data, the coefficients, the scatters - going to be used to get params given a spectra 
@@ -70,8 +70,13 @@ def getpar_one(coeffs,scatters,metaall, starnumber):
   Params = linalg.solve(MCM_rotate, MCy_vals)
   Params = Params + [mean(metaall[:,0]) , mean(metaall[:,1]), mean(metaall[:,2])] # must be synchronized with fitspectra.py 
   print MCM_rotate, MCy_vals, Params 
+  fh = open(filename_in,'a')
+  savedata = [hstack((starnumber, Params)) ]
+  savetxt(fh, savedata, fmt = "%s") 
+  fh.close() 
   return Params,Cinv
 
-params_one,Cinv_Params = getpar_one(coeffs, scatters, metaall, 300) 
+filename_in = "test.txt"
+params_one,Cinv_Params = getpar_one(coeffs, scatters, metaall, 300,filename_in) 
   
 

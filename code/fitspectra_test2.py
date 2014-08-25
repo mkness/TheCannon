@@ -90,7 +90,6 @@ def get_data():
     ydata_flag = (np.atleast_2d(a[3].data))[0] 
     assert len(ydata) == nlam
     wl_full = [10**aval for aval in wl_full_log]
-    testdata = scipy.ndimage.gaussian_filter(ydata, 20 ) 
     xdata= wl_full
     xdata =np.array(xdata)
     ydata =np.array(ydata)
@@ -101,8 +100,7 @@ def get_data():
     b2 = scipy.ndimage.gaussian_filter(b1,1) 
     a1 = np.array(a1) 
     b1 = np.array(b1) 
-    ynew = b2
-    y2new = b2
+    y2new = b1
     xgrid1 = a1 
     starname2 = each.split('.fits')[0]+'.txt'
     sigma = (np.atleast_2d(a[2].data))[0]# /y1

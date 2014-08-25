@@ -74,7 +74,7 @@ ax3.set_ylim(min(fehme)-0.4, max(fehme)+0.4)
 fig.subplots_adjust(hspace=0.22)
 #fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/fits_all3.eps', transparent=True, bbox_inches='tight', pad_inches=0)
 #fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/fits_all3_continuumcut.eps', transparent=True, bbox_inches='tight', pad_inches=0.2)
-fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/fits_all3_continuumcut2.eps', transparent=True, bbox_inches='tight', pad_inches=0.2)
+#fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/fits_all3_continuumcut2.eps', transparent=True, bbox_inches='tight', pad_inches=0.2)
 #fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/fits_all3.eps', transparent=True, bbox_inches='tight', pad_inches=0.2)
 #fig.subplots_adjust(wspace=0.3)
 
