@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import numpy
+import pickle 
 from numpy import savetxt
 import matplotlib
 from matplotlib import pyplot
@@ -35,8 +36,12 @@ ymajorLocator   = MultipleLocator(50)
 xmajorLocator   = MultipleLocator(10)
 rcParams['figure.figsize'] = 12.0, 10.0
 
-wl1,wl2,wl3,wl4,wl5,wl6 = 15392, 15697, 15958.8, 16208.6, 16120.4, 16169.5 
 def plotdata(wl0, bw): 
+    file_in = "coeffs.pickle"
+    file_in2 = open(file_in, 'r') 
+    dataall, metall, labels, offsets, coeffs, covs, scatters = pickle.load(file_in2)
+    file_in2.close()
+
     rcParams['figure.figsize'] = 13.0, 10.0
     #x, median_y, t_y, g_y,feh_y,chi_y = loadtxt('data_test.txt', usecols = (0,1,2,3,4,5), unpack =1) 
     fig, temp = pyplot.subplots(3,1, sharex=True, sharey=False)
@@ -64,13 +69,13 @@ def plotdata(wl0, bw):
     legend(numpoints=1)
 
     #ax3.legend(numpoints=1)
-    ax1.set_ylim(0,median(scatters)*4.5) 
+    ax1.set_ylim(0,np.median(scatters)*4.5) 
     ax2.set_ylim(0.7,1.2) 
-    ax3.set_ylim(np.median(coeffs[:,2])-15.0*np.std(coeffs[:,2][coeffs[:,2] < 1000]) ,np.median(coeffs[:,2])+15.0*np.std(coeffs[:,2][coeffs[:,2] < 1000])) 
+    ax3.set_ylim(-0.3,0.3) 
     ax1.text(wl0-bw/2.+2., np.median(scatters)*3.5 , "scatter  " , fontsize = 12) 
     ax2.text(wl0-bw/2.+2., np.median(coeffs[:,0])*1.1, "mean spectra" , fontsize = 12) 
     ax2.text(wl0-bw/2.+2., np.median(coeffs[:,0])*1.1, "mean spectra" , fontsize = 12) 
-    ax3.text(wl0-bw/2.+2., np.median(coeffs[:,2])*25. , "[Fe/H]  coeff, log g coeff, Teff coeff*1000" , fontsize = 12) 
+    ax3.text(wl0-bw/2.+2., 0.2 , "[Fe/H]  coeff, log g coeff, Teff coeff * 1000 K" , fontsize = 12) 
     
     # attach lines to plots
     axlist = [ax1,ax2,ax3]
@@ -86,6 +91,16 @@ def plotdata(wl0, bw):
 
     fig.subplots_adjust(hspace=0)
     fig.subplots_adjust(wspace=0)
-    fig.savefig('/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example.eps', transparent=True, bbox_inches='tight', pad_inches=0)
+    prefix = "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example"
+    savefig(fig, prefix, transparent=False, bbox_inches='tight', pad_inches=0.5)
     return 
+
+def savefig(fig, prefix, **kwargs):
+    for suffix in (".eps", ".png"):
+        print "writing %s" % (prefix + suffix)
+        fig.savefig(prefix + suffix, **kwargs)
+
+if __name__ == "__main__": #args in command line 
+    wl1,wl2,wl3,wl4,wl5,wl6 = 15392, 15697, 15958.8, 16208.6, 16120.4, 16169.5 
+    plotdata(wl3,100) 
 

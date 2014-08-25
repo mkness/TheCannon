@@ -77,6 +77,6 @@ def getpar_one(coeffs,scatters,metaall, starnumber,filename_in):
   return Params,Cinv
 
 filename_in = "test.txt"
-params_one,Cinv_Params = getpar_one(coeffs, scatters, metaall, 300,filename_in) 
+params_one,Cinv_Params = getpar_one(coeffs, scatters, metaall, 3,filename_in) 
   
 
