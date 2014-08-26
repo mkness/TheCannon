@@ -209,12 +209,16 @@ def do_one_regression_at_fixed_scatter(data, features, scatter):
     - inverse covariance matrix for fit coefficients
     """
     # least square fit
-    Cinv = 1. / (data[:, 2] ** 2 +scatter**2)  # invvar slice of data
+    Cinv = 1. / (data[:, 2] ** 2 + scatter ** 2)  # invvar slice of data
     M = features
     MTCinvM = np.dot(M.T, Cinv[:, None] * M) # craziness b/c Cinv isnt a matrix
     x = data[:, 1] # intensity slice of data
     MTCinvx = np.dot(M.T, Cinv * x)
-    coeff = np.linalg.solve(MTCinvM, MTCinvx)
+    try:
+        coeff = np.linalg.solve(MTCinvM, MTCinvx)
+    except np.linalg.linalg.LinAlgError:
+        print MTCinvM, MTCinvx, data[:,0], data[:,1], data[:,2]
+        print features
     assert np.all(np.isfinite(coeff)) 
     chi = np.sqrt(Cinv) * (x - np.dot(M, coeff)) 
     logdet_Cinv = np.sum(np.log(Cinv)) 
@@ -255,8 +259,7 @@ def do_regressions(dataall, features):
     featuresall[:, :, :] = features[None, :, :]
     return map(do_one_regression, dataall, featuresall)
 
-def read_and_train(dataall, metaall, order, fn, logg_cut=100., teff_cut=0., leave_out=None):
-#def read_and_train(dataall, metaall, order, fn, logg_cut=100., teff_cut=0., leave_out=1):
+def train(dataall, metaall, order, fn, logg_cut=100., teff_cut=0., leave_out=None):
     """
     - `leave out` must be in the correct form to be an input to `np.delete`
     """
@@ -266,18 +269,15 @@ def read_and_train(dataall, metaall, order, fn, logg_cut=100., teff_cut=0., leav
     nstars, nmeta = metaall.shape
 
     if leave_out is not None: #
-        cv_ind = np.arange(395,469,1)
-        dataall = np.delete(dataall, [cv_ind], axis = 1) 
-        metaall = np.delete(metaall, [cv_ind], axis = 0) 
-  # here we remove one cluster at a time - this is a test to see if this works, then can make an index to use  
+        dataall = np.delete(dataall, [leave_out], axis = 1) 
+        metaall = np.delete(metaall, [leave_out], axis = 0) 
 
-    assert order == 1 # because we suck
     offsets = np.mean(metaall, axis=0)
-    features = np.ones(nstars, 1))
+    features = np.ones((nstars, 1))
     if order >= 1:
         features = np.hstack((features, metaall - offsets)) 
     if order >= 2:
-        newfeatures = np.array([np.outer(m, m) for m in metaall]).reshape(nstars, nmeta * nmeta)
+        newfeatures = np.array([np.outer(m, m)[np.triu_indices(nmeta)] for m in (metaall - offsets)])
         features = np.hstack((features, newfeatures))
 
     blob = do_regressions(dataall, features)
@@ -331,12 +331,23 @@ def infer_tags(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper):
     file_in.close()
     return Params_all , MCM_rotate_all
 
+def leave_one_cluster_out_xval(cluster_information):
+    dataall, metaall, labels = get_normalized_training_data()
+    for jj, cluster_indx in enumerate(clusters):
+        cluster_indx = something
+        pfn = "coeffs_%03d.pickle" % (jj)
+        # read_and_train(dataall, .., pfn, leave_out=cluster_indx)
+        # infer_tags(pfn, dataall[:, cluster_indx], ofn)
+        # plotting...
+
 if __name__ == "__main__":
     dataall, metaall, labels = get_normalized_training_data()
     fpickle = "coeffs.pickle" 
     if not glob.glob(fpickle):
-        #read_and_train(dataall, metaall, 1,  fpickle, logg_cut= 4.)
-        read_and_train(dataall, metaall, 1,  fpickle, logg_cut= 40.,teff_cut = 0.)# - did this before and makes pleaides out 
+        train(dataall, metaall, 1,  fpickle, logg_cut= 40.,teff_cut = 0.)
+    fpickle2 = "coeffs_2nd_order.pickle"
+    if not glob.glob(fpickle2):
+        train(dataall, metaall, 2,  fpickle2, logg_cut= 40.,teff_cut = 0.)
     testfile = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/stars_list_all.txt"
     self_flag = 1
     if self_flag != 1:

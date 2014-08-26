@@ -36,8 +36,7 @@ ymajorLocator   = MultipleLocator(50)
 xmajorLocator   = MultipleLocator(10)
 rcParams['figure.figsize'] = 12.0, 10.0
 
-def plotdata(wl0, bw): 
-    file_in = "coeffs.pickle"
+def plotdata(file_in, wl0, bw,prefix): 
     file_in2 = open(file_in, 'r') 
     dataall, metall, labels, offsets, coeffs, covs, scatters = pickle.load(file_in2)
     file_in2.close()
@@ -58,7 +57,7 @@ def plotdata(wl0, bw):
       ax.fill_between(wl, factor*(val+sig), factor*(val-sig), color = color, alpha = 0.2) 
 
       return None
-
+  
     _plot_something(ax1, dataall[:, 0, 0], scatters, 0., 'k')
     for ax, indx, color, label in [(ax2, 0, "k", ""),
                                    (ax3, 1, "g", "Teff"),
@@ -91,7 +90,6 @@ def plotdata(wl0, bw):
 
     fig.subplots_adjust(hspace=0)
     fig.subplots_adjust(wspace=0)
-    prefix = "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example"
     savefig(fig, prefix, transparent=False, bbox_inches='tight', pad_inches=0.5)
     return 
 
@@ -102,5 +100,6 @@ def savefig(fig, prefix, **kwargs):
 
 if __name__ == "__main__": #args in command line 
     wl1,wl2,wl3,wl4,wl5,wl6 = 15392, 15697, 15958.8, 16208.6, 16120.4, 16169.5 
-    plotdata(wl3,100) 
+    plotdata('coeff.pickle', wl3,100, "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example") 
+    plotdata('coeffs_2nd_order.pickle', wl3,100, "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example_2nd_order") 
 
