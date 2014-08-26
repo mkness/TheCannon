@@ -94,17 +94,6 @@ def continuum_normalize(dataall, delta_lambda=50):
         bad = np.where(dataall[:, jj, 2] > LARGE) 
         dataall[bad,jj, 1] = 1. 
         dataall[bad,jj, 2] = LARGE 
-
-    #    #BROKEN
-    #    bad = np.where(continuum[:, jj] <= 0) 
-    #    continuum[bad] = 1.
-    #    dataall[:, :, 1] /= continuum[:,jj]
-    #    dataall[:, :, 2] /= continuum[:,jj]
-    #    dataall[bad, 1] = 1. 
-    #    dataall[bad, 2] = LARGE 
-    #    bad = np.where(dataall[:, :, 2] > LARGE) 
-    #    dataall[bad, 1] = 1. 
-    #    dataall[bad, 2] = LARGE 
     return dataall 
 
 def get_normalized_test_data(testfile): 
@@ -114,11 +103,11 @@ def get_normalized_test_data(testfile):
   """
   name = testfile.split('/')[-2]
   testdir = testfile.split('stars')[0]
-  #if glob.glob(name+'.pickle'):
-  #    file_in2 = open(name+'.pickle', 'r') 
-  #    testdata = pickle.load(file_in2)
-  #    file_in2.close()
-  #    return testdata 
+  if glob.glob(name+'.pickle'):
+      file_in2 = open(name+'.pickle', 'r') 
+      testdata = pickle.load(file_in2)
+      file_in2.close()
+      return testdata 
 
   a = open(testfile, 'r')
   al2 = a.readlines()
@@ -267,17 +256,20 @@ def do_regressions(dataall, features):
     return map(do_one_regression, dataall, featuresall)
 
 def read_and_train(dataall, metaall, order, fn, logg_cut=100., teff_cut=0., leave_out=None):
+#def read_and_train(dataall, metaall, order, fn, logg_cut=100., teff_cut=0., leave_out=1):
     """
     - `leave out` must be in the correct form to be an input to `np.delete`
     """
-    #good = np.logical_and((metaall[:, 1] < logg_cut), (metaall[:,0] > teff_cut) ) 
-    dataall = dataall #[:, good]
-    metaall = metaall #[good]
+    good = np.logical_and((metaall[:, 1] < logg_cut), (metaall[:,0] > teff_cut) ) 
+    dataall = dataall[:, good]
+    metaall = metaall[good]
     nstars, nmeta = metaall.shape
 
-    if leave_out is not None:
-        dataall = np.delete(dataall, leave_out, axis = 1) 
-        metaall = np.delete(metaall, leave_out, axis = 0) 
+    if leave_out is not None: #
+        cv_ind = np.arange(395,469,1)
+        dataall = np.delete(dataall, [cv_ind], axis = 1) 
+        metaall = np.delete(metaall, [cv_ind], axis = 0) 
+  # here we remove one cluster at a time - this is a test to see if this works, then can make an index to use  
 
     assert order == 1 # because we suck
     offsets = np.mean(metaall, axis=0)
@@ -346,7 +338,7 @@ if __name__ == "__main__":
         #read_and_train(dataall, metaall, 1,  fpickle, logg_cut= 4.)
         read_and_train(dataall, metaall, 1,  fpickle, logg_cut= 40.,teff_cut = 0.)# - did this before and makes pleaides out 
     testfile = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/stars_list_all.txt"
-    self_flag = 0
+    self_flag = 1
     if self_flag != 1:
       field = "4332_"
       testdataall = get_normalized_test_data(testfile) # if flag is one, do on self 
