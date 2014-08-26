@@ -1,10 +1,13 @@
 """
 This file is part of the IR analysis project.
 Copyright 2014 Melissa Ness.
-# http://iopscience.iop.org/1538-3881/146/5/133/suppdata/aj485195t4_mrt.txt for calibration stars 
-# http://data.sdss3.org/irSpectrumDetail?locid=4330&commiss=0&apogeeid=2M17411636-2903150&show_aspcap=True object explorer 
-# http://data.sdss3.org/basicIRSpectra/searchStarA
-# http://data.sdss3.org/sas/dr10/apogee/spectro/redux/r3/s3/a3/ for the data files 
+
+# urls
+- http://iopscience.iop.org/1538-3881/146/5/133/suppdata/aj485195t4_mrt.txt for calibration stars 
+- http://data.sdss3.org/irSpectrumDetail?locid=4330&commiss=0&apogeeid=2M17411636-2903150&show_aspcap=True object explorer 
+- http://data.sdss3.org/basicIRSpectra/searchStarA
+- http://data.sdss3.org/sas/dr10/apogee/spectro/redux/r3/s3/a3/ for the data files 
+
 # to-do
 - need to add a test that the wavelength range is the same - and if it isn't interpolate to the same range 
 - format PEP8-ish (four-space tabs, for example)
@@ -199,15 +202,13 @@ def get_normalized_training_data():
       metaall[k,1] = g_est[k] 
       metaall[k,2] = feh_est[k] 
   dataall = continuum_normalize(dataall) #dataall
-  offsets = np.mean(metaall, axis=0)
-  predictors = np.hstack((np.ones((len(metaall), 1)), metaall - offsets[None, :]))
 
   file_in = open('normed_data.pickle', 'w')  
   pickle.dump((dataall, metaall, labels),  file_in)
   file_in.close()
   return dataall, metaall, labels 
 
-def do_one_regression_at_fixed_scatter(data, predictors, scatter):
+def do_one_regression_at_fixed_scatter(data, features, scatter):
     """
     ## inputs
     - data [nobjs, 3] wavelengths, fluxes, invvars
@@ -220,7 +221,7 @@ def do_one_regression_at_fixed_scatter(data, predictors, scatter):
     """
     # least square fit
     Cinv = 1. / (data[:, 2] ** 2 +scatter**2)  # invvar slice of data
-    M = predictors
+    M = features
     MTCinvM = np.dot(M.T, Cinv[:, None] * M) # craziness b/c Cinv isnt a matrix
     x = data[:, 1] # intensity slice of data
     MTCinvx = np.dot(M.T, Cinv * x)
@@ -256,34 +257,38 @@ def do_one_regression(data, metadata):
     s_best = np.exp(np.roots(fit_pder)[0])
     return do_one_regression_at_fixed_scatter(data, metadata, scatter = s_best) + (s_best, )
 
-def do_regressions(dataall, predictors):
+def do_regressions(dataall, features):
     """
     """
     nlam, nobj, ndata = dataall.shape
-    nobj, npred = predictors.shape
-    predictorsall = np.zeros((nlam,nobj,npred))
-    predictorsall[:, :, :] = predictors[None, :, :]
-    return map(do_one_regression, dataall, predictorsall)
+    nobj, npred = features.shape
+    featuresall = np.zeros((nlam,nobj,npred))
+    featuresall[:, :, :] = features[None, :, :]
+    return map(do_one_regression, dataall, featuresall)
 
 def read_and_train(dataall, metaall, order, fn, logg_cut=100., teff_cut=0., leave_out=None):
     """
     - `leave out` must be in the correct form to be an input to `np.delete`
     """
     #good = np.logical_and((metaall[:, 1] < logg_cut), (metaall[:,0] > teff_cut) ) 
-    dataall = dataall#[:, good]
-    metaall = metaall#[good]
+    dataall = dataall #[:, good]
+    metaall = metaall #[good]
+    nstars, nmeta = metaall.shape
 
     if leave_out is not None:
         dataall = np.delete(dataall, leave_out, axis = 1) 
         metaall = np.delete(metaall, leave_out, axis = 0) 
 
     assert order == 1 # because we suck
-    if order == 1:
-        offsets = np.mean(metaall, axis=0)
-        #predictors = np.hstack((np.ones((len(metaall), 1)), metaall - offsets[None, :]))
-        predictors = np.hstack((np.ones((len(metaall), 1)), metaall - offsets)) 
+    offsets = np.mean(metaall, axis=0)
+    features = np.ones(nstars, 1))
+    if order >= 1:
+        features = np.hstack((features, metaall - offsets)) 
+    if order >= 2:
+        newfeatures = np.array([np.outer(m, m) for m in metaall]).reshape(nstars, nmeta * nmeta)
+        features = np.hstack((features, newfeatures))
 
-    blob = do_regressions(dataall, predictors)
+    blob = do_regressions(dataall, features)
     coeffs = np.array([b[0] for b in blob])
     #invcovs = np.array([b[1] for b in blob])
     covs = np.array([np.linalg.inv(b[1]) for b in blob])
@@ -294,7 +299,6 @@ def read_and_train(dataall, metaall, order, fn, logg_cut=100., teff_cut=0., leav
     fd = open(fn, "w")
     pickle.dump((dataall, metaall, labels, offsets, coeffs, covs, scatters), fd)
     fd.close()
-
 
 def infer_tags(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper):
 #def infer_tags(fn_pickle,testdata, fout_pickle, weak_lower=0.935,weak_upper=0.98):
