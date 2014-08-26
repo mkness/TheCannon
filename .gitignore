@@ -10,3 +10,4 @@
 vc.tex
 *.synctex.gz
 *.pdf
+code/deprecated/*

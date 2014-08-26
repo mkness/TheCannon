@@ -44,9 +44,19 @@ def plotfits():
      
     filein2 = 'starsin_test2.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
     filein2 = 'starsin_new_all_ordered.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
+    cv_ind = np.arange(395,469,1)
+    a  = open(filein2)
+    al = a.readlines() 
+    bl = []
+    for each in al:
+        bl.append(each.strip())
+    bl = np.delete(bl, [cv_ind], axis = 0) 
+    savetxt("starsin_cut.txt", bl, fmt = "%s") 
+    filein3 = 'starsin_cut.txt'
     t,g,feh,t_err,feh_err = loadtxt(filein2, usecols = (4,6,8,16,17), unpack =1) 
     g_err = [0]*len(g) 
     g_err = array(g_err)
+    
     #g_cut, teff_cut = 40, 4000
     #vals_in = [t, g, feh, t_err, g_err, feh_err] 
     #cut = logical_and(g < g_cut, t > teff_cut) 
