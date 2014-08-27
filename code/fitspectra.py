@@ -324,8 +324,8 @@ def func(x1, x2, x3, x4, x5, x6, x7, x8, x9, a, b, c):
          + x9*c**2 )
     return f
 
+# thankyou stack overflow for the example below on how to use the optimse function  
 def nonlinear_invert(f, x1, x2, x3, x4, x5, x6, x7, x8, x9 ,sigmavals):
-    # "curve_fit" expects the function to take a slightly different form...
     def wrapped_func(observation_points, a, b, c):
         x1, x2, x3, x4, x5, x6, x7, x8, x9  = observation_points
         return func(x1, x2, x3, x4, x5, x6, x7, x8, x9,  a, b, c)
