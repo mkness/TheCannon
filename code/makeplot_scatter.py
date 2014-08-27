@@ -100,6 +100,6 @@ def savefig(fig, prefix, **kwargs):
 
 if __name__ == "__main__": #args in command line 
     wl1,wl2,wl3,wl4,wl5,wl6 = 15392, 15697, 15958.8, 16208.6, 16120.4, 16169.5 
-    plotdata('coeff.pickle', wl3,100, "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example") 
+    plotdata('coeffs.pickle', wl3,100, "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example") 
     plotdata('coeffs_2nd_order.pickle', wl3,100, "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/R1_example_2nd_order") 
 

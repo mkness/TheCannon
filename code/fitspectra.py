@@ -209,6 +209,7 @@ def do_one_regression_at_fixed_scatter(data, features, scatter):
     - inverse covariance matrix for fit coefficients
     """
     # least square fit
+    #pick = logical_and(data[:,1] < np.median(data[:,1]) + np.std(data[:,1])*3. , data[:,1] >  median(data[:,1]) - np.std(data[:,1])*3.)#5*std(data[:,1]) ) 
     Cinv = 1. / (data[:, 2] ** 2 + scatter ** 2)  # invvar slice of data
     M = features
     MTCinvM = np.dot(M.T, Cinv[:, None] * M) # craziness b/c Cinv isnt a matrix
@@ -216,6 +217,22 @@ def do_one_regression_at_fixed_scatter(data, features, scatter):
     MTCinvx = np.dot(M.T, Cinv * x)
     try:
         coeff = np.linalg.solve(MTCinvM, MTCinvx)
+        # this is a simple sigma clip just to test - should get rid of this at some point - doesn't make much difference in any case 
+        #yline = coeff[3]*features[:,3] + coeff[0]*features[:,0]
+        #yline2 = coeff[2]*features[:,2] + coeff[0]*features[:,0]
+        #yline3 = coeff[1]*features[:,1] + coeff[0]*features[:,0]
+        #pick1 = logical_and(data[:,1] < yline + 3.*std(data[:,1])+0.001, data[:,1] > yline - 3.*std(data[:,1])-0.001)
+        #pick2 = logical_and(data[:,1] < yline2 + 3.*std(data[:,1])+0.001, data[:,1] > yline2 - 3.*std(data[:,1])-0.001)
+        #pick3 = logical_and(data[:,1] < yline3 + 3.*std(data[:,1])+0.001, data[:,1] > yline3 - 3.*std(data[:,1])-0.001)
+        #pick = logical_and(logical_and(pick1, pick2), pick3) 
+        #data = data[pick]
+        #features = features[pick] 
+        #Cinv = 1. / (data[:, 2] ** 2 + scatter ** 2)  # invvar slice of data
+        #M = features
+        #MTCinvM = np.dot(M.T, Cinv[:, None] * M) # craziness b/c Cinv isnt a matrix
+        #x = data[:, 1] # intensity slice of data
+        #MTCinvx = np.dot(M.T, Cinv * x)
+        #coeff = np.linalg.solve(MTCinvM, MTCinvx)
     except np.linalg.linalg.LinAlgError:
         print MTCinvM, MTCinvx, data[:,0], data[:,1], data[:,2]
         print features
@@ -292,6 +309,68 @@ def train(dataall, metaall, order, fn, logg_cut=100., teff_cut=0., leave_out=Non
     pickle.dump((dataall, metaall, labels, offsets, coeffs, covs, scatters), fd)
     fd.close()
 
+## non linear stuff below ##
+# returns the non linear function 
+def func(x1, x2, x3, x4, x5, x6, x7, x8, x9, a, b, c):
+    f = (0 
+         + x1*a 
+         + x2*b 
+         + x3*c 
+         + x4* a**2# 
+         + x5 * a * b
+         + x6 * a * c 
+         + x7*b**2
+         + x8  * b * c 
+         + x9*c**2 )
+    return f
+
+# thankyou stack overflow for the example below on how to use the optimse function  
+def nonlinear_invert(f, x1, x2, x3, x4, x5, x6, x7, x8, x9 ,sigmavals):
+    def wrapped_func(observation_points, a, b, c):
+        x1, x2, x3, x4, x5, x6, x7, x8, x9  = observation_points
+        return func(x1, x2, x3, x4, x5, x6, x7, x8, x9,  a, b, c)
+
+    xdata = np.vstack([x1, x2, x3, x4, x5, x6, x7, x8, x9 ])
+    model, cov = opt.curve_fit(wrapped_func, xdata, f, sigma = sigmavals)
+    return model
+
+def infer_tags_nonlinear(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper):
+#def infer_tags(fn_pickle,testdata, fout_pickle, weak_lower=0.935,weak_upper=0.98):
+    """
+    best log g = weak_lower = 0.95, weak_upper = 0.98
+    best teff = weak_lower = 0.95, weak_upper = 0.99
+    best_feh = weak_lower = 0.935, weak_upper = 0.98 
+    this returns the parameters for a field of data  - and normalises if it is not already normalised 
+    this is slow because it reads a pickle file 
+    """
+    file_in = open(fn_pickle, 'r') 
+    dataall, metaall, labels, offsets, coeffs, covs, scatters = pickle.load(file_in)
+    file_in.close()
+    nstars = (testdata.shape)[1]
+    ntags = len(labels)
+    Params_all = np.zeros((nstars, ntags))
+    MCM_rotate_all = np.zeros((nstars, ntags, ntags))
+    for jj in range(0,nstars):
+      if np.any(testdata[:,jj,0] != dataall[:, 0, 0]):
+          print testdata[range(5),jj,0], dataall[range(5),0,0]
+          assert False
+      xdata = testdata[:,jj,0]
+      ydata = testdata[:,jj,1]
+      ysigma = testdata[:,jj,2]
+      ydata_norm = ydata  - coeffs[:,0] # subtract the mean 
+      f = ydata_norm 
+      t,g,feh = metaall[:,0], metaall[:,1], metaall[:,2]
+      a, b, c = t[300]-offsets[0], g[300]-offsets[0], feh[300]-offsets[0] 
+      x0,x1,x2,x3,x4,x5,x6,x7,x8,x9 = coeffs[:,0], coeffs[:,1], coeffs[:,2], coeffs[:,3], coeffs[:,4], coeffs[:,5], coeffs[:,6] ,coeffs[:,7], coeffs[:,8], coeffs[:,9] 
+      Params = nonlinear_invert(f, x1, x2, x3, x4, x5, x6, x7, x8, x9, ysigma ) + offsets 
+      print Params
+      Params_all[jj,:] = Params 
+      MCM_rotate_all[jj,:,:] = MCM_rotate 
+    file_in = open(fout_pickle, 'w')  
+    pickle.dump((Params_all, MCM_rotate_all),  file_in)
+    file_in.close()
+    return Params_all , MCM_rotate_all
+
 def infer_tags(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper):
 #def infer_tags(fn_pickle,testdata, fout_pickle, weak_lower=0.935,weak_upper=0.98):
     """
@@ -317,7 +396,8 @@ def infer_tags(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper):
       ysigma = testdata[:,jj,2]
       ydata_norm = ydata  - coeffs[:,0] # subtract the mean 
       coeffs_slice = coeffs[:,-3:]
-      ind1 = np.logical_and(ydata > weak_lower , ydata < weak_upper)
+      #ind1 = np.logical_and(logical_and(dataall[:,jj,0] > 16200., dataall[:,jj,0] < 16500.), np.logical_and(ydata > weak_lower , ydata < weak_upper)) 
+      ind1 =  np.logical_and(ydata > weak_lower , ydata < weak_upper)
       Cinv = 1. / (ysigma ** 2 + scatters ** 2)
       MCM_rotate = np.dot(coeffs_slice[ind1].T, Cinv[:,None][ind1] * coeffs_slice[ind1])
       MCy_vals = np.dot(coeffs_slice[ind1].T, Cinv[ind1] * ydata_norm[ind1]) 
@@ -349,8 +429,8 @@ if __name__ == "__main__":
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, logg_cut= 40.,teff_cut = 0.)
     testfile = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/stars_list_all.txt"
-    self_flag = 1
-    if self_flag != 1:
+    self_flag = 2
+    if self_flag < 1:
       field = "4332_"
       testdataall = get_normalized_test_data(testfile) # if flag is one, do on self 
       testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
@@ -359,7 +439,13 @@ if __name__ == "__main__":
       file_in = open('normed_data.pickle', 'r') 
       testdataall, metaall, labels = pickle.load(file_in)
       file_in.close() 
-      testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
+      testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.960,11.03) 
+    if self_flag == 2:
+      field = "self_2nd_order_"
+      file_in = open('normed_data.pickle', 'r') 
+      testdataall, metaall, labels = pickle.load(file_in)
+      file_in.close() 
+      testmetaall, inv_covars = infer_tags_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.950,10.99) 
     
     #def labels_on_apogee_data(fin,fsave):
         #fsave = "labels.pickle"
