@@ -139,7 +139,8 @@ new spectra.
 The simplest spectral model is that in which the functions $Y()$ are
 linear in the tags:
 \begin{eqnarray}
-Y(\set{x}_n\given\set{\theta}_\ell) &=& a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
+Y(\set{x}_n\given\set{\theta}_\ell) &=&
+ a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
 \label{eq:linear}\\
 \set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
 \\
@@ -149,7 +150,6 @@ Y(\set{x}_n\given\set{\theta}_\ell) &=& a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x
 where the $a_{\ell k}$ are linear coefficients, and
 the $\mean{x_k}$ are offsets (possibly means of the training data) to
 keep the model ``pivoting'' around a reasonable point in tag space.
-
 This linear-in-tags form (\ref{eq:linear}) has many useful and
 excellent properties.
 The first is that optimization of the model, at fixed scatter
@@ -178,7 +178,43 @@ we restrict to weak lines?..
 
 ...is this a good model?  No; how do we know?
 
-...Quadratic model ...interpretation of coefficients... Is it really better?
+The (perhaps) second-simplest spectral model is that in which the
+functions $Y()$ are quadratic in the tags:
+\begin{eqnarray}
+Y(\set{x}_n\given\set{\theta}_\ell) &=&
+ a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
+ + \sum_{k=1}^K \sum_{k'=k}^K a_{\ell kk'}\,[x_{nk} - \mean{x_k}]\,[x_{nk'} - \mean{x_{k'}}]
+\label{eq:quadratic}\\
+\set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
+\\
+\set{\theta}_\ell &\equiv& [a_{\ell 0}, a_{\ell 1}, \cdots, a_{\ell K},
+                            a_{\ell 11}, a_{\ell 12}, \cdots, a_{\ell KK}]
+\quad ,
+\end{eqnarray}
+where the $a_{\ell k}$ and $a_{\ell kk'}$ are linear coefficients, and
+the $\mean{x_k}$ are offsets (possibly means of the training data) to
+keep the model ``pivoting'' around a reasonable point in tag space.
+This quadratic-in-tags form (\ref{eq:quadratic}) is similar to and
+different from the linear-in-tags form (\ref{eq:linear}) in a number
+of ways.
+It is still the case that optimization of the model, at fixed scatter
+$s_\ell^2$ is a pure linear-algebra operation (weighted least
+squares).
+However, tag inference (described in the next Section) on the test
+data will no longer be simple; it will now require non-linear
+optimization.
+The coefficients $a_{\ell 0}$ can still be seen as an estimate of the
+\emph{mean spectrum} (provided that the offsets $\mean{x_k}$ are the
+mean tag values); the first-order coefficients $a_{\ell k}$ can still
+be seen as first derivatives of the expected spectrum with respect to
+each of the $k$ tags, but now evaluated at the mean spectrum; the
+second-order coefficients $a_{\ell kk'}$ can now be seen as mean
+second derivatives of the expected spectrum with respect to pairs of
+tags $k$ and $k'$.
+
+The results for the quadratic-in-tags model (\ref{eq:linear}) are shown
+in Figures~XXX through YYY.  They show... departures from
+linearity... outliers... is it really a better model?..
 
 \section{Parameter estimation}
 
