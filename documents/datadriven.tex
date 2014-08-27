@@ -150,13 +150,35 @@ where the $a_{\ell k}$ are linear coefficients, and
 the $\mean{x_k}$ are offsets (possibly means of the training data) to
 keep the model ``pivoting'' around a reasonable point in tag space.
 
-...interpretation of the coefficients as mean spectrum and derivatives.
+This linear-in-tags form (\ref{eq:linear}) has many useful and
+excellent properties.
+The first is that optimization of the model, at fixed scatter
+$s_\ell^2$ is a pure linear-algebra operation (weighted least
+squares); simultaneous optimization of all the parameters
+$[\set{\theta}_\ell,s_\ell^2]$ is only nonlinear in the $s_\ell^2$
+parameter.
+The second is that the tag inference (label transfer; described in the
+next Section) on the test data will have a very simple form.
+The third is that the coefficients $a_{\ell 0}$, seen as a discrete
+function of wavelength $\lambda_\ell$, can be seen as an estimate of
+the \emph{mean spectrum} (provided that the offsets $\mean{x_k}$ are
+the mean tag values over the $N$ training spectra); and the
+coefficients $a_{\ell k}$ can be seen as the mean first derivatives of
+the expected spectrum with respect to each of the $k$ tags, estimated
+over the range of the training data.
 
-...implementation and outputs, figures.
+The results for the linear-in-tags model (\ref{eq:linear}) are shown
+in Figures~XXX through YYY.  They show... departures from
+linearity... outliers...
+
+...what are we doing about outliers?  If anything?  Perhaps in discussion too...
+
+...Of course weak lines might be closer to linear... what happens when
+we restrict to weak lines?..
 
 ...is this a good model?  No; how do we know?
 
-...Quadratic model...
+...Quadratic model ...interpretation of coefficients... Is it really better?
 
 \section{Parameter estimation}
 
@@ -214,6 +236,22 @@ New tags $x_{mk}$ for object $m$ can be obtained either by maximizing
 the likelihood function (\ref{eq:taglike}), or else by applying priors
 and performing probabilistic inference.
 Here we will optimize for now.
+
+When we use the simple linear-in-tags form (\ref{eq:linear}) for the
+mean model $Y()$, the optimization to obtain maximum-likelihood tags
+(given parameters $[\set{\theta}_\ell, s_\ell^2]$) is simple linear
+least-square fitting.
+This optimization is obtained by straightforward linear algebra on the
+spectral pixels $y_{m\ell}$, and standard frequentist confidence
+intervals can be obtained similarly.
+Results for the linear-in-tags model are shown in Figures~XXX through
+YYY.
+
+When we use the quadratic-in-tags form (\ref{eq:quadratic}) for the
+mean model $Y()$, there is no simple linear-algebra operation that
+optimizes the likelihood.
+
+
 
 ...why is linear so much easier than quadratic or GP?  Methodological details
 
