@@ -22,6 +22,7 @@ import pickle
 import pylab 
 from scipy import interpolate 
 from scipy import ndimage 
+from scipy import optimize as opt
 import numpy as np
 LARGE = 1e2 # sigma value to use for bad continuum-normalized data; MAGIC
 
@@ -349,7 +350,7 @@ def infer_tags_nonlinear(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper)
     nstars = (testdata.shape)[1]
     ntags = len(labels)
     Params_all = np.zeros((nstars, ntags))
-    MCM_rotate_all = np.zeros((nstars, ntags, ntags))
+    MCM_rotate_all = np.zeros((nstars, 9., 9.))
     for jj in range(0,nstars):
       if np.any(testdata[:,jj,0] != dataall[:, 0, 0]):
           print testdata[range(5),jj,0], dataall[range(5),0,0]
@@ -360,10 +361,12 @@ def infer_tags_nonlinear(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper)
       ydata_norm = ydata  - coeffs[:,0] # subtract the mean 
       f = ydata_norm 
       t,g,feh = metaall[:,0], metaall[:,1], metaall[:,2]
-      a, b, c = t[300]-offsets[0], g[300]-offsets[0], feh[300]-offsets[0] 
+      a, b, c = t[300], g[300], feh[300]  #random start guess 
       x0,x1,x2,x3,x4,x5,x6,x7,x8,x9 = coeffs[:,0], coeffs[:,1], coeffs[:,2], coeffs[:,3], coeffs[:,4], coeffs[:,5], coeffs[:,6] ,coeffs[:,7], coeffs[:,8], coeffs[:,9] 
       Params = nonlinear_invert(f, x1, x2, x3, x4, x5, x6, x7, x8, x9, ysigma ) + offsets 
-      print Params
+      Cinv = 1. / (ysigma ** 2 + scatters ** 2)
+      coeffs_slice = coeffs[:,-9:]
+      MCM_rotate = np.dot(coeffs_slice.T, Cinv[:,None] * coeffs_slice)
       Params_all[jj,:] = Params 
       MCM_rotate_all[jj,:,:] = MCM_rotate 
     file_in = open(fout_pickle, 'w')  
