@@ -414,6 +414,125 @@ def infer_tags(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper):
     file_in.close()
     return Params_all , MCM_rotate_all
 
+
+def lookatfits(fn_pickle, pixelvalues,testdataall): 
+  #  """"
+  #  this is to plot the individual pixel fits  on the 6x6 panel 
+  #  """"
+    file_in = open(fn_pickle, 'r') 
+    testdataall, metaall, labels, offsets, coeffs, covs, scatters = pickle.load(file_in)
+    file_in.close()
+    axis_t, axis_g, axis_feh = metaall[:,0], metaall[:,1], metaall[:,2]
+    nstars = (testdataall.shape)[1]
+    offsets = np.mean(metaall, axis=0)
+    features = np.ones((nstars, 1))
+    features = np.hstack((features, metaall - offsets)) 
+    features2 = np.hstack((features, metaall )) 
+    for each in pixelvalues:
+        flux_val_abs = testdataall[each,:,1]
+        flux_val_norm = testdataall[each,:,1] - np.dot(coeffs, features.T)[each,:] 
+        coeff = coeffs[each,:] 
+        y_feh_abs = coeff[3]*features[:,3] + coeff[0]*features[:,0]
+        y_feh_norm = coeff[3]*features[:,3] + coeff[0]*features[:,0]  -(coeff[3]*features2[:,3] + coeff[0]*features2[:,0]) 
+        y_g_abs = coeff[2]*features[:,2] + coeff[0]*features[:,0]
+        y_g_norm = coeff[2]*features[:,2] + coeff[0]*features[:,0]  - (coeff[2]*features2[:,2] + coeff[0]*features2[:,0]) 
+        y_t_abs = coeff[1]*features[:,1] + coeff[0]*features[:,0] 
+        y_t_norm = coeff[1]*features[:,1] + coeff[0]*features[:,0] - (coeff[1]*features2[:,1] + coeff[0]*features2[:,0]) 
+        for flux_val, y_feh, y_g, y_t, namesave,lab,ylims in zip([flux_val_abs, flux_val_norm], [y_feh_abs,y_feh_norm],[y_g_abs, y_g_norm], [y_t_abs,y_t_norm],['abs','norm'], ['flux','flux - mean'],
+                [[-0.2,1.2], [-1,1]] ): 
+            y_meandiff = coeff[0] - flux_val 
+            fig = plt.figure(figsize = [12.0, 12.0])
+            #
+            ax = plt.subplot(3,2,1)
+            pick = testdataall[each,:,2] > 0.1
+            ax.plot(metaall[:,2], flux_val, 'o',alpha =0.5,mfc = 'None', mec = 'r') 
+            ax.plot(metaall[:,2][pick], flux_val[pick], 'kx',markersize = 10) 
+            ax.plot(metaall[:,2], y_feh, 'k') 
+            ind1 = argsort(metaall[:,2]) 
+            ax.fill_between(sort(metaall[:,2]), array(y_feh + std(flux_val))[ind1], array(y_feh - std(flux_val))[ind1] , color = 'y', alpha = 0.2)
+            ax.set_xlabel("[Fe/H]", fontsize = 14 ) 
+            ax.set_ylabel(lab, fontsize = 14 ) 
+            ax.set_title(str(np.int((testdataall[each,0,0])))+"  $\AA$")
+            ax.set_ylim(ylims[0], ylims[1]) 
+            #
+            ax = plt.subplot(3,2,2)
+            ax.plot(metaall[:,1], flux_val, 'o', alpha =0.5, mfc = 'None', mec = 'b') 
+            ax.plot(metaall[:,1][pick], flux_val[pick], 'kx',markersize = 10)  
+            ax.plot(metaall[:,1], y_g, 'k') 
+            ind1 = argsort(metaall[:,1]) 
+            ax.fill_between(sort(metaall[:,1]), array(y_g + std(flux_val))[ind1], array(y_g - std(flux_val))[ind1] , color = 'y', alpha = 0.2)
+            ax.set_xlabel("log g", fontsize = 14 ) 
+            ax.set_ylabel(lab, fontsize = 14 ) 
+            ax.set_title(str(np.int((testdataall[each,0,0])))+"  $\AA$")
+            ax.set_ylim(ylims[0], ylims[1]) 
+            #
+            ax = plt.subplot(3,2,3)
+            ax.plot(metaall[:,0], flux_val, 'o',alpha =0.5, mfc = 'None', mec = 'green') 
+            ax.plot(metaall[:,0][pick], flux_val[pick], 'kx', markersize = 10) 
+            ax.plot(metaall[:,0], y_t, 'k') 
+            ind1 = argsort(metaall[:,0]) 
+            ax.fill_between(sort(metaall[:,0]), array(y_t + std(flux_val))[ind1], array(y_t - std(flux_val))[ind1] , color = 'y', alpha = 0.2)
+            ax.set_xlabel("Teff", fontsize = 14 ) 
+            ax.set_ylabel(lab, fontsize = 14 ) 
+            ax.set_ylim(ylims[0], ylims[1]) 
+            #
+            ax = plt.subplot(3,2,4)
+            diff_flux = coeffs[each,0] - testdataall[each,:,1] 
+            xrange1 = arange(0,shape(testdataall)[1],1) 
+            ind1 = argsort(metaall[:,2]) 
+            ind1_pick = argsort(metaall[:,2][pick]) 
+            ax.plot(xrange1, (coeffs[each,0] - testdataall[each,:,1])[ind1], 'o',alpha = 0.5, mfc = 'None', mec = 'grey') 
+            ax.plot(xrange1[pick], (coeffs[each,0] - testdataall[each,:,1][pick])[ind1_pick], 'kx',markersize = 10) 
+            ax.fill_between(xrange1, array(mean(diff_flux) + std(diff_flux)), array(mean(diff_flux) - std(diff_flux))  , color = 'y', alpha = 0.2)
+            ax.set_xlabel("Star Number (increasing [Fe/H])", fontsize = 14 ) 
+            ax.set_ylabel("flux star - mean flux", fontsize = 14 ) 
+            ax.set_ylim(-1.0, 1.0) 
+            #
+            ax = plt.subplot(3,2,5)
+            for indx, color, label in [
+                                       ( 1, "g", "Teff"),
+                                       ( 2, "b", "logg"),
+                                       ( 3, "r", "FeH")]:
+              _plot_something(ax, testdataall[:, 0, 0][each-10:each+10], coeffs[:, indx][each-10:each+10], covs[:, indx, indx][each-10:each+10], color, label=label)
+            ax.axvline(testdataall[:,0,0][each],color = 'grey') 
+            ax.axhline(0,color = 'grey',linestyle = 'dashed') 
+            ax.set_xlim(testdataall[:,0,0][each-9], testdataall[:,0,0][each+9]) 
+            ax.legend(loc = 4,fontsize  = 10) 
+            ax.set_xlabel("Wavelength $\AA$", fontsize = 14 ) 
+            ax.set_ylabel("coeffs T,g,FeH", fontsize = 14 ) 
+            #
+            ax = plt.subplot(3,2,6)
+            _plot_something(ax, testdataall[:, 0, 0][each-10:each+10], coeffs[:, 0][each-10:each+10], covs[:, 0, 0][each-10:each+10], 'k', label='mean')
+            ax.set_ylim(0.6,1.1) 
+            ax.set_xlim(testdataall[:,0,0][each-9], testdataall[:,0,0][each+9]) 
+            ax.legend(loc = 4,fontsize  = 10) 
+            ax.axvline(testdataall[:,0,0][each],color = 'grey') 
+            ax.axhline(0,color = 'grey',linestyle = 'dashed') 
+            ax.set_xlabel("Wavelength $\AA$", fontsize = 14 ) 
+            ax.set_ylabel("Mean flux", fontsize = 14 ) 
+
+            savefig(fig, str(each)+"_"+str(namesave) , transparent=False, bbox_inches='tight', pad_inches=0.5)
+            fig.clf()
+       # return 
+
+def _plot_something(ax, wl, val, var, color, lw=2, label=""):
+    factor = 1.
+    if label == "Teff": factor = 1000. # yes, I feel dirty; MAGIC
+    sig = np.sqrt(var)
+    ax.plot(wl, factor*(val+sig), color=color, lw=lw, label=label)
+    ax.plot(wl, factor*(val-sig), color=color, lw=lw) 
+    ax.fill_between(wl, factor*(val+sig), factor*(val-sig), color = color, alpha = 0.2) 
+    return None
+  
+    
+
+def savefig(fig, prefix, **kwargs):
+ #   for suffix in (".png"):
+    suffix = ".png"
+    print "writing %s" % (prefix + suffix)
+    fig.savefig(prefix + suffix)#, **kwargs)
+    close() 
+
 def leave_one_cluster_out_xval(cluster_information):
     dataall, metaall, labels = get_normalized_training_data()
     for jj, cluster_indx in enumerate(clusters):
@@ -432,15 +551,17 @@ if __name__ == "__main__":
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, logg_cut= 40.,teff_cut = 0.)
     testfile = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/stars_list_all.txt"
-    self_flag = 2
+    self_flag = 0
     if self_flag < 1:
       field = "4332_"
       testdataall = get_normalized_test_data(testfile) # if flag is one, do on self 
-      testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
+      #testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
+      testmetaall, inv_covars = infer_tags_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
     if self_flag == 1:
       field = "self_"
       file_in = open('normed_data.pickle', 'r') 
       testdataall, metaall, labels = pickle.load(file_in)
+      lookatfits('coeffs.pickle',[1002,1193,1383,1496,2803,4000,4500, 5125],testdataall)
       file_in.close() 
       testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.960,11.03) 
     if self_flag == 2:
