@@ -21,7 +21,7 @@
 
 \begin{document}
 
-\title{Wavelength independent stellar parameter determination using data-driven models}
+\title{Wavelength-independent stellar parameter determination using data-driven models: The APOGEE example}
 \author{
   MKN,
   DWH,
@@ -35,9 +35,10 @@
 \begin{abstract}
 In A\&A format: shorten this. move parts to intro.
 
-Aims: We implement a generalised technique that is wavelength independent, to determine stellar parameters for large datasets. Our work motivates the importance of having a ``gold standard'' set of stars studied at high resolution, to serve as training data set for stellar surveys. Established standard stars with labels including in [X/Fe], which can be re-observed as part of every new large survey and serve as the training set for the method, has important applications for homogenising all large surveys and chemical tagging, for which this approach is ideal. \\
-Methods: We use regression techniques to transfer labels from a training set of data to every new star observed within a given stellar survey. This method is directly transferable between surveys and wavelength regions and relies on a training set of spectra with well defined labels. These labels may include stellar parameters of \teff\, \logg\ and [Fe/H], [$\alpha$/Fe] and individual abundances [X/Fe]. Via this method we characterise how every pixel in a spectra contributes to defining the labels of a star and in doing this, we utilise all of the information within the stellar spectrum. \\
-Results:  Using the APOGEE dataset and a training set of globular and open clusters observed by APOGEE, we demonstrate that this approach is simple, fast and extremely successful. As we exploit every pixel in the spectra, the intrinsic errors in the method are small, which facilitates going to much lower SNR than current approaches. $< $quantify this$>$. As part of this proof of concept we include a catalogue of the 60K stars observed in APOGEE for DR10, including parameters for dwarf as well as giants, which have not been previously reported. \\
+Aims: We implement a generalised, wavelength independent technique to determine stellar parameters for large datasets, using data-driven models. Our work motivates the importance of having a ``gold standard'' set of stars studied at high resolution, to serve as training data set for stellar surveys. This method has has important applications for homogenising all large surveys and chemical tagging, for which this approach is ideal. \\ %Established standard stars with labels including in [X/Fe], which can be re-observed as part of every new large survey and serve as the training set for the method, has important applications for homogenising all large surveys and chemical tagging, for which this approach is ideal. \\
+%
+Methods: We use regression techniques to transfer labels from a training set of data to every new star observed, within a given stellar survey. This method is directly transferable between surveys and wavelength regions and relies on a training set of spectra with well defined labels. These labels may include stellar parameters of \teff\, \logg\ and [Fe/H], [$\alpha$/Fe] and individual abundances [X/Fe]. Via this method we characterise how every pixel in a spectra contributes to defining the labels of a star and in doing this, we utilise all of the information within the stellar spectra. \\
+Results:  Using the APOGEE dataset and a training set of globular and open clusters observed by APOGEE, we demonstrate that this approach is simple, fast and extremely successful in deriving stellar parameters for APOGEE data. As we exploit every pixel in the spectra, the intrinsic errors in the method are small, which facilitates going to much lower SNR than current approaches. $< $quantify this$>$. As part of this proof of concept we include a catalogue of \teff\, \logg\ and [Fe/H] for 60K stars observed in APOGEE for DR10, including parameters for dwarf as well as giants, which have not been previously reported. \\
 
 \end{abstract}
 
