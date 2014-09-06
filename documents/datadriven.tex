@@ -93,6 +93,8 @@ demonstrate that the normalization is good.
 
 meta-data on cluster stars; why do we believe it; table - just reference Meszaros 2013 for this or we are repeating information. 
 
+...We need a plot that shows \teff\ vs \logg\ colored by \feh\ for the training stars!
+
 \section{Spectral model}
 
 The model is that the observed, continuum-normalized spectrum, at each
@@ -340,7 +342,7 @@ optimizes the likelihood.
 ...Did it work and etc?  Weak lines, order, etc.
 
 ...Structure of the problem:
-We \emph{didn't} do the standard thing of ``just'' asking the fluxes to predict the tags.
+We \emph{didn't} do the standard machine-learning thing of ``just'' asking the fluxes to predict the tags.
 We asked the tags to predict the fluxes, and then once that worked, we found the tags that predict the fluxes for other stars.
 This structure permits us to respect the noise model (noisy, heteroskedastic fluxes).
 
@@ -356,10 +358,11 @@ Generalize to a GP at every wavelength.
 ...Limitations of the inference procedure at tagging time
 
 ...What would the fully probabilistic generalization look like?
-It would involve generating samples at training time.
-Then use all samples at tagging time.
-Produce also a sampling in the tags.
+It would involve generating samples of $[\set{\theta}_\ell, s_\ell^2]$ at each wavelength $\lambda_\ell$ at training time.
+Then using all these samples at tagging time.
+Produce also a sampling of tags $\set{x}_m$ for each object $m$.
 Would have the great advantage that we could use partially or noisily tagged objects in training!
+Would be equivalent to fitting everything simultaneously (that is, training and tagging at the same time).
 Would require priors on everything.
 
 ...Next-generation applications of these methods, esp chemical tagging
