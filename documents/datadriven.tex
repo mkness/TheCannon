@@ -335,6 +335,11 @@ optimizes the likelihood.
 
 ...Did it work and etc?  Weak lines, order, etc.
 
+...Structure of the problem:
+We \emph{didn't} do the standard thing of ``just'' asking the fluxes to predict the tags.
+We asked the tags to predict the fluxes, and then once that worked, we found the tags that predict the fluxes for other stars.
+This structure permits us to respect the noise model (noisy, heteroskedastic fluxes).
+
 ...Limitations of the training sample.  Mainly its smallness!
 
 ...Limitations of assuming the training sample has perfect tags.
@@ -346,7 +351,14 @@ Generalize to a GP at every wavelength.
 
 ...Limitations of the inference procedure at tagging time
 
-...Applications, esp chemical tagging
+...What would the fully probabilistic generalization look like?
+It would involve generating samples at training time.
+Then use all samples at tagging time.
+Produce also a sampling in the tags.
+Would have the great advantage that we could use partially or noisily tagged objects in training!
+Would require priors on everything.
+
+...Next-generation applications of these methods, esp chemical tagging
 
 \section{Draft Figures}
 
