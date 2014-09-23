@@ -36,6 +36,7 @@ def plotfits():
 
     filein2 = 'starsin_test2.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
     filein2 = 'starsin_new_all_ordered.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
+    filein2 = 'test4_selfg.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
     a = open(filein2) 
     al = a.readlines() 
     names = []
@@ -108,8 +109,8 @@ def plotfits():
     # attach lines to plots
     fig.subplots_adjust(hspace=0.22)
     #prefix = "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/fits_3_self_cut"
-    prefix = "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/test_self"
-    savefig(fig, prefix, transparent=False, bbox_inches='tight', pad_inches=0.5)
+#    prefix = "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/test_self"
+#    savefig(fig, prefix, transparent=False, bbox_inches='tight', pad_inches=0.5)
     return 
 
 def savefig(fig, prefix, **kwargs):

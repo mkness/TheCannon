@@ -23,6 +23,8 @@
 \newcommand{\feh}{\mbox{$\rm [Fe/H]$}}
 \newcommand{\logg}{\mbox{$\rm \log g$}}
 
+\usepackage{morefloats}
+
 \begin{document}
 
 \title{The Cannon: Wavelength-independent stellar parameter determination using data-driven models}
@@ -48,6 +50,8 @@ Results:  Using the APOGEE dataset and a training set of globular and open clust
 \end{abstract}
 
 \section{Introduction}
+
+There are now numerous large stellar surveys of the Milky Way, each of which is independently working to determine stellar parameters across different wavelength regions. Our aim is to provide a generalised tool - decentralised parameter determination, that can in principle put everything on the same scale. Demonstrated limitations of this example - missing calibrators across some of the range, e..g teff.
 
 Challenges of stellar parameter estimation.
 
@@ -473,5 +477,81 @@ Would require priors on everything.
 \caption{this is not a cross validation this is the results of the training set run back through the code. }
 \label{fig:cal_teff}
 \end{figure}
+
+\section{Leave one cluster out cross validation}
+
+\begin{figure}
+  \includegraphics[width=\hsize]{./plots/Pleiades_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/Pleiades_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N7789_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N6819_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N6791_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N5466_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N4147_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N2420_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N2158_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N188_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/M92_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N5466_out.png}
+    \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/M71_out.png}
+    \end{figure}
+    
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/M67_out.png}
+    \end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/M53_out.png}
+    \end{figure}
+\begin{figure}[h!]
+
+  \includegraphics[width=\hsize]{./plots/M5_out.png}
+    \end{figure}
+\begin{figure}
+  \includegraphics[width=\hsize]{./plots/M3_out.png}  
+  \end{figure}
+\begin{figure}
+
+  \includegraphics[width=\hsize]{./plots/M2_out.png}
+    \end{figure}
+\begin{figure}
+
+  \includegraphics[width=\hsize]{./plots/M15_out.png}
+    \end{figure}
+\begin{figure}
+
+  \includegraphics[scale=0.5]{./plots/M13_out.png}
+  \includegraphics[scale=0.5]{./plots/M107_out.png}
+   \end{figure}
+
+
+
+
+
+
 
 \end{document}
