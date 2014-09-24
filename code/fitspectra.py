@@ -564,8 +564,8 @@ def plot_leave_one_out(filein,cluster_out):
     file_in2.close()
     #filein2 = 'test14.txt' 
     #filein3 = 'ages.txt'
-    filein2 = 'test14.txt' 
-    filein3 = '../../calibration_apogeecontinuum/code/ages.txt'
+    filein2 = 'test4_selfg.txt' 
+    filein3 = '../../calibration_apogeecontinuum/code/ages_test_4selfg.txt'
     plot_markers = ['ko', 'yo', 'ro', 'bo', 'co','k*', 'y*', 'r*', 'b*', 'c*', 'ks', 'rs', 'bs', 'cs', 'rd', 'kd', 'bd', 'rd', 'mo', 'ms' ]
     # M92, M15, M53, N5466, N4147, M13, M2, M3, M5, M107, M71, N2158, N2420, Pleaides, N7789, M67, N6819 , N188, N6791 
     t,g,feh,t_err,feh_err = loadtxt(filein2, usecols = (4,6,8,16,17), unpack =1) 
@@ -583,8 +583,8 @@ def plot_leave_one_out(filein,cluster_out):
     diffT = array(diffT) 
     #pick =logical_and(names != cluster_name,  diffT < 600. ) 
     names = array(names) 
-    pick =  diffT < 600. # I need to implement this < 600 K 
-    pick2 =logical_and(names == cluster_out,  diffT < 600. ) 
+    pick =  diffT < 6000. # I need to implement this < 6000 K 
+    pick2 =logical_and(names == cluster_out,  diffT < 6000. ) 
 
     t_sel,g_sel,feh_sel,t_err_sel,g_err_sel,feh_err_sel = t[pick2], g[pick2], feh[pick2], t_err[pick2], g_err[pick2], feh_err[pick2] 
     t,g,feh,t_err,g_err,feh_err = t[pick], g[pick], feh[pick], t_err[pick], g_err[pick], feh_err[pick] 
