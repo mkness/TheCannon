@@ -1,12 +1,12 @@
 also minutes from HWR+DWH+MKN meeting of prevoius day 
 1) renamed APOGEE directory
 2) started to consolidate different working versions of the code on laptop and aida41157
-3) get plots to dwd for Monday 29 
+3) get plots to DWH for Monday 29 
 4) DWH to look at how to parameterise how each pixel depends on labels to find most sensitive regions
-5) mkn to write about training sample - I am still doing tests of this - need to justify any cuts made here and also explain only as good as training data 
+5) MKN to write about training sample - I am still doing tests of this - need to justify any cuts made here and also explain only as good as training data 
 6) Can exclude stars in training sample only on a physical basis. i.e. throw out the stars with log g < 0  - need to try this and run through 
-7) I need to look at the spectra of the stars at bad places on the isochrone too - important. 
-8) I need to look at where binaries are in this too 
-9) I need to do a field audit - throw away bad fields for example where things like blue plume are coming in 
-10) adding DFM - will lead the upgrade to Gaussian process and generally do great things. 
+7) MKN need to look at the spectra of the stars at bad places on the isochrone too - important. 
+8) MKN need to look at where binaries are in this too 
+9) MKN need to do a field audit - throw away bad fields for example where things like blue plume are coming in 
+10) adding DFM - will lead the upgrade to Gaussian process and generally do great things. include on email thread 
 
