@@ -1,0 +1,164 @@
+\documentclass[12pt, preprint]{aastex}
+\usepackage{bm}
+
+\input{vc}
+\newcommand{\sectionname}{Section}
+\newcommand{\documentname}{\textsl{Note}}
+
+\newcommand{\set}[1]{\bm{#1}}
+\newcommand{\mean}[1]{\overline{#1}}
+\newcommand{\given}{\,|\,}
+\newcommand{\teff}{\mbox{$\rm T_{eff}$}}
+\newcommand{\feh}{\mbox{$\rm [Fe/H]$}}
+\newcommand{\logg}{\mbox{$\rm \log g$}}
+\usepackage{morefloats}
+\begin{document}
+
+
+\section{ACTION ITEMS}
+
+DWH\\
+1. Need to generalise the code for N labels\\
+2. Change the github repository from APOGEE to The Cannon\\
+3. Make individual pixel plots of the Teff, logg, [Fe/H] as a function of the flux - the other parameters so we are removing the other terms - details in notebook\\
+4. Do more of these plots for the linear case above\\
+4. the covariance should be coming out of the optimisers - done\\
+5. Change in the optimiser absolute$\_$sigma = True: not possible $/$ not an option with my version of the code\\
+6. Do cross validation test on take one cluster out, take one star out, including with age as a label\\
+
+HWR \\
+1. Need to introduce priors so as can convolve Likelihood (what we return) with the priors\\
+2. Need to plot teff-log g in density plane, demonstrate that the red clump is there.\\
+3. Make AMR plot for all but with calibration data on this figure\\
+4. add covariances into the error estimation - 3/4 dimensional gaussian sum mapping onto each axis - find the maths for this and apply to the covariance matrix.\\
+5. Need to plot where the binaries are on the Teff - log g plot - this is simple there is a flag for this.\\
+6. Need to understand why the stars are in imaginary parameter space - checked SNR it is not the SNR.\\
+7. There are 10 x as many giants as dwarfs. If x giants by a 0.1 weighting, does the rgb get worse but the main sequence remain the same - suspect this is so.\\
+
+JB \\
+1. Compare the RC and lower RGB to ASPCAP results to see if The Cannon gets this right.\\
+
+MKN \\
+1. Need to clean up the code  - currently have two versions fitspectra.py and fitspectra$\_$ages.py - adding more dimensions of inforamtion to these.
+- also currently make a cut of Tdiff < 600 to remove Pleiades stars with high reddening/dispersion from estimated temp. from ASPCAP - brittle way of going about things and has to be carried through
+when plotting self (input-output calibration stars) figures.\\
+2. Make Teff -log g plot of all with density\\
+3. Run through bulge fields with latest version (different normalistation)\\
+Take care of the normalisation - get 0.1 dex offset in [Fe/H] when use not flux continuum normalised APOGEE spectra as initial input (different normalisation procedure to training labels)\\
+4.Look at the spectra that is returned versus the best match - these look more different than I would imagine\\
+5. I want to take the training set of data off the ASPCAP scale: Use temperatures from the IR flux method, use the same [Fe/H] for all clusters, use log g from the isochrones\\
+6. Should I remove outliers in the self 1:1 plot?\\
+7. We need to add rotation in as a label (dwarfs) . Note ASPCAP DR12 dwarf results are not reliable. Note there is apparently offsets (hotter) temperatures by 100K for DR12 compared to DR10 and better\\
+agreement of APOGEE in matching the isochrones (I think our agreement is already good - look at this). JH says metallicity distribution of the field 4201 is slightly different in DR12 compared to DR10\\
+8. There are hotter dwarf calibrators (Diane and Jon working on these) : would be good to get these for calibration of hotter stars : these are in DR12. Also emailed Jennifer Johnson about this.\\
+
+CBJ
+Should not just use metadata - mean but use (metadata - mean)/std as this will put them on a comparable scale - had discussed this in the summer with HWR and DWH wrt making the plot of the\\
+coefficients\\
+\\
+AH
+Could use Kepler sample of stars with ages to make a training set to return ages for , for red clump only. This is a really good subproject.\\
+
+PAPER1 \\
+- Add priors so that stars fall on the isochrones\\
+- Express that this is simplest case\\
+- HWR will change nonclamenture to intutitive\\
+- Characterise a number for each pixel that describes how it changes with each parameter, that is normalised so on the same scale; these could be the coefficients, but HW suggested positive assertion:\\
+0 - no dependence , +ve , dependence, in this way characterise which regions have strongest dependence - would lose iformation about +ve or +ve slope though which is interesting. Why do some lines\\
+show negative slope with [Fe/H] and others positive for example? Is there any relation to other dimensions of information as a function of these ratios of slopes - age/chem tagging applications?\\
+
+paper 2 \\
+Katia Cunha - working with her to get individual abundance measurements and alpha elementes
+Ages - this is a very good region to explore. It will be possible to get age information in this way from the spectra.
+
+MM \\
+Has new age plots should look at these
+
+MF \\
+Has suggestions wrt the code and how to imporve this - should implement these (also download JEDI + plugins)
+
+DONE \\
+1. DIBS test done - taken out had no effect in the plane on the params\\
+but - if I take weaker lines for cool stars (continuum cut) get a better agreement with APOGEE results for field 4330 - need to examine this more closely - not sure which is correct\\
+2. ADDED AGE AS A LABEL - there is age information in the spectra\\
+3. Added chi2 result fit for all stars\\
+4. Fixed covs that now comes out of optimiser but absolute$\_$sigma = True not implentable in my version of python\\
+
+
+
+\section{Leave one cluster out cross validation}
+
+\begin{figure}
+  \includegraphics[width=\hsize]{./plots/cluster_legend.png}
+  \end{figure}
+\begin{figure}
+  \includegraphics[width=\hsize]{./plots/Pleiades_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N7789_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N6819_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N6791_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N5466_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N4147_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N2420_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N2158_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N188_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/M92_out.png}
+  \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/N5466_out.png}
+    \end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/M71_out.png}
+    \end{figure}
+    
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/M67_out.png}
+    \end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\hsize]{./plots/M53_out.png}
+    \end{figure}
+\begin{figure}[h!]
+
+  \includegraphics[width=\hsize]{./plots/M5_out.png}
+    \end{figure}
+\begin{figure}
+  \includegraphics[width=\hsize]{./plots/M3_out.png}  
+  \end{figure}
+\begin{figure}
+
+  \includegraphics[width=\hsize]{./plots/M2_out.png}
+    \end{figure}
+\begin{figure}
+
+  \includegraphics[width=\hsize]{./plots/M15_out.png}
+    \end{figure}
+\begin{figure}
+
+  \includegraphics[scale=0.5]{./plots/M13_out.png}
+     \end{figure}
+  \begin{figure}
+  \includegraphics[scale=0.5]{./plots/M107_out.png}
+   \end{figure}
+
+
+
+
+\end{document}
