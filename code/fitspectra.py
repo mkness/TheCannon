@@ -147,7 +147,8 @@ def get_normalized_training_data():
   fn = "starsin_test.txt"
   fn = "starsin_new_all_ordered.txt"
   fn = "test4_selfg.txt"
-  T_est,g_est,feh_est = np.loadtxt(fn, usecols = (4,6,8), unpack =1) 
+  fn = 'test14.txt' 
+  T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
   labels = ["teff", "logg", "feh"]
   a = open(fn, 'r') 
   al = a.readlines() 
@@ -180,6 +181,7 @@ def get_normalized_training_data():
       npix = len(xdata) 
       dataall = np.zeros((npix, len(bl), 3))
       metaall = np.ones((len(bl), nmeta))
+      Ametaall = np.ones((len(bl), nmeta))
     if jj > 0:
       assert xdata[0] == dataall[0, 0, 0]
 
@@ -192,10 +194,13 @@ def get_normalized_training_data():
       metaall[k,0] = T_est[k] 
       metaall[k,1] = g_est[k] 
       metaall[k,2] = feh_est[k] 
+      Ametaall[k,0] = T_A[k] 
+      Ametaall[k,1] = g_A[k] 
+      Ametaall[k,2] = feh_A[k] 
   dataall = continuum_normalize(dataall) #dataall
 
   file_in = open('normed_data.pickle', 'w')  
-  pickle.dump((dataall, metaall, labels),  file_in)
+  pickle.dump((dataall, metaall, labels,Ametaall),  file_in)
   file_in.close()
   return dataall, metaall, labels 
 
@@ -262,7 +267,7 @@ def do_regressions(dataall, features):
     featuresall[:, :, :] = features[None, :, :]
     return map(do_one_regression, dataall, featuresall)
 
-def train(dataall, metaall, order, fn, logg_cut=100., teff_cut=0., leave_out=None):
+def train(dataall, metaall, order, fn, Ametaall, logg_cut=100., teff_cut=0., leave_out=None):
     """
     - `leave out` must be in the correct form to be an input to `np.delete`
     """
@@ -564,6 +569,7 @@ def plot_leave_one_out(filein,cluster_out):
     file_in2.close()
     #filein2 = 'test14.txt' 
     #filein3 = 'ages.txt'
+    filein2 = 'test14.txt' 
     filein2 = 'test4_selfg.txt' 
     filein3 = '../../calibration_apogeecontinuum/code/ages_test_4selfg.txt'
     plot_markers = ['ko', 'yo', 'ro', 'bo', 'co','k*', 'y*', 'r*', 'b*', 'c*', 'ks', 'rs', 'bs', 'cs', 'rd', 'kd', 'bd', 'rd', 'mo', 'ms' ]
@@ -690,10 +696,12 @@ if __name__ == "__main__":
     dataall, metaall, labels = get_normalized_training_data()
     fpickle = "coeffs.pickle" 
     if not glob.glob(fpickle):
-        train(dataall, metaall, 1,  fpickle, logg_cut= 40.,teff_cut = 0.)
+        #train(dataall, metaall, 1,  fpickle, logg_cut= 40.,teff_cut = 0.)
+        train(dataall, metaall, 1,  fpickle, Ametaall,logg_cut= 40.,teff_cut = 0.)
     fpickle2 = "coeffs_2nd_order.pickle"
     if not glob.glob(fpickle2):
-        train(dataall, metaall, 2,  fpickle2, logg_cut= 40.,teff_cut = 0.)
+        #train(dataall, metaall, 2,  fpickle2, logg_cut= 40.,teff_cut = 0.)
+        train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
     testfile = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/stars_list_all.txt"
     self_flag = 2
     if self_flag < 1:

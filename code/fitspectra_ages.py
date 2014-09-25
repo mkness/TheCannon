@@ -158,12 +158,8 @@ def get_normalized_training_data():
         dataall, metaall, labels, Ametaall, cluster_name = pickle.load(file_in2)
         file_in2.close()
         return dataall, metaall, labels, Ametaall, cluster_name
-  fn = "starsin_test2.txt"
-  fn = "starsin_test.txt"
-  fn = "starsin_new_all_ordered.txt"
-  fn = "starsin_new_all_ordered.txt"
-  fn = "test4_selfg.txt"# this is where took a cut from Schlegel reddening < 0.15 and then forced a 1:1 correlation on the isochrone 
-  fn = "test14.txt" # this is where took Schlegel reddening but removed any with tdiff < 600 K 
+#  fn = "starsin_new_all_ordered.txt"
+  fn = 'starsin_SFD_Pleiades.txt'
   T_est,g_est,feh_est = np.loadtxt(fn, usecols = (4,6,8), unpack =1) 
   T_A,g_A,feh_A = np.loadtxt(fn, usecols = (3,5,7), unpack =1) # these are APOGEE values - interesting to compare e.g for Pleiades and if I get my own temperatures 
   age_est = np.loadtxt('ages.txt', usecols = (0,), unpack =1) 
