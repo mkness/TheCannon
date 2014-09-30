@@ -27,7 +27,24 @@ import numpy as np
 LARGE = 1e2 # sigma value to use for bad continuum-normalized data; MAGIC
 
 def weighted_median(values, weights, quantile):
-    """
+    """weighted_median
+
+    keywords
+    --------
+
+    values: ndarray
+        input values
+
+    weights: ndarray
+        weights to apply to each value in values
+
+    quantile: float
+        quantile selection
+
+    returns
+    -------
+    val: float
+        median value
     """
     sindx = np.argsort(values)
     cvalues = 1. * np.cumsum(weights[sindx])
@@ -39,25 +56,35 @@ def weighted_median(values, weights, quantile):
     return values[indx]
 
 def continuum_normalize(dataall, delta_lambda=50):
-    """
-    ## inputs:
-    dataall:       (Nlambda, Nstar, 3) wavelengths, flux densities, errors
-    delta_lambda:  half-width of meadian region in angstroms
+    """continuum_normalize
 
-    ## output:
-    continuum:     (Nlambda, Nstar) continuum level
+    keywords
+    --------
 
-    ## comments:
-    * does a lot of stuff *other* than continuum normalization
+    dataall: ndarray, shape=(Nlambda, Nstar, 3)
+        wavelengths, flux densities, errors
 
-    ## bugs:
-    * for loops!
+    delta_lambda:
+        half-width of median region in angstroms
+
+
+    returns
+    -------
+    continuum:     (Nlambda, Nstar)
+        continuum level
+
+    .. note::
+
+        * does a lot of stuff *other* than continuum normalization
+
+    .. todo::
+
+        * bugs: for loops!
     """
     Nlambda, Nstar, foo = dataall.shape
     continuum = np.zeros((Nlambda, Nstar))
     # sanitize inputs
     for jj in range(Nstar):
-    #    #BROKEN
         bad_a = np.logical_or(np.isnan(dataall[:, jj, 1]) ,np.isinf(dataall[:,jj, 1]))
         bad_b = np.logical_or(dataall[:, jj, 2] <= 0. , np.isnan(dataall[:, jj, 2]))
         bad = np.logical_or( np.logical_or(bad_a, bad_b) , np.isinf(dataall[:, jj, 2]))
@@ -78,13 +105,6 @@ def continuum_normalize(dataall, delta_lambda=50):
             ivar = 1. / (dataall[indx, star, 2] ** 2)
             ivar = np.array(ivar)
             continuum[ll, star] = weighted_median(dataall[indx, star, 1], ivar, 0.90)
-    # sanitize outputs
-    #dataall[:, :, 1] /= continuum
-    #dataall[:, :, 2] /= continuum
-    #bad1 = np.isnan(dataall[:,:,1])
-    #dataall[bad1,1] = 0.
-    #bad2 = np.isnan(dataall[:,:,2])
-    #dataall[bad2,2] = 1000000. #note if infinity falls over later 
     for jj in range(Nstar):
         bad = np.where(continuum[:,jj] <= 0) 
         continuum[bad,jj] = 1.
@@ -99,8 +119,17 @@ def continuum_normalize(dataall, delta_lambda=50):
 
 def get_normalized_test_data(testfile): 
   """
-  ## inputs
-  the file in with the list of fits files want to test - if normed, move on, if not normed, norm it 
+    inputs
+    ------
+    testfile: str
+        the file in with the list of fits files want to test - if normed, move on,
+        if not normed, norm it
+    also save a SNR file with list of SNR values if it is not present 
+
+    returns
+    -------
+    testdata:
+
   """
   name = testfile.split('/')[-2]
   testdir = testfile.split('stars')[0]
@@ -132,8 +161,6 @@ def get_normalized_test_data(testfile):
           nlam = len(a[1].data)
           testdata = np.zeros((nlam, len(bl2), 3))
     
-    #ydata = a[1].data
-    #ysigma = a[2].data
     start_wl =  a[1].header['CRVAL1']
     diff_wl = a[1].header['CDELT1']
     if jj == 0:
@@ -153,12 +180,24 @@ def get_normalized_test_data(testfile):
   return testdata 
 
 def get_normalized_training_data():
+  """
+    inputs
+    ------
+    testfile: str
+        the file in with the list of fits files  in the training data
+        if not normed, norm it
+    have brittle iputs of the test14 which is the training data labels from ASPCAP and the ages which is the ages made by me.Note the Pleiades is my trainng labels for Teff, log g 
+
+    returns
+    -------
+    dataall - the normalised test data 
+
+  """
   if glob.glob('normed_data.pickle'): 
         file_in2 = open('normed_data.pickle', 'r') 
         dataall, metaall, labels, Ametaall, cluster_name = pickle.load(file_in2)
         file_in2.close()
         return dataall, metaall, labels, Ametaall, cluster_name
-#  fn = "starsin_new_all_ordered.txt"
   fn = 'starsin_SFD_Pleiades.txt'
   T_est,g_est,feh_est = np.loadtxt(fn, usecols = (4,6,8), unpack =1) 
   T_A,g_A,feh_A = np.loadtxt(fn, usecols = (3,5,7), unpack =1) # these are APOGEE values - interesting to compare e.g for Pleiades and if I get my own temperatures 
@@ -206,7 +245,7 @@ def get_normalized_training_data():
     dataall[:, jj, 2] = sigma
 
     for k in range(0,len(bl)): 
-        # must be synchronised with labels 
+      # must be synchronised with labels 
       metaall[k,0] = T_est[k] 
       metaall[k,1] = g_est[k] 
       metaall[k,2] = feh_est[k] 
@@ -223,14 +262,31 @@ def get_normalized_training_data():
 
 def do_one_regression_at_fixed_scatter(data, features, scatter):
     """
-    ## inputs
-    - data [nobjs, 3] wavelengths, fluxes, invvars
-    - meta [nobjs, nmeta] Teff, Feh, etc, etc
-    - scatter
-    ## outputs
-    - chi-squared at best fit
-    - coefficients of the fit
-    - inverse covariance matrix for fit coefficients
+    Parameters
+    ----------
+    data: ndarray, [nobjs, 3]
+        wavelengths, fluxes, invvars
+
+    meta: ndarray, [nobjs, nmeta]
+        Teff, Feh, etc, etc
+
+    scatter:
+
+
+    Returns
+    -------
+    coeff: ndarray
+        coefficients of the fit
+
+    MTCinvM: ndarray
+        inverse covariance matrix for fit coefficients
+
+    chi: float
+        chi-squared at best fit
+
+    logdet_Cinv: float
+        inverse of the log determinant of the cov matrice
+        :math:`\sum(\log(Cinv))`
     """
     # least square fit
     #pick = logical_and(data[:,1] < np.median(data[:,1]) + np.std(data[:,1])*3. , data[:,1] >  median(data[:,1]) - np.std(data[:,1])*3.)#5*std(data[:,1]) ) 
@@ -250,9 +306,19 @@ def do_one_regression_at_fixed_scatter(data, features, scatter):
     return (coeff, MTCinvM, chi, logdet_Cinv )
 
 def do_one_regression(data, metadata):
-    """
-    blah blah blah.
-    # inputs:
+    """do_one_regression
+    This determines the scatter of the fit at a single wavelength for all stars
+
+    Parameters
+    ----------
+
+    data:
+    metadata:
+
+
+    returns
+    -------
+
     """
     ln_s_values = np.arange(np.log(0.0001), 0., 0.5)
     chis_eval = np.zeros_like(ln_s_values)
@@ -277,6 +343,7 @@ def do_one_regression(data, metadata):
 
 def do_regressions(dataall, features):
     """
+    This loops through all the regressions = doing the fit at a single wavelength for all stars, for all wavelengths
     """
     nlam, nobj, ndata = dataall.shape
     nobj, npred = features.shape
@@ -287,6 +354,7 @@ def do_regressions(dataall, features):
 def train(dataall, metaall, order, fn, Ametaall, cluster_name, logg_cut=100., teff_cut=0., leave_out=None):
     """
     - `leave out` must be in the correct form to be an input to `np.delete`
+    - this is the routine that determines the coefficients from the training data 
     """
    # good = np.logical_and((metaall[:, 1] < logg_cut), (metaall[:,0] > teff_cut) ) 
    # dataall = dataall[:, good]
@@ -313,7 +381,6 @@ def train(dataall, metaall, order, fn, Ametaall, cluster_name, logg_cut=100., te
 
     blob = do_regressions(dataall, features)
     coeffs = np.array([b[0] for b in blob])
-    #invcovs = np.array([b[1] for b in blob])
     covs = np.array([np.linalg.inv(b[1]) for b in blob])
     chis = np.array([b[2] for b in blob])
     chisqs = np.array([np.dot(b[2],b[2]) - b[3] for b in blob]) # holy crap be careful
@@ -338,6 +405,7 @@ def train(dataall, metaall, order, fn, Ametaall, cluster_name, logg_cut=100., te
 #         + x9*c**2 )
 #    return f
 
+# this is the form of the function below of the labels (a,b,c,d) = [Teff, logg , [FeH], age and their coefficients x1-x14
 def func(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12 , x13, x14, a, b, c, d):
     f = (0 
          + x1*a 
@@ -374,6 +442,7 @@ def nonlinear_invert(f, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, 
 def infer_labels_nonlinear(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper):
 #def infer_labels(fn_pickle,testdata, fout_pickle, weak_lower=0.935,weak_upper=0.98):
     """
+    - this routine determines the labels for a new spectra - can do cuts on the flux for testing if want to 
     best log g = weak_lower = 0.95, weak_upper = 0.98
     best teff = weak_lower = 0.95, weak_upper = 0.99
     best_feh = weak_lower = 0.935, weak_upper = 0.98 
@@ -416,7 +485,8 @@ def infer_labels_nonlinear(fn_pickle,testdata, fout_pickle, weak_lower,weak_uppe
 
 def infer_labels(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper):
 #def infer_labels(fn_pickle,testdata, fout_pickle, weak_lower=0.935,weak_upper=0.98):
-    """
+    """ 
+    - this is the linear case of getting labels for new spectra 
     best log g = weak_lower = 0.95, weak_upper = 0.98
     best teff = weak_lower = 0.95, weak_upper = 0.99
     best_feh = weak_lower = 0.935, weak_upper = 0.98 
@@ -458,6 +528,7 @@ def infer_labels(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper):
 
 def lookatfits(fn_pickle, pixelvalues,testdataall): 
   #  """"
+  # TEST ROUTINE - PLOTTING ROUTINE
   #  this is to plot the individual pixel fits  on the 6x6 panel 
   #  """"
     file_in = open(fn_pickle, 'r') 
@@ -552,11 +623,15 @@ def lookatfits(fn_pickle, pixelvalues,testdataall):
             ax.set_xlabel("Wavelength $\AA$", fontsize = 14 ) 
             ax.set_ylabel("Mean flux", fontsize = 14 ) 
 
-            savefig(fig, str(each)+"_"+str(namesave) , transparent=False, bbox_inches='tight', pad_inches=0.5)
+            savefig3(fig, str(each)+"_"+str(namesave) , transparent=False, bbox_inches='tight', pad_inches=0.5)
             fig.clf()
        # return 
 
+
 def _plot_something(ax, wl, val, var, color, lw=2, label=""):
+    """
+    This routine is for plotting 
+    """
     factor = 1.
     if label == "Teff": factor = 1000. # yes, I feel dirty; MAGIC
     sig = np.sqrt(var)
@@ -565,9 +640,7 @@ def _plot_something(ax, wl, val, var, color, lw=2, label=""):
     ax.fill_between(wl, factor*(val+sig), factor*(val-sig), color = color, alpha = 0.2) 
     return None
   
-    
-
-def savefig(fig, prefix, **kwargs):
+def savefig3(fig, prefix, **kwargs):
  #   for suffix in (".png"):
     suffix = ".png"
     print "writing %s" % (prefix + suffix)
@@ -575,6 +648,7 @@ def savefig(fig, prefix, **kwargs):
     close() 
 
 def leave_one_cluster_out_xval(cluster_information):
+    # this is done in the fitspectra.py code- can look at this if want to implement it later and copy it directly across
     dataall, metaall, labels = get_normalized_training_data()
     for jj, cluster_indx in enumerate(clusters):
         cluster_indx = something
@@ -591,42 +665,29 @@ if __name__ == "__main__":
     fpickle2 = "coeffs_2nd_order.pickle"
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0.)
-    testfile = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/stars_list_all.txt"
-    #testfile = "/Users/ness/Downloads/Apogee_raw/RevB/4336/sas/dr10/apogee/spectro/redux/r3/s3/4336/stars_list_all.txt"
     self_flag = 2
     if self_flag < 1:
-      field = "4332_"
-      #field = "4336_"
-      testdataall = get_normalized_test_data(testfile) # if flag is one, do on self 
-      #testmetaall, inv_covars = infer_labels("coeffs.pickle", testdataall, field+"tags.pickle",0.95,1.13) 
-      #testmetaall, inv_covars = infer_labels("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
-      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
+      a = open('all.txt', 'r') 
+      a = open('all_test2.txt', 'r') 
+      al = a.readlines()
+      bl = []
+      for each in al:
+        bl.append(each.strip()) 
+      for each in bl: 
+        testfile = each
+        field = testfile.split('.txt')[0]+'_' #"4332_"
+        testdataall = get_normalized_test_data(testfile) # if flag is one, do on self 
+        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
     if self_flag == 1:
       field = "self_"
       file_in = open('normed_data.pickle', 'r') 
       testdataall, metaall, labels = pickle.load(file_in)
       lookatfits('coeffs.pickle',[1002],testdataall)
       file_in.close() 
-      #testmetaall, inv_covars = infer_labels("coeffs.pickle", testdataall, field+"tags.pickle",0.980,1.23) 
-      #testmetaall, inv_covars = infer_labels("coeffs.pickle", testdataall, field+"tags.pickle",-10.975,1.43) 
-      #testmetaall, inv_covars = infer_labels("coeffs.pickle", testdataall, field+"tags.pickle",0.980,1.43) 
       testmetaall, inv_covars = infer_labels("coeffs.pickle", testdataall, field+"tags.pickle",-10.980,11.43) 
-      #testmetaall, inv_covars = infer_labels("coeffs.pickle", testdataall, field+"tags.pickle",0.980,1.40) 
     if self_flag == 2:
       field = "self_2nd_order_"
       file_in = open('normed_data.pickle', 'r') 
-      #testdataall, metaall, labels = pickle.load(file_in)
       testdataall, metaall, labels, Ametaall, cluster_name = pickle.load(file_in)
       file_in.close() 
       testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.950,10.99) 
-    
-    #def labels_on_apogee_data(fin,fsave):
-        #fsave = "labels.pickle"
-        #dataall, metaall, labels = get_normalized_training_data()
-
-
-if False: 
-    testdir = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/"
-    file2 = '4332_data_all_more.txt'
-    file2in = testdir+file2
-    t,g,feh,feh_err = loadtxt(file2in, usecols = (1,3,5,6), unpack =1) 
