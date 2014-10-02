@@ -118,7 +118,7 @@ def continuum_normalize(dataall, delta_lambda=50):
         dataall[bad,jj, 2] = LARGE 
     return dataall 
 
-def get_normalized_test_data(testfile,noise=0): 
+def get_normalized_test_data(testfile,noise=1): 
   """
     inputs
     ------
@@ -131,8 +131,9 @@ def get_normalized_test_data(testfile,noise=0):
     -------
     testdata:
   """
-  name = testfile.split('/')[-2]
-  testdir = testfile.split('stars')[0]
+  #name = testfile.split('/')[-2]
+  name = testfile.split('.txt')[0]
+  #testdir = testfile.split('stars')[0]
   if noise == 0: 
     if glob.glob(name+'.pickle'):
       file_in2 = open(name+'.pickle', 'r') 
@@ -145,7 +146,8 @@ def get_normalized_test_data(testfile,noise=0):
       al2 = a.readlines()
       bl2 = []
       for each in al2:
-        bl2.append(testdir+each.strip())
+       # bl2.append(testdir+each.strip())
+        bl2.append(each.strip())
       SNR = np.zeros((len(bl2))) 
       for jj,each in enumerate(bl2):
         a = pyfits.open(each) 
@@ -169,7 +171,8 @@ def get_normalized_test_data(testfile,noise=0):
   al2 = a.readlines()
   bl2 = []
   for each in al2:
-    bl2.append(testdir+each.strip())
+    #bl2.append(testdir+each.strip())
+    bl2.append(each.strip())
   for jj,each in enumerate(bl2):
     a = pyfits.open(each) 
     ydata = a[1].data
@@ -262,10 +265,11 @@ def get_normalized_training_data():
   return dataall, metaall, labels , Ametaall, cluster_name
 
 def add_noise(ydata, ysigma, SNR):
-    factor = 10.001
-    y_noise_level = ((factor-1)/np.array(SNR))*3.1**0.5 #3.1 is the number of pixels in a resolutione element 
+    factor = 10.000
+    #y_noise_level = ((factor-1)/np.array(SNR))*3.1**0.5 #3.1 is the number of pixels in a resolution element 
+    y_noise_level = ((factor)/np.array(SNR)) #3.1 is the number of pixels in a resolution element 
     y_noise_level_all = [ normal(0, a, len(ydata)) for a in y_noise_level]  
-    sigma_noise_level = abs(normal(0, (factor-1)*ysigma**2) ) 
+    sigma_noise_level = abs(normal(0, (factor)*ysigma**2) ) 
     ydata_n = ydata + array(y_noise_level_all).T
     ysigma_n = (ysigma**2 + sigma_noise_level)**0.5
     return ydata_n, ysigma_n
@@ -792,7 +796,7 @@ if __name__ == "__main__":
     fpickle2 = "coeffs_2nd_order.pickle"
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
-    self_flag = 2
+    self_flag = 0
     
     if self_flag < 1:
       a = open('all_test.txt', 'r') 
@@ -807,7 +811,7 @@ if __name__ == "__main__":
         field = testfile.split('.txt')[0]+'_' #"4332_"
         testdataall = get_normalized_test_data(testfile) # if flag is one, do on self 
         #testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
-        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags_chi2_df_v14.pickle",-10.90,10.99) 
+        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags_chi2_df_v14_noise.pickle",-10.90,10.99) 
     if self_flag == 1:
       field = "self_"
       file_in = open('normed_data.pickle', 'r') 
