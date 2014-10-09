@@ -16,8 +16,36 @@
 
 
 \section{ACTION ITEMS}
+DWH meeting Oct 2 2014\\
+fix addition of noise to be (1 - sqrt(1-factor) as this is actually correct I was approximating before (not rms addition)
+go through and do the test on a single exposure, so before they are co-added, so to see if can get the labels before that single exposure
+also need to do the test before continuum normalised - add noise then continuum normalise as with more noise may simply be harder to continuum normalise (alhtough if all the same SNR should be
+consistent so should ctually be fine - 
+find out the time the exposures go for and do the test on sub-exposures (e.g. find a star with 10 or field with 10 sub-exposures)
+- contact gail to go through her questions about why we used the clusters that we did.  e.g. she suggested Hyadies 
 
-for Monday 8am:
+
+Oct 2 2014\\
+For AH project: first set up the system for age labels training on cluster data: then return the ages for the Kepler stars and compare with the ages Marie has derived in her work\\
+Then next step will be to train on red giant stars from the Kepler sample (as recommended by SH as preferrable over red clump as these are not as well modeled due to He core) and then using this\\
+limited training set, return the ages for the APOGEE stars
+Go and see Marie to get the cross over age comparison targets \\
+
+HWR:
+- add individual abundances/alpha as trainng labels: do one at a time do not add in parallel 5 or 6 labels - also should however generalise the code at this point so as this is an option. Also need to
+go through and find the cluster members and grab these out. 
+
+Oct 1 2014
+- reply to DHW/Gail suggestions
+- still need to implement the individual pixel wrt each parameter for quadratic case
+- still need to implement optimisation for scatter s 
+- for training set: need to take off ASPCAP scale 
+- added noise: can do more tests on this 
+- identify problem with blue plume of stars - ASPCAP does not return parameters for these: look at spectra as well (looked fine) but look at all flags, figure out what the problem is: if in doubt
+email Gail 
+- implement bad pixel masks in test and training 
+
+for Monday 8am:29 Sept 2014
 Plots for DWH: 
 1 x training data on the isochrones: make the legend the same colour as the points
 1 x all stars run through on the isochrone: '' '' 

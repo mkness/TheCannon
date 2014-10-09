@@ -41,6 +41,9 @@
 \begin{abstract}
 In A\&A format: shorten this. move parts to intro.
 
+We present a method to estimate stellar parameters and abundances (or "labels") for APOGEE spectra that does not require direct comparison to synthetic model spectra. Our method, called The Cannon, transfers labels (e.g. Teff, logg, [Fe/H]) from a training set of data whose parameters are well determined (i.e. members of open and globular clusters) to the entire set of stars in the survey. We show we can reproduce the stellar parameters for the APOGEE survey for DR10 and achieve this at a fraction (25\%) of the signal to noise required by minimisation techniques. We obtain this performance via characterising the relationship between the labels of the stars in our training set and their flux, at each pixel. Our method is expandable to additional labels and relevant for chemical tagging. This approach argues for an established set of standard stars with well-determined labels. Given such standard calibrators, it is possible, via this technique of label transfer, to place every stellar survey of the Milky Way on the same stellar parameter scale and homogeneously map the stellar population of the Milky Way from Northern and Southern hemispheres and using different wavelength regions.
+
+
 Context: Stellar models are not yet complete and accurate/linelists are not yet complete and accurate/each new survey has own independent implementation of stellar parameter and abundance determination with a lot of repeated effort/multiple surveys on different scales/methods required for chemical tagging.\\
 Aims: We implement a generalised, wavelength independent technique to determine stellar parameters for large datasets, using data-driven models. Our work motivates the importance of having a ``gold standard'' set of stars studied at high resolution, to serve as training data set for stellar surveys. This method has has important applications for homogenising all large surveys and chemical tagging, for which this approach is ideal. \\ %Established standard stars with labels including in [X/Fe], which can be re-observed as part of every new large survey and serve as the training set for the method, has important applications for homogenising all large surveys and chemical tagging, for which this approach is ideal. \\
 %
@@ -79,13 +82,35 @@ We identified a number of regions in APOGEE spectra that serve as relatively tem
 
 \section{Data}
 
-read in data; which files, etc.
+\subsection{Training Set of Data}
 
-A training dataset may ideally be one that consists of a set of stars that extend over the parameter range of the observations, in \teff\, \logg\, [Fe/H], [X/Fe] and have their labels derived from high resolution spectral analysis in the optical, where abundance analyses can employ reliable and clean well defined lines and take into account isotopic and hyperfine splitting effects for individual abundances. The training set we employ for this data driven analysis is that of the globular and open cluster data observed by APOGEE for calibration of their abundance pipeline \citep{Mesaroz2013}. This training data set is comprised of 20 open and globular clusters, which span stellar parameter ranges of 3500 $<$ \teff\ $<$ 5300, 0 $<$ \logg 5 and --2.5 $<$ [Fe/H] $<$ 0.45. We adopt the ``ASPCAP corrected'' stellar parameters of each of these stars in the training set as our tags for the stars; this nominally ensures that we are on the same calibration as APOGEE for stellar parameters. The corrections made by APOGEE for the cluster data are applied to the direct output of the ASPCAP pipeline based on a temperature calibration to the infrared flux method \citep{Gonzalez2009} ,a \logg\ correction from the offset between ASCAP results and Kepler results for common stars and [Fe/H] offsets from the output of ASCAP versus the literature value of each cluster.  The APOGEE corrections that they determine are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs. 
 
-These corrections place the giants in the cluster stars on or near the iscohrones (see Figures 7 and 8 in Meszaros et al., (2013)). We  also correct the ASPCAP dwarf cluster spectra to the infrared flux value of \citep{Gonzalez2009} which is small at their temperatures, offset the metallicities of these stars by the difference between the mean value from the ASPCAP pipeline and the literature values of the clusters from Meszaros et al., 2013 and shift the \logg\ values of the stars to their nearest positions on the isochrone, moving the stars vertically without adjusting the other calibrated parameters. \textit{actually I have not done this yet - most important will be logg other changes are small}.
+A training dataset may ideally be one that consists of a set of stars that extend over the parameter range of the observations, in \teff\, \logg\, [Fe/H], [X/Fe] and have their labels derived from high resolution spectral analysis in the optical, where abundance analyses can employ reliable and clean well defined lines and take into account isotopic and hyperfine splitting effects for individual abundances. The training set we employ for this data driven analysis is that of the globular and open cluster data observed by APOGEE for calibration of their abundance pipeline \citep{Mesaroz2013}. This training data set is comprised of 20 open and globular clusters, which span stellar parameter ranges of 3500 $<$ \teff\ $<$ 5300, 0 $<$ \logg 5 and --2.5 $<$ [Fe/H] $<$ 0.45. 
 
-The analysis in \citet{Meszaros2013} is restricted to giants and stars with SNR $>$ 70, determined to be the minimum for reliable stellar parameters. Our method is calibrated across dwarfs and giants and can return reliable stellar parameters to a SNR of XXX, with an intrinsic scatter of x,y,z in \teff, \logg, \feh. 
+We implement two tests with this training data. We firstly adopt the ``ASPCAP corrected'' stellar parameters of each of these stars in the training set as our tags for the stars; this nominally ensures that we are on the same calibration as APOGEE for stellar parameters. The corrections made by APOGEE for the cluster data are applied to the direct output of the ASPCAP pipeline based on a temperature calibration to the infrared flux method \citep{Gonzalez2009} ,a \logg\ correction from the offset between ASCAP results and Kepler results for common stars and [Fe/H] offsets from the output of ASCAP versus the literature value of each cluster.  The APOGEE corrections that they determine are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs. ASPCAP provides [M/H] values for these clusters, that are corrected to the [Fe/H] of the clusters and here we adopt this tag as an [Fe/H] - it does not specifically and explicitly use [Fe/H] lines, but this is derived from an [Fe/H] correction. 
+
+These corrections place the giants in the cluster stars on or near the iscohrones (see Figures 7 and 8 in Meszaros et al., (2013)). There are no ASPCAP corrections implemented for the dwarf spectra. Instead, we determine temperatures for the dwarfs, which are all in the Pleaides, directly using the infrared flux value of \citep{Gonzalez2009} and set all [Fe/H] of the dwarf spectra to [Fe/H] = 0.03 (reference). To determine the log g for these stars, we shift the stars vertically to their nearest positions on at 150 Myr Padova isochrone at [Fe/H] = 0.03. Due to the high differential reddening to the Pleaides, and the subsequent large temperature errors using the IR flux method that result from this, we only selected the 50 from a total of 75 Pleiades dwarfs with SFD E(J-K) values of < 0.12. 
+
+Assuming the input labels from the ASPCAP corrected parameters determined from calibrations to literature cluster values also wraps in the errors from the ASPCAP pipeline: of XX in Teff, XX in \logg\ and XX in [Fe/H], but does place The Cannon directly on the ASPCAP scale for comparison and analysis of the label transfer method.
+
+We also for comparison, implement our own training set calibration; assuming a more basic characterisation of labels. Here we adopt temperatures from the IR flux method of XX directly, take \logg\ from the best vertical fits to the isochrone (with the temperatures fixed) and assume the metallicity of each star in the cluster is the same, at the mean metallicity of the cluster assuming the literature values of the cluster. We adopt a different literature value of M35(check) compared to APOGEE as this cluster appears to fit better at the value of XX according to the model and there is variation in the literature on this metallicity ranging from our adopted value of -0 35 to x. 
+
+We assume no errors on our labels for our input training set
+
+The analysis in \citet{Meszaros2013} is restricted to giants and stars with SNR $>$ 70, determined to be the minimum for reliable stellar parameters. Our method is calibrated across dwarfs and giants and can return reliable stellar parameters to a SNR of a fraction of this (30\%) XXX, with an intrinsic scatter of x,y,z in \teff, \logg, \feh. 
+
+
+\section{Performance at a fraction of the SNR} 
+
+- intrinsic errors are small 
+- therefore get errors on the order of X,Y,Z with SNR of not 100 but 25 - as using information in all of spectrum. 
+
+Example of field run thourgh with only one exposure and not many. 
+
+\section{Anomalous Spectra}
+
+- blue plume is young dwarf stars with chromospheric emission
+- also stars in intermediate area - also placed there by ASPCAP - unclear currently what these are : binaries? perhaps - mean of the two. also very unequal training set. 
 
 - See Figure X for the training set histograms of t, g, feh. 
 
@@ -99,6 +124,27 @@ demonstrate that the normalization is good.
 meta-data on cluster stars; why do we believe it; table - just reference Meszaros 2013 for this or we are repeating information. 
 
 ...We need a plot that shows \teff\ vs \logg\ colored by \feh\ for the training stars!
+
+%read in data; which files, etc.
+%
+%A training dataset may ideally be one that consists of a set of stars that extend over the parameter range of the observations, in \teff\, \logg\, [Fe/H], [X/Fe] and have their labels derived from high resolution spectral analysis in the optical, where abundance analyses can employ reliable and clean well defined lines and take into account isotopic and hyperfine splitting effects for individual abundances. The training set we employ for this data driven analysis is that of the globular and open cluster data observed by APOGEE for calibration of their abundance pipeline \citep{Mesaroz2013}. This training data set is comprised of 20 open and globular clusters, which span stellar parameter ranges of 3500 $<$ \teff\ $<$ 5300, 0 $<$ \logg 5 and --2.5 $<$ [Fe/H] $<$ 0.45. We adopt the ``ASPCAP corrected'' stellar parameters of each of these stars in the training set as our tags for the stars; this nominally ensures that we are on the same calibration as APOGEE for stellar parameters. The corrections made by APOGEE for the cluster data are applied to the direct output of the ASPCAP pipeline based on a temperature calibration to the infrared flux method \citep{Gonzalez2009} ,a \logg\ correction from the offset between ASCAP results and Kepler results for common stars and [Fe/H] offsets from the output of ASCAP versus the literature value of each cluster.  The APOGEE corrections that they determine are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs. 
+%
+%These corrections place the giants in the cluster stars on or near the iscohrones (see Figures 7 and 8 in Meszaros et al., (2013)). We  also correct the ASPCAP dwarf cluster spectra to the infrared flux value of \citep{Gonzalez2009} which is small at their temperatures, offset the metallicities of these stars by the difference between the mean value from the ASPCAP pipeline and the literature values of the clusters from Meszaros et al., 2013 and shift the \logg\ values of the stars to their nearest positions on the isochrone, moving the stars vertically without adjusting the other calibrated parameters. \textit{actually I have not done this yet - most important will be logg other changes are small}.
+%
+%The analysis in \citet{Meszaros2013} is restricted to giants and stars with SNR $>$ 70, determined to be the minimum for reliable stellar parameters. Our method is calibrated across dwarfs and giants and can return reliable stellar parameters to a SNR of XXX, with an intrinsic scatter of x,y,z in \teff, \logg, \feh. 
+%
+%- See Figure X for the training set histograms of t, g, feh. 
+%
+%For our regression analysis, where pixels are directly compared between stars in the training set, it is essential to have a robust continuum normalisation that will ensure pixels are compared fairly between stars of different parameters. We therefore implement a weighted median method, but instead of returning the central tendency we consider the 85\% quantile, returning the typical continuum level and effectively excluding outliers, considered over intervals of 50\AA of the spectra. This provides a consistent normalisation across the spectra. Three typical spectra are shown in Figure X demonstrating this normalisation routine is effective. Similarly to the training set, all data input to the regression must be treated in the same way with the same continuum normalisation.
+%\textit{ note - need to consider coolest stars and also high signal to noise and may need to adjust quantile for this. }
+%
+%re-continuum-normalize; how?
+%
+%demonstrate that the normalization is good.
+%
+%meta-data on cluster stars; why do we believe it; table - just reference Meszaros 2013 for this or we are repeating information. 
+%
+%...We need a plot that shows \teff\ vs \logg\ colored by \feh\ for the training stars!
 
 \section{Spectral model}
 
