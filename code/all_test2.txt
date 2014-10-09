@@ -1,15 +1,2 @@
-4318.txt
-4319.txt
-4321.txt
-4329.txt
-4201.txt
-4161.txt
-4434.txt
-4204.txt
-4152.txt
-4103.txt
-4119.txt
-4452.txt
-4456.txt
-4457.txt
-4468.txt
+4147_apStar.txt
+4147_apStar.txt

@@ -118,7 +118,7 @@ def continuum_normalize(dataall, delta_lambda=50):
         dataall[bad,jj, 2] = LARGE 
     return dataall 
 
-def get_normalized_test_data(testfile,noise=1): 
+def get_normalized_test_data(testfile,noise=0): 
   """
     inputs
     ------
@@ -131,15 +131,23 @@ def get_normalized_test_data(testfile,noise=1):
     -------
     testdata:
   """
-  #name = testfile.split('/')[-2]
   name = testfile.split('.txt')[0]
-  #testdir = testfile.split('stars')[0]
+  
+  a = open(testfile, 'r')
+  al2 = a.readlines()
+  bl2 = []
+  for each in al2:
+    bl2.append(each.strip())
+  ids = []
+  for each in bl2:
+    ids.append(each.split('-2M')[-1].split('.fits')[0])
+  
   if noise == 0: 
     if glob.glob(name+'.pickle'):
       file_in2 = open(name+'.pickle', 'r') 
       testdata = pickle.load(file_in2)
       file_in2.close()
-      return testdata 
+      return testdata, ids 
   if noise == 1: 
     if not glob.glob(name+'._SNR.pickle'):
       a = open(testfile, 'r')
@@ -155,33 +163,57 @@ def get_normalized_test_data(testfile,noise=1):
         file_in2 = open(name+'_SNR.pickle', 'w')  
         pickle.dump(SNR,  file_in2)
         file_in2.close()
-    if logical_and( glob.glob(name+'.pickle'), glob.glob(name+'_SNR.pickle')): 
-      file_in2 = open(name+'.pickle', 'r') 
-      testdata = pickle.load(file_in2)
-      file_in2.close()
-      file_in3 = open(name+'_SNR.pickle', 'r') 
-      SNR = pickle.load(file_in3)
-      file_in3.close()
-      ydata = testdata[:,:,1]
-      ysigma = testdata[:,:,2]
-      testdata[:,:,1], testdata[:,:,2] =  add_noise(ydata, ysigma, SNR)
-      return testdata 
+    if glob.glob(name+'.pickle'):
+      if glob.glob(name+'_SNR.pickle'): 
+        file_in2 = open(name+'.pickle', 'r') 
+        testdata = pickle.load(file_in2)
+        file_in2.close()
+        file_in3 = open(name+'_SNR.pickle', 'r') 
+        SNR = pickle.load(file_in3)
+        file_in3.close()
+        ydata = testdata[:,:,1]
+        ysigma = testdata[:,:,2]
+        testdata[:,:,1], testdata[:,:,2] =  add_noise(ydata, ysigma, SNR)
+        return testdata, ids
 
   a = open(testfile, 'r')
   al2 = a.readlines()
   bl2 = []
   for each in al2:
-    #bl2.append(testdir+each.strip())
     bl2.append(each.strip())
+  ids = []
+  for each in bl2:
+    ids.append(each.split('-2M')[-1].split('.fits')[0])
+
   for jj,each in enumerate(bl2):
     a = pyfits.open(each) 
-    ydata = a[1].data
-    ysigma = a[2].data
-    start_wl =  a[1].header['CRVAL1']
-    diff_wl = a[1].header['CDELT1']
-    if jj == 0:
+    if shape(a[1].data) != (8575,):
+      ydata = a[1].data[0] 
+      ysigma = a[2].data[0]
+      len_data = a[2].data[0]
+      #ydata = a[1].data[3] # NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
+      #ysigma = a[2].data[3]
+      #len_data = a[2].data[3]
+      if jj == 0:
+        nlam = len(a[1].data[0])
+        testdata = np.zeros((nlam, len(bl2), 3))
+    if shape(a[1].data) == (8575,):
+      ydata = a[1].data
+      ysigma = a[2].data
+      len_data = a[2].data
+      if jj == 0:
         nlam = len(a[1].data)
         testdata = np.zeros((nlam, len(bl2), 3))
+    start_wl =  a[1].header['CRVAL1']
+    diff_wl = a[1].header['CDELT1']
+
+    #ydata = a[1].data
+    #ysigma = a[2].data
+    #start_wl =  a[1].header['CRVAL1']
+    #diff_wl = a[1].header['CDELT1']
+    #if jj == 0:
+    #    nlam = len(a[1].data)
+    #    testdata = np.zeros((nlam, len(bl2), 3))
     val = diff_wl*(nlam) + start_wl 
     wl_full_log = np.arange(start_wl,val, diff_wl) 
     wl_full = [10**aval for aval in wl_full_log]
@@ -193,7 +225,7 @@ def get_normalized_test_data(testfile,noise=1):
   file_in = open(name+'.pickle', 'w')  
   pickle.dump(testdata,  file_in)
   file_in.close()
-  return testdata 
+  return testdata , ids # not yet implemented but at some point should probably save ids into the normed pickle file 
 
 def get_normalized_training_data():
   if glob.glob('normed_data.pickle'): 
@@ -205,7 +237,8 @@ def get_normalized_training_data():
   fn = "starsin_test.txt"
   fn = "starsin_new_all_ordered.txt"
   fn = "test4_selfg.txt"
-  fn = 'test14.txt' 
+  fn = 'test14.txt' # this is for teff < 600 cut which worked quite nicely 
+  fn = 'test18.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
   T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
   labels = ["teff", "logg", "feh"]
   a = open(fn, 'r') 
@@ -265,14 +298,29 @@ def get_normalized_training_data():
   return dataall, metaall, labels , Ametaall, cluster_name
 
 def add_noise(ydata, ysigma, SNR):
-    factor = 10.000
-    #y_noise_level = ((factor-1)/np.array(SNR))*3.1**0.5 #3.1 is the number of pixels in a resolution element 
-    y_noise_level = ((factor)/np.array(SNR)) #3.1 is the number of pixels in a resolution element 
-    y_noise_level_all = [ normal(0, a, len(ydata)) for a in y_noise_level]  
-    sigma_noise_level = abs(normal(0, (factor)*ysigma**2) ) 
-    ydata_n = ydata + array(y_noise_level_all).T
+    factor = 20.000
+    #factor = ((SNR*1./30)**2 - 1)**0.5
+    #y_noise_level = ((factor)/np.array(SNR)) 
+    y_noise_level = sqrt(1+(factor -1)**2)*ysigma
+    #y_noise_level = ((1+(factor-1)**2)**0.5)*ysigma
+    y_noise_level_all =  normal(0,y_noise_level)  
+    #y_noise_level_all = [ normal(0, a, len(ydata)) for a in y_noise_level]  
+    #sigma_noise_level = abs(normal(0, (factor)*ysigma**2) ) 
+    sigma_noise_level = abs(normal(0, sqrt(1+(factor-1)**2)*ysigma**2) ) 
+    ydata_n = ydata + array(y_noise_level_all)
+    #ydata_n = ydata + array(y_noise_level_all).T
     ysigma_n = (ysigma**2 + sigma_noise_level)**0.5
     return ydata_n, ysigma_n
+#def add_noise(ydata, ysigma, SNR):
+#    factor = 10.000
+#    factor = ((SNR*1./30)**2 - 1)**0.5
+#    #y_noise_level = ((factor-1)/np.array(SNR))*3.1**0.5 #3.1 is the number of pixels in a resolution element 
+#    y_noise_level = ((factor)/np.array(SNR)) #3.1 is the number of pixels in a resolution element 
+#    y_noise_level_all = [ normal(0, a, len(ydata)) for a in y_noise_level]  
+#    sigma_noise_level = abs(normal(0, (factor)*ysigma**2) ) 
+#    ydata_n = ydata + array(y_noise_level_all).T
+#    ysigma_n = (ysigma**2 + sigma_noise_level)**0.5
+#    return ydata_n, ysigma_n
 
 def do_one_regression_at_fixed_scatter(data, features, scatter):
     """
@@ -364,7 +412,8 @@ def train(dataall, metaall, order, fn, Ametaall, logg_cut=100., teff_cut=0., lea
     #nstars, nmeta = metaall.shape
    
     diff_t = np.abs(array(metaall[:,0] - Ametaall[:,0]) ) 
-    good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 600. ) ) 
+    #good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 600. ) ) 
+    good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 6000. ) ) 
     dataall = dataall[:, good]
     metaall = metaall[good]
     nstars, nmeta = metaall.shape
@@ -450,7 +499,7 @@ def nonlinear_invert(f, x1, x2, x3, x4, x5, x6, x7, x8, x9 ,sigmavals):
     model, cov = opt.curve_fit(wrapped_func, xdata, f, sigma = sigmavals)#absolute_sigma = True)  is not an option in my version of scipy will upgrade scipy
     return model, cov 
 
-def infer_labels_nonlinear(fn_pickle,testdata, fout_pickle, weak_lower,weak_upper):
+def infer_labels_nonlinear(fn_pickle,testdata, ids, fout_pickle, weak_lower,weak_upper):
 #def infer_labels(fn_pickle,testdata, fout_pickle, weak_lower=0.935,weak_upper=0.98):
     """
     best log g = weak_lower = 0.95, weak_upper = 0.98
@@ -495,7 +544,7 @@ def infer_labels_nonlinear(fn_pickle,testdata, fout_pickle, weak_lower,weak_uppe
       chi2 = get_goodness_fit(fn_pickle, filein, Params_all, MCM_rotate_all)
       chi2_def = chi2/len(xdata)*1.
       file_in = open(fout_pickle, 'w')  
-      pickle.dump((Params_all, covs_all, chi2_def),  file_in)
+      pickle.dump((Params_all, covs_all, chi2_def, ids),  file_in)
       file_in.close()
     return Params_all , MCM_rotate_all
 
@@ -706,8 +755,10 @@ def plot_leave_one_out(filein,cluster_out):
     diffT = array(diffT) 
     #pick =logical_and(names != cluster_name,  diffT < 600. ) 
     names = array(names) 
-    pick =  diffT < 600. # I need to implement this < 6000 K 
-    pick2 =logical_and(names == cluster_out,  diffT < 600. ) 
+    #pick =  diffT < 600. # I need to implement this < 6000 K 
+    #pick2 =logical_and(names == cluster_out,  diffT < 600. ) 
+    pick =  diffT < 6000. # I need to implement this < 6000 K 
+    pick2 =logical_and(names == cluster_out,  diffT < 6000. ) 
 
     t_sel,g_sel,feh_sel,t_err_sel,g_err_sel,feh_err_sel = t[pick2], g[pick2], feh[pick2], t_err[pick2], g_err[pick2], feh_err[pick2] 
     t,g,feh,t_err,g_err,feh_err = t[pick], g[pick], feh[pick], t_err[pick], g_err[pick], feh_err[pick] 
@@ -809,9 +860,9 @@ if __name__ == "__main__":
       for each in bl: 
         testfile = each
         field = testfile.split('.txt')[0]+'_' #"4332_"
-        testdataall = get_normalized_test_data(testfile) # if flag is one, do on self 
+        testdataall, ids = get_normalized_test_data(testfile) # if flag is one, do on self 
         #testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
-        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags_chi2_df_v14_noise.pickle",-10.90,10.99) 
+        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v14_noise.pickle",-10.90,10.99) 
     if self_flag == 1:
       field = "self_"
       file_in = open('normed_data.pickle', 'r') 
