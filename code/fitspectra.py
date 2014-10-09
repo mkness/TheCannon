@@ -147,6 +147,19 @@ def get_normalized_test_data(testfile,noise=0):
       file_in2 = open(name+'.pickle', 'r') 
       testdata = pickle.load(file_in2)
       file_in2.close()
+   #   a = open(testfile, 'r')
+   #   al2 = a.readlines()
+   #   bl2 = []
+   #   for each in al2:
+   #     bl2.append(each.strip())
+   #   SNR = np.zeros((len(bl2))) 
+   #   for jj,each in enumerate(bl2):
+   #     a = pyfits.open(each) 
+   #     #SNR[jj]  = a[0].header['SNRVIS4']
+   #     SNR[jj]  = a[0].header['SNR']
+   #     file_in2 = open(name+'_SNR.pickle', 'w')  
+   #     pickle.dump(SNR,  file_in2)
+   #     file_in2.close()
       return testdata, ids 
   if noise == 1: 
     if not glob.glob(name+'._SNR.pickle'):
@@ -206,6 +219,8 @@ def get_normalized_test_data(testfile,noise=0):
         testdata = np.zeros((nlam, len(bl2), 3))
     start_wl =  a[1].header['CRVAL1']
     diff_wl = a[1].header['CDELT1']
+    SNRall = np.zeros(len(bl2))
+    SNR = a[0].header['SNR']
 
     #ydata = a[1].data
     #ysigma = a[2].data
@@ -221,18 +236,22 @@ def get_normalized_test_data(testfile,noise=0):
     testdata[:, jj, 0] = xdata
     testdata[:, jj, 1] = ydata
     testdata[:, jj, 2] = ysigma
+    SNRall[jj] = SNR
   testdata = continuum_normalize(testdata) # testdata
   file_in = open(name+'.pickle', 'w')  
+  file_in2 = open(name+'_SNR.pickle', 'w')
   pickle.dump(testdata,  file_in)
+  pickle.dump(SNRall,  file_in2)
   file_in.close()
+  file_in2.close()
   return testdata , ids # not yet implemented but at some point should probably save ids into the normed pickle file 
 
 def get_normalized_training_data():
   if glob.glob('normed_data.pickle'): 
         file_in2 = open('normed_data.pickle', 'r') 
-        dataall, metaall, labels, Ametaall, cluster_name = pickle.load(file_in2)
+        dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
         file_in2.close()
-        return dataall, metaall, labels, Ametaall, cluster_name
+        return dataall, metaall, labels, Ametaall, cluster_name, ids
   fn = "starsin_test2.txt"
   fn = "starsin_test.txt"
   fn = "starsin_new_all_ordered.txt"
@@ -245,9 +264,12 @@ def get_normalized_training_data():
   al = a.readlines() 
   bl = []
   cluster_name = [] 
+  ids = []
   for each in al:
     bl.append(each.split()[0]) 
     cluster_name.append(each.split()[1]) 
+    ids.append(each.split()[0].split('-2M')[-1].split('.fits')[0])
+
   for jj,each in enumerate(bl):
     each = each.strip('\n')
     a = pyfits.open(each) 
@@ -293,12 +315,12 @@ def get_normalized_training_data():
   dataall = continuum_normalize(dataall) #dataall
 
   file_in = open('normed_data.pickle', 'w')  
-  pickle.dump((dataall, metaall, labels, Ametaall, cluster_name),  file_in)
+  pickle.dump((dataall, metaall, labels, Ametaall, cluster_name, ids),  file_in)
   file_in.close()
-  return dataall, metaall, labels , Ametaall, cluster_name
+  return dataall, metaall, labels , Ametaall, cluster_name, ids
 
 def add_noise(ydata, ysigma, SNR):
-    factor = 20.000
+    factor = 10.000
     #factor = ((SNR*1./30)**2 - 1)**0.5
     #y_noise_level = ((factor)/np.array(SNR)) 
     y_noise_level = sqrt(1+(factor -1)**2)*ysigma
@@ -452,7 +474,10 @@ def get_goodness_fit(fn_pickle, filein, Params_all, MCM_rotate_all):
     file_with_star_data = str(filein)+".pickle"
     file_with_star_tags = str(filein)+"_tags2.pickle"
     f_flux = open(file_with_star_data, 'r') 
-    flux = pickle.load(f_flux) 
+    if filein != 'normed_data': 
+      flux = pickle.load(f_flux) 
+    if filein == 'normed_data': 
+      flux, metaall, labels, Ametaall, cluster_name, ids = pickle.load(f_flux)
     f_flux.close() 
     labels = Params_all 
     nlabels = shape(labels)[1]
@@ -517,7 +542,8 @@ def infer_labels_nonlinear(fn_pickle,testdata, ids, fout_pickle, weak_lower,weak
     MCM_rotate_all = np.zeros((nstars, np.shape(coeffs)[1]-1, np.shape(coeffs)[1]-1.))
     covs_all = np.zeros((nstars,nlabels, nlabels))
     for jj in range(0,nstars):
-      if np.any(testdata[:,jj,0] != dataall[:, 0, 0]):
+      #if np.any(testdata[:,jj,0] != dataall[:, 0, 0]):
+      if np.any(abs(testdata[:,jj,0] - dataall[:, 0, 0]) > 0.0001): 
           print testdata[range(5),jj,0], dataall[range(5),0,0]
           assert False
       xdata = testdata[:,jj,0]
@@ -538,7 +564,10 @@ def infer_labels_nonlinear(fn_pickle,testdata, ids, fout_pickle, weak_lower,weak
     filein = fout_pickle.split('_') [0] 
     if filein == 'self': 
       file_in = open(fout_pickle, 'w')  
-      pickle.dump((Params_all, covs_all),  file_in)
+      #pickle.dump((Params_all, covs_all),  file_in)
+      chi2 = get_goodness_fit(fn_pickle, 'normed_data', Params_all, MCM_rotate_all)
+      chi2_def = chi2/len(xdata)*1.
+      pickle.dump((Params_all, covs_all,chi2_def,ids),  file_in)
       file_in.close()
     else: 
       chi2 = get_goodness_fit(fn_pickle, filein, Params_all, MCM_rotate_all)
@@ -710,7 +739,7 @@ def savefig(fig, prefix, **kwargs):
 
 def leave_one_cluster_out():
 # this is the test routine to leave one cluster out 
-    dataall, metaall, labels, Ametaall, cluster_name = get_normalized_training_data()
+    dataall, metaall, labels, Ametaall, cluster_name, ids= get_normalized_training_data()
     nameu = unique(cluster_name) 
     cluster_name = array(cluster_name)
     for each in nameu:
@@ -722,7 +751,7 @@ def leave_one_cluster_out():
       train(dataall, metaall,  2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0., leave_out=inds1)
       field = "self_2nd_order_"
       file_in = open('normed_data.pickle', 'r') 
-      testdataall, metaall, labels, Ametaall, cluster_name = pickle.load(file_in)
+      testdataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in)
       file_in.close() 
       testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.950,10.99) 
       plot_leave_one_out(field, clust_pick) 
@@ -737,7 +766,8 @@ def plot_leave_one_out(filein,cluster_out):
     file_in2.close()
     # this is the test to 
     filein2 = 'test14.txt' # originally had for test4g_self and for ages_test4g_self that goes with this
-    filein3 = 'ages.txt'
+    filein2 = 'test18.txt' # originally had for test4g_self and for ages_test4g_self that goes with this
+    filein3 = 'ages.txt' # note ages goes with test14 
     plot_markers = ['ko', 'yo', 'ro', 'bo', 'co','k*', 'y*', 'r*', 'b*', 'c*', 'ks', 'rs', 'bs', 'cs', 'rd', 'kd', 'bd', 'rd', 'mo', 'ms' ]
     # M92, M15, M53, N5466, N4147, M13, M2, M3, M5, M107, M71, N2158, N2420, Pleaides, N7789, M67, N6819 , N188, N6791 
     t,g,feh,t_err,feh_err = loadtxt(filein2, usecols = (4,6,8,16,17), unpack =1) 
@@ -840,18 +870,19 @@ def plot_leave_one_out(filein,cluster_out):
     return 
 
 if __name__ == "__main__":
-    dataall, metaall, labels, Ametaall, cluster_name = get_normalized_training_data()
+    dataall, metaall, labels, Ametaall, cluster_name, ids = get_normalized_training_data()
     fpickle = "coeffs.pickle" 
     if not glob.glob(fpickle):
         train(dataall, metaall, 1,  fpickle, Ametaall,logg_cut= 40.,teff_cut = 0.)
     fpickle2 = "coeffs_2nd_order.pickle"
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
+    self_flag = 2
     self_flag = 0
     
     if self_flag < 1:
-      a = open('all_test.txt', 'r') 
       a = open('all.txt', 'r') 
+      a = open('all_test.txt', 'r') 
       a = open('all_test2.txt', 'r') 
       al = a.readlines()
       bl = []
@@ -862,7 +893,8 @@ if __name__ == "__main__":
         field = testfile.split('.txt')[0]+'_' #"4332_"
         testdataall, ids = get_normalized_test_data(testfile) # if flag is one, do on self 
         #testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
-        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v14_noise.pickle",-10.90,10.99) 
+        #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v14_noise.pickle",-10.90,10.99) 
+        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v18.pickle",-10.90,10.99) 
     if self_flag == 1:
       field = "self_"
       file_in = open('normed_data.pickle', 'r') 
@@ -873,9 +905,9 @@ if __name__ == "__main__":
     if self_flag == 2:
       field = "self_2nd_order_"
       file_in = open('normed_data.pickle', 'r') 
-      testdataall, metaall, labels, Ametaall, cluster_name = pickle.load(file_in)
+      testdataall, metaall, labels, Ametaall, cluster_name,ids = pickle.load(file_in)
       file_in.close() 
-      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.950,10.99) 
+      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags.pickle",-10.950,10.99) 
     
 # below runs on laptop = need to generalise so reads in input dir 
 #if __name__ == "__main__":

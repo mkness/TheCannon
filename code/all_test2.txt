@@ -1,2 +1,2 @@
-4147_apStar.txt
-4147_apStar.txt
+4147_SNRtestref.txt
+4147_SNRtestref.txt
