@@ -11,7 +11,6 @@
 
 \documentclass[12pt, preprint]{aastex}
 \usepackage{bm}
-
 \input{vc}
 \newcommand{\sectionname}{Section}
 \newcommand{\documentname}{\textsl{Note}}
@@ -22,12 +21,18 @@
 \newcommand{\teff}{\mbox{$\rm T_{eff}$}}
 \newcommand{\feh}{\mbox{$\rm [Fe/H]$}}
 \newcommand{\logg}{\mbox{$\rm \log g$}}
+%\newcommand{\tc}{\fontfamily{qcr}\selectfont}
+\newcommand{\tc}{\textsc{The Cannon}} 
+
+
+ 
+
 
 \usepackage{morefloats}
 
 \begin{document}
 
-\title{The Cannon: Wavelength-independent stellar parameter determination using data-driven models}
+\title{\textsc{The Cannon:} Wavelength-independent stellar parameter determination using data-driven models}
 \author{
   MKN,
   DWH,
@@ -38,21 +43,34 @@
 % DWH say: Obey A&A abstract rules (ish).
 %          They offer good guidance on abstract construction.
 
+
 \begin{abstract}
-In A\&A format: shorten this. move parts to intro.
 
-We present a method to estimate stellar parameters and abundances (or "labels") for APOGEE spectra that does not require direct comparison to synthetic model spectra. Our method, called The Cannon, transfers labels (e.g. Teff, logg, [Fe/H]) from a training set of data whose parameters are well determined (i.e. members of open and globular clusters) to the entire set of stars in the survey. We show we can reproduce the stellar parameters for the APOGEE survey for DR10 and achieve this at a fraction (25\%) of the signal to noise required by minimisation techniques. We obtain this performance via characterising the relationship between the labels of the stars in our training set and their flux, at each pixel. Our method is expandable to additional labels and relevant for chemical tagging. This approach argues for an established set of standard stars with well-determined labels. Given such standard calibrators, it is possible, via this technique of label transfer, to place every stellar survey of the Milky Way on the same stellar parameter scale and homogeneously map the stellar population of the Milky Way from Northern and Southern hemispheres and using different wavelength regions.
+Context: There are now numerous large programs to survey stars in the Milky Way, each of which is investing significant effort to determine and deliver stellar parameters and individual abundances across different wavelength regions. We present a generalised and wavelength independent regression technique to determine stellar parameters for large surveys, using a model built from data. Our approach does not require an intricate line-list characterisation at each new wavelength region observed by a survey, nor is it penalised by uncertainties in stellar models across different bands. With this methodology we effectively characterise how each pixel in a spectrum contributes to a given stellar parameter or label used to describe a star. In exploiting every pixel, we can determine stellar parameters at a fraction of the signal to noise compared to other techniques, for a given uncertainty. \\
+Aims: We present \tc, our regression analysis approach to return labels for stars from large datasets, using data-driven models.  Our method transfers labels (of \teff, \logg and [Fe/H]) from a training set of data whose parameters are well determined (i.e. members of open and globular clusters) to the entire set of stars in a survey. Our work motivates the importance of having an established set of standard stars with well-determined labels. Given such standard calibrators, it is possible, via this technique of label transfer, to place every stellar survey of the Milky Way on the same stellar parameter scale and homogeneously map the stellar population of the Milky Way from Northern and Southern hemispheres and using different wavelength regions. \\
+Methods: We demonstrate \tc\ using the APOGEE dataset, to transfer labels from a training set of data of 19 open and globular clusters observed in APOGEE to every new star observed in the APOGEE DR10 data release. \\
+Results:   We reproduce the stellar parameters for the APOGEE survey from DR10 and given the small intrinsic errors of this approach, can achieve this at a fraction (25\%) of the signal to noise required by minimisation techniques.   We obtain this performance via characterising the relationship between the labels of the stars in our training set and their flux, at each pixel. Our method is expandable to additional labels and relevant for chemical tagging.  Our work makes label determination of stellar spectra in large surveys accessible to the broader community and motivates the importance of having a ``gold standard'' set of stars studied at high resolution. \\
 
 
-Context: Stellar models are not yet complete and accurate/linelists are not yet complete and accurate/each new survey has own independent implementation of stellar parameter and abundance determination with a lot of repeated effort/multiple surveys on different scales/methods required for chemical tagging.\\
-Aims: We implement a generalised, wavelength independent technique to determine stellar parameters for large datasets, using data-driven models. Our work motivates the importance of having a ``gold standard'' set of stars studied at high resolution, to serve as training data set for stellar surveys. This method has has important applications for homogenising all large surveys and chemical tagging, for which this approach is ideal. \\ %Established standard stars with labels including in [X/Fe], which can be re-observed as part of every new large survey and serve as the training set for the method, has important applications for homogenising all large surveys and chemical tagging, for which this approach is ideal. \\
-%
-Methods: We use regression techniques to transfer labels from a training set of data to every new star observed, within a given stellar survey. This method is directly transferable between surveys and wavelength regions and relies on a training set of spectra with well defined labels. These labels may include stellar parameters of \teff\, \logg\ and [Fe/H], [$\alpha$/Fe] and individual abundances [X/Fe]. Via this method we characterise how every pixel in a spectra contributes to defining the labels of a star and in doing this, we utilise all of the information within the stellar spectra. \\
-Results:  Using the APOGEE dataset and a training set of globular and open clusters observed by APOGEE, we demonstrate that this approach is simple, fast and extremely successful in deriving stellar parameters for APOGEE data. As we exploit every pixel in the spectra, the intrinsic errors in the method are small, which facilitates going to much lower SNR than current approaches. $< $quantify this$>$. As part of this proof of concept we include a catalogue of \teff\, \logg\ and [Fe/H] for 60K stars observed in APOGEE for DR10, including parameters for dwarf as well as giants, which have not been previously reported. \\
 
 \end{abstract}
 
 \section{Introduction}
+
+There are numerous challenges in exploiting the large datasets of stellar spectra that have become available only in recent years. The first of these is the determination of stellar parameters which is typically a significant and iterative effort, customised specifically to the particular wavelength region of a given survey. The inputs to this procedure are a function of prior knowledge or assumptions about the wavelength region of interest and sensitive to uncertainties in this knowledge and in stellar models which are almost always explicitly relied upon. Typically, to determine stellar parameters, stellar models are used to derive a best-fit spectrum using some minimisation techqniue and a  post-calibration procedure is then applied, to set the results on an adopted physical scale across the parameter space. The inputs to these procedures, uncertainties and assumptions vary between surveys; this belies a second major challenge of the era of large datasets. 
+
+An optimal exploitation of all of these datasets relies on their homogenisation, e.g. a standard stellar parameter scale for stars that have been observed by the Northern and Southern surveys, that operate across different wavelength regions. The facilitator of this effort is cross over calibration stars observed between surveys. These may be stars studied and characterised at high resolution in the optical wavelength region and also globular and open clusters which have well determined labels. These calibration stars afford a critical opportunity to create a data driven model, which can be applied across \textit{all surveys} via label transfer, given known or adopted labels of \teff\, \logg\, \feh\ from an adopted calibration set of stars. This set of stars must be observed across all surveys and must have an adopted scale of parameters and individual abundance, so called labels, which can be directly transferred from these stars to all stars in a survey.  \\
+
+There are therefore also numerous opportunities in this era of large datasets. For the first time, using the data itself, we have the opportunity not to simply find a best fitting spectrum, but to fully characterise spectra and understand how at each data point, the flux is a function of the labels. 
+
+
+
+We seek not to find a best fit model.
+
+continue to be updated and improved, as well as adopted calibration scales and techniques. 
+
+ and the outputs of which are sensitive to ab-initio assumptions, post calibrations and offset from scales of other surveys. 
+%Furthermore, this implementation makes stellar parameter determination itself accessible to the wider community. \\
 
 There are now numerous large stellar surveys of the Milky Way, each of which is independently working to determine stellar parameters across different wavelength regions. Our aim is to provide a generalised tool - decentralised parameter determination, that can in principle put everything on the same scale. Demonstrated limitations of this example - missing calibrators across some of the range, e..g teff.
 
@@ -91,7 +109,7 @@ We implement two tests with this training data. We firstly adopt the ``ASPCAP co
 
 These corrections place the giants in the cluster stars on or near the iscohrones (see Figures 7 and 8 in Meszaros et al., (2013)). There are no ASPCAP corrections implemented for the dwarf spectra. Instead, we determine temperatures for the dwarfs, which are all in the Pleaides, directly using the infrared flux value of \citep{Gonzalez2009} and set all [Fe/H] of the dwarf spectra to [Fe/H] = 0.03 (reference). To determine the log g for these stars, we shift the stars vertically to their nearest positions on at 150 Myr Padova isochrone at [Fe/H] = 0.03. Due to the high differential reddening to the Pleaides, and the subsequent large temperature errors using the IR flux method that result from this, we only selected the 50 from a total of 75 Pleiades dwarfs with SFD E(J-K) values of < 0.12. 
 
-Assuming the input labels from the ASPCAP corrected parameters determined from calibrations to literature cluster values also wraps in the errors from the ASPCAP pipeline: of XX in Teff, XX in \logg\ and XX in [Fe/H], but does place The Cannon directly on the ASPCAP scale for comparison and analysis of the label transfer method.
+Assuming the input labels from the ASPCAP corrected parameters determined from calibrations to literature cluster values also wraps in the errors from the ASPCAP pipeline: of XX in Teff, XX in \logg\ and XX in [Fe/H], but does place \tc directly on the ASPCAP scale for comparison and analysis of the label transfer method.
 
 We also for comparison, implement our own training set calibration; assuming a more basic characterisation of labels. Here we adopt temperatures from the IR flux method of XX directly, take \logg\ from the best vertical fits to the isochrone (with the temperatures fixed) and assume the metallicity of each star in the cluster is the same, at the mean metallicity of the cluster assuming the literature values of the cluster. We adopt a different literature value of M35(check) compared to APOGEE as this cluster appears to fit better at the value of XX according to the model and there is variation in the literature on this metallicity ranging from our adopted value of -0 35 to x. 
 
@@ -530,3 +548,36 @@ Would require priors on everything.
 
 
 \end{document}
+
+%abstract notes%
+
+
+
+%
+%
+%
+%
+%, using label-transfer from stars with defined labels (e.g. of \teff, \logg, \feh).
+%
+%Using the APOGEE dataset and a training set of globular and open clusters observed by APOGEE, we demonstrate that this approach is simple, fast and extremely successful in deriving stellar parameters for APOGEE data. As we exploit every pixel in the spectra, the intrinsic errors in the method are small, which facilitates going to much lower SNR than current approaches. $< $quantify this$>$. As part of this proof of concept we include a catalogue of \teff\, \logg\ and [Fe/H] for 60K stars observed in APOGEE for DR10, including parameters for dwarf as well as giants, which have not been previously reported. \\
+
+%This method is directly transferable between surveys and wavelength regions and relies on a training set of spectra with well defined labels. These labels may include stellar parameters of \teff\, \logg\ and [Fe/H], [$\alpha$/Fe] and individual abundances [X/Fe]. Via this method we characterise how every pixel in a spectra contributes to defining the labels of a star and in doing this, we utilise all of the information within the stellar spectra. \\
+
+%We present a method which enables a wavelength and model independent determination of stellar parameters using label transfer from a training set of real data with known labels. This approach does not require an intricate line-list characterisation in each new wavelength region observed and makes stellar parameter determination accessible to the community. This technique exploits all of the information in the stellar spectrum and it is therefore possible to determine stellar parameters within at a significantly lower signal to noise than minimisation techniques, for a given uncertainty on the labels. \\
+
+%We present a method to estimate stellar parameters and abundances (or "labels") for APOGEE spectra that does not require direct comparison to synthetic model spectra. Our method, called \tc, transfers labels (\teff, \logg and [Fe/H]) from a training set of data whose parameters are well determined (i.e. members of open and globular clusters) to the entire set of stars in the survey. We show we can reproduce the stellar parameters for the APOGEE survey for DR10 and achieve this at a fraction (25\%) of the signal to noise required by minimisation techniques. We obtain this performance via characterising the relationship between the labels of the stars in our training set and their flux, at each pixel. Our method is expandable to additional labels and relevant for chemical tagging. This approach argues for an established set of standard stars with well-determined labels. Given such standard calibrators, it is possible, via this technique of label transfer, to place every stellar survey of the Milky Way on the same stellar parameter scale and homogeneously map the stellar population of the Milky Way from Northern and Southern hemispheres and using different wavelength regions.
+
+
+%This method has has important applications for homogenising all large surveys and chemical tagging, for which this approach is ideal.
+
+enables the homogenisation of northern and southern observing programmes across different wavelength regions given adopted standard calibrator stars. 
+
+
+- allows information in entire region of  a spectrum to be captured and understood. 
+
+
+%Stellar models are not yet complete and accurate/linelists are not yet complete and accurate/each new survey has own independent implementation of stellar parameter and abundance determination with a lot of repeated effort/multiple surveys on different scales/methods required for chemical tagging.\\
+%Established standard stars with labels including in [X/Fe], which can be re-observed as part of every new large survey and serve as the training set for the method, has important applications for homogenising all large surveys and chemical tagging, for which this approach is ideal. \\
+%
+
+
