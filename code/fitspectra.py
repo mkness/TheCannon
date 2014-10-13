@@ -55,7 +55,7 @@ def weighted_median(values, weights, quantile):
     indx = foo[0]
     return values[indx]
 
-def continuum_normalize(dataall, delta_lambda=50):
+def continuum_normalize(dataall, delta_lambda=25):
     """continuum_normalize
 
     keywords
@@ -257,8 +257,11 @@ def get_normalized_training_data():
   fn = "starsin_new_all_ordered.txt"
   fn = "test4_selfg.txt"
   fn = 'test14.txt' # this is for teff < 600 cut which worked quite nicely 
+  fn = 'mkn_labels_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+  fn = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
   fn = 'test18.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
-  T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
+  #T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
+  T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (3,5,7,2,4,6), unpack =1) 
   labels = ["teff", "logg", "feh"]
   a = open(fn, 'r') 
   al = a.readlines() 
@@ -435,7 +438,7 @@ def train(dataall, metaall, order, fn, Ametaall, logg_cut=100., teff_cut=0., lea
    
     diff_t = np.abs(array(metaall[:,0] - Ametaall[:,0]) ) 
     #good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 600. ) ) 
-    good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 6000. ) ) 
+    good = np.logical_and((metaall[:, 1] > 0.2), (diff_t < 6000. ) ) 
     dataall = dataall[:, good]
     metaall = metaall[good]
     nstars, nmeta = metaall.shape
@@ -521,7 +524,7 @@ def nonlinear_invert(f, x1, x2, x3, x4, x5, x6, x7, x8, x9 ,sigmavals):
         return func(x1, x2, x3, x4, x5, x6, x7, x8, x9,  a, b, c)
 
     xdata = np.vstack([x1, x2, x3, x4, x5, x6, x7, x8, x9 ])
-    model, cov = opt.curve_fit(wrapped_func, xdata, f, sigma = sigmavals)#absolute_sigma = True)  is not an option in my version of scipy will upgrade scipy
+    model, cov = opt.curve_fit(wrapped_func, xdata, f, sigma = sigmavals, maxfev = 2000)#absolute_sigma = True)  is not an option in my version of scipy will upgrade scipy
     return model, cov 
 
 def infer_labels_nonlinear(fn_pickle,testdata, ids, fout_pickle, weak_lower,weak_upper):
@@ -881,9 +884,10 @@ if __name__ == "__main__":
     self_flag = 0
     
     if self_flag < 1:
-      a = open('all.txt', 'r') 
-      a = open('all_test.txt', 'r') 
       a = open('all_test2.txt', 'r') 
+      a = open('all_test.txt', 'r') 
+      a = open('all.txt', 'r') 
+      a = open('all_test3.txt', 'r') 
       al = a.readlines()
       bl = []
       for each in al:
@@ -894,7 +898,10 @@ if __name__ == "__main__":
         testdataall, ids = get_normalized_test_data(testfile) # if flag is one, do on self 
         #testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v14_noise.pickle",-10.90,10.99) 
-        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v18.pickle",-10.90,10.99) 
+        #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v18.pickle",-10.90,10.99) 
+        #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_mknown.pickle",-10.90,10.99) 
+        #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_mknA.pickle",-10.90,10.99) 
+        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v18c.pickle",0.00,1.10) 
     if self_flag == 1:
       field = "self_"
       file_in = open('normed_data.pickle', 'r') 
