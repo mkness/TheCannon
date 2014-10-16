@@ -381,6 +381,14 @@ optimizes the likelihood.
 
 \section{Results}
 
+We firstly demonstrate the results for \tc\ compared with those of ASPCAP for three selected fields, in the disk, bulge and halo. 
+
+We find lesser agreement in fields in the plane where APOGEE targets cool supergiant stars. We eliminated the possibility that our results were being degraded by diffuse interstellar bands \citep{Ziaskowski2014} by creating a mask to eliminate this region in training. However, APOGEE results are uncertain for cool temperature stars \teff\ $\sim$ 3500 K so this may be the source of the discrepancy. Alternatively, we have no training data at the lowest temperatures of stars targeted in the plane, so our model may not be able to capture the labels for these stars. Indeed the $\chi^2$ evaluation of the model fit demonstrates at the extent of the training set, the largest $\chi^2$ values are returned for the stars, which makes sense give the labels extend beyond the boundaries of the model and are an extrapolation. 
+
+We show \tc\ - APSCAP comparison for three bulge, disk and halo fields in Figures X - Y, with their corresponding $\chi^2$ fits. These are typical comparisons for all of the fields except in the plane where there are more cool stars due to targeting. The mean bias, offset and precision from \tc\ for the stars in these fields is shown in these figures. 
+
+
+
 \begin{figure}[h!]
   \includegraphics[width=\hsize]{./plots/DR10_isochrone_mknA.png}
 \caption{\small{}}
