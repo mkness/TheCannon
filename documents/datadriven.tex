@@ -93,9 +93,29 @@ From this first proof-of-concept phase, we implemented our regression analysis i
 
 \section{Data}
 
-\subsection{Training Set of Data}
+\subsection{Training Set Data}
 
-The first step in the regression analysis implemented  in \tc\ is to construct a model for label-transfer using a training set of data. This training data is critical as the output from \tc\ can only be as good as the input training set. An ideal training dataset may consist of a set of stars which span the full parameter range of the observations (e.g. in \teff, \logg, [Fe/H], [X/Fe]) and be members of well studied open and globular clusters and/or have their labels derived from high resolution spectral analysis in the optical wavelength region. In the optical region there is a significant legacy of stellar abundance analyses which employ clean, well defined lines with reliable oscillator strengths and take into account isotopic and hyperfine splitting effects for individual abundances. Furthermore, significant effort is currently underway with regard to the high resolution (UVES) analysis of a number of benchmark stars as part of the Gaia-ESO survey. These adopted ``standards'' would be ideal to include in any training set and supplement the open and globular cluster stars which are overt candidates, given their subsequent established labels (Joffre et al., 2014). %Significant effort is currently directed to updating line lists of clean unblended lines in the optical with reliable oscillator strengths and taking into account molecular isotopic splitting e.g. for Gaia-ESO (Heiter et al., in prep.).
+The first step in the regression analysis implemented in \tc\ is to
+obtain a training set.
+This is a set of stars for which we have APOGEE spectra and
+\emph{also} reliable stellar parameter estimates, both accurate and
+precise (inasmuch as that is possible).
+The training data are critical, as the output can only be as good as
+the input training set, in the sense that if the training data are
+wrong, the parameters output by \tc\ will be wrong in the same ways.
+Also, because \tc\ may have to extrapolate to new parts of parameter
+space as it encounters new kinds of spectra, the better the training
+set covers the parameter space of interest (in \teff, \logg, [Fe/H],
+[X/Fe], and so on), the less it has to perform uncertain
+extrapolation.
+The performance of a data-driven model like \tc\ can depend very
+strongly on the size and quality of its training set.
+
+For our purposes, an ideal training dataset may consist of members of
+well studied open and globular clusters that have their stellar
+parameter labels derived from high resolution spectral analysis in the
+optical wavelength region.
+In the optical region there is a significant legacy of stellar abundance analyses which employ clean, well defined lines with reliable oscillator strengths and take into account isotopic and hyperfine splitting effects for individual abundances. Furthermore, significant effort is currently underway with regard to the high resolution (UVES) analysis of a number of benchmark stars as part of the Gaia-ESO survey. These adopted ``standards'' would be ideal to include in any training set and supplement the open and globular cluster stars which are overt candidates, given their subsequent established labels (Joffre et al., 2014). %Significant effort is currently directed to updating line lists of clean unblended lines in the optical with reliable oscillator strengths and taking into account molecular isotopic splitting e.g. for Gaia-ESO (Heiter et al., in prep.).
 
 The training set we employ for this data driven analysis is that of the globular and open cluster data observed by APOGEE for calibration of their abundance pipeline \citep{Meszaros2013}. This training data set is comprised of about 500 stars from 19 open and globular clusters, which span stellar parameter ranges of 3500 $<$ \teff\ $<$ 5300, 0 $<$ \logg\ $<$ 5 and --2.5 $<$ [Fe/H] $<$ 0.45. 
 
