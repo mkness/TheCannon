@@ -56,6 +56,8 @@ def weighted_median(values, weights, quantile):
     return values[indx]
 
 def continuum_normalize(dataall, delta_lambda=25):
+#def continuum_normalize(dataall, delta_lambda=50):
+#def continuum_normalize(dataall, delta_lambda):
     """continuum_normalize
 
     keywords
@@ -83,7 +85,12 @@ def continuum_normalize(dataall, delta_lambda=25):
     """
     Nlambda, Nstar, foo = dataall.shape
     continuum = np.zeros((Nlambda, Nstar))
-    # sanitize inputs
+   
+    file_in = open('coeffs_2nd_order.pickle', 'r')
+    dataall2, metaall, labels, offsets, coeffs, covs, scatters,chis,chisqs = pickle.load(file_in)
+    file_in.close()
+    
+   # sanitize inputs
     for jj in range(Nstar):
     #    #BROKEN
         bad_a = np.logical_or(np.isnan(dataall[:, jj, 1]) ,np.isinf(dataall[:,jj, 1]))
@@ -103,7 +110,14 @@ def continuum_normalize(dataall, delta_lambda=25):
                 print ll+2, star+2, dataall[ll+2, star+2, 0], dataall[ll+2,0,0] 
                 assert False
             indx = (np.where(abs(dataall[:, star, 0] - lam) < delta_lambda))[0]
+            
+            coeffs_indx = coeffs[indx][:,0]
+            test1 = logical_and(coeffs_indx > 0.995, coeffs_indx < 1.005) 
+            test2 = logical_or(coeffs_indx <= 0.995, coeffs_indx >= 1.005) 
+            #test2 = logical_or(coeffs_indx <= 0.998, coeffs_indx >= 1.002) 
+            coeffs_indx[test2] = 100**2.
             ivar = 1. / (dataall[indx, star, 2] ** 2)
+            ivar = 1. / ((dataall[indx, star, 2] ** 2) + coeffs_indx) 
             ivar = np.array(ivar)
             continuum[ll, star] = weighted_median(dataall[indx, star, 1], ivar, 0.90)
     for jj in range(Nstar):
@@ -147,19 +161,19 @@ def get_normalized_test_data(testfile,noise=0):
       file_in2 = open(name+'.pickle', 'r') 
       testdata = pickle.load(file_in2)
       file_in2.close()
-   #   a = open(testfile, 'r')
-   #   al2 = a.readlines()
-   #   bl2 = []
-   #   for each in al2:
-   #     bl2.append(each.strip())
-   #   SNR = np.zeros((len(bl2))) 
-   #   for jj,each in enumerate(bl2):
-   #     a = pyfits.open(each) 
-   #     #SNR[jj]  = a[0].header['SNRVIS4']
-   #     SNR[jj]  = a[0].header['SNR']
-   #     file_in2 = open(name+'_SNR.pickle', 'w')  
-   #     pickle.dump(SNR,  file_in2)
-   #     file_in2.close()
+      a = open(testfile, 'r')
+      al2 = a.readlines()
+      bl2 = []
+      for each in al2:
+        bl2.append(each.strip())
+      SNR = np.zeros((len(bl2))) 
+      for jj,each in enumerate(bl2):
+        a = pyfits.open(each) 
+      #  SNR[jj]  = a[0].header['SNRVIS4']
+        SNR[jj]  = a[0].header['SNR']
+        file_in2 = open(name+'_SNR.pickle', 'w')  
+        pickle.dump(SNR,  file_in2)
+        file_in2.close()
       return testdata, ids 
   if noise == 1: 
     if not glob.glob(name+'._SNR.pickle'):
@@ -204,7 +218,7 @@ def get_normalized_test_data(testfile,noise=0):
       ydata = a[1].data[0] 
       ysigma = a[2].data[0]
       len_data = a[2].data[0]
-      #ydata = a[1].data[3] # NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
+      #ydata = a[1].data[3] # SNR test - NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
       #ysigma = a[2].data[3]
       #len_data = a[2].data[3]
       if jj == 0:
@@ -884,10 +898,11 @@ if __name__ == "__main__":
     self_flag = 0
     
     if self_flag < 1:
-      a = open('all_test2.txt', 'r') 
       a = open('all_test.txt', 'r') 
       a = open('all.txt', 'r') 
       a = open('all_test3.txt', 'r') 
+      a = open('all_test2.txt', 'r') 
+      a = open('all_test4.txt', 'r') 
       al = a.readlines()
       bl = []
       for each in al:

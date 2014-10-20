@@ -1,2 +1,2 @@
-4147_SNRtestref.txt
-4147_SNRtestref.txt
+4147_SNRtest.txt
+4147_SNRtest.txt
