@@ -895,7 +895,7 @@ if __name__ == "__main__":
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
     self_flag = 2
-    self_flag = 0
+    #self_flag = 0
     
     if self_flag < 1:
       a = open('all_test.txt', 'r') 

@@ -151,6 +151,23 @@ For comparison, we adopt a log g label for all of the training stars not from th
 
 \subsection{Flux Normalisation}
 
+In fitting for labels that describe the spectra, we could in principle allow the continuum to be a label for which we can fit, in this way the continuum can be determined by the regression method. Alternatively, we can determine the continuum iteratively, but using the mean spectra determined from the training data. 
+
+\section{Test Data} 
+
+Our test data is the APOGEE continuum normalised DR10 spectra provided in the aspcapStar files (cite). These files provide continuum normalised multiple visit spectra with typical signal to noise of > 100. 
+
+Describe what we do - continuum normalise in the exact same way as per the data. Then use the sigma to get the inverse variance of the data, critical in weighting for the regression in addition to the scatter parameter describing the standard deviation of the fit at every wavelength for all stars in the training set. This relies on the sigma array being correct. There are cases where does not capture bad flux, at 0 or other issues. This cases star is returned in non physical parameter space. Implemented own test to catch this by setting variance to a high value where flux is 0 or spiked and doing this for surrounding pixels as well. Also cases where absorption features in the spectra, use a chi2 metric to determine when star is far from fit. 
+
+
+We do not use other flags but at end use other flags to see values in strange places - stars with large vscatter tend to lie between giant branch and dwarf branch. 
+
+Additionally, syigma array does not capture this in the apStar files. 
+
+There are bulge fields missing and these available in the apStar files, which are not flux normalised but we simply to this
+
+For our SNR tests we need individual visits and therefore use the apStar files where are not flux normalised. 
+
 
 Two pass - highly sensitive; temperature/SNR. 
 
@@ -189,7 +206,7 @@ Each of the training spectra $n$ has $K$ labels $l_{nk}$, each of which
 is (for now) presumed to have negligible uncertainty.
 The general model is
 \begin{eqnarray}
-y_{n\lambda} &=&
+f_{n\lambda} &=&
 Y(\set{l}_n\given\set{\theta}_\lambda) + [s_\lambda^2 + \sigma_{n\lambda}^2]^{1/2}\,\xi_{n\lambda}
 \label{eq:model}\\
 \set{l}_n &\equiv& [l_{n1}, l_{n2}, \cdots, l_{nK}]
@@ -206,36 +223,36 @@ That is, we have assumed that the noise is Gaussian, zero mean, and
 independent for every measurement.
 This model leads to the single-pixel log-likelihood function
 \begin{eqnarray}
-\ln p(y_{n\lambda}\given\set{\theta}_\lambda,s_\lambda^2) &=&
- -\frac{1}{2}\frac{[y_{n\ell} - Y(\set{l}_n\given\set{\theta}_\lambda)]^2}{s_\lambda^2 + \sigma_{n\lambda}^2}
+\ln p(f_{n\lambda}\given\set{\theta}_\lambda,s_\lambda^2) &=&
+ -\frac{1}{2}\frac{[f_{n\lambda} - Y(\set{l}_n\given\set{\theta}_\lambda)]^2}{s_\lambda^2 + \sigma_{n\lambda}^2}
  -\frac{1}{2}\ln(s_\lambda^2 + \sigma_{n\lambda}^2)
  -\frac{1}{2}\ln 2\pi
 \label{eq:like1}\\
-\set{x}_n &\equiv& [l_{n1}, l_{n2}, \cdots, l_{nK}]
+\set{l}_n &\equiv& [l_{n1}, l_{n2}, \cdots, l_{nK}]
 \quad.
 \end{eqnarray}
 Since all the spectra and pixels are treated as independent, each
-wavelength $\lambda_\ell$ can have its parameters
-$[\set{\theta}_\ell,s_\ell^2]$ inferred independently, and all the
+wavelength $\lambda_\lambda$ can have its parameters
+$[\set{\theta}_\lambda,s_\lambda^2]$ inferred independently, and all the
 individual-spectra log-likelihoods can be added together to make
 \begin{eqnarray}
-\ln p(\set{y}_\ell\given\set{\theta}_\ell,s_\ell^2) &=&
- \sum_{n=1}^N \ln p(y_{n\ell}\given\set{\theta}_\ell,s_\ell^2)
+\ln p(\set{f}_\lambda\given\set{\theta}_\lambda,s_\lambda^2) &=&
+ \sum_{n=1}^N \ln p(y_{n\lambda}\given\set{\theta}_\lambda,s_\lambda^2)
 \label{eq:like}\\
-\set{y}_\ell &\equiv& [y_{1\ell}, y_{2\ell}, \cdots, y_{N\ell}]
+\set{f}_\lambda &\equiv& [y_{1\lambda}, y_{2\lambda}, \cdots, y_{N\lambda}]
 \quad,
 \end{eqnarray}
-where $\set{y}_\ell$ is the vector of spectral flux values for
-the $N$ objects all at wavelength $\lambda_\ell$.
-We can set the parameters $[\set{\theta}_\ell,s_\ell^2]$ either by
+where $\set{f}_\lambda$ is the vector of spectral flux values for
+the $N$ objects all at wavelength $\lambda$
+We can set the parameters $[\set{\theta}_\lambda,s_\lambda^2]$ either by
 optimizing the likelihood (\ref{eq:like}) or by applying priors and
 performing some kind of probabilistic inference (with, say, Markov
 Chain Monte Carlo techniques).
 Here we will optimize for now.
 
 In this \sectionname, we are treating the function parameters
-$\set{\theta}_\ell$ and the scatter $s_\lambda^2$ as free parameters, and the
-labels $x_{nk}$ as fixed.
+$\set{\theta}_\lambda$ and the scatter $s_\lambda^2$ as free parameters, and the
+labels $l_{nk}$ as fixed.
 The likelihood function (\ref{eq:like}) is presented as being a
 function of these free parameters.
 In the next \sectionname, the tables will turn, and we will treat the
@@ -248,16 +265,16 @@ new spectra.
 The simplest spectral model is that in which the functions $Y()$ are
 linear in the labels:
 \begin{eqnarray}
-Y(\set{x}_n\given\set{\theta}_\lambda) &=&
- a_{\lambda 0} + \sum_{k=1}^K a_{\lambda k}\,[x_{nk} - \mean{x_k}]
+Y(\set{l}_n\given\set{\theta}_\lambda) &=&
+ a_{\lambda 0} + \sum_{k=1}^K a_{\lambda k}\,[l_{nk} - \mean{l_k}]
 \label{eq:linear}\\
-\set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
+\set{l}_n &\equiv& [l_{n1}, l_{n2}, \cdots, l_{nK}]
 \\
 \set{\theta}_\lambda &\equiv& [a_{\lambda 0}, a_{\lambda 1}, \cdots, a_{\lambda K}]
 \quad ,
 \end{eqnarray}
 where the $a_{\lambda k}$ are linear coefficients, and
-the $\mean{x_k}$ are offsets (possibly means of the training data) to
+the $\mean{l_k}$ are offsets (possibly means of the training data) to
 keep the model ``pivoting'' around a reasonable point in tag space.
 This linear-in-labels form (\ref{eq:linear}) has many useful and
 excellent properties.
@@ -269,10 +286,10 @@ parameter.
 The second is that the tag inference (label-transfer; described in the
 next Section) on the test data will have a very simple form.
 The third is that the coefficients $a_{\lambda 0}$, seen as a discrete
-function of wavelength $\lambda_\ell$, can be seen as an estimate of
+function of wavelength $\lambda_\lambda$, can be seen as an estimate of
 the \emph{mean spectrum} (provided that the offsets $\mean{x_k}$ are
 the mean tag values over the $N$ training spectra); and the
-coefficients $a_{\ell k}$ can be seen as the mean first derivatives of
+coefficients $a_{\lambda k}$ can be seen as the mean first derivatives of
 the expected spectrum with respect to each of the $k$ labels, estimated
 over the range of the training data.
 
@@ -292,40 +309,77 @@ we restrict to weak lines?..
 The (perhaps) second-simplest spectral model is that in which the
 functions $Y()$ are quadratic in the labels:
 \begin{eqnarray}
-Y(\set{x}_n\given\set{\theta}_\ell) &=&
- a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
- + \sum_{k=1}^K \sum_{k'=k}^K a_{\ell kk'}\,[x_{nk} - \mean{x_k}]\,[x_{nk'} - \mean{x_{k'}}]
+Y(\set{l}_n\given\set{\theta}_\lambda) &=&
+ a_{\lambda 0} + \sum_{k=1}^K a_{\lambda k}\,[l_{nk} - \mean{l_k}]
+ + \sum_{k=1}^K \sum_{k'=k}^K a_{\lambda kk'}\,[l_{nk} - \mean{l_k}]\,[l_{nk'} - \mean{l_{k'}}]
 \label{eq:quadratic}\\
-\set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
+\set{l}_n &\equiv& [l_{n1}, l_{n2}, \cdots, l_{nK}]
 \\
-\set{\theta}_\ell &\equiv& [a_{\ell 0}, a_{\ell 1}, \cdots, a_{\ell K},
-                            a_{\ell 11}, a_{\ell 12}, \cdots, a_{\ell KK}]
+\set{\theta}_\lambda &\equiv& [a_{\lambda 0}, a_{\lambda 1}, \cdots, a_{\lambda K},
+                            a_{\lambda 11}, a_{\lambda 12}, \cdots, a_{\lambda KK}]
 \quad ,
 \end{eqnarray}
-where the $a_{\ell k}$ and $a_{\ell kk'}$ are linear coefficients, and
-the $\mean{x_k}$ are offsets (possibly means of the training data) to
+where the $a_{\lambda k}$ and $a_{\lambda kk'}$ are linear coefficients, and
+the $\mean{l_k}$ are offsets (possibly means of the training data) to
 keep the model ``pivoting'' around a reasonable point in tag space.
 This quadratic-in-labels form (\ref{eq:quadratic}) is similar to and
 different from the linear-in-labels form (\ref{eq:linear}) in a number
 of ways.
 It is still the case that optimization of the model, at fixed scatter
-$s_\ell^2$ is a pure linear-algebra operation (weighted least
+$s_\lambda^2$ is a pure linear-algebra operation (weighted least
 squares).
 However, tag inference (described in the next Section) on the test
 data will no longer be simple; it will now require non-linear
 optimization.
-The coefficients $a_{\ell 0}$ can still be seen as an estimate of the
-\emph{mean spectrum} (provided that the offsets $\mean{x_k}$ are the
-mean tag values); the first-order coefficients $a_{\ell k}$ can still
+The coefficients $a_{\lambda 0}$ can still be seen as an estimate of the
+\emph{mean spectrum} (provided that the offsets $\mean{l_k}$ are the
+mean tag values); the first-order coefficients $a_{\lambda k}$ can still
 be seen as first derivatives of the expected spectrum with respect to
 each of the $k$ labels, but now evaluated at the mean spectrum; the
-second-order coefficients $a_{\ell kk'}$ can now be seen as mean
+second-order coefficients $a_{\lambda kk'}$ can now be seen as mean
 second derivatives of the expected spectrum with respect to pairs of
 labels $k$ and $k'$.
 
 The results for the quadratic-in-labels model (\ref{eq:linear}) are shown
 in Figures~XXX through YYY.  They show... departures from
 linearity... outliers... is it really a better model?..
+
+\section{Hans-Walter nomeclamenture}
+
+- David can you help me reconcile yours with HW's i.e. compromise/put in both somehow...svp?...
+
+Step 1. \\
+
+We want to firstly determine the coefficients of the fit of the training data given their labels, given s = 1..N$_spectra$, \lambda = 1 to N$_pixels$ and labels l = 1 to N$_labels$. There is a coefficient at every pixel, 
+${\left \vector{\theta_\lambda} \right}_lambda$ and there is a set of labels for every star, ${\left \vector{\theta_s} \right}_s$. Given a flux for every star in the training spectra at every wavelength, 
+\begin{equation}
+f_{\lambda s}(\vector{c_\lambda}\vector{l_s}) = mean(f_\lambda) + dot( \vector{\theta}   {L^'}_s (\vector{l_s})  ) 
+\end{equation}
+
+where {L^'}_s = f(\vector{L_s}, order) so for linear \tilde{L_s} = \vector{L_s} and for quadratic 
+\tilde{L_s} = \matrix{}
+
+Getting the coefficients wavelength-by-wavelength from all of the training spectra: 
+
+\begin{eqnarray}
+\ln p(\set{data}_\lambda\given\set{\vector{l_s}}, {\vector{\theta}}_\lambda,\sigma_\lambda) &=&
+- \sum_{s=1}^N_{spec} \divide{(f_{\lambda}_s - \mean(f_\lambda} -  dot( \vector{\theta_\lambda}^T, \vector{l_s} }^2{2(\delta_\lambda_s + \sigma{^2}_\lambda)}
+\end{eqnarray}
+where \delta is the pixel uncertainty, from the instrument and from the shot noise and \sigma is the scatter of the fit. So optimise to get the coefficients and the scatter parameters, $\vector{\theta_\lambda}$, $\sigma_\lambda$, for known labels \vector{l_s} in the training set. 
+
+Step 2: 
+
+Optimise the sample solving for the labels \vector{l_s} given the set of coefficients and scatters for those coefficient fits, 
+$\left c_\lambda \right_{\lambda}$. 
+
+Here: \\
+\begin{eqnarray}
+\ln p(\set{data}_\s\given\set{\vector{l_s}}, ({\vector{\theta_{\lambda}}})_\lambda,({\sigma_\lambda})_\lambda) &=&
+- \sum_{s=1}^N_{pixels} \divide{(f_{\lambda}_s - \mean(f_\lambda} -  dot( \vector{\theta_\lambda}^T, \vector{l_s} }^2{2(\delta_\lambda_s + \sigma{^2}_\lambda)}
+\end{eqnarray}
+
+This time optimise the function solving for the labels \vector{l_s} given the set of coefficients at every wavelength $\left \theta_\lambda $right _\$lambda$ determined from the training set. \\
+
 
 \section{Parameter estimation}
 
@@ -343,8 +397,8 @@ what follows.
 
 In the test data there will be $M$ spectra $m$, each of which---as in
 the training data---has a continuum-normalized flux measurement
-$y_{m\ell}$ at each of $L$ wavelengths $\lambda_\ell$, and an
-associated observational uncertainty variance $\sigma_{m\ell}^2$.
+$y_{m\lambda}$ at each of $L$ wavelengths $\lambda_\lambda$, and an
+associated observational uncertainty variance $\sigma_{m\lambda}^2$.
 Again, if there are missing flux values in the test data, these can be
 handled by setting variances to something very large.
 The difference between the training data and the test data is that the
@@ -355,17 +409,17 @@ Just as in the previous \sectionname, our model is given in
 equation~(\ref{eq:model}).
 This model leads to the same likelihood function given in
 equations~(\ref{eq:like1}) and (\ref{eq:like}), but this time seen as
-being functions not of the function parameters $\set{\theta}_\ell$ and
-scatter $s_\ell^2$ but instead as functions of the \emph{labels}
+being functions not of the function parameters $\set{\theta}_\lambda$ and
+scatter $s_\lambda^2$ but instead as functions of the \emph{labels}
 $x_{mk}$:
 \begin{eqnarray}
-\ln p(y_{m\ell}\given\set{x}_m) &=&
- -\frac{1}{2}\frac{[y_{m\ell} - Y(\set{x}_m\given\set{\theta}_\ell)]^2}{s_\ell^2 + \sigma_{m\ell}^2}
- -\frac{1}{2}\ln(s_\ell^2 + \sigma_{m\ell}^2)
+\ln p(y_{m\lambda}\given\set{x}_m) &=&
+ -\frac{1}{2}\frac{[y_{m\lambda} - Y(\set{x}_m\given\set{\theta}_\lambda)]^2}{s_\lambda^2 + \sigma_{m\lambda}^2}
+ -\frac{1}{2}\ln(s_\lambda^2 + \sigma_{m\lambda}^2)
  -\frac{1}{2}\ln 2\pi
 \\
 \ln p(\set{y}_m\given\set{x}_m) &=&
- \sum_{\ell=1}^L \ln p(y_{m\ell}\given\set{x}_m)
+ \sum_{\lambda=1}^L \ln p(y_{m\lambda}\given\set{x}_m)
 \label{eq:taglike}\\
 \set{x}_m &\equiv& [x_{m1}, x_{m2}, \cdots, x_{mK}]
 \\
@@ -374,10 +428,10 @@ $x_{mk}$:
 \end{eqnarray}
 where the likelihood functions are given as a function of labels now,
 the sum is now over the full set of $L$ wavelengths
-$\lambda_\ell$, and the vector $\set{y}_m$ is the vector of fluxes from
-spectrum $m$ for all $L$ wavelengths $\lambda_\ell$.
+$\lambda_\lambda$, and the vector $\set{y}_m$ is the vector of fluxes from
+spectrum $m$ for all $L$ wavelengths $\lambda_\lambda$.
 These likelihood functions effectively assume that the function
-parameters $\set{\theta}_\ell$ and scatters $s_\ell^2$ are all known (from
+parameters $\set{\theta}_\lambda$ and scatters $s_\lambda^2$ are all known (from
 the training data).
 New labels $x_{mk}$ for object $m$ can be obtained either by maximizing
 the likelihood function (\ref{eq:taglike}), or else by applying priors
@@ -386,10 +440,10 @@ Here we will optimize for now.
 
 When we use the simple linear-in-labels form (\ref{eq:linear}) for the
 mean model $Y()$, the optimization to obtain maximum-likelihood labels
-(given parameters $[\set{\theta}_\ell, s_\ell^2]$) is simple linear
+(given parameters $[\set{\theta}_\lambda, s_\lambda^2]$) is simple linear
 least-square fitting.
 This optimization is obtained by straightforward linear algebra on the
-spectral pixels $y_{m\ell}$, and standard frequentist confidence
+spectral pixels $y_{m\lambda}$, and standard frequentist confidence
 intervals can be obtained similarly.
 Results for the linear-in-labels model are shown in Figures~XXX through
 YYY.
@@ -502,7 +556,7 @@ Generalize to a GP at every wavelength.
 ...Limitations of the inference procedure at tagging time
 
 ...What would the fully probabilistic generalization look like?
-It would involve generating samples of $[\set{\theta}_\ell, s_\ell^2]$ at each wavelength $\lambda_\ell$ at training time.
+It would involve generating samples of $[\set{\theta}_\lambda, s_\lambda^2]$ at each wavelength $\lambda_\lambda$ at training time.
 Then using all these samples at tagging time.
 Produce also a sampling of labels $\set{x}_m$ for each object $m$.
 Would have the great advantage that we could use partially or noisily tagged objects in training!
@@ -702,9 +756,9 @@ The model is built using ``training data'' (with known labels) and then
 used to tag (or infer labels for) the ``test data''.
 
 In the training data there will be $N$ spectra $n$, each of which has
-a continuum-normalized flux measurement $y_{n\ell}$ at wavelength
-$\lambda_\ell$, and an associated uncertainty variance
-$\sigma_{n\ell}^2$ from finite photon counts and instrumental effects.
+a continuum-normalized flux measurement $y_{n\lambda}$ at wavelength
+$\lambda_\lambda$, and an associated uncertainty variance
+$\sigma_{n\lambda}^2$ from finite photon counts and instrumental effects.
 If there are missing flux values in the training data, these can be
 handled by setting variances to something very large (or inverse
 variances to something very small).
@@ -712,57 +766,57 @@ Each of the training spectra $n$ has $K$ labels $x_{nk}$, each of which
 is (for now) presumed to have negligible uncertainty.
 The general model is
 \begin{eqnarray}
-y_{n\ell} &=&
- Y(\set{x}_n\given\set{\theta}_\ell) + [s_\ell^2 + \sigma_{n\ell}^2]^{1/2}\,\xi_{n\ell}
+y_{n\lambda} &=&
+ Y(\set{x}_n\given\set{\theta}_\lambda) + [s_\lambda^2 + \sigma_{n\lambda}^2]^{1/2}\,\xi_{n\lambda}
 \label{eq:model}\\
 \set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
 \quad,
 \end{eqnarray}
 where $Y()$ is some (possibly complicated) function of the full set
 of $K$ labels, $\set{x}_n$ is a vector or blob of the $K$ labels for spectrum $n$,
-$\set{\theta}_\ell$ is the set of parameters controlling the
-function $Y()$ at wavelength $\lambda_\ell$, $s_\ell^2$ is an
-intrinsic variance for the model at wavelength $\lambda_\ell$, and
-$\xi_{n\ell}$ is a Gaussian random number with zero mean and unit
+$\set{\theta}_\lambda$ is the set of parameters controlling the
+function $Y()$ at wavelength $\lambda_\lambda$, $s_\lambda^2$ is an
+intrinsic variance for the model at wavelength $\lambda_\lambda$, and
+$\xi_{n\lambda}$ is a Gaussian random number with zero mean and unit
 variance.
 That is, we have assumed that the noise is Gaussian, zero mean, and
 independent for every measurement.
 This model leads to the single-pixel log-likelihood function
 \begin{eqnarray}
-\ln p(y_{n\ell}\given\set{\theta}_\ell,s_\ell^2) &=&
- -\frac{1}{2}\frac{[y_{n\ell} - Y(\set{x}_n\given\set{\theta}_\ell)]^2}{s_\ell^2 + \sigma_{n\ell}^2}
- -\frac{1}{2}\ln(s_\ell^2 + \sigma_{n\ell}^2)
+\ln p(y_{n\lambda}\given\set{\theta}_\lambda,s_\lambda^2) &=&
+ -\frac{1}{2}\frac{[y_{n\lambda} - Y(\set{x}_n\given\set{\theta}_\lambda)]^2}{s_\lambda^2 + \sigma_{n\lambda}^2}
+ -\frac{1}{2}\ln(s_\lambda^2 + \sigma_{n\lambda}^2)
  -\frac{1}{2}\ln 2\pi
 \label{eq:like1}\\
 \set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
 \quad.
 \end{eqnarray}
 Since all the spectra and pixels are treated as independent, each
-wavelength $\lambda_\ell$ can have its parameters
-$[\set{\theta}_\ell,s_\ell^2]$ inferred independently, and all the
+wavelength $\lambda_\lambda$ can have its parameters
+$[\set{\theta}_\lambda,s_\lambda^2]$ inferred independently, and all the
 individual-spectra log-likelihoods can be added together to make
 \begin{eqnarray}
-\ln p(\set{y}_\ell\given\set{\theta}_\ell,s_\ell^2) &=&
- \sum_{n=1}^N \ln p(y_{n\ell}\given\set{\theta}_\ell,s_\ell^2)
+\ln p(\set{y}_\lambda\given\set{\theta}_\lambda,s_\lambda^2) &=&
+ \sum_{n=1}^N \ln p(y_{n\lambda}\given\set{\theta}_\lambda,s_\lambda^2)
 \label{eq:like}\\
-\set{y}_\ell &\equiv& [y_{1\ell}, y_{2\ell}, \cdots, y_{N\ell}]
+\set{y}_\lambda &\equiv& [y_{1\lambda}, y_{2\lambda}, \cdots, y_{N\lambda}]
 \quad,
 \end{eqnarray}
-where $\set{y}_\ell$ is the vector of spectral flux values for
-the $N$ objects all at wavelength $\lambda_\ell$.
-We can set the parameters $[\set{\theta}_\ell,s_\ell^2]$ either by
+where $\set{y}_\lambda$ is the vector of spectral flux values for
+the $N$ objects all at wavelength $\lambda_\lambda$.
+We can set the parameters $[\set{\theta}_\lambda,s_\lambda^2]$ either by
 optimizing the likelihood (\ref{eq:like}) or by applying priors and
 performing some kind of probabilistic inference (with, say, Markov
 Chain Monte Carlo techniques).
 Here we will optimize for now.
 
 In this \sectionname, we are treating the function parameters
-$\set{\theta}_\ell$ and the scatter $s_\ell^2$ as free parameters, and the
+$\set{\theta}_\lambda$ and the scatter $s_\lambda^2$ as free parameters, and the
 labels $x_{nk}$ as fixed.
 The likelihood function (\ref{eq:like}) is presented as being a
 function of these free parameters.
 In the next \sectionname, the tables will turn, and we will treat the
-function parameters $\set{\theta}_\ell$ and scatter $s_\ell^2$ as fixed and
+function parameters $\set{\theta}_\lambda$ and scatter $s_\lambda^2$ as fixed and
 the labels $x_{nk}$ as parameters.
 The difference is that here we are treating the training data as
 having perfectly known labels, and later we will be inferring labels for
@@ -771,31 +825,31 @@ new spectra.
 The simplest spectral model is that in which the functions $Y()$ are
 linear in the labels:
 \begin{eqnarray}
-Y(\set{x}_n\given\set{\theta}_\ell) &=&
- a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
+Y(\set{x}_n\given\set{\theta}_\lambda) &=&
+ a_{\lambda 0} + \sum_{k=1}^K a_{\lambda k}\,[x_{nk} - \mean{x_k}]
 \label{eq:linear}\\
 \set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
 \\
-\set{\theta}_\ell &\equiv& [a_{\ell 0}, a_{\ell 1}, \cdots, a_{\ell K}]
+\set{\theta}_\lambda &\equiv& [a_{\lambda 0}, a_{\lambda 1}, \cdots, a_{\lambda K}]
 \quad ,
 \end{eqnarray}
-where the $a_{\ell k}$ are linear coefficients, and
+where the $a_{\lambda k}$ are linear coefficients, and
 the $\mean{x_k}$ are offsets (possibly means of the training data) to
 keep the model ``pivoting'' around a reasonable point in tag space.
 This linear-in-labels form (\ref{eq:linear}) has many useful and
 excellent properties.
 The first is that optimization of the model, at fixed scatter
-$s_\ell^2$ is a pure linear-algebra operation (weighted least
+$s_\lambda^2$ is a pure linear-algebra operation (weighted least
 squares); simultaneous optimization of all the parameters
-$[\set{\theta}_\ell,s_\ell^2]$ is only nonlinear in the $s_\ell^2$
+$[\set{\theta}_\lambda,s_\lambda^2]$ is only nonlinear in the $s_\lambda^2$
 parameter.
 The second is that the tag inference (label-transfer; described in the
 next Section) on the test data will have a very simple form.
-The third is that the coefficients $a_{\ell 0}$, seen as a discrete
-function of wavelength $\lambda_\ell$, can be seen as an estimate of
+The third is that the coefficients $a_{\lambda 0}$, seen as a discrete
+function of wavelength $\lambda_\lambda$, can be seen as an estimate of
 the \emph{mean spectrum} (provided that the offsets $\mean{x_k}$ are
 the mean tag values over the $N$ training spectra); and the
-coefficients $a_{\ell k}$ can be seen as the mean first derivatives of
+coefficients $a_{\lambda k}$ can be seen as the mean first derivatives of
 the expected spectrum with respect to each of the $k$ labels, estimated
 over the range of the training data.
 
@@ -815,34 +869,34 @@ we restrict to weak lines?..
 The (perhaps) second-simplest spectral model is that in which the
 functions $Y()$ are quadratic in the labels:
 \begin{eqnarray}
-Y(\set{x}_n\given\set{\theta}_\ell) &=&
- a_{\ell 0} + \sum_{k=1}^K a_{\ell k}\,[x_{nk} - \mean{x_k}]
- + \sum_{k=1}^K \sum_{k'=k}^K a_{\ell kk'}\,[x_{nk} - \mean{x_k}]\,[x_{nk'} - \mean{x_{k'}}]
+Y(\set{x}_n\given\set{\theta}_\lambda) &=&
+ a_{\lambda 0} + \sum_{k=1}^K a_{\lambda k}\,[x_{nk} - \mean{x_k}]
+ + \sum_{k=1}^K \sum_{k'=k}^K a_{\lambda kk'}\,[x_{nk} - \mean{x_k}]\,[x_{nk'} - \mean{x_{k'}}]
 \label{eq:quadratic}\\
 \set{x}_n &\equiv& [x_{n1}, x_{n2}, \cdots, x_{nK}]
 \\
-\set{\theta}_\ell &\equiv& [a_{\ell 0}, a_{\ell 1}, \cdots, a_{\ell K},
-                            a_{\ell 11}, a_{\ell 12}, \cdots, a_{\ell KK}]
+\set{\theta}_\lambda &\equiv& [a_{\lambda 0}, a_{\lambda 1}, \cdots, a_{\lambda K},
+                            a_{\lambda 11}, a_{\lambda 12}, \cdots, a_{\lambda KK}]
 \quad ,
 \end{eqnarray}
-where the $a_{\ell k}$ and $a_{\ell kk'}$ are linear coefficients, and
+where the $a_{\lambda k}$ and $a_{\lambda kk'}$ are linear coefficients, and
 the $\mean{x_k}$ are offsets (possibly means of the training data) to
 keep the model ``pivoting'' around a reasonable point in tag space.
 This quadratic-in-labels form (\ref{eq:quadratic}) is similar to and
 different from the linear-in-labels form (\ref{eq:linear}) in a number
 of ways.
 It is still the case that optimization of the model, at fixed scatter
-$s_\ell^2$ is a pure linear-algebra operation (weighted least
+$s_\lambda^2$ is a pure linear-algebra operation (weighted least
 squares).
 However, tag inference (described in the next Section) on the test
 data will no longer be simple; it will now require non-linear
 optimization.
-The coefficients $a_{\ell 0}$ can still be seen as an estimate of the
+The coefficients $a_{\lambda 0}$ can still be seen as an estimate of the
 \emph{mean spectrum} (provided that the offsets $\mean{x_k}$ are the
-mean tag values); the first-order coefficients $a_{\ell k}$ can still
+mean tag values); the first-order coefficients $a_{\lambda k}$ can still
 be seen as first derivatives of the expected spectrum with respect to
 each of the $k$ labels, but now evaluated at the mean spectrum; the
-second-order coefficients $a_{\ell kk'}$ can now be seen as mean
+second-order coefficients $a_{\lambda kk'}$ can now be seen as mean
 second derivatives of the expected spectrum with respect to pairs of
 labels $k$ and $k'$.
 
@@ -866,8 +920,8 @@ what follows.
 
 In the test data there will be $M$ spectra $m$, each of which---as in
 the training data---has a continuum-normalized flux measurement
-$y_{m\ell}$ at each of $L$ wavelengths $\lambda_\ell$, and an
-associated observational uncertainty variance $\sigma_{m\ell}^2$.
+$y_{m\lambda}$ at each of $L$ wavelengths $\lambda_\lambda$, and an
+associated observational uncertainty variance $\sigma_{m\lambda}^2$.
 Again, if there are missing flux values in the test data, these can be
 handled by setting variances to something very large.
 The difference between the training data and the test data is that the
@@ -878,17 +932,17 @@ Just as in the previous \sectionname, our model is given in
 equation~(\ref{eq:model}).
 This model leads to the same likelihood function given in
 equations~(\ref{eq:like1}) and (\ref{eq:like}), but this time seen as
-being functions not of the function parameters $\set{\theta}_\ell$ and
-scatter $s_\ell^2$ but instead as functions of the \emph{labels}
+being functions not of the function parameters $\set{\theta}_\lambda$ and
+scatter $s_\lambda^2$ but instead as functions of the \emph{labels}
 $x_{mk}$:
 \begin{eqnarray}
-\ln p(y_{m\ell}\given\set{x}_m) &=&
- -\frac{1}{2}\frac{[y_{m\ell} - Y(\set{x}_m\given\set{\theta}_\ell)]^2}{s_\ell^2 + \sigma_{m\ell}^2}
- -\frac{1}{2}\ln(s_\ell^2 + \sigma_{m\ell}^2)
+\ln p(y_{m\lambda}\given\set{x}_m) &=&
+ -\frac{1}{2}\frac{[y_{m\lambda} - Y(\set{x}_m\given\set{\theta}_\lambda)]^2}{s_\lambda^2 + \sigma_{m\lambda}^2}
+ -\frac{1}{2}\ln(s_\lambda^2 + \sigma_{m\lambda}^2)
  -\frac{1}{2}\ln 2\pi
 \\
 \ln p(\set{y}_m\given\set{x}_m) &=&
- \sum_{\ell=1}^L \ln p(y_{m\ell}\given\set{x}_m)
+ \sum_{\lambda=1}^L \ln p(y_{m\lambda}\given\set{x}_m)
 \label{eq:taglike}\\
 \set{x}_m &\equiv& [x_{m1}, x_{m2}, \cdots, x_{mK}]
 \\
@@ -897,10 +951,10 @@ $x_{mk}$:
 \end{eqnarray}
 where the likelihood functions are given as a function of labels now,
 the sum is now over the full set of $L$ wavelengths
-$\lambda_\ell$, and the vector $\set{y}_m$ is the vector of fluxes from
-spectrum $m$ for all $L$ wavelengths $\lambda_\ell$.
+$\lambda_\lambda$, and the vector $\set{y}_m$ is the vector of fluxes from
+spectrum $m$ for all $L$ wavelengths $\lambda_\lambda$.
 These likelihood functions effectively assume that the function
-parameters $\set{\theta}_\ell$ and scatters $s_\ell^2$ are all known (from
+parameters $\set{\theta}_\lambda$ and scatters $s_\lambda^2$ are all known (from
 the training data).
 New labels $x_{mk}$ for object $m$ can be obtained either by maximizing
 the likelihood function (\ref{eq:taglike}), or else by applying priors
@@ -909,10 +963,10 @@ Here we will optimize for now.
 
 When we use the simple linear-in-labels form (\ref{eq:linear}) for the
 mean model $Y()$, the optimization to obtain maximum-likelihood labels
-(given parameters $[\set{\theta}_\ell, s_\ell^2]$) is simple linear
+(given parameters $[\set{\theta}_\lambda, s_\lambda^2]$) is simple linear
 least-square fitting.
 This optimization is obtained by straightforward linear algebra on the
-spectral pixels $y_{m\ell}$, and standard frequentist confidence
+spectral pixels $y_{m\lambda}$, and standard frequentist confidence
 intervals can be obtained similarly.
 Results for the linear-in-labels model are shown in Figures~XXX through
 YYY.
