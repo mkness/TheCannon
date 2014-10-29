@@ -26,6 +26,9 @@ from scipy import optimize as opt
 import numpy as np
 LARGE = 1e2 # sigma value to use for bad continuum-normalized data; MAGIC
 normed_training_data = 'normed_data_apstar.pickle'
+normed_training_data = 'normed_data_wmean2.pickle'
+normed_training_data = 'normed_data.pickle'
+#normed_training_data = 'normed_data_tsch.pickle'
 
 def weighted_median(values, weights, quantile):
     """weighted_median
@@ -56,7 +59,64 @@ def weighted_median(values, weights, quantile):
     indx = foo[0]
     return values[indx]
 
-def continuum_normalize(dataall, SNRall, delta_lambda=25):
+
+def continuum_normalize_tsch(dataall,pixlist, delta_lambda=150):
+    pixlist = list(pixlist) 
+    Nlambda, Nstar, foo = dataall.shape
+    continuum = np.zeros((Nlambda, Nstar))
+    dataall_flat = np.ones((Nlambda, Nstar, 3))
+    for jj in range(Nstar):
+        bad_a = np.logical_or(np.isnan(dataall[:, jj, 1]) ,np.isinf(dataall[:,jj, 1]))
+        bad_b = np.logical_or(dataall[:, jj, 2] <= 0. , np.isnan(dataall[:, jj, 2]))
+        bad = np.logical_or( np.logical_or(bad_a, bad_b) , np.isinf(dataall[:, jj, 2]))
+        dataall[bad, jj, 1] = 0.
+        dataall[bad, jj, 2] = np.Inf #LARGE#np.Inf #100. #np.Inf
+        continuum = np.zeros((Nlambda, Nstar))
+        var_array = 100**2*np.ones((len(dataall))) 
+        var_array[pixlist] = 0.000
+        ivar = 1. / ((dataall[:, jj, 2] ** 2) + var_array) 
+        bad = np.isnan(ivar)
+        ivar[bad] =  0
+        bad = np.isinf(ivar)
+        ivar[bad] =  0
+        take1 = logical_and(dataall[:,jj,0] > 15150, dataall[:,jj,0] < 15800)
+        take2 = logical_and(dataall[:,jj,0] > 15890, dataall[:,jj,0] < 16430)
+        take3 = logical_and(dataall[:,jj,0] > 16490, dataall[:,jj,0] < 16950)
+        fit1 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take1,jj,0], y=dataall[take1,jj,1], w=ivar[take1],deg=2)
+        fit2 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take2,jj,0], y=dataall[take2,jj,1], w=ivar[take2],deg=2)
+        fit3 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take3,jj,0], y=dataall[take3,jj,1], w=ivar[take3],deg=2)
+        continuum[take1,jj] = fit1(dataall[take1,jj,0])
+        continuum[take2,jj] = fit2(dataall[take2,jj,0])
+        continuum[take3,jj] = fit3(dataall[take3,jj,0])
+        dataall_flat[:, jj, 0] = dataall[:,jj,0]
+        dataall_flat[take1, jj, 1] = dataall[take1,jj,1]/fit1(dataall[take1,0,0])
+        dataall_flat[take2, jj, 1] = dataall[take2,jj,1]/fit2(dataall[take2,0,0]) 
+        dataall_flat[take3, jj, 1] = dataall[take3,jj,1]/fit3(dataall[take3,0,0]) 
+        dataall_flat[take1, jj, 2] = dataall[take1,jj,2]/fit1(dataall[take1,0,0]) 
+        dataall_flat[take2, jj, 2] = dataall[take2,jj,2]/fit2(dataall[take2,0,0]) 
+        dataall_flat[take3, jj, 2] = dataall[take3,jj,2]/fit3(dataall[take3,0,0]) 
+    for star in range(Nstar):
+        print "get_continuum(): working on star" ,star
+    for jj in range(Nstar):
+        bad_a = np.logical_or(np.isnan(dataall_flat[:, jj, 1]) ,np.isinf(dataall_flat[:,jj, 1]))
+        bad_b = np.logical_or(dataall_flat[:, jj, 2] <= 0. , np.isnan(dataall_flat[:, jj, 2]))
+        bad =  np.logical_or(bad_a, bad_b) 
+        LARGE  =200.
+        dataall_flat[bad,jj, 1] = 1. 
+        dataall_flat[bad,jj, 2] = LARGE 
+        bad = np.where(dataall[:, jj, 2] > LARGE) 
+        dataall_flat[bad,jj, 1] = 1. 
+        dataall_flat[bad,jj, 2] = LARGE 
+        bad = np.isnan(dataall[:, jj, 1])
+        dataall_flat[bad,jj, 1] = 1. 
+        dataall_flat[bad,jj, 2] = LARGE 
+        bad = np.isinf(dataall_flat[:, jj, 2])
+        dataall_flat[bad,jj, 1] = 1. 
+        dataall_flat[bad,jj, 2] = LARGE 
+    return dataall_flat, continuum 
+
+
+def continuum_normalize(dataall, SNRall, delta_lambda=50):
 #def continuum_normalize(dataall, delta_lambda=50):
 #def continuum_normalize(dataall, delta_lambda):
     """continuum_normalize
@@ -87,7 +147,7 @@ def continuum_normalize(dataall, SNRall, delta_lambda=25):
     Nlambda, Nstar, foo = dataall.shape
     continuum = np.zeros((Nlambda, Nstar))
    
-    file_in = open('coeffs_2nd_order.pickle', 'r')
+    file_in = open('coeffs_2nd_order_test18.pickle', 'r')
     dataall2, metaall, labels, offsets, coeffs, covs, scatters,chis,chisqs = pickle.load(file_in)
     file_in.close()
     
@@ -140,9 +200,11 @@ def continuum_normalize(dataall, SNRall, delta_lambda=25):
             #test2 = logical_or(coeffs_indx <= 0.998, coeffs_indx >= 1.002) 
             coeffs_indx[test2] = 100**2.
             coeffs_indx[test1] = 0
-            ivar = 1. / (dataall[indx, star, 2] ** 2)
             ivar = 1. / ((dataall[indx, star, 2] ** 2) + coeffs_indx) 
+            ivar = 1. / (dataall[indx, star, 2] ** 2)
             ivar = np.array(ivar)
+            #q = 0.85
+            q = 0.90
             continuum[ll, star] = weighted_median(dataall[indx, star, 1], ivar, q)
     for jj in range(Nstar):
         bad = np.where(continuum[:,jj] <= 0) 
@@ -157,6 +219,60 @@ def continuum_normalize(dataall, SNRall, delta_lambda=25):
         dataall[bad,jj, 1] = 1. 
         dataall[bad,jj, 2] = LARGE 
     return dataall 
+
+def get_normalized_test_data_tsch(testfile, pixlist):
+  name = testfile.split('.txt')[0]
+  a = open(testfile, 'r')
+  al2 = a.readlines()
+  bl2 = []
+  for each in al2:
+    bl2.append(each.strip())
+  ids = []
+  for each in bl2:
+    ids.append(each.split('-2M')[-1].split('.fits')[0])
+
+  SNRall = np.zeros(len(bl2))
+  for jj,each in enumerate(bl2):
+    a = pyfits.open(each) 
+    if shape(a[1].data) != (8575,):
+      ydata = a[1].data[0] 
+      ysigma = a[2].data[0]
+      len_data = a[2].data[0]
+    #  ydata = a[1].data[3] # SNR test - NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
+    #  ysigma = a[2].data[0]
+    #  len_data = a[2].data[3]
+      if jj == 0:
+        nlam = len(a[1].data[0])
+        testdata = np.zeros((nlam, len(bl2), 3))
+    if shape(a[1].data) == (8575,):
+      ydata = a[1].data
+      ysigma = a[2].data
+      len_data = a[2].data
+      if jj == 0:
+        nlam = len(a[1].data)
+        testdata = np.zeros((nlam, len(bl2), 3))
+    start_wl =  a[1].header['CRVAL1']
+    diff_wl = a[1].header['CDELT1']
+    SNR = a[0].header['SNR']
+    #SNR = a[0].header['SNRVIS4']
+    SNRall[jj] = SNR
+
+    val = diff_wl*(nlam) + start_wl 
+    wl_full_log = np.arange(start_wl,val, diff_wl) 
+    wl_full = [10**aval for aval in wl_full_log]
+    xdata = wl_full
+    testdata[:, jj, 0] = xdata
+    testdata[:, jj, 1] = ydata
+    testdata[:, jj, 2] = ysigma
+  testdata, contall = continuum_normalize_tsch(testdata,pixlist, delta_lambda=50)
+  file_in = open(name+'.pickle', 'w')  
+  file_in2 = open(name+'_SNR.pickle', 'w')
+  pickle.dump(testdata,  file_in)
+  pickle.dump(SNRall,  file_in2)
+  file_in.close()
+  file_in2.close()
+  return testdata , ids # not yet implemented but at some point should probably save ids into the normed pickle file 
+
 
 def get_normalized_test_data(testfile,noise=0): 
   """
@@ -195,8 +311,8 @@ def get_normalized_test_data(testfile,noise=0):
       SNR = np.zeros((len(bl2))) 
       for jj,each in enumerate(bl2):
         a = pyfits.open(each) 
-        SNR[jj]  = a[0].header['SNRVIS4']
-       # SNR[jj]  = a[0].header['SNR']
+        #SNR[jj]  = a[0].header['SNRVIS4']
+        SNR[jj]  = a[0].header['SNR']
         file_in2 = open(name+'_SNR.pickle', 'w')  
         pickle.dump(SNR,  file_in2)
         file_in2.close()
@@ -213,6 +329,7 @@ def get_normalized_test_data(testfile,noise=0):
       for jj,each in enumerate(bl2):
         a = pyfits.open(each) 
         SNR[jj]  = a[0].header['SNR']
+        #SNR[jj]  = a[0].header['SNRVIS4']
         file_in2 = open(name+'_SNR.pickle', 'w')  
         pickle.dump(SNR,  file_in2)
         file_in2.close()
@@ -245,9 +362,9 @@ def get_normalized_test_data(testfile,noise=0):
       ydata = a[1].data[0] 
       ysigma = a[2].data[0]
       len_data = a[2].data[0]
-    #  ydata = a[1].data[3] # SNR test - NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
-    #  ysigma = a[2].data[0]
-    #  len_data = a[2].data[3]
+      #ydata = a[1].data[3] # SNR test - NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
+      #ysigma = a[2].data[3]
+      #len_data = a[2].data[3]
       if jj == 0:
         nlam = len(a[1].data[0])
         testdata = np.zeros((nlam, len(bl2), 3))
@@ -287,23 +404,16 @@ def get_normalized_test_data(testfile,noise=0):
   file_in2.close()
   return testdata , ids # not yet implemented but at some point should probably save ids into the normed pickle file 
 
-def get_normalized_training_data():
-  if glob.glob(normed_training_data): 
-        file_in2 = open(normed_training_data, 'r') 
-        dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
-        file_in2.close()
-        return dataall, metaall, labels, Ametaall, cluster_name, ids
-  fn = "starsin_test2.txt"
-  fn = "starsin_test.txt"
-  fn = "starsin_new_all_ordered.txt"
-  fn = "test4_selfg.txt"
-  fn = 'test14.txt' # this is for teff < 600 cut which worked quite nicely 
-  fn = 'mkn_labels_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+def get_normalized_training_data_tsch(pixlist):
+ # if glob.glob(normed_training_data): 
+ #       file_in2 = open(normed_training_data, 'r') 
+ #       dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
+ #       file_in2.close()
+ #       return dataall, metaall, labels, Ametaall, cluster_name, ids
   fn = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
   fn = 'test18.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
-  fn = 'test18_apstar.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
-  #T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
-  T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (3,5,7,2,4,6), unpack =1) 
+  T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
+  #T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (3,5,7,2,4,6), unpack =1) 
   labels = ["teff", "logg", "feh"]
   a = open(fn, 'r') 
   al = a.readlines() 
@@ -325,7 +435,7 @@ def get_normalized_training_data():
     if jj == 0:
       nmeta = len(labels)
       nlam = len(a[1].data)
-      nlam = len(a[1].data[0])
+      #nlam = len(a[1].data[0])
     val = diff_wl*(nlam) + start_wl 
     wl_full_log = np.arange(start_wl,val, diff_wl) 
     ydata = (np.atleast_2d(a[1].data))[0] 
@@ -358,7 +468,103 @@ def get_normalized_training_data():
       Ametaall[k,0] = T_A[k] 
       Ametaall[k,1] = g_A[k] 
       Ametaall[k,2] = feh_A[k] 
-  dataall = continuum_normalize(dataall) #dataall
+    if jj > 0:
+      assert xdata[0] == dataall[0, 0, 0]
+
+    dataall[:, jj, 0] = xdata
+    dataall[:, jj, 1] = ydata
+    dataall[:, jj, 2] = sigma
+
+    for k in range(0,len(bl)): 
+        # must be synchronised with labels 
+      metaall[k,0] = T_est[k] 
+      metaall[k,1] = g_est[k] 
+      metaall[k,2] = feh_est[k] 
+      Ametaall[k,0] = T_A[k] 
+      Ametaall[k,1] = g_A[k] 
+      Ametaall[k,2] = feh_A[k] 
+  pixlist = list(pixlist) 
+  dataall, contall = continuum_normalize_tsch(dataall,pixlist, delta_lambda=50)
+  file_in = open('normed_data.pickle', 'w')  
+  pickle.dump((dataall, metaall, labels, Ametaall, cluster_name, ids),  file_in)
+  file_in.close()
+  return dataall, metaall, labels , Ametaall, cluster_name, ids
+
+def get_normalized_training_data():
+  if glob.glob(normed_training_data): 
+        file_in2 = open(normed_training_data, 'r') 
+        dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
+        file_in2.close()
+        return dataall, metaall, labels, Ametaall, cluster_name, ids
+  fn = "starsin_test2.txt"
+  fn = "starsin_test.txt"
+  fn = "starsin_new_all_ordered.txt"
+  fn = "test4_selfg.txt"
+  fn = 'test14.txt' # this is for teff < 600 cut which worked quite nicely 
+  fn = 'mkn_labels_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+  fn = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+  fn = 'test18.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+  #fn = 'test14.txt' # this is for teff < 600 cut which worked quite nicely 
+  #fn = 'test18_apstar.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+  T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
+  #T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (3,5,7,2,4,6), unpack =1) 
+  labels = ["teff", "logg", "feh"]
+  a = open(fn, 'r') 
+  al = a.readlines() 
+  bl = []
+  cluster_name = [] 
+  ids = []
+  for each in al:
+    bl.append(each.split()[0]) 
+    cluster_name.append(each.split()[1]) 
+    ids.append(each.split()[0].split('-2M')[-1].split('.fits')[0])
+
+  SNRall = np.zeros((len(bl))) 
+  for jj,each in enumerate(bl):
+    each = each.strip('\n')
+    a = pyfits.open(each) 
+    b = pyfits.getheader(each) 
+    SNRall[jj] = a[0].header['SNR']
+    start_wl =  a[1].header['CRVAL1']
+    diff_wl = a[1].header['CDELT1']
+    print np.atleast_2d(a[1].data).shape
+    if jj == 0:
+      nmeta = len(labels)
+      nlam = len(a[1].data)
+      #nlam = len(a[1].data[0])
+    val = diff_wl*(nlam) + start_wl 
+    wl_full_log = np.arange(start_wl,val, diff_wl) 
+    ydata = (np.atleast_2d(a[1].data))[0] 
+    ydata_err = (np.atleast_2d(a[2].data))[0] 
+    ydata_flag = (np.atleast_2d(a[3].data))[0] 
+    assert len(ydata) == nlam
+    wl_full = [10**aval for aval in wl_full_log]
+    xdata= np.array(wl_full)
+    ydata = np.array(ydata)
+    ydata_err = np.array(ydata_err)
+    starname2 = each.split('.fits')[0]+'.txt'
+    sigma = (np.atleast_2d(a[2].data))[0]# /y1
+    if jj == 0:
+      npix = len(xdata) 
+      dataall = np.zeros((npix, len(bl), 3))
+      metaall = np.ones((len(bl), nmeta))
+      Ametaall = np.ones((len(bl), nmeta))
+    if jj > 0:
+      assert xdata[0] == dataall[0, 0, 0]
+
+    dataall[:, jj, 0] = xdata
+    dataall[:, jj, 1] = ydata
+    dataall[:, jj, 2] = sigma
+
+    for k in range(0,len(bl)): 
+        # must be synchronised with labels 
+      metaall[k,0] = T_est[k] 
+      metaall[k,1] = g_est[k] 
+      metaall[k,2] = feh_est[k] 
+      Ametaall[k,0] = T_A[k] 
+      Ametaall[k,1] = g_A[k] 
+      Ametaall[k,2] = feh_A[k] 
+  dataall = continuum_normalize(dataall,SNRall) #dataall
 
   file_in = open(normed_training_data, 'w')  
   pickle.dump((dataall, metaall, labels, Ametaall, cluster_name, ids),  file_in)
@@ -437,7 +643,7 @@ def do_one_regression_at_fixed_scatter(data, features, scatter):
 
 def do_one_regression(data, metadata):
     """
-    blah blah blah.
+    does a regression at a single wavelength to fit calling the fixed scatter routine
     # inputs:
     """
     ln_s_values = np.arange(np.log(0.0001), 0., 0.5)
@@ -449,12 +655,10 @@ def do_one_regression(data, metadata):
         s_best = np.exp(ln_s_values[-1])
         return do_one_regression_at_fixed_scatter(data, metadata, scatter = s_best) + (s_best, )
     lowest = np.argmin(chis_eval)
-    if lowest == 0 or lowest == len(ln_s_values) + 1:
+    if lowest == 0 or lowest == len(ln_s_values) + 1:# NOTE CHANGED THIS FOR THE _apstar.fits normalisation 
+    #if lowest == 0 or lowest == len(ln_s_values) - 1:
         s_best = np.exp(ln_s_values[lowest])
         return do_one_regression_at_fixed_scatter(data, metadata, scatter = s_best) + (s_best, )
-    print data
-    print metadata
-    print "LOWEST" , lowest
     ln_s_values_short = ln_s_values[np.array([lowest-1, lowest, lowest+1])]
     chis_eval_short = chis_eval[np.array([lowest-1, lowest, lowest+1])]
     z = np.polyfit(ln_s_values_short, chis_eval_short, 2)
@@ -799,7 +1003,7 @@ def leave_one_cluster_out():
       #return inds1, cluster_name
       train(dataall, metaall,  2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0., leave_out=inds1)
       field = "self_2nd_order_"
-      file_in = open('normed_data.pickle', 'r') 
+      file_in = open(normed_training_data, 'r') 
       testdataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in)
       file_in.close() 
       testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.950,10.99) 
@@ -919,7 +1123,9 @@ def plot_leave_one_out(filein,cluster_out):
     return 
 
 if __name__ == "__main__":
-    dataall, metaall, labels, Ametaall, cluster_name, ids = get_normalized_training_data()
+    pixlist = loadtxt("pixtest.txt", usecols = (0,), unpack =1) 
+    #dataall, metaall, labels, Ametaall, cluster_name, ids = get_normalized_training_data()
+    dataall, metaall, labels, Ametaall, cluster_name, ids = get_normalized_training_data_tsch(pixlist)
     fpickle = "coeffs.pickle" 
     if not glob.glob(fpickle):
         train(dataall, metaall, 1,  fpickle, Ametaall,logg_cut= 40.,teff_cut = 0.)
@@ -927,14 +1133,16 @@ if __name__ == "__main__":
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
     self_flag = 2
-    #self_flag = 0
+    self_flag = 0
     
     if self_flag < 1:
       a = open('all_test.txt', 'r') 
       a = open('all.txt', 'r') 
-      a = open('all_test3.txt', 'r') 
       a = open('all_test4.txt', 'r') 
       a = open('all_test2.txt', 'r') 
+      a = open('all_test5.txt', 'r') 
+      a = open('all_test3.txt', 'r') 
+      a = open('all_test6.txt', 'r') 
       al = a.readlines()
       bl = []
       for each in al:
@@ -942,23 +1150,24 @@ if __name__ == "__main__":
       for each in bl: 
         testfile = each
         field = testfile.split('.txt')[0]+'_' #"4332_"
-        testdataall, ids = get_normalized_test_data(testfile) # if flag is one, do on self 
+        #testdataall, ids = get_normalized_test_data(testfile) # if flag is one, do on self 
+        testdataall, ids = get_normalized_test_data_tsch(testfile,pixlist) # if flag is one, do on self 
         #testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v14_noise.pickle",-10.90,10.99) 
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v18.pickle",-10.90,10.99) 
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_mknown.pickle",-10.90,10.99) 
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_mknA.pickle",-10.90,10.99) 
-        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v18c.pickle",0.00,1.10) 
+        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v18c.pickle",0.00,1.40) 
     if self_flag == 1:
       field = "self_"
-      file_in = open('normed_data.pickle', 'r') 
+      file_in = open(normed_training_data, 'r') 
       testdataall, metaall, labels, Ametaall, cluster_name = pickle.load(file_in)
       lookatfits('coeffs.pickle',[1002,1193,1383,1496,2803,4000,4500, 5125],testdataall)
       file_in.close() 
       testmetaall, inv_covars = infer_labels("coeffs.pickle", testdataall, field+"tags.pickle",-10.960,11.03) 
     if self_flag == 2:
       field = "self_2nd_order_"
-      file_in = open('normed_data.pickle', 'r') 
+      file_in = open(normed_training_data, 'r') 
       testdataall, metaall, labels, Ametaall, cluster_name,ids = pickle.load(file_in)
       file_in.close() 
       testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags.pickle",-10.950,10.99) 

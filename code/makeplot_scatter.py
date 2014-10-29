@@ -38,7 +38,7 @@ rcParams['figure.figsize'] = 12.0, 10.0
 
 def plotdata(file_in, wl0, bw,prefix): 
     file_in2 = open(file_in, 'r') 
-    dataall, metall, labels, offsets, coeffs, covs, scatters = pickle.load(file_in2)
+    dataall, metall, labels, offsets, coeffs, covs, scatters,chis,chisqs = pickle.load(file_in2)
     file_in2.close()
 
     rcParams['figure.figsize'] = 13.0, 10.0
@@ -90,7 +90,7 @@ def plotdata(file_in, wl0, bw,prefix):
 
     fig.subplots_adjust(hspace=0)
     fig.subplots_adjust(wspace=0)
-    savefig(fig, prefix, transparent=False, bbox_inches='tight', pad_inches=0.5)
+   # savefig(fig, prefix, transparent=False, bbox_inches='tight', pad_inches=0.5)
     return 
 
 def savefig(fig, prefix, **kwargs):
