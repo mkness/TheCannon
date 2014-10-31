@@ -30,7 +30,11 @@ normed_training_data = 'normed_data_apstar_tsc.pickle' # this is from test18 wit
 normed_training_data = 'normed_data_apstar_c.pickle' # this is from test18 with weighted mean 
 normed_training_data = 'normed_data_wmean2.pickle'
 normed_training_data = 'normed_data.pickle'
+<<<<<<< HEAD
 normed_training_data = 'normed_data_apstar_c.pickle' # this is from test18 with weighted mean 
+=======
+#normed_training_data = 'normed_data_SNRtest.pickle'
+>>>>>>> 6c6460d013f7cfcf07636d37bf2cefb395ea9bc9
 #normed_training_data = 'normed_data_tsch.pickle'
 
 def weighted_median(values, weights, quantile):
@@ -85,9 +89,9 @@ def continuum_normalize_tsch(dataall,pixlist, delta_lambda=150):
         take1 = logical_and(dataall[:,jj,0] > 15150, dataall[:,jj,0] < 15800)
         take2 = logical_and(dataall[:,jj,0] > 15890, dataall[:,jj,0] < 16430)
         take3 = logical_and(dataall[:,jj,0] > 16490, dataall[:,jj,0] < 16950)
-        fit1 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take1,jj,0], y=dataall[take1,jj,1], w=ivar[take1],deg=2)
-        fit2 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take2,jj,0], y=dataall[take2,jj,1], w=ivar[take2],deg=2)
-        fit3 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take3,jj,0], y=dataall[take3,jj,1], w=ivar[take3],deg=2)
+        fit1 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take1,jj,0], y=dataall[take1,jj,1], w=ivar[take1],deg=3)
+        fit2 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take2,jj,0], y=dataall[take2,jj,1], w=ivar[take2],deg=3)
+        fit3 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take3,jj,0], y=dataall[take3,jj,1], w=ivar[take3],deg=3)
         continuum[take1,jj] = fit1(dataall[take1,jj,0])
         continuum[take2,jj] = fit2(dataall[take2,jj,0])
         continuum[take3,jj] = fit3(dataall[take3,jj,0])
@@ -241,9 +245,9 @@ def get_normalized_test_data_tsch(testfile, pixlist):
       ydata = a[1].data[0] 
       ysigma = a[2].data[0]
       len_data = a[2].data[0]
-    #  ydata = a[1].data[3] # SNR test - NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
-    #  ysigma = a[2].data[0]
-    #  len_data = a[2].data[3]
+      #ydata = a[1].data[3] # SNR test - NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
+      #ysigma = a[2].data[3]
+      #len_data = a[2].data[3]
       if jj == 0:
         nlam = len(a[1].data[0])
         testdata = np.zeros((nlam, len(bl2), 3))
@@ -1141,9 +1145,19 @@ if __name__ == "__main__":
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
     self_flag = 2
-    self_flag = 0
+    #self_flag = 0
     
     if self_flag < 1:
+<<<<<<< HEAD
+=======
+      a = open('all.txt', 'r') 
+      a = open('all_test4.txt', 'r') 
+      a = open('all_test2.txt', 'r') 
+      a = open('all_test5.txt', 'r') 
+      a = open('all_test3.txt', 'r') 
+      a = open('all.txt', 'r') 
+      a = open('all_test.txt', 'r') 
+>>>>>>> 6c6460d013f7cfcf07636d37bf2cefb395ea9bc9
       a = open('all_test6.txt', 'r') 
       al = a.readlines()
       bl = []
