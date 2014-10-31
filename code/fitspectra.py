@@ -28,6 +28,7 @@ LARGE = 1e2 # sigma value to use for bad continuum-normalized data; MAGIC
 normed_training_data = 'normed_data_apstar.pickle'
 normed_training_data = 'normed_data_wmean2.pickle'
 normed_training_data = 'normed_data.pickle'
+#normed_training_data = 'normed_data_SNRtest.pickle'
 #normed_training_data = 'normed_data_tsch.pickle'
 
 def weighted_median(values, weights, quantile):
@@ -82,9 +83,9 @@ def continuum_normalize_tsch(dataall,pixlist, delta_lambda=150):
         take1 = logical_and(dataall[:,jj,0] > 15150, dataall[:,jj,0] < 15800)
         take2 = logical_and(dataall[:,jj,0] > 15890, dataall[:,jj,0] < 16430)
         take3 = logical_and(dataall[:,jj,0] > 16490, dataall[:,jj,0] < 16950)
-        fit1 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take1,jj,0], y=dataall[take1,jj,1], w=ivar[take1],deg=2)
-        fit2 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take2,jj,0], y=dataall[take2,jj,1], w=ivar[take2],deg=2)
-        fit3 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take3,jj,0], y=dataall[take3,jj,1], w=ivar[take3],deg=2)
+        fit1 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take1,jj,0], y=dataall[take1,jj,1], w=ivar[take1],deg=3)
+        fit2 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take2,jj,0], y=dataall[take2,jj,1], w=ivar[take2],deg=3)
+        fit3 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take3,jj,0], y=dataall[take3,jj,1], w=ivar[take3],deg=3)
         continuum[take1,jj] = fit1(dataall[take1,jj,0])
         continuum[take2,jj] = fit2(dataall[take2,jj,0])
         continuum[take3,jj] = fit3(dataall[take3,jj,0])
@@ -238,9 +239,9 @@ def get_normalized_test_data_tsch(testfile, pixlist):
       ydata = a[1].data[0] 
       ysigma = a[2].data[0]
       len_data = a[2].data[0]
-    #  ydata = a[1].data[3] # SNR test - NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
-    #  ysigma = a[2].data[0]
-    #  len_data = a[2].data[3]
+      #ydata = a[1].data[3] # SNR test - NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
+      #ysigma = a[2].data[3]
+      #len_data = a[2].data[3]
       if jj == 0:
         nlam = len(a[1].data[0])
         testdata = np.zeros((nlam, len(bl2), 3))
@@ -405,11 +406,11 @@ def get_normalized_test_data(testfile,noise=0):
   return testdata , ids # not yet implemented but at some point should probably save ids into the normed pickle file 
 
 def get_normalized_training_data_tsch(pixlist):
- # if glob.glob(normed_training_data): 
- #       file_in2 = open(normed_training_data, 'r') 
- #       dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
- #       file_in2.close()
- #       return dataall, metaall, labels, Ametaall, cluster_name, ids
+  if glob.glob(normed_training_data): 
+        file_in2 = open(normed_training_data, 'r') 
+        dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
+        file_in2.close()
+        return dataall, metaall, labels, Ametaall, cluster_name, ids
   fn = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
   fn = 'test18.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
   T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
@@ -485,7 +486,7 @@ def get_normalized_training_data_tsch(pixlist):
       Ametaall[k,2] = feh_A[k] 
   pixlist = list(pixlist) 
   dataall, contall = continuum_normalize_tsch(dataall,pixlist, delta_lambda=50)
-  file_in = open('normed_data.pickle', 'w')  
+  file_in = open(normed_training_data, 'w')  
   pickle.dump((dataall, metaall, labels, Ametaall, cluster_name, ids),  file_in)
   file_in.close()
   return dataall, metaall, labels , Ametaall, cluster_name, ids
@@ -1133,15 +1134,16 @@ if __name__ == "__main__":
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
     self_flag = 2
-    self_flag = 0
+    #self_flag = 0
     
     if self_flag < 1:
-      a = open('all_test.txt', 'r') 
       a = open('all.txt', 'r') 
       a = open('all_test4.txt', 'r') 
       a = open('all_test2.txt', 'r') 
       a = open('all_test5.txt', 'r') 
       a = open('all_test3.txt', 'r') 
+      a = open('all.txt', 'r') 
+      a = open('all_test.txt', 'r') 
       a = open('all_test6.txt', 'r') 
       al = a.readlines()
       bl = []
