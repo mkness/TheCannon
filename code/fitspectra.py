@@ -61,7 +61,7 @@ def weighted_median(values, weights, quantile):
     return values[indx]
 
 
-def continuum_normalize_tsch(dataall,pixlist, delta_lambda=150):
+def continuum_normalize_tsch(dataall,mask, pixlist, delta_lambda=150):
     pixlist = list(pixlist) 
     Nlambda, Nstar, foo = dataall.shape
     continuum = np.zeros((Nlambda, Nstar))
@@ -113,6 +113,8 @@ def continuum_normalize_tsch(dataall,pixlist, delta_lambda=150):
         dataall_flat[bad,jj, 2] = LARGE 
         bad = np.isinf(dataall_flat[:, jj, 2])
         dataall_flat[bad,jj, 1] = 1. 
+        dataall_flat[bad,jj, 2] = LARGE 
+        bad = mask[:,jj,0] != 0
         dataall_flat[bad,jj, 2] = LARGE 
     return dataall_flat, continuum 
 
@@ -221,6 +223,23 @@ def continuum_normalize(dataall, SNRall, delta_lambda=50):
         dataall[bad,jj, 2] = LARGE 
     return dataall 
 
+
+def get_bad_pixel_mask(testfile,nlam): 
+  name = testfile.split('.txt')[0]
+  adir = open(testfile, 'r')
+  al2 = adir.readlines()
+  bl2 = []
+  bl3 = []
+  for each in al2:
+    bl2.append(each.strip()) 
+    bl3.append((each.split('/'))[-2] +'/'+ ("apStar-s3-")+each.split('aspcapStar-v304-')[-1].strip())  
+  dirin = ['/home/ness/new_laptop/Apogee_apStar/data.sdss3.org/sas/dr10/apogee/spectro/redux/r3/s3/'+each for each in bl3] 
+  mask  = np.zeros((nlam, len(bl2),1))
+  for jj,each in enumerate(dirin):
+    a=pyfits.open(each) 
+    mask[:,jj,0] = (np.atleast_2d(a[3].data))[0]
+  return mask 
+
 def get_normalized_test_data_tsch(testfile, pixlist):
   name = testfile.split('.txt')[0]
   a = open(testfile, 'r')
@@ -231,6 +250,25 @@ def get_normalized_test_data_tsch(testfile, pixlist):
   ids = []
   for each in bl2:
     ids.append(each.split('-2M')[-1].split('.fits')[0])
+
+#  if glob.glob(name+'.pickle'):
+#    file_in2 = open(name+'.pickle', 'r')
+#    testdata = pickle.load(file_in2)
+#    file_in2.close()
+#    a = open(testfile, 'r')
+#    al2 = a.readlines()
+#    bl2 = []
+#    for each in al2:
+#      bl2.append(each.strip())
+#    SNR = np.zeros((len(bl2)))
+#    for jj,each in enumerate(bl2):
+#      a = pyfits.open(each)
+#      #SNR[jj]  = a[0].header['SNRVIS4']
+#      SNR[jj]  = a[0].header['SNR']
+#      file_in2 = open(name+'_SNR.pickle', 'w')
+#      pickle.dump(SNR,  file_in2)
+#      file_in2.close()
+#    return testdata, ids
 
   SNRall = np.zeros(len(bl2))
   for jj,each in enumerate(bl2):
@@ -265,7 +303,11 @@ def get_normalized_test_data_tsch(testfile, pixlist):
     testdata[:, jj, 0] = xdata
     testdata[:, jj, 1] = ydata
     testdata[:, jj, 2] = ysigma
-  testdata, contall = continuum_normalize_tsch(testdata,pixlist, delta_lambda=50)
+  mask = get_bad_pixel_mask(testfile,nlam) 
+  #for jj,each in enumerate(bl2):
+  #  bad = mask[:,jj] != 0 
+  #  testdata[bad, jj, 2] = 200.
+  testdata, contall = continuum_normalize_tsch(testdata,mask,pixlist, delta_lambda=50)
   file_in = open(name+'.pickle', 'w')  
   file_in2 = open(name+'_SNR.pickle', 'w')
   pickle.dump(testdata,  file_in)
@@ -406,15 +448,17 @@ def get_normalized_test_data(testfile,noise=0):
   return testdata , ids # not yet implemented but at some point should probably save ids into the normed pickle file 
 
 def get_normalized_training_data_tsch(pixlist):
-  if glob.glob(normed_training_data): 
-        file_in2 = open(normed_training_data, 'r') 
-        dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
-        file_in2.close()
-        return dataall, metaall, labels, Ametaall, cluster_name, ids
-  fn = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+#  if glob.glob(normed_training_data): 
+#        file_in2 = open(normed_training_data, 'r') 
+#        dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
+#        file_in2.close()
+#        return dataall, metaall, labels, Ametaall, cluster_name, ids
   fn = 'test18.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
-  T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
-  #T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (3,5,7,2,4,6), unpack =1) 
+ # fn = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+  if fn == 'test18.txt': 
+    T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
+  if fn == 'mkn_labels_Atempfeh_edit.txt': 
+    T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (3,5,7,2,4,6), unpack =1) 
   labels = ["teff", "logg", "feh"]
   a = open(fn, 'r') 
   al = a.readlines() 
@@ -485,7 +529,8 @@ def get_normalized_training_data_tsch(pixlist):
       Ametaall[k,1] = g_A[k] 
       Ametaall[k,2] = feh_A[k] 
   pixlist = list(pixlist) 
-  dataall, contall = continuum_normalize_tsch(dataall,pixlist, delta_lambda=50)
+  mask = get_bad_pixel_mask('test18_names.txt',nlam)
+  dataall, contall = continuum_normalize_tsch(dataall,mask, pixlist, delta_lambda=50)
   file_in = open(normed_training_data, 'w')  
   pickle.dump((dataall, metaall, labels, Ametaall, cluster_name, ids),  file_in)
   file_in.close()
@@ -726,7 +771,6 @@ def get_goodness_fit(fn_pickle, filein, Params_all, MCM_rotate_all):
     dataall, metaall, labels, offsets, coeffs, covs, scatters, chis, chisq = pickle.load(fd) 
     fd.close() 
     file_with_star_data = str(filein)+".pickle"
-    file_with_star_tags = str(filein)+"_tags2.pickle"
     f_flux = open(file_with_star_data, 'r') 
     if filein != 'normed_data': 
       flux = pickle.load(f_flux) 
@@ -1124,7 +1168,10 @@ def plot_leave_one_out(filein,cluster_out):
     return 
 
 if __name__ == "__main__":
-    pixlist = loadtxt("pixtest.txt", usecols = (0,), unpack =1) 
+    pixlist = loadtxt("pixtest3.txt", usecols = (0,), unpack =1) 
+    pixlist = loadtxt("pixtest.txt", usecols = (0,), unpack =1) #v20 
+    pixlist = loadtxt("pixlist_fromcoeffs.txt", usecols = (0,), unpack =1) #v21 
+    pixlist = loadtxt("pixtest4.txt", usecols = (0,), unpack =1) 
     #dataall, metaall, labels, Ametaall, cluster_name, ids = get_normalized_training_data()
     dataall, metaall, labels, Ametaall, cluster_name, ids = get_normalized_training_data_tsch(pixlist)
     fpickle = "coeffs.pickle" 
@@ -1134,7 +1181,7 @@ if __name__ == "__main__":
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
     self_flag = 2
-    #self_flag = 0
+    self_flag = 0
     
     if self_flag < 1:
       a = open('all.txt', 'r') 
@@ -1142,9 +1189,10 @@ if __name__ == "__main__":
       a = open('all_test2.txt', 'r') 
       a = open('all_test5.txt', 'r') 
       a = open('all_test3.txt', 'r') 
-      a = open('all.txt', 'r') 
-      a = open('all_test.txt', 'r') 
       a = open('all_test6.txt', 'r') 
+      a = open('all_test.txt', 'r') 
+      a = open('all.txt', 'r') 
+      #a = open('all_test.txt', 'r') 
       al = a.readlines()
       bl = []
       for each in al:
@@ -1159,7 +1207,9 @@ if __name__ == "__main__":
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v18.pickle",-10.90,10.99) 
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_mknown.pickle",-10.90,10.99) 
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_mknA.pickle",-10.90,10.99) 
-        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v18c.pickle",0.00,1.40) 
+        #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_mknA_v20.pickle",0.00,1.40) 
+        #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v19.pickle",0.00,1.40) 
+        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v20.pickle",0.00,1.40) 
     if self_flag == 1:
       field = "self_"
       file_in = open(normed_training_data, 'r') 
