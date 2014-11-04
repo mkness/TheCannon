@@ -30,11 +30,8 @@ normed_training_data = 'normed_data_apstar_tsc.pickle' # this is from test18 wit
 normed_training_data = 'normed_data_apstar_c.pickle' # this is from test18 with weighted mean 
 normed_training_data = 'normed_data_wmean2.pickle'
 normed_training_data = 'normed_data.pickle'
-<<<<<<< HEAD
-normed_training_data = 'normed_data_apstar_c.pickle' # this is from test18 with weighted mean 
-=======
+#normed_training_data = 'normed_data_apstar_c.pickle' # this is from test18 with weighted mean 
 #normed_training_data = 'normed_data_SNRtest.pickle'
->>>>>>> 6c6460d013f7cfcf07636d37bf2cefb395ea9bc9
 #normed_training_data = 'normed_data_tsch.pickle'
 
 def weighted_median(values, weights, quantile):
@@ -261,7 +258,7 @@ def get_normalized_test_data_tsch(testfile, pixlist):
     start_wl =  a[1].header['CRVAL1']
     diff_wl = a[1].header['CDELT1']
     SNR = a[0].header['SNR']
-    SNR = a[0].header['SNRVIS4']
+    #SNR = a[0].header['SNRVIS4']
     SNRall[jj] = SNR
 
     val = diff_wl*(nlam) + start_wl 
@@ -319,8 +316,8 @@ def get_normalized_test_data(testfile,noise=0):
       for jj,each in enumerate(bl2):
         a = pyfits.open(each) 
         #SNR[jj]  = a[0].header['SNRVIS4']
-        SNR[jj]  = a[0].header['SNRVIS4']
-        #SNR[jj]  = a[0].header['SNR']
+        #SNR[jj]  = a[0].header['SNRVIS4']
+        SNR[jj]  = a[0].header['SNR']
         file_in2 = open(name+'_SNR.pickle', 'w')  
         pickle.dump(SNR,  file_in2)
         file_in2.close()
@@ -370,9 +367,9 @@ def get_normalized_test_data(testfile,noise=0):
       ydata = a[1].data[0] 
       ysigma = a[2].data[0]
       len_data = a[2].data[0]
-      ydata = a[1].data[3] # SNR test - NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
-      ysigma = a[2].data[3]
-      len_data = a[2].data[3]
+      #ydata = a[1].data[3] # SNR test - NOTE THIS IS FOR TEST TO READ IN A SINGLE VISIT - TESTING ONLY - OTHERWISE SHOULD BE 0 TO READ IN THE MEDIAN SPECTRA 
+      #ysigma = a[2].data[3]
+      #len_data = a[2].data[3]
       if jj == 0:
         nlam = len(a[1].data[0])
         testdata = np.zeros((nlam, len(bl2), 3))
@@ -385,8 +382,8 @@ def get_normalized_test_data(testfile,noise=0):
         testdata = np.zeros((nlam, len(bl2), 3))
     start_wl =  a[1].header['CRVAL1']
     diff_wl = a[1].header['CDELT1']
-    #SNR = a[0].header['SNR']
-    SNR = a[0].header['SNRVIS4']
+    SNR = a[0].header['SNR']
+    #SNR = a[0].header['SNRVIS4']
     SNRall[jj] = SNR
 
     #ydata = a[1].data
@@ -413,15 +410,18 @@ def get_normalized_test_data(testfile,noise=0):
   return testdata , ids # not yet implemented but at some point should probably save ids into the normed pickle file 
 
 def get_normalized_training_data_tsch(pixlist):
-  if glob.glob(normed_training_data): 
-        file_in2 = open(normed_training_data, 'r') 
-        dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
-        file_in2.close()
-        return dataall, metaall, labels, Ametaall, cluster_name, ids
-  fn = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+#  if glob.glob(normed_training_data): 
+#        file_in2 = open(normed_training_data, 'r') 
+#        dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
+#        file_in2.close()
+#        return dataall, metaall, labels, Ametaall, cluster_name, ids
   fn = 'test18.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
-  T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
-  #T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (3,5,7,2,4,6), unpack =1) 
+  fn = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+  #T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
+  if fn == 'test18.txt': 
+    T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
+  if fn == 'mkn_labels_Atempfeh_edit.txt': 
+    T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (3,5,7,2,4,6), unpack =1) 
   labels = ["teff", "logg", "feh"]
   a = open(fn, 'r') 
   al = a.readlines() 
@@ -1136,6 +1136,9 @@ def plot_leave_one_out(filein,cluster_out):
 
 if __name__ == "__main__":
     pixlist = loadtxt("pixtest.txt", usecols = (0,), unpack =1) 
+    #pixlist = loadtxt("pixtest2.txt", usecols = (0,), unpack =1) 
+    pixlist = loadtxt("pixtest3.txt", usecols = (0,), unpack =1) 
+    pixlist = loadtxt("pixtest4.txt", usecols = (0,), unpack =1) 
     #dataall, metaall, labels, Ametaall, cluster_name, ids = get_normalized_training_data()
     dataall, metaall, labels, Ametaall, cluster_name, ids = get_normalized_training_data_tsch(pixlist)
     fpickle = "coeffs.pickle" 
@@ -1145,20 +1148,11 @@ if __name__ == "__main__":
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
     self_flag = 2
-    #self_flag = 0
+    self_flag = 0
     
     if self_flag < 1:
-<<<<<<< HEAD
-=======
-      a = open('all.txt', 'r') 
-      a = open('all_test4.txt', 'r') 
-      a = open('all_test2.txt', 'r') 
-      a = open('all_test5.txt', 'r') 
-      a = open('all_test3.txt', 'r') 
       a = open('all.txt', 'r') 
       a = open('all_test.txt', 'r') 
->>>>>>> 6c6460d013f7cfcf07636d37bf2cefb395ea9bc9
-      a = open('all_test6.txt', 'r') 
       al = a.readlines()
       bl = []
       for each in al:
@@ -1166,7 +1160,8 @@ if __name__ == "__main__":
       for each in bl: 
         testfile = each
         field = testfile.split('.txt')[0]+'_' #"4332_"
-        testdataall, ids = get_normalized_test_data(testfile) # if flag is one, do on self 
+        #testdataall, ids = get_normalized_test_data(testfile) # if flag is one, do on self 
+        testdataall, ids = get_normalized_test_data_tsch(testfile,pixlist)
         #testdataall, ids = get_normalized_test_data_tsch(testfile,pixlist) # if flag is one, do on self 
         #testmetaall, inv_covars = infer_tags("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v14_noise.pickle",-10.90,10.99) 
