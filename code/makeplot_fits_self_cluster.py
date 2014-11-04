@@ -30,7 +30,7 @@ def plotfits():
 #    file_in = "self_tags.pickle"
     file_in = "self_2nd_order_tags.pickle"
     file_in2 = open(file_in, 'r') 
-    params, icovs_params = pickle.load(file_in2)
+    params, icovs_params,variable1,ids = pickle.load(file_in2)
     params = array(params)
     file_in2.close()
 
