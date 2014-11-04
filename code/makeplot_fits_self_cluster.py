@@ -30,13 +30,11 @@ def plotfits():
 #    file_in = "self_tags.pickle"
     file_in = "self_2nd_order_tags.pickle"
     file_in2 = open(file_in, 'r') 
-    params, icovs_params = pickle.load(file_in2)
+    params, icovs_params,chi2,ids = pickle.load(file_in2)
     params = array(params)
     file_in2.close()
 
-    filein2 = 'starsin_test2.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
-    filein2 = 'starsin_new_all_ordered.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
-    filein2 = 'test4_selfg.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
+    filein2 = 'test18.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
     a = open(filein2) 
     al = a.readlines() 
     names = []
