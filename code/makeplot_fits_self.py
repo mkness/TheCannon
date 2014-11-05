@@ -44,6 +44,7 @@ def plotfits():
      
     filein2 = 'starsin_test2.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
     filein2 = 'starsin_new_all_ordered.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
+    filein2 = 'test18.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
     cv_ind = np.arange(395,469,1)
     a  = open(filein2)
     al = a.readlines() 
@@ -75,6 +76,7 @@ def plotfits():
     ax1 = temp[0]
     ax2 = temp[1]
     ax3 = temp[2]
+
     params_labels = [params[:,0], params[:,1], params[:,2] , covs_params[:,0,0]**0.5, covs_params[:,1,1]**0.5, covs_params[:,2,2]**0.5 ]  
     pick = logical_and(g > 0, logical_and(t_err < 300, feh > -4.0) ) 
     cval = ['k', 'b', 'r'] 
@@ -94,7 +96,27 @@ def plotfits():
       g_color = c_T.to_rgba(cind) 
       c1[0].set_color(g_color)
       c2[0].set_color(g_color)
-      ax.text(x1,y1,"y-axis, $<\sigma>$ = "+str(round(mean(params_labels[num+3][pick]),2)),fontsize = 14) 
+    for ax, num in zip(axs, listit_1): 
+        scatter1,scatter2 = returnscatter(input_ASPCAP[num][pick], params_labels[num][pick])
+        if abs(scatter2) > 1:
+          round2 = round(scatter2, 1)
+        else: 
+          round2 = round(scatter2, 2)
+        if abs(scatter1) > 1:
+          round1 = round(scatter1, 1)
+        else: 
+          round1 = round(scatter1, 2)
+        if num == 0: 
+          scatter3 = round(mean(params_labels[num+3][pick]),2) 
+        else: 
+          scatter3 = round(mean(params_labels[num+3][pick]),2) 
+        if abs(scatter3) > 1:
+          round3 = round(scatter3, 2)
+        else: 
+          round3 = round(scatter3, 2)
+        ax.text(0.7, 0.1,"bias, rms, precision = "+str(round1)+", "+str(round2)+", "+str(round3), ha='center', va='center',
+              transform=ax.transAxes,fontsize = 14)
+          
 
     ax1.plot([0,6000], [0,6000], linewidth = 1.5, color = 'k' ) 
     ax2.plot([0,5], [0,5], linewidth = 1.5, color = 'k' ) 
