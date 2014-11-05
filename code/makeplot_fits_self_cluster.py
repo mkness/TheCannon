@@ -62,6 +62,7 @@ def plotfits():
     file_in2.close()
 
     filein2 = 'test18.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
+    filein2 = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
     a = open(filein2) 
     al = a.readlines() 
     names = []
@@ -87,9 +88,16 @@ def plotfits():
     #bl = np.delete(bl, [cv_ind], axis = 0) 
     #savetxt("starsin_cut.txt", bl, fmt = "%s") 
     #filein3 = 'starsin_cut.txt'
-    t,g,feh,t_err,feh_err = loadtxt(filein2, usecols = (4,6,8,16,17), unpack =1) 
+    if filein2 == 'test18.txt':
+      t,g,feh,t_err,feh_err = loadtxt(filein2, usecols = (4,6,8,16,17), unpack =1) 
+    if filein2 == 'mkn_labels_Atempfeh_edit.txt':
+      t,g,feh,t_err,feh_err = loadtxt(filein2, usecols = (3,5,7,3,3), unpack =1) 
     g_err = [0]*len(g) 
+    feh_err = [0]*len(g) 
+    t_err = [0]*len(g) 
     g_err = array(g_err)
+    t_err = array(t_err)
+    feh_err = array(feh_err)
     
     params = array(params) 
     #covs_params = np.linalg.inv(icovs_params) 
