@@ -72,10 +72,15 @@ def plotfits():
     params = array(params) 
     covs_params = np.linalg.inv(icovs_params) 
     rcParams['figure.figsize'] = 12.0, 10.0
-    fig, temp = pyplot.subplots(3,1, sharex=False, sharey=False)
-    ax1 = temp[0]
-    ax2 = temp[1]
-    ax3 = temp[2]
+    fig = plt.figure()
+    ax = fig.add_subplot(111,frameon = 0 )
+    ax.set_ylabel("The Cannon: output labels",labelpad = 40, fontsize = 20 ) 
+    ax.set_xlabel("ASPCAP: input labels",labelpad = 30, fontsize = 20 ) 
+    ax.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
+    ax1 = fig.add_subplot(311)#,sharey = None)
+    ax2 = fig.add_subplot(312)
+    ax3 = fig.add_subplot(313)
+    
 
     params_labels = [params[:,0], params[:,1], params[:,2] , covs_params[:,0,0]**0.5, covs_params[:,1,1]**0.5, covs_params[:,2,2]**0.5 ]  
     pick = logical_and(g > 0, logical_and(t_err < 300, feh > -4.0) ) 
@@ -121,15 +126,16 @@ def plotfits():
     ax1.plot([0,6000], [0,6000], linewidth = 1.5, color = 'k' ) 
     ax2.plot([0,5], [0,5], linewidth = 1.5, color = 'k' ) 
     ax3.plot([-3,2], [-3,2], linewidth = 1.5, color = 'k' ) 
+    ax1.set_ylim(1800, 5500) 
     ax1.set_xlim(3500, 5500) 
     ax2.set_xlim(0, 5) 
     ax3.set_xlim(-3, 2) 
-    ax1.set_xlabel("ASPCAP Teff, [K]", fontsize = 14,labelpad = 5) 
-    ax1.set_ylabel("NHR+ Teff, [K]", fontsize = 14,labelpad = 5) 
-    ax2.set_xlabel("ASPCAP logg, [dex]", fontsize = 14,labelpad = 5) 
-    ax2.set_ylabel("NHR+ logg, [dex]", fontsize = 14,labelpad = 5) 
-    ax3.set_xlabel("ASPCAP [Fe/H], [dex]", fontsize = 14,labelpad = 5) 
-    ax3.set_ylabel("NHR+ [Fe/H], [dex]", fontsize = 14,labelpad = 5) 
+    ax1.set_xlabel("Teff, [K]", fontsize = 14,labelpad = 5) 
+    ax1.set_ylabel("Teff, [K]", fontsize = 14,labelpad = 5) 
+    ax2.set_xlabel("logg, [dex]", fontsize = 14,labelpad = 5) 
+    ax2.set_ylabel("logg, [dex]", fontsize = 14,labelpad = 5) 
+    ax3.set_xlabel("[Fe/H], [dex]", fontsize = 14,labelpad = 5) 
+    ax3.set_ylabel("[Fe/H], [dex]", fontsize = 14,labelpad = 5) 
     ax1.set_ylim(min(params_labels[0][pick])-250, max(params_labels[0][pick])+250) 
     ax2.set_ylim(round(min(params_labels[1][pick])-0.2,1), round(max(params_labels[1][pick])+0.2,1)) 
     ax3.set_ylim(min(params_labels[2][pick])-0.4, max(params_labels[2][pick])+0.4) 

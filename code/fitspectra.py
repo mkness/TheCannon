@@ -720,7 +720,7 @@ def do_regressions(dataall, features):
     featuresall[:, :, :] = features[None, :, :]
     return map(do_one_regression, dataall, featuresall)
 
-def train(dataall, metaall, order, fn, Ametaall, logg_cut=100., teff_cut=0., leave_out=None):
+def train(dataall, metaall, order, fn, Ametaall, cluster_name, logg_cut=100., teff_cut=0., leave_out=None):
     """
     - `leave out` must be in the correct form to be an input to `np.delete`
     """
@@ -728,6 +728,11 @@ def train(dataall, metaall, order, fn, Ametaall, logg_cut=100., teff_cut=0., lea
     #dataall = dataall[:, good]
     #metaall = metaall[good]
     #nstars, nmeta = metaall.shape
+    
+    if leave_out is not None: #
+        dataall = np.delete(dataall, [leave_out], axis = 1) 
+        metaall = np.delete(metaall, [leave_out], axis = 0) 
+        Ametaall = np.delete(Ametaall, [leave_out], axis = 0) 
    
     diff_t = np.abs(array(metaall[:,0] - Ametaall[:,0]) ) 
     #good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 600. ) ) 
@@ -736,10 +741,6 @@ def train(dataall, metaall, order, fn, Ametaall, logg_cut=100., teff_cut=0., lea
     metaall = metaall[good]
     nstars, nmeta = metaall.shape
     
-    if leave_out is not None: #
-        dataall = np.delete(dataall, [leave_out], axis = 1) 
-        metaall = np.delete(metaall, [leave_out], axis = 0) 
-        Ametaall = np.delete(Ametaall, [leave_out], axis = 0) 
 
     offsets = np.mean(metaall, axis=0)
     features = np.ones((nstars, 1))
@@ -768,6 +769,7 @@ def get_goodness_fit(fn_pickle, filein, Params_all, MCM_rotate_all):
     dataall, metaall, labels, offsets, coeffs, covs, scatters, chis, chisq = pickle.load(fd) 
     fd.close() 
     file_with_star_data = str(filein)+".pickle"
+    file_with_star_data = "self_2nd_order.pickle" # this is temporary hack until this is there above 
     f_flux = open(file_with_star_data, 'r') 
     file_normed = normed_training_data.split('.pickle') 
     if filein != file_normed: 
@@ -1038,21 +1040,56 @@ def leave_one_cluster_out():
 # this is the test routine to leave one cluster out 
     dataall, metaall, labels, Ametaall, cluster_name, ids= get_normalized_training_data()
     nameu = unique(cluster_name) 
+    nameu = array(nameu) 
     cluster_name = array(cluster_name)
     for each in nameu:
       clust_pick = each
       take = array(cluster_name) == clust_pick
       inds = arange(0,len(cluster_name),1) 
       inds1 = inds[take] 
+      cluster_take = each #cluster_name[take][0]
       #return inds1, cluster_name
       train(dataall, metaall,  2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0., leave_out=inds1)
       field = "self_2nd_order_"
       file_in = open(normed_training_data, 'r') 
       testdataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in)
       file_in.close() 
-      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.950,10.99) 
-      plot_leave_one_out(field, clust_pick) 
-      return 
+      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall,ids, field+str(cluster_take)+"_tags.pickle",-10.950,10.99) 
+      #plot_leave_one_out(field, clust_pick) 
+    return 
+
+def leave_one_star_out():
+# this is the test routine to leave one cluster out 
+    dataall, metaall, labels, Ametaall, cluster_name, ids= get_normalized_training_data()
+    #nameu = unique(cluster_name) 
+    #nameu = array(nameu) 
+    cluster_name = array(cluster_name)
+    ids = array(ids)
+    idsnew = [] 
+    for each in ids: 
+      if len(ids) > 20:
+        idsnew.append(each.split('2m')[-1]) 
+      else: 
+        idsnew.append(each.split)
+    idsnew = array(idsnew) 
+    nameu = [a+"_"+b for a,b in zip(cluster_name, idsnew)] 
+    nameu = array(nameu) 
+    for each in nameu:
+      name_pick = each
+      take = array(nameu) == name_pick
+      inds = arange(0,len(cluster_name),1) 
+      inds1 = inds[take] 
+      star_take = each #cluster_name[take][0]
+      #return inds1, cluster_name
+      train(dataall, metaall,  2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0., leave_out=inds1)
+      # up to here 
+      field = "self_2nd_order_"
+      file_in = open(normed_training_data, 'r') 
+      testdataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in)
+      file_in.close() 
+      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall[:,take,:], idsnew[take], field+str(star_take)+"_itags.pickle",-10.950,10.99) 
+      #plot_leave_one_out(field, clust_pick) 
+    return 
 
 def plot_leave_one_out(filein,cluster_out): 
     file_in2 = open(filein+"tags.pickle", 'r') 
@@ -1178,13 +1215,15 @@ if __name__ == "__main__":
     dataall, metaall, labels, Ametaall, cluster_name, ids = get_normalized_training_data_tsch(pixlist)
     fpickle = "coeffs.pickle" 
     if not glob.glob(fpickle):
-        train(dataall, metaall, 1,  fpickle, Ametaall,logg_cut= 40.,teff_cut = 0.)
+        train(dataall, metaall, 1,  fpickle, Ametaall,cluster_name, logg_cut= 40.,teff_cut = 0.)
     fpickle2 = "coeffs_2nd_order.pickle"
     if not glob.glob(fpickle2):
-        train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
-    self_flag = 0
+        train(dataall, metaall, 2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0.)
     self_flag = 2
     self_flag = 1
+    self_flag = 0
+    self_flag = 2
+    self_flag = 3
     
     if self_flag < 1:
       a = open('all_test2.txt', 'r') 
@@ -1225,35 +1264,6 @@ if __name__ == "__main__":
       testdataall, metaall, labels, Ametaall, cluster_name,ids = pickle.load(file_in)
       file_in.close() 
       testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags.pickle",-10.950,10.99) 
-    
-# below runs on laptop = need to generalise so reads in input dir 
-#if __name__ == "__main__":
-#    dataall, metaall, labels = get_normalized_training_data()
-#    fpickle = "coeffs.pickle" 
-#    if not glob.glob(fpickle):
-#        #train(dataall, metaall, 1,  fpickle, logg_cut= 40.,teff_cut = 0.)
-#        train(dataall, metaall, 1,  fpickle, Ametaall,logg_cut= 40.,teff_cut = 0.)
-#    fpickle2 = "coeffs_2nd_order.pickle"
-#    if not glob.glob(fpickle2):
-#        #train(dataall, metaall, 2,  fpickle2, logg_cut= 40.,teff_cut = 0.)
-#        train(dataall, metaall, 2,  fpickle2, Ametaall, logg_cut= 40.,teff_cut = 0.)
-#    testfile = "/Users/ness/Downloads/Apogee_raw/calibration_fields/4332/apogee/spectro/redux/r3/s3/a3/v304/4332/stars_list_all.txt"
-#    self_flag = 2
-#    if self_flag < 1:
-#      field = "4332_"
-#      testdataall = get_normalized_test_data(testfile) # if flag is one, do on self 
-#      #testmetaall, inv_covars = infer_labels("coeffs.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
-#      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.94,10.99) 
-#    if self_flag == 1:
-#      field = "self_"
-#      file_in = open('normed_data.pickle', 'r') 
-#      testdataall, metaall, labels = pickle.load(file_in)
-#      lookatfits('coeffs.pickle',[1002,1193,1383,1496,2803,4000,4500, 5125],testdataall)
-#      file_in.close() 
-#      testmetaall, inv_covars = infer_labels("coeffs.pickle", testdataall, field+"tags.pickle",-10.960,11.03) 
-#    if self_flag == 2:
-#      field = "self_2nd_order_"
-#      file_in = open('normed_data.pickle', 'r') 
-#      testdataall, metaall, labels, Ametaall, cluster_name = pickle.load(file_in)
-#      file_in.close() 
-#      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, field+"tags.pickle",-10.950,10.99) 
+    if self_flag == 3:
+      leave_one_star_out()
+      #leave_one_cluster_out()

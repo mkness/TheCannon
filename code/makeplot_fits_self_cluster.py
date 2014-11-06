@@ -62,7 +62,7 @@ def plotfits():
     file_in2.close()
 
     filein2 = 'test18.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
-    filein2 = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+    #filein2 = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
     a = open(filein2) 
     al = a.readlines() 
     names = []
@@ -102,10 +102,15 @@ def plotfits():
     params = array(params) 
     #covs_params = np.linalg.inv(icovs_params) 
     rcParams['figure.figsize'] = 12.0, 10.0
-    fig, temp = pyplot.subplots(3,1, sharex=False, sharey=False)
-    ax1 = temp[0]
-    ax2 = temp[1]
-    ax3 = temp[2]
+    fig = plt.figure()
+    ax = fig.add_subplot(111,frameon = 0 )
+    ax.set_ylabel("The Cannon: output labels",labelpad = 40, fontsize = 20 ) 
+    ax.set_xlabel("ASPCAP: input labels",labelpad = 30, fontsize = 20 ) 
+    ax.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
+    ax1 = fig.add_subplot(311)#,sharey = None)
+    ax2 = fig.add_subplot(312)
+    ax3 = fig.add_subplot(313)
+    
     params_labels = [params[:,0], params[:,1], params[:,2] , covs_params[:,0,0]**0.5, covs_params[:,1,1]**0.5, covs_params[:,2,2]**0.5 ]  
     cval = ['k', 'b', 'r'] 
     input_ASPCAP = [t, g, feh, t_err, g_err, feh_err] 
@@ -125,7 +130,7 @@ def plotfits():
         #ax.errorbar(input_ASPCAP[num][indc1:indc2][pick], params_labels[num][indc1:indc2][pick],yerr= params_labels[num+3][indc1:indc2][pick],marker='',ls='',zorder=0, fmt = None,elinewidth = 1,capsize = 0)
         #ax.errorbar(input_ASPCAP[num][indc1:indc2][pick], params_labels[num][indc1:indc2][pick],xerr=input_ASPCAP[num+3][indc1:indc2][pick],marker='',ls='',zorder=0, fmt = None,elinewidth = 1,capsize = 0)
         #ax.plot(input_ASPCAP[num][indc1:indc2][pick], params_labels[num][indc1:indc2][pick], plot_markers[i], label = str(name)) 
-        ax.plot(input_ASPCAP[num][indc1:indc2][pick], params_labels[num][indc1:indc2][pick], plot_markers[i], label = str(cluster_names[np.int(i)]))
+        ax.plot(input_ASPCAP[num][indc1:indc2][pick], params_labels[num][indc1:indc2][pick], plot_markers[i], label = str(cluster_names[np.int(i)]), ms = 6)
         ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.45),fancybox=True, shadow=True, numpoints = 1, ncol = 7,fontsize  = 12 ) 
     for ax, num in zip(axs, listit_1): 
         scatter1,scatter2 = returnscatter(input_ASPCAP[num][pick], params_labels[num][pick])
@@ -165,16 +170,14 @@ def plotfits():
     ax2.plot([0,5], [0,5], linewidth = 1.5, color = 'k' ) 
     ax3.plot([-3,2], [-3,2], linewidth = 1.5, color = 'k' ) 
     ax1.set_xlim(3500, 6000) 
-    ax1.set_ylim(3500, 6000) 
     ax2.set_xlim(0, 5) 
     ax2.set_xlim(0, 5) 
-    ax1.set_xlabel("ASPCAP Teff, [K]", fontsize = 14,labelpad = 2) 
-    ax1.set_ylabel("NHR+ Teff, [K]", fontsize = 14,labelpad = 5) 
-    ax2.set_xlabel("ASPCAP logg, [dex]", fontsize = 14,labelpad = 2) 
-    ax2.set_ylabel("NHR+ logg, [dex]", fontsize = 14,labelpad = 5) 
-    ax3.set_xlabel("ASPCAP [Fe/H], [dex]", fontsize = 14,labelpad = 2) 
-    ax3.set_ylabel("NHR+ [Fe/H], [dex]", fontsize = 14,labelpad = 5) 
-    ax2.set_ylim(-3,6)
+    ax1.set_xlabel(" Teff, [K]", fontsize = 14,labelpad = 2) 
+    ax1.set_ylabel("Teff, [K]", fontsize = 14,labelpad = 5) 
+    ax2.set_xlabel(" logg, [dex]", fontsize = 14,labelpad = 2) 
+    ax2.set_ylabel("logg, [dex]", fontsize = 14,labelpad = 5) 
+    ax3.set_xlabel(" [Fe/H], [dex]", fontsize = 14,labelpad = 2) 
+    ax3.set_ylabel("[Fe/H], [dex]", fontsize = 14,labelpad = 5) 
     ax3.set_ylim(-3,2) 
     # attach lines to plots
     fig.subplots_adjust(hspace=0.22)
