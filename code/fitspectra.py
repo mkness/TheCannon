@@ -24,15 +24,7 @@ from scipy import interpolate
 from scipy import ndimage 
 from scipy import optimize as opt
 import numpy as np
-normed_training_data = 'normed_data.pickle'# this is from Chebyshev fit 
-#normed_training_data = 'normed_data_wmean.pickle' # this is from test18 with weighted mean 
-normed_training_data = 'normed_data_apstar_tsc.pickle' # this is from test18 with weighted mean 
-normed_training_data = 'normed_data_apstar_c.pickle' # this is from test18 with weighted mean 
-normed_training_data = 'normed_data_wmean2.pickle'
 normed_training_data = 'normed_data.pickle'
-#normed_training_data = 'normed_data_apstar_c.pickle' # this is from test18 with weighted mean 
-#normed_training_data = 'normed_data_SNRtest.pickle'
-#normed_training_data = 'normed_data_tsch.pickle'
 
 def weighted_median(values, weights, quantile):
     """weighted_median
@@ -125,8 +117,6 @@ def continuum_normalize_tsch(dataall,mask, pixlist, delta_lambda=150):
 
 
 def continuum_normalize(dataall, SNRall, delta_lambda=50):
-#def continuum_normalize(dataall, delta_lambda=50):
-#def continuum_normalize(dataall, delta_lambda):
     """continuum_normalize
 
     keywords
@@ -536,8 +526,6 @@ def get_normalized_training_data():
         dataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in2)
         file_in2.close()
         return dataall, metaall, labels, Ametaall, cluster_name, ids
-  fn = "starsin_test2.txt"
-  fn = "starsin_test.txt"
   fn = "starsin_new_all_ordered.txt"
   fn = "test4_selfg.txt"
   fn = 'test14.txt' # this is for teff < 600 cut which worked quite nicely 
@@ -1087,7 +1075,7 @@ def leave_one_star_out():
       file_in = open(normed_training_data, 'r') 
       testdataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in)
       file_in.close() 
-      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall[:,take,:], idsnew[take], field+str(star_take)+"_itags.pickle",-10.950,10.99) 
+      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall[:,take], idsnew[take], field+str(star_take)+"_itags.pickle",-10.950,10.99) 
       #plot_leave_one_out(field, clust_pick) 
     return 
 
