@@ -12,8 +12,7 @@ Designed with *APOGEE2* and *HERMES* data in mind.
 ## License
 
 Copyright 2014 the authors.
-**All rights reserved**.
-Currently unlicensed for reuse and redistribution.
+*The Cannon* is free software made available under the MIT License. For details see the file `LICENSE.md`.
 
 ## Sub-projects
 
