@@ -1211,7 +1211,7 @@ if __name__ == "__main__":
     self_flag = 1
     self_flag = 0
     self_flag = 2
-    self_flag = 3
+    #self_flag = 3
     
     if self_flag < 1:
       a = open('all_test2.txt', 'r') 
