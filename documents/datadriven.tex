@@ -2,23 +2,18 @@
 % Copyright 2014 Melissa Ness and David W. Hogg.
 
 % # short-term to-do
-% - draft abstract
-% - draft introduction
+% - finish first draft
+% - send out to APOGEE collab for comments.
 
 % # style notes
 % - are they ``labels'' or ``labels''?  MKN:  Make a call and audit the whole text.
 % - needs a name and to use it consistently as \thename
 
 \documentclass[12pt, preprint]{aastex}
-\usepackage{bm}
+\usepackage{bm, graphicx, subfigure, amsmath, morefloats}
 \input{vc}
 \newcommand{\sectionname}{Section}
 \newcommand{\documentname}{\textsl{Note}}
-
-
-\usepackage{graphicx}
-\usepackage{subfigure}
-\usepackage{amsmath}
 
 \newcommand{\set}[1]{\bm{#1}}
 \newcommand{\mean}[1]{\overline{#1}}
@@ -27,8 +22,7 @@
 \newcommand{\kms}{\mbox{$\rm ks^{-1} k$}}
 \newcommand{\feh}{\mbox{$\rm [Fe/H]$}}
 \newcommand{\logg}{\mbox{$\rm \log g$}}
-%\newcommand{\tc}{\fontfamily{qcr}\selectfont}
-\newcommand{\tc}{\textsl{The Cannon}} 
+\newcommand{\tc}{\textsl{The~Cannon}} 
 \newcommand{\apogee}{\textsl{APOGEE}} 
 \newcommand{\apokasc}{\textsl{APOKASC}} 
 \newcommand{\galah}{\textsl{GALAH}} 
@@ -37,16 +31,11 @@
 \newcommand{\gaia}{\textsl{GAIA}} 
 \newcommand{\matisse}{\textsl{Matisse}} 
 \newcommand{\rotwarn}{\texttt{ROTATION WARNING}} 
-
-
- 
-
-
-\usepackage{morefloats}
+\newcommand{\sdss}{\textsl{SDSS-III}} 
 
 \begin{document}
 
-\title{\textsc{\tc:} Wavelength-independent stellar parameter determination using data-driven models}
+\title{\textsc{\tc:}\\ A data-driven model for stellar parameter determination}
 \author{
   MKN,
   DWH,
@@ -55,22 +44,56 @@
   GZ, AH} 
 \date{DRAFT / \gitdate\ / \githash\ / NOT FOR DISTRIBUTION}
 
-% DWH say: Obey A&A abstract rules (ish).
-%          They offer good guidance on abstract construction.
-% read/ref that paper DWH sent through
-% reference matisse somewhere. 
-
-
-\begin{abstract}
-
-Context: There are now numerous large programs to survey stars in the Milky Way, each of which is investing significant effort to determine and deliver stellar parameters and individual abundances across different wavelength regions. We present a generalised and wavelength independent regression technique to determine stellar parameters for large surveys, using a model built from data. Our approach does not require an intricate line-list characterisation at each new wavelength region observed by a survey, nor is it penalised by uncertainties in stellar models across different bands. With this methodology we effectively characterise how each pixel in a spectrum contributes to a given stellar parameter or label used to describe a star. In exploiting every pixel, we can determine stellar parameters at a fraction of the signal to noise compared to other techniques, for a given uncertainty. \\
-Aims: We present \tc, our regression analysis approach which returns labels for stars from large datasets, using data-driven models.  Our method transfers labels (of \teff, \logg\ and [Fe/H]) from a training set of data whose parameters are well determined (i.e. members of open and globular clusters) to the entire set of stars in a survey. Our work motivates the importance of having an established set of standard stars with well-determined labels. Given such standard calibrators, it is possible, via this technique of label-transfer, to place every stellar survey of the Milky Way on the same stellar parameter scale and homogeneously map the stellar population of the Milky Way from Northern and Southern hemispheres and using different wavelength regions. \\
-Methods: We demonstrate \tc\ using the \apogee\ dataset, to transfer labels from a training set of data comprising 550 stars from 19 open and globular clusters observed in \textit{APOGEE}, to every new star observed in the \apogee\ DR10 data release. \\
-Results:   Using only 550 training stars with \textit{known} labels to construct our model, we reproduce the stellar parameters for the stars in the \apogee\ survey from DR10, to \teff\ --12 $\pm$ 87 K, \logg\ --0.04 $\pm$ 0.18 and \feh\ +0.01 $\pm$ 0.08. The rms error between our results and that of \apogee\ is comparable to the error estimates in each of their parameters. As our approach has extremely small intrinsic errors,  we can determine the stellar parameters at a fraction (25\%) of the signal to noise required by minimisation techniques. Our method is expandable to additional labels and relevant for chemical tagging and motivates the importance of having a ``gold standard'' set of stars studied at high resolution. 
-
-
-
+\begin{abstract}%
+Multiple spectroscopic surveys are planning on delivering
+automatically determined stellar parameters and multiple element
+abundances for hundreds of thousands of stars.
+These surveys currently rely on physics-driven models of stars,
+despite the fact that these models have many known issues.
+There is a possible alternative approach, which uses consistency in
+the spectroscopic data space to transfer stellar parameter labels from
+a set of benchmark standard stars to the large sets of survey targets.
+Here we present a method---\tc---for performing this label transfer,
+specialized to the the labels \teff, \logg, and \feh, and specialized
+to data from the \sdss\ \apogee\ project.
+The training set of standards is a set of 550 stars from 19
+open and globular clusters.
+The data-driven model underlying \tc\ is a generative model of the
+spectra; it is a very flexible model (70,000 parameters) trained to be
+a map from stellar parameter labels to intensity values on a wavelength
+grid.
+The training proceeds by optimizing the likelihood of the model
+parameters in the training data (where the labels are known); the label
+transfer proceeds by optimizing the labels at fixed
+model parameters in the test data (where the labels aren't known).
+\tc\ label transfer is very accurate; it reproduces \apogee\ pipeline
+stellar parameter labels, and successfully cross-validates on the
+training data, with at least the precision of the \apogee\ pipeline
+labels themselves; we obtain rms precisions of $\delta\teff< 100$~K,
+$\delta\logg< 0.2$~dex and $\delta\feh< 0.1$~dex.
+Aside from the modeling of the training-set stars (which could happen
+in another data set or at another wavelength), \tc\ makes no use of
+stellar models whatsoever; its biggest limitation is that it requires a
+training set that spans the full stellar parameter label space.
+The method degrades very weakly with signal-to-noise; \tc\ delivers
+the three stellar parameters with good fidelity even where
+\apogee\ spectroscopy has one fourth the
+signal-to-noise (equivalent to one sixteenth the observing time).
 \end{abstract}
+
+\keywords{%
+methods: data analysis
+---
+methods: statistical
+---
+stars: abundances
+---
+stars: fundamental parameters
+---
+surveys
+---
+techniques: spectroscopic
+}
 
 \section{Introduction}
 
