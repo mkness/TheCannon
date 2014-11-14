@@ -4,6 +4,7 @@ import pyfits
 import matplotlib.pyplot as plt
 import matplotlib as mpl 
 mpl.rc('text', usetex=True)
+mpl.rc('font', family='serif')
 rcParams["xtick.labelsize"] = 16
 rcParams["ytick.labelsize"] = 16
 #font = {'family':'serif','size':16, 'weight':'normal'}
