@@ -63,10 +63,11 @@ def makeiso(number):
     JmK_pickit = JmK[pickit]
     JmK_pickit = array(JmK_pickit) 
     t,t_err,g,g_err,feh,feh_err = Tpick,Tpick_err,gpick,gpick_err,Fehpick, Fehpick_err
-    t2_data,g2_data,feh2_data,vel2,l2,b2,starloc2,targ2,J2,K2,SNR2,STARFLAG2,tA,gA,fehA,vscatter,chi2 = loadtxt('play_v19.txt', usecols = (0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17), unpack =1)
-    rotation_warn = loadtxt('starflags_v19.txt', usecols = (0,), unpack =1) 
-    t2_data,g2_data,feh2_data,vel2,l2,b2,starloc2,targ2,J2,K2,SNR2,STARFLAG2,tA,gA,fehA,vscatter,chi2 = loadtxt('play_v20mkn.txt', usecols = (0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17), unpack =1)
-    rotation_warn = loadtxt('starflags_v20mkn.txt', usecols = (0,), unpack =1) 
+    #t2_data,g2_data,feh2_data,vel2,l2,b2,starloc2,targ2,J2,K2,SNR2,STARFLAG2,tA,gA,fehA,vscatter,chi2 = loadtxt('play_v19.txt', usecols = (0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17), unpack =1)
+    #rotation_warn = loadtxt('starflags_v19.txt', usecols = (0,), unpack =1) 
+    dir1 = '/Users/ness/Downloads/Apogee_raw/RevB/play/'
+    t2_data,g2_data,feh2_data,vel2,l2,b2,starloc2,targ2,J2,K2,SNR2,STARFLAG2,tA,gA,fehA,vscatter,chi2 = loadtxt(dir1+'play_v20mkn.txt', usecols = (0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17), unpack =1)
+    rotation_warn = loadtxt(dir1+'starflags_v20mkn.txt', usecols = (0,), unpack =1) 
     fehA = array(fehA) 
      
 
