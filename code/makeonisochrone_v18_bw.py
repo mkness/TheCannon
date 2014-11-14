@@ -1,45 +1,14 @@
 #!/usr/bin/python 
-import glob
 from glob import glob
 import pyfits 
-#import scipy 
-#import matplotlib.cm as cm 
-#import pyfits 
-#import glob 
-#from glob import glob 
-#import numpy 
-#import pickle
-#from numpy import * 
-#from scipy import ndimage
-#from scipy import interpolate 
-#from numpy import loadtxt
-#import os 
-#import numpy as np
-#from numpy import * 
-#import matplotlib 
-#from pylab import rcParams
-#from pylab import * 
-#from matplotlib import pyplot
 import matplotlib.pyplot as plt
-#from matplotlib import colors
-#from matplotlib.pyplot import axes
-#from matplotlib.pyplot import colorbar
-##from matplotlib.ticker import NullFormatter
-#from matplotlib.ticker import MultipleLocator, FormatStrFormatter
-s = matplotlib.font_manager.FontProperties()
-s.set_weight('normal')
 import matplotlib as mpl 
-mpl.use('Agg')
 mpl.rc('text', usetex=True)
-mpl.rcParams['text.usetex']=True
-mpl.rcParams['text.latex.unicode']=True
 rcParams["xtick.labelsize"] = 16
 rcParams["ytick.labelsize"] = 16
-plt.rc('text',usetex=True)
-font = {'family':'serif','size':16, 'weight':'normal'}
-plt.rc('font',**font)
-plt.rc('legend',**{'fontsize':14})
-
+#font = {'family':'serif','size':16, 'weight':'normal'}
+#plt.rc('font',**font)
+#plt.rc('legend',**{'fontsize':14})
 
 def makeiso(number):
 
