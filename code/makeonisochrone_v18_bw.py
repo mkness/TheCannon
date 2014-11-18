@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl 
 mpl.rc('text', usetex=True)
 mpl.rc('font', family='serif')
-rcParams["xtick.labelsize"] = 16
-rcParams["ytick.labelsize"] = 16
+mpl.rcParams["xtick.labelsize"] = 16
+mpl.rcParams["ytick.labelsize"] = 16
+import numpy as np  
 #font = {'family':'serif','size':16, 'weight':'normal'}
 #plt.rc('font',**font)
 #plt.rc('legend',**{'fontsize':14})
@@ -34,16 +35,16 @@ def makeiso(number):
     velall_err = datain['VERR']
     lval = datain['GLON']
     bval = datain['GLAT']
-    Gal = 220*cos(bval*pi/180)*sin(lval*pi/180)+16.5*(sin(bval*pi/180)*sin(25*pi/180)+cos(bval*pi/180)*cos(25*pi/180)*cos((lval-53)*pi/180))
-    velall = array(velall)
+    Gal = 220*np.cos(bval*np.pi/180)*np.sin(lval*np.pi/180)+16.5*(np.sin(bval*np.pi/180)*np.sin(25*np.pi/180)+np.cos(bval*np.pi/180)*np.cos(25*np.pi/180)*np.cos((lval-53)*np.pi/180))
+    velall = np.array(velall)
     vgal = velall + Gal #+ 10
     alphaall = datain['ALPHAFE']
     FLAG_1all = datain['PARAMFLAG']
-    loc = array(loc)
-    if logical_or(logical_or(filein == 4260 ,filein == 4161), logical_or(filein == 4202, filein == 4201)): 
-      pickit = logical_and(loc == filein, Fehall < 2.) 
+    loc = np.array(loc)
+    if np.logical_or(np.logical_or(filein == 4260 ,filein == 4161), np.logical_or(filein == 4202, filein == 4201)): 
+      pickit = np.logical_and(loc == filein, Fehall < 2.) 
     else:
-      pickit = logical_and(loc == filein, Fehall < 200.) 
+      pickit = np.logical_and(loc == filein, Fehall < 200.) 
     appick = apstarid[pickit]
     Fehpick = Fehall[pickit]
     vscatterpick = vscatter[pickit]
@@ -53,53 +54,58 @@ def makeiso(number):
     Tpick = teffall[pickit]
     Tpick_err = teffall_err[pickit]
     velpick = velall[pickit]
-    fehsort = sort(Fehpick)
-    argis = argsort(Fehpick) 
-    lval = array(lval)
-    bval = array(bval)
+    fehsort = np.sort(Fehpick)
+    argis = np.argsort(Fehpick) 
+    lval = np.array(lval)
+    bval = np.array(bval)
     lvalpick = lval[pickit]
     bvalpick = bval[pickit]
-    at2pickit= array(at2)[pickit]
-    JmK = array(J) - array(K) 
+    at2pickit= np.array(at2)[pickit]
+    JmK = np.array(J) - np.array(K) 
     JmK_pickit = JmK[pickit]
-    JmK_pickit = array(JmK_pickit) 
+    JmK_pickit = np.array(JmK_pickit) 
     t,t_err,g,g_err,feh,feh_err = Tpick,Tpick_err,gpick,gpick_err,Fehpick, Fehpick_err
-    #t2_data,g2_data,feh2_data,vel2,l2,b2,starloc2,targ2,J2,K2,SNR2,STARFLAG2,tA,gA,fehA,vscatter,chi2 = loadtxt('play_v19.txt', usecols = (0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17), unpack =1)
-    #rotation_warn = loadtxt('starflags_v19.txt', usecols = (0,), unpack =1) 
     dir1 = '/Users/ness/Downloads/Apogee_raw/RevB/play/'
-    t2_data,g2_data,feh2_data,vel2,l2,b2,starloc2,targ2,J2,K2,SNR2,STARFLAG2,tA,gA,fehA,vscatter,chi2 = loadtxt(dir1+'play_v20mkn.txt', usecols = (0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17), unpack =1)
-    rotation_warn = loadtxt(dir1+'starflags_v20mkn.txt', usecols = (0,), unpack =1) 
-    fehA = array(fehA) 
-     
+    t2_data,g2_data,feh2_data,vel2,l2,b2,starloc2,targ2,J2,K2,SNR2,STARFLAG2,tA,gA,fehA,vscatter,chi2 = loadtxt(dir1+'play_v19.txt', usecols = (0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17), unpack =1)
+    rotation_warn = loadtxt(dir1+'starflags_v19.txt', usecols = (0,), unpack =1) 
+    t2_data,g2_data,feh2_data,vel2,l2,b2,starloc2,targ2,J2,K2,SNR2,STARFLAG2,tA,gA,fehA,vscatter,chi2 = np.loadtxt(dir1+'play_v20mkn.txt', usecols = (0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17), unpack =1)
+    rotation_warn = np.loadtxt(dir1+'starflags_v20mkn.txt', usecols = (0,), unpack =1) 
+    fehA = np.array(fehA) 
+    
+    #g2_data = gA
+    #t2_data = tA
+    #feh2_data = fehA
 
-    rcParams['figure.figsize'] = 12.0, 12.0
+    mpl.rcParams['figure.figsize'] = 12.0, 12.0
     fig, axs = plt.subplots(2,2, figsize=(12, 10), facecolor='w', edgecolor='k')
     fig.subplots_adjust(hspace = .001, wspace=.001)
     axs = axs.ravel()
     if number ==1 :# all 
-      pick1 =  array([ np.int(a) & 2**1 for a in targ2]) == 0 
-      pick2 =  array([ np.int(a) & 2**2 for a in targ2]) == 0 
-      pick3 =  array([ np.int(a) & 2**9 for a in targ2]) == 0 
-      pick4 =  logical_and(vscatter < 10.2 , rotation_warn == 0) 
+      pick1 =  np.array([ np.int(a) & 2**1 for a in targ2]) == 0 
+      pick2 =  np.array([ np.int(a) & 2**2 for a in targ2]) == 0 
+      pick3 =  np.array([ np.int(a) & 2**9 for a in targ2]) == 0 
+      pick4 =  np.logical_and(vscatter < 10.2 , rotation_warn == 0) 
       pick4a =  vscatter > 10.0 
-      pick =  array([ np.int(a) & 2**9 for a in targ2]) == 0 
-      pick = logical_and(logical_and( logical_and(pick1, pick2) , logical_and(pick4, pick3) ) , chi2 < 3000) 
-      pick_other = logical_and( logical_and(pick1, pick2) , logical_and(pick4a, pick3) ) 
+      pick =  np.array([ np.int(a) & 2**9 for a in targ2]) == 0 
+      #pickA = np.logical_and(np.logical_and(abs(gA) < 5, abs(fehA) < 3), abs(tA) < 6000) 
+      pick = np.logical_and(np.logical_and( np.logical_and(pick1, pick2) , np.logical_and(pick4, pick3) ) , chi2 < 3000) 
+      #pick = logical_and(pick, pickA) 
+      pick_other = np.logical_and( np.logical_and(pick1, pick2) , np.logical_and(pick4a, pick3) ) 
     if number ==2 : #aspcap cross over
-      picka = logical_and(fehA < 1.4, fehA > -3) 
-      pickb = array([ np.int(a) * 2**9 for a in targ2]) == 0 
-      pick = logical_and(picka, pickb) 
+      picka = np.logical_and(fehA < 1.4, fehA > -3) 
+      pickb = np.array([ np.int(a) * 2**9 for a in targ2]) == 0 
+      pick = np.logical_and(picka, pickb) 
     if number ==3 :# not aspcap 
-      picka = logical_or(fehA > 1.4, fehA < -3) 
-      pickb = array([ np.int(a) & 2**9 for a in targ2]) == 0 
-      pick = logical_and(picka, pickb) 
+      picka = np.logical_or(fehA > 1.4, fehA < -3) 
+      pickb = np.array([ np.int(a) & 2**9 for a in targ2]) == 0 
+      pick = np.logical_and(picka, pickb) 
     if number ==4 :# in no-man's land  
-      picka = logical_and(fehA < 1.4, fehA > -3) 
+      picka = np.logical_and(fehA < 1.4, fehA > -3) 
       m = 460
       c = 3200 
-      pick_gt =logical_and( g2_data < 4.1,  t2_data < m*g2_data + c ) 
-      pickb = array([ np.int(a) * 2**9 for a in targ2]) == 0 
-      pick = logical_and(pick_gt, logical_and(picka, pickb) ) 
+      pick_gt =np.logical_and( g2_data < 4.1,  t2_data < m*g2_data + c ) 
+      pickb = np.array([ np.int(a) * 2**9 for a in targ2]) == 0 
+      pick = np.logical_and(pick_gt, np.logical_and(picka, pickb) ) 
     cval = ['k', 'b', 'r'] 
 
     ##
@@ -108,38 +114,43 @@ def makeiso(number):
     file_0 = '10Gyr_0.0155.txt'
     file_mpt9 = '10Gyr_0.0019.txt' 
     file_mpt5 = '10Gyr_0.0048.txt' 
+    file_mpt5_6 = '10Gyr_0.0068.txt' 
     file_m1 = '10Gyr_0.0015.txt' 
     file_pt1 = '10Gyr_019.txt' 
     file_m2 = '10Gyr_0.00017.txt' 
     file_m2pt2 = '10Gyr_0_0.0001.txt' 
     file_m1pt5 =  '10Gyr_0.00045.txt'
     dirin = '/Users/ness/old_laptop/workdir/Apogee/isochrones/' 
-    t0,g0 = loadtxt(dirin+file_pt3, usecols = (5,6), unpack =1)#,label = '+0.2') 
-    t1,g1 = loadtxt(dirin+file_pt2, usecols = (5,6), unpack =1)#,label = '+0.2') 
-    t2,g2 = loadtxt(dirin+file_0,   usecols = (5,6), unpack =1)#, label = '+0.0') 
-    t3,g3 = loadtxt(dirin+file_mpt5,usecols = (5,6), unpack =1)#, label = '-0.5') 
-    t4,g4 = loadtxt(dirin+file_m1,  usecols = (5,6), unpack =1)#, label = '-1.0') 
-    t5,g5 = loadtxt(dirin+file_m1pt5,  usecols = (5,6), unpack =1)#, label = '-2.0') 
+    t0,g0 = np.loadtxt(dirin+file_pt3, usecols = (5,6), unpack =1)#,label = '+0.2') 
+    t1,g1 = np.loadtxt(dirin+file_pt2, usecols = (5,6), unpack =1)#,label = '+0.2') 
+    t2,g2 = np.loadtxt(dirin+file_0,   usecols = (5,6), unpack =1)#, label = '+0.0') 
+    t3,g3 = np.loadtxt(dirin+file_mpt5,usecols = (5,6), unpack =1)#, label = '-0.5') 
+    t3a,g3a = np.loadtxt(dirin+file_mpt5_6,usecols = (5,6), unpack =1)#, label = '-0.5') 
+    t4,g4 = np.loadtxt(dirin+file_m1,  usecols = (5,6), unpack =1)#, label = '-1.0') 
+    t5,g5 = np.loadtxt(dirin+file_m1pt5,  usecols = (5,6), unpack =1)#, label = '-2.0') 
     ts = [t2,t3,t4,t5]
     gs = [g2,g3,g4,g5]
     cl = [ '#FF0000', '#FFCC00', '#7FFFD4' , 'blue' ]
     label1 = [ '[Fe/H] = +0.0', '[Fe/H] = -0.5', '[Fe/H] = -1.0', '[Fe/H] =  -1.5' ] 
     label2 = [ '[Fe/H] $>$ -0.25 ', '-0.75 $<$ [Fe/H] $<$ -0.25 ', '-1.25 $<$ [Fe/H] $<$ -0.75 ', '[Fe/H] $<$ -1.25 ' ] 
     cl = [0,-0.5,-1,-2] 
-    mycmap = cm.jet 
+    mycmap =mpl.cm.jet 
     fehinds = [-3.75, -1.25, -0.75, -0.25, 2.25]    
     fehinds = [2.25, -0.25, -0.75, -1.25, -3.75]
     label21 = ['[Fe/H] < -1.25', '-1.25 < [Fe/H] < -0.75','-0.75 < [Fe/H] < -0.25', '[Fe/H] > -0.25']
+    #axs[1].plot(10**t3a, g3a, color = 'blue') 
     for i in range(0,4):
-        pickfeh = logical_and(feh2_data > fehinds[i+1], feh2_data < fehinds[i])
-        pickboth = logical_and(pickfeh, pick) 
+        pickfeh = np.logical_and(feh2_data > fehinds[i+1], feh2_data < fehinds[i])
+        pickboth = np.logical_and(pickfeh, pick) 
         print len(pickboth[pickboth]) 
         s1 = axs[i].plot(10**ts[i],gs[i], color = 'grey', label = label1[i] ,alpha  = 1.0,linewidth =1) 
         axs[i].legend(loc = 2,fontsize = 14)#,frameon = False) 
         #axs[i].plot(10**ts[i],gs[i], color = 'k', alpha  = 1.0,linewidth =0.5,linestyle= 'dashed') 
-        pickboth = logical_and(pick, pickfeh) 
+        pickboth = np.logical_and(pick, pickfeh) 
         #s2 = axs[i].plot(t2_data[pickboth], g2_data[pickboth], 'ko', ms = 2,alpha = 0.05)
-        image =axs[i].hist2d(t2_data[pickboth], g2_data[pickboth],bins = 40,cmin =0, cmap = cm.gray_r)#, 'ko', ms = 2,alpha = 0.05)
+        image =axs[i].hist2d(t2_data[pickboth], g2_data[pickboth],bins = 40,cmin =0, cmap = mpl.cm.gray_r)#, 'ko', ms = 2,alpha = 0.05)
+        #axs[i].scatter(t2_data[pickboth], g2_data[pickboth], c = feh2_data[pickboth] , alpha = 0.1, linewidth  = 0) 
+        print mean(feh2_data[pickboth]) , median(feh2_data[pickboth]) 
         #bad = isnan(image[0])
         #image[0][bad] = 0
         #data1 = [] 
@@ -190,7 +201,6 @@ def makeiso(number):
       prefix = str("no_ASPCAP_params_DR10_isochrone")
     if number ==4: 
       prefix = str("Cannon_triangle_cut_DR10_isochrone")
-    savefig3(fig, prefix, transparent=False, bbox_inches='tight', pad_inches=0.5)
     savefig3(fig, prefix, transparent=False, bbox_inches='tight', pad_inches=0.5)
     return 
 

@@ -45,7 +45,7 @@
   DWH,
   \&
   HWR,
-  GZ, AH} 
+  AH, GZ} 
 \date{DRAFT / \gitdate\ / \githash\ / NOT FOR DISTRIBUTION}
 
 
@@ -250,6 +250,7 @@ The simplest spectral model is that in which the function $\boldsymbol{x_n}$ is
 linear in the labels, so this label vector is described as:
 \begin{eqnarray}
 \set{x_n} =  [1, l_1 - \bar{l}_1, l_2 - \bar{l_2}, l_k - \bar{l_k}, .. ] &\equiv& [l_{n1}, l_{n2}, \cdots, l_{nK}]
+\label{eq:linear}
 \end{eqnarray}.
 
 The $\mean{l_k}$ are offsets (possibly means of the training data) to keep the model ``pivoting'' around a reasonable point in tag space.
@@ -259,7 +260,6 @@ Our general model then becomes
 \begin{eqnarray}
 f_{n\lambda} &=&
 g(\boldsymbol{l_n} |  \boldsymbol{\theta_n}) + \mbox{noise}
-\label{eq:linear}
 \end{eqnarray}
 
 Where the noise is a rms combination of the associated uncertainty variance
@@ -274,8 +274,7 @@ This model leads to the single-pixel log-likelihood function
 \begin{eqnarray}
 \ln p(f_{n\lambda}\given\set{\theta^T}_\lambda, \boldsymbol{x_n}, s_\lambda^2) &=&
  -\frac{1}{2}\frac{[f_{n\lambda} - \set{\theta}_\lambda \cdot \set{x_n}]^2}{s_\lambda^2 + \sigma_{n\lambda}^2}
-\label{eq:like}\\
-\quad.
+\label{eq:like}
 \end{eqnarray}
 
 
@@ -299,7 +298,7 @@ The difference is that here we are treating the training data as
 having perfectly known labels, and later we will be inferring labels for
 new spectra.
 
-Then, in training, we determine:
+Then, in training, we determine the coefficients at every wavelength for our model:
 
 \begin{eqnarray}
 \set{\theta_\lambda} \leftarrow \substack{\mbox{argmax}\\
@@ -320,7 +319,7 @@ The second is that the tag inference (label-transfer; described in the
 next Section) on the test data will have a very simple form.
 The third is that the coefficients $\theta_{\lambda 0}$, seen as a discrete
 function of wavelength $\lambda$, can be seen as an estimate of
-the \emph{mean spectrum} (provided that the offsets $\mean{l_k}$ are
+the \emph{baseline spectrum} (provided that the offsets $\mean{l_k}$ are
 the mean tag values over the $N$ training spectra); and the
 coefficients $\theta_{\lambda k}$ can be seen as the mean first derivatives of
 the expected spectrum with respect to each of the $k$ labels, estimated
@@ -330,9 +329,10 @@ The (perhaps) second-simplest spectral model is that in which the
 functions $\set{x_n}$ are quadratic in the labels: so this label vector is described as:
 \begin{eqnarray}
 \set{x_n} =  [1, l_1 - \bar{l}_1, l_2 - \bar{l_2}, l_k - \bar{l_k}, (l_1 - \bar{l_1})(l_1 - \bar{l_1}), .. ] &\equiv& [l_{n1}, l_{n2}, \cdots, l_{nK}]
+\label{eq:quad}
 \end{eqnarray}.
 
-This quadratic-in-labels form (\ref{eq:quadratic}) is similar to and
+This quadratic-in-labels form (\ref{eq:quad}) is similar to and
 different from the linear-in-labels form (\ref{eq:linear}) in a number
 of ways.
 It is still the case that optimization of the model, at fixed scatter
@@ -343,10 +343,10 @@ data will no longer be simple; it will now require non-linear
 optimization.
 
 The coefficients $\theta_{\lambda 0}$ can still be seen as an estimate of the
-\emph{mean spectrum} (provided that the offsets $\mean{l_k}$ are the
+\emph{baseline spectrum} (provided that the offsets $\mean{l_k}$ are the
 mean tag values); the first-order coefficients $\theta_{\lambda k}$ can still
 be seen as first derivatives of the expected spectrum with respect to
-each of the $k$ labels, but now evaluated at the mean spectrum; the
+each of the $k$ labels, but now evaluated at the baseline spectrum; the
 second-order coefficients $\theta_{\lambda kk'}$ can now be seen as mean
 second derivatives of the expected spectrum with respect to pairs of
 labels $k$ and $k'$
@@ -378,29 +378,28 @@ The difference between the training data and the test data is that the
 test data do not (yet) have known labels $x_{mk}$; we are going to infer
 these.
 
-Just as in the previous \sectionname, our model is given in
-equation~(\ref{eq:model}).
-This model leads to the same likelihood function given in
-equations~(\ref{eq:like1}) and (\ref{eq:like}), but this time seen as
+Just as in the previous \sectionname, our model leads to the same likelihood function given in
+equation~(\ref{eq:like}), but this time seen as
 being functions not of the function parameters $\set{\theta}_\lambda$ and
-scatter $s_\lambda^2$ but instead as functions of the \emph{labels}
-Then, in determining labels, we determine: 
+scatter $s_\lambda^2$ but instead as functions of the \emph{labels}.
+
+Then, in determining labels, we use the coefficients of the flux at every wavelength for a star m: 
 
 \begin{eqnarray}
 \set{l_\lambda} \leftarrow \substack{\mbox{argmax}\\
-{l_n}  }
+{l_m}  }
 \sum_{\lambda=1}^\Lambda \mbox{ln p}(\set{f_\lambda} | {\theta_1,...\theta_\lambda})
 \end{eqnarray}
 
 where the likelihood functions are given as a function of labels now,
 the sum is now over the full set of wavelengths
-$\lambda$, and the vector $\set{y}_m$ is the vector of fluxes from
+$\lambda$, and the vector $\set{f}_\lambda$ is the vector of fluxes from
 spectrum $m$ for all wavelengths $\lambda$.
 These likelihood functions effectively assume that the function
 parameters $\set{\theta}_\lambda$ and scatters $s_\lambda^2$ are all known (from
 the training data).
-New labels $\theta_{mk}$ for object $m$ can be obtained either by maximizing
-the likelihood function (\ref{eq:taglike}), or else by applying priors
+New labels $\l_{mk}$ for object $m$ can be obtained either by maximizing
+the likelihood function, or else by applying priors
 and performing probabilistic inference.
 Here we will optimize for now.
 
@@ -412,9 +411,9 @@ This optimization is obtained by straightforward linear algebra on the
 spectral pixels $y_{m\lambda}$, and standard frequentist confidence
 intervals can be obtained similarly.
 
-When we use the quadratic-in-labels form (\ref{eq:quadratic}) for the
+When we use the quadratic-in-labels form (\ref{eq:quad}) for the
 mean model $Y()$, there is no simple linear-algebra operation that
-optimizes the likelihood. Instead a python curve$\_$fit optimising function is used, which optimises the values for the parameters so that the sum of the squared error of f(xdata, $*$popt) $-$ ydata,  is minimized. 
+optimizes the likelihood. Instead a python curve$\_$fit optimising function is used, which optimises the values for the parameters so that the sum of the squared error of f(xdata, $*$popt) $-$ ydata,  is minimized. \textbf{note to mkn: change to terminology we use not the python one}.
 
 We have described how we construct our model and then apply our model to get labels for new stars, We now present in \ref{sec:results} the results for our model, starting with the simplest linear first-order implementation and then for the model we used for all \apogee\ data, of the quadratic model, linear in the coefficients and non-linear in the label-inference.  For the quadratic model we then show this applied to the DR10 data, including at lower SNR and investigate different input training labels. 
 
@@ -436,17 +435,23 @@ The final result that we report is the performance of \tc\ at low SNR. We demons
 
 \subsection{The model} 
 
-To firstly evaluate the label-transfer method, we performed the simplest implementation of a first-order linear model comprised of four coefficients. Figure \ref{fig:self1} shows the performance of this model for the 550 stars in the training set, run back through \tc\, having used the very same stars to set the coefficients for the model. The bias, rms and precision represent the offset and difference between the input and output labels and the internal error of the label inference, respectively.  The first-order linear model is clearly too inflexible to describe the behaviour of flux with the labels. This is not surprising given it is known that absorption features and particularly strong lines, do not behave linearly to the first-order, as a function of stellar parameters. Different metallicity regimes show different trends in  temperature and \logg\ and the dwarf labels are not well reproduced, showing large scatters in the \logg\ and \feh\ labels. 
+To firstly evaluate the label-transfer method, we performed the simplest implementation of a first-order linear model comprised of four coefficients. The first-order linear model was too inflexible to describe the behaviour of flux with the labels and at the parameter limits of the \feh\ and \logg\ the input training labels could not be returned by the model. Different metallicity regimes showed different trends in temperature and \logg\ and the dwarf labels were not well reproduced. Interestingly, dwarfs and giants separated out into different behaviours in the labels. This is not surprising given it is known that absorption features and particularly strong lines, do not behave linearly to the first-order, as a function of stellar parameters. 
+The linear model can be vastly improved by selecting only weak line regions, and excluding all strong lines by implementing a cut on the normalised flux considered for the coefficients fit in the label-transfer. The loss of information in the exclusion of a significant fraction of pixels is however clearly suboptimal, except for any pre-processing routine to get the approximate stellar parameters for a star as many surveys implement as a precursor to more complicated methodologies. 
 
-The linear model can be vastly improved by selecting only weak line regions, and excluding all strong lines by implementing a cut on the normalised flux considered for the coefficients fit in the label-transfer. The loss of information in the exclusion of a significant fraction of pixels is however clearly subtimal. 
+% showing large scatters in the \logg\ and \feh\ labels
+%Figure \ref{fig:self1} shows the performance of this model for the 550 stars in the training set, run back through \tc\, having used the very same stars to set the coefficients for the model. The bias, rms and precision represent the offset and difference between the input and output labels and the internal error of the label inference, respectively.  
 
-% run -i takeoneoutplot_all_comparison_singleorder.py
-\begin{figure}[h!]
-\centering
-  \includegraphics[scale=0.45]{./plots/single_self.pdf}
-\caption{The performance of the label-transfer of \tc\, where input coefficients have been determined using the set of training stars then run back through \tc\ as test data, to determine how the model can predict their labels; a test of the ``goodness'' of the model, for the simplest linear case with four coefficients. }
-\label{fig:self1}
-\end{figure}
+
+
+
+
+%% run -i takeoneoutplot_all_comparison_singleorder.py
+%\begin{figure}[h!]
+%\centering
+%  \includegraphics[scale=0.45]{./plots/single_self.pdf}
+%\caption{The performance of the label-transfer of \tc\, where input coefficients have been determined using the set of training stars then run back through \tc\ as test data, to determine how the model can predict their labels; a test of the ``goodness'' of the model, for the simplest linear case with four coefficients. }
+%\label{fig:self1}
+%\end{figure}
 
 
 
@@ -568,7 +573,7 @@ Although we find excellent agreement between \tc\ and \aspcap\ by adopting ASCPA
   \vspace{-15pt}
   \includegraphics[scale=0.33]{./plots/isochrone_v19b.pdf}
 
-    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b.pdf}
+    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
 \caption{The $\sim$ 37,500 stars from DR10 at top with the \aspcap-corrected training labels and at bottom with the ``isochrone-corrected'' \logg\ training labels, shown in four metallicity bins. Note the different \logg\ distribution at low \logg\ along the giant branch. There are $\sim$ 21,600, 14,000, 1700, and 900 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted at 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.}
 \label{fig:iso}
 \end{figure}
@@ -643,29 +648,39 @@ These Figures illustrate that the continuum normalisation works well for both of
 
 \section{Discussion}
 
-We have demonstrated in \tc,  that label-transfer is possible and extremely successful to determine stellar parameters in large surveys, simply and efficiently. This approach argues for defined stellar standards to effectively transfer labels of benchmark stars, studied at high resolution, to stars in surveys across any wavelength region. This would enable all stellar surveys to be unified. 
+We have demonstrated with \tc,  that label-transfer is possible and extremely successful to determine stellar parameters in large surveys, simply and efficiently. We show how models in the optical, which can be used at the prior and initial stage to determine labels for our calibration stars, can be used directly in the infrared. This label-transfer can succeed with a data-driven model given a calibration set of stars which span the label range of the test data. In using a data-driven model, we do not rely on explicit models in a new wavelength region of analysis. In this way we can fully capitalise on large surveys and the information in the data itself and circumvent problems with simplified stellar models and uncertainties in linelists in new wavelength regions. We can also apply \tc\ to understand where models are wrong.  
 
-We have  proven how models in the optical, which must be explicitly used to define the labels for the benchmark stars,  can be effectively used in the infrared via this transfer. Furthermore, using a data-driven model, we then do not rely on explicit models in a new wavelength region of analysis. In this way we can fully capitalise on large surveys and the information in the data itself and circumvent problems with simplified stellar models and uncertainties in linelists in new wavelength regions. 
+An example of where \tc\ may be directly applied to understand models, is with respect to the flat main sequence that is returned for dwarfs across the \teff, \logg\ plane, even with the highest resolution spectroscopic analysis \citep[e.g.][]{bensby2013}. It is unclear what causes this characteristic  in the model comparisons to determine stellar parameters e.g. it is is from missing physics with respect to rotation or micro turbulence in the models, or something else entirely? Using an extended implementation of \tc\ similarly to what we have presented in this paper, but with additional labels, the driving errors in the models in this parameter space can be explicitly determined.
+
+From our implementation of \tc\ on APOGEE data, we were motivated to examine the calibration space of the labels given the unphysically narrow giant branch returned for DR10 data at low \logg. We found by adopting a very naive calibration that shifts the stars to the red giant position on the isochrone (keeping the \teff\ and \feh\ fixed to \aspcap\ corrected values) rather than adopting the \apogee\ Kepler \logg\ corrected values, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical parameter space of stars. This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
+
+ For our first implementation of \tc\ presented here, it is trivial to run the almost 60,000 star sample (i.e. the size of DR10 from APOGEE) through \tc\ on a single laptop, as each star takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for, without any attempt at speed or method optimisation. It is similarly trivial to add additional labels, for example [$\alpha$/Fe] and individual elemental abundances and return these additional parameters. However in doing this our model should be upgraded from the simple quadratic form, to either constrain the number of coefficients in some determined way or move to a Gaussian process. We do not want to overfit our data nor compromise unnecessarily on processing speed.  
+ 
+We reproduce the \apogee\ labels, as provided for DR10 in Table 1, without adding any significant uncertainty because we use every pixel in the spectra and have a generative model where we let the noise model determine the weighting of the luminosity function, yet we can only do better. We have demonstrated that we can work at much lower SNR at least for the three primary stellar parameters with this approach. We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (e.g. alpha, light elements, neutron capture) of covariant spaces \citep[e.g.][]{Ting2012} and so exploit more pixels in the spectra and operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
+ 
+ \tc\ is readily expandable to a more general model, a larger training set and many more labels which include errors and/or partial characterisation of labels. As it is, our second-order model is hard-coded and extremely restrictive. We currently believe our input labels fully, given they are input without uncertainties, and assume no prior information which does not take advantage of any physical knowledge that is defined about the phase space the labels can reside in.  Furthermore, we currently treat every pixel as independent which is incorrect and therefore builds a physically incomplete model.
+
+ We have barely scratched the surface with what is possible with this methodology given our restricted training set, model and labels. Our training data set itself is clearly too small, comprising only 550 stars including a set of dwarfs at a single metallicity (+0.03 dex). As we lack dwarfs, we can not return parameters in this space to the same precision as giants (\logg\ $\le$ 3.5).  We also are missing any dwarfs with rotation in our model and consequently these are returned in an unphysical \teff-\logg\ parameter space in the label-transfer. 
+ 
+Despite all of this, we have shown using the APOGEE data that even the simplest model with naive assumptions and an incomplete physical description, works. This method is directly transferrable as is, to all other surveys and we expect we would be similarly successful applying this to e.g. \textit{GALAH} and \gaiaeso. The success of \tc\ argues for defined stellar standards to effectively transfer labels of benchmark stars, studied at high resolution, to stars in surveys across any wavelength region. This would enable all stellar surveys to be unified. 
+ 
+ It is also possible and likely desirable in some cases to implement exactly the same procedure we describe using a synthetic grid instead of data, to train the model. This will remove many of these limitations in the model that are derived from the parameter space of the training labels. However, this also eliminates many of the advantages in a full characterisation of the noise in the data and the true behaviour of labels with flux.%, which simplified models approximate. We propose this approach is used to understand models with a data-driven comparison, rather than be tied to them. 
+ 
+ %,  we argue for adopting a wider set of benchmark stars from data in surveys, given labels determined at high resolution, in order to mitigate the issues with limited training data sets. 
 
 
-data driven model -  very successful as it respects the noise model. generative - synth, L.F. - permits discovery, interpretation.
+There are a number of immediate new opportunities with this approach. The primary and obvious opportunity is to unify all stellar parameter systems and a key necessity of this is that all common benchmark stars be observed in all surveys. The data-driven model approach enables an analysis and characterisation of how and where stellar templates diverge from data, but the ultimate consequence of this methodology is that by using the coefficients of the labels returned in this method for example in our quadratic implementation, we can directly identify and learn \textit{where} the information in a stellar spectrum resides. This can be used to make quantitative assessments of the flux dependence on the labels, at the detail of the individual line profiles (asymmetries are clear, a depth versus width versus wings of the features is clear) and, for example, determine continuum pixels as we have done to obtain a robust continuum normalisation across SNR. The information in the spectra  is a direct output from the model, which is immensely more informative than the reverse assumption of assessing regions of interest as informed by linelists.  \tc\ is therefore extremely relevant for chemical tagging and we take an approach of a data-driven differential analysis of spectra, by characterising the behaviour of flux and labels, as a way to fingerprint stars with a common formation history.
 
-We have barely scratched the surface with what is possible with this methodology and our training set, model and labels are very restricted. Our training data set itself is clearly too small, comprising only 500 stars including a set of dwarfs at a single metallicity (+0.03 dex). As we lack dwarfs in particular we can not return parameters in this space to the same precision as giants (\logg\ $\le$ 3.5).  We also are missing any dwarfs with rotation in our model and consequently these are returned in an unphysical \teff-\logg\ parameter space in the label-transfer. We also assume our training set is absolute, we do not include any errors in our adopted labels, which reduces the flexibility of our model and is not correct.We currently treat every pixel as independent which is incorrect and therefore an incomplete model, missing the real physical representation. Nevertheless, we have shown using the APOGEE data that even the simplest model with naive assumptions and an incomplete physical description, works. This method is directly transferrable as is, to all other surveys and we expect we would be similarly successful applying this to e.g. \textit{GALAH} and \gaiaeso.
-
-
-We reproduce the \apogee\ labels without adding any significant uncertainty because we use every pixel in the spectra and let the noise model determine the weighting of the luminosity function, yet we can only do better. We have also demonstrated that we can work at much lower SNR at least for the three primary stellar parameters. We expect to not gain the same advantage for individual elements, but it may be possible to combine elements into subgroups (e.g. alpha light elements, neutron capture) of covariant spaces (e.g. Ting et al., 2012) and so exploit more pixels in the spectra and operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. 
+A direct first additional upgrade for \tc\ in line with directing this method toward chemical tagging, which large surveys like \galah\ and \apogee\ have been constructed around,  is  to add more labels. An obvious initial choice is $\alpha$-enhancement and a subset of key individual abundances [X/Fe]. It is even possible to test what, if any, information in the spectra is correlated with an age label. If such information is present in the spectra across a large set of stars in a survey, this method \textit{will} determine exactly which pixels are responsible for carrying this information. In addition, we will gain significantly by moving to a more flexible model like a Gaussian process and allowing our model to be informed by priors in these new directions for this work. 
 
 
-\tc\ is readily expandable to a more general model, a larger training set and many more labels, and relevant for chemical tagging. 
-Our second-order model is hard coded and extremely restrictive and this can be upgraded to a Gaussian process and include assumptions of priors as currently there is no use of any prior physical knowledge in our model. It is also possible to implement exactly the same procedure we describe using a synthetic grid instead of data to create the model and this will remove many of these limitations in the model. However, this also convolve in unphysical representations of stars as stellar models are simplified versions of real data. We preferably argue for adopting a wider set of benchmark stars from data in surveys, given labels determined at high resolution. 
+\textbf{DHW can you expand on generative models: data driven model that represents the noise -  very successful as it respects the noise model. generative - synth, L.F. - permits discovery, interpretation.}
 
-We identify new opportunities with this approach. The primary and obvious opportunity is to unify all stellar parameter systems and a key necessity of this is that all common benchmark stars be observed in all surveys. The data driven model itself also enables an analysis and characterisation of how and where stellar templates diverge from data. Using the coefficients of the labels returned in this method, we can also directly identify and learn where the information in a stellar spectrum resides and make quantitative assessments of the flux dependence on the labels and for example determine continuum pixels. The information in the spectra itself is a direct output from the model, which is more general and immensely more informative than the reverse assumption of assessing regions of interest as informed by linelists.  A direct first additional upgrade for \tc\ is  to add more labels and an obvious initial choice is $\alpha$-enhancement, followed by individual abundances [X/Fe]. It is even possible to test what, if any information is contained in labels such as age. If such information is present in the spectra across a large set of stars in a survey, this method will determine exactly which pixels are responsible for carrying this information. In addition, we will gain significantly by moving to a more flexible model like a Gaussian process and allowing our model to be informed by priors.
 
-As \tc\ is a way to understand the spectra, it is highly relevant for chemical tagging where simple determination of individual elemental abundances and analysis of grouping across this parameter space will unlikely suffice. Conversely, a direct differential analysis of the data is a powerful approach using the data itself, without simplified assumptions in models. 
 
-From our implementation of \tc\ on APOGEE data, we were motivated to examine the calibration space of the labels given the unphysically narrow giant branch returned for DR10 data at low \logg. We found by adopting a calibration that shifts the stars to the nearest position on the isochrone (keeping the \teff\ and \feh\ fixed to \aspcap\ corrected values), the stars shifted onto the isochrones in \teff-\logg\ space, across metallicity, in line with expectations of the physical parameter space of stars. This small \logg\ adjustment is naive, but works well, causing small shifts in the \logg\ scale at low temperatures compared to the \apogee\ \logg\ input labels. This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
+%As \tc\ is a way to understand the spectra, it is highly relevant for chemical tagging where simple determination of individual elemental abundances and analysis of grouping across this parameter space will unlikely suffice. Conversely, a direct differential analysis of the data is a powerful approach using the data itself, without simplified assumptions in models. 
 
-\textbf{ $\bullet$  DWH add your discussion here?} 
+\textbf{ $\bullet$ what else?} 
 
 %The future iteration of \tc\ will be to implement a gaussian process, bringing in errors and we can training on individual labels from DR12 to see if can reproduce individual labels in the rest of DR12 data given these labels in the training spectra, via the label-transfer. Will not be a function of synthetic spectra as data driven model. 
 
@@ -673,17 +688,16 @@ From our implementation of \tc\ on APOGEE data, we were motivated to examine the
 
 %% add references!!
 
-\acknowledgements{DFM primary, 
-JB, sloan
-DWH grant no.,
-The research has
-received funding from the European Research Council under the European
+\section*{ Acknowledgements}
+
+The name \tc\ is inspired by the astronomer Annie Jump Cannon, who worked on stellar classification without stellar models. \textbf{DWH this is you: thank (1) DFM primary,  (2) JB, (3) your grant no}.,
+The research has received funding from the European Research Council under the European
 Union's Seventh Framework Programme (FP 7) ERC Grant Agreement n.
-[321035]. MA acknowledges generous funding from the Australian Research Council (grant FL110100012)\\
+[321035]. 
 
 Funding for SDSS-III has been provided by the Alfred P. Sloan Foundation, the Participating Institutions, the National Science Foundation, and the U.S. Department of Energy Office of Science. The SDSS-III web site is $http://www.sdss3.org/.$\\
 
-SDSS-III is managed by the Astrophysical Research Consortium for the Participating Institutions of the SDSS-III Collaboration including the University of Arizona, the Brazilian Participation Group, Brookhaven National Laboratory, Carnegie Mellon University, University of Florida, the French Participation Group, the German Participation Group, Harvard University, the Instituto de Astrofisica de Canarias, the Michigan State/Notre Dame/JINA Participation Group, Johns Hopkins University, Lawrence Berkeley National Laboratory, Max Planck Institute for Astrophysics, Max Planck Institute for Extraterrestrial Physics, New Mexico State University, New York University, Ohio State University, Pennsylvania State University, University of Portsmouth, Princeton University, the Spanish Participation Group, University of Tokyo, University of Utah, Vanderbilt University, University of Virginia, University of Washington, and Yale University}
+SDSS-III is managed by the Astrophysical Research Consortium for the Participating Institutions of the SDSS-III Collaboration including the University of Arizona, the Brazilian Participation Group, Brookhaven National Laboratory, Carnegie Mellon University, University of Florida, the French Participation Group, the German Participation Group, Harvard University, the Instituto de Astrofisica de Canarias, the Michigan State/Notre Dame/JINA Participation Group, Johns Hopkins University, Lawrence Berkeley National Laboratory, Max Planck Institute for Astrophysics, Max Planck Institute for Extraterrestrial Physics, New Mexico State University, New York University, Ohio State University, Pennsylvania State University, University of Portsmouth, Princeton University, the Spanish Participation Group, University of Tokyo, University of Utah, Vanderbilt University, University of Virginia, University of Washington, and Yale University
 
  \bibliography{tc.bib}
 

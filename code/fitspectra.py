@@ -228,11 +228,14 @@ def get_bad_pixel_mask(testfile,nlam):
   for each in al2:
     bl2.append(each.strip()) 
     bl3.append((each.split('/'))[-2] +'/'+ ("apStar-s3-")+each.split('aspcapStar-v304-')[-1].strip())  
-  dirin = ['/home/ness/new_laptop/Apogee_apStar/data.sdss3.org/sas/dr10/apogee/spectro/redux/r3/s3/'+each for each in bl3] 
-  mask  = np.zeros((nlam, len(bl2),1))
-  for jj,each in enumerate(dirin):
-    a=pyfits.open(each) 
-    mask[:,jj,0] = (np.atleast_2d(a[3].data))[0]
+  if glob.glob('/home/ness/new_laptop/Apogee_apStar/data.sdss3.org/sas/dr10/apogee/spectro/redux/r3/s3/'):
+    dirin = ['/home/ness/new_laptop/Apogee_apStar/data.sdss3.org/sas/dr10/apogee/spectro/redux/r3/s3/'+each for each in bl3] 
+    mask  = np.zeros((nlam, len(bl2),1))
+    for jj,each in enumerate(dirin):
+      a=pyfits.open(each) 
+      mask[:,jj,0] = (np.atleast_2d(a[3].data))[0]
+  else: 
+    mask  = np.zeros((nlam, len(bl2),1))
   return mask 
 
 def get_normalized_test_data_tsch(testfile, pixlist):
@@ -1209,17 +1212,13 @@ if __name__ == "__main__":
         train(dataall, metaall, 2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0.)
     self_flag = 2
     self_flag = 1
-    self_flag = 0
     self_flag = 2
     #self_flag = 3
+    self_flag = 0
     
     if self_flag < 1:
-      a = open('all_test2.txt', 'r') 
-      a = open('all_test5.txt', 'r') 
-      a = open('all_test3.txt', 'r') 
       a = open('all.txt', 'r') 
       a = open('all_test.txt', 'r') 
-      a = open('all.txt', 'r') 
       al = a.readlines()
       bl = []
       for each in al:
