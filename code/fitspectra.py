@@ -24,6 +24,7 @@ from scipy import interpolate
 from scipy import ndimage 
 from scipy import optimize as opt
 import numpy as np
+from datetime import datetime
 normed_training_data = 'normed_data.pickle'
 
 def weighted_median(values, weights, quantile):
@@ -111,8 +112,8 @@ def continuum_normalize_tsch(dataall,mask, pixlist, delta_lambda=150):
         maskbin1 = [np.int(a) & 2**0 for a in mask[:,jj,0]] 
         maskbin2 = [np.int(a) & 2**12 for a in mask[:,jj,0]] 
         maskbin3 = [np.int(a) & 2**13 for a in mask[:,jj,0]] 
-        bad = logical_or(logical_or(maskbin2 != 0, maskbin1 != 0), maskbin3 != 0) 
-        dataall_flat[bad,jj, 2] = LARGE 
+        #bad = logical_or(logical_or(maskbin2 != 0, maskbin1 != 0), maskbin3 != 0) 
+        #dataall_flat[bad,jj, 2] = LARGE 
     return dataall_flat, continuum 
 
 
@@ -728,6 +729,7 @@ def train(dataall, metaall, order, fn, Ametaall, cluster_name, logg_cut=100., te
     diff_t = np.abs(array(metaall[:,0] - Ametaall[:,0]) ) 
     #good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 600. ) ) 
     good = np.logical_and((metaall[:, 1] > 0.2), (diff_t < 6000. ) ) 
+    good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 6000. ) ) 
     dataall = dataall[:, good]
     metaall = metaall[good]
     nstars, nmeta = metaall.shape
@@ -1212,11 +1214,12 @@ if __name__ == "__main__":
         train(dataall, metaall, 2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0.)
     self_flag = 2
     self_flag = 1
-    self_flag = 2
-    #self_flag = 3
     self_flag = 0
+    #self_flag = 2
+    #self_flag = 3
     
     if self_flag < 1:
+      startTime = datetime.now()
       a = open('all.txt', 'r') 
       a = open('all_test.txt', 'r') 
       al = a.readlines()
@@ -1238,6 +1241,7 @@ if __name__ == "__main__":
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v19.pickle",0.00,1.40) 
         #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_v20.pickle",0.00,1.40) 
         testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall, ids, field+"tags_chi2_df_mkn_v21.pickle",0.00,1.40) 
+        print(datetime.now()-startTime)
     if self_flag == 1:
       field = "self_"
       file_in = open(normed_training_data, 'r') 
