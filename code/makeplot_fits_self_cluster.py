@@ -13,18 +13,15 @@ import matplotlib
 from pylab import rcParams
 from pylab import * 
 from matplotlib import pyplot
-import matplotlib.pyplot as plt
-from matplotlib import colors
-from matplotlib.pyplot import axes
-from matplotlib.pyplot import colorbar
-#from matplotlib.ticker import NullFormatter
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 s = matplotlib.font_manager.FontProperties()
-s.set_family('serif')
-s.set_size(14)
-from matplotlib import rc
-rc('text', usetex=False)
-rc('font', family='serif')
+import matplotlib as mpl 
+mpl.rcParams['text.usetex']=True
+mpl.rcParams['text.latex.unicode']=True
+rcParams["xtick.labelsize"] = 14
+rcParams["ytick.labelsize"] = 14
+s = matplotlib.font_manager.FontProperties()
+s.set_size(18)
 
 def returnscatter(x,y):
     xd = x
@@ -54,6 +51,7 @@ def returnscatter(x,y):
 
 def plotfits():
 #    file_in = "self_tags.pickle"
+    #file_in = "self_2nd_order_tags_mknA.pickle"
     file_in = "self_2nd_order_tags.pickle"
     file_in2 = open(file_in, 'r') 
     params, covs_params,variable1,ids = pickle.load(file_in2)
@@ -61,7 +59,9 @@ def plotfits():
     params = array(params)
     file_in2.close()
 
+    filein2 = 'test18_noP.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
     filein2 = 'test18.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
+    #filein2 = 'mkn_labels_Atempfeh_edit.txt' # this is for self test this is dangerous - need to implement the same logg cut here, this is original data values or otherwise metadata 
     #filein2 = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
     a = open(filein2) 
     al = a.readlines() 
@@ -77,6 +77,7 @@ def plotfits():
       name_ind.append(np.int(starind[takeit][-1]+1. ) )
     cluster_ind = [0] + list(sort(name_ind))# + [len(al)]
     plot_markers = ['ko', 'yo', 'ro', 'bo', 'co','k*', 'y*', 'r*', 'b*', 'c*', 'ks', 'rs', 'bs', 'cs', 'rd', 'kd', 'bd', 'cd', 'mo', 'ms' ]
+    plot_markers = ['ko', 'yo', 'ro', 'bo', 'go','k*', 'y*', 'r*', 'b*', 'c*', 'ks', 'rs', 'bs', 'ms', 'rd', 'kd', 'bd', 'cd', 'mo', 'ms' ]
     cluster_names = names[list([a-1 for a in cluster_ind])][1:]
     #plot_markers = ['k', 'y', 'r', 'b', 'c','k', 'y', 'r', 'b', 'c', 'k', 'r', 'b', 'c', 'r', 'k', 'b', 'c', 'm', 'm' ]
     #cv_ind = np.arange(395,469,1)
@@ -92,14 +93,22 @@ def plotfits():
       t,g,feh,t_err,feh_err = loadtxt(filein2, usecols = (4,6,8,16,17), unpack =1) 
     if filein2 == 'mkn_labels_Atempfeh_edit.txt':
       t,g,feh,t_err,feh_err = loadtxt(filein2, usecols = (3,5,7,3,3), unpack =1) 
+    if filein2 == 'test18_noP.txt':
+      t,g,feh,t_err,feh_err = loadtxt(filein2, usecols = (4,6,8,16,17), unpack =1) 
+
+
+    pick = g > 0.2 
+    #pick = g < 4.0 
     g_err = [0]*len(g) 
     feh_err = [0]*len(g) 
     t_err = [0]*len(g) 
     g_err = array(g_err)
     t_err = array(t_err)
     feh_err = array(feh_err)
+    t,g,feh,t_err,g_err,feh_err = t[pick], g[pick], feh[pick], t_err[pick], g_err[pick], feh_err[pick] 
     
     params = array(params) 
+    params = array(params)[pick]
     #covs_params = np.linalg.inv(icovs_params) 
     rcParams['figure.figsize'] = 12.0, 10.0
     fig = plt.figure()
@@ -124,16 +133,16 @@ def plotfits():
       indc2 = cluster_ind[i+1]
       name = names[i] 
       for ax, num,num2,label1,x1,y1 in zip(axs, listit_1,listit_2,labels, [4800,3.0,0.3], [3400,1,-1.5]): 
-        pick = logical_and(g[indc1:indc2] > 0, logical_and(t_err[indc1:indc2] < 300, feh[indc1:indc2] > -4.0) ) 
+        #pick = logical_and(g[indc1:indc2] > 0, logical_and(t_err[indc1:indc2] < 300, feh[indc1:indc2] > -4.0) ) 
+        pick = g[indc1:indc2] > -1000
         cind = array(input_ASPCAP[1][indc1:indc2][pick]) 
         cind = array(input_ASPCAP[num2][indc1:indc2][pick]).flatten() 
-        #ax.errorbar(input_ASPCAP[num][indc1:indc2][pick], params_labels[num][indc1:indc2][pick],yerr= params_labels[num+3][indc1:indc2][pick],marker='',ls='',zorder=0, fmt = None,elinewidth = 1,capsize = 0)
         #ax.errorbar(input_ASPCAP[num][indc1:indc2][pick], params_labels[num][indc1:indc2][pick],xerr=input_ASPCAP[num+3][indc1:indc2][pick],marker='',ls='',zorder=0, fmt = None,elinewidth = 1,capsize = 0)
         #ax.plot(input_ASPCAP[num][indc1:indc2][pick], params_labels[num][indc1:indc2][pick], plot_markers[i], label = str(name)) 
-        ax.plot(input_ASPCAP[num][indc1:indc2][pick], params_labels[num][indc1:indc2][pick], plot_markers[i], label = str(cluster_names[np.int(i)]), ms = 6)
+        ax.plot(input_ASPCAP[num][indc1:indc2][pick], params_labels[num][indc1:indc2][pick], plot_markers[i], label = str(cluster_names[np.int(i)]), ms = 6, mew = 0 )
         ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.45),fancybox=True, shadow=True, numpoints = 1, ncol = 7,fontsize  = 12 ) 
     for ax, num in zip(axs, listit_1): 
-        scatter1,scatter2 = returnscatter(input_ASPCAP[num][pick], params_labels[num][pick])
+        scatter1,scatter2 = returnscatter(input_ASPCAP[num], params_labels[num])
         if abs(scatter2) > 1:
           round2 = round(scatter2, 1)
         else: 
@@ -152,7 +161,7 @@ def plotfits():
           round3 = round(scatter3, 3)
         ax.text(0.7, 0.1,"bias, rms, precision = "+str(round1)+", "+str(round2)+", "+str(round3), ha='center', va='center',
               transform=ax.transAxes,fontsize = 14)
-          
+           
 
     #plot_markers = ['ko', 'yo', 'ro', 'bo', 'co','k*', 'y*', 'r*', 'b*', 'c*', 'ks', 'rs', 'bs', 'cs', 'rd', 'kd', 'bd', 'cd', 'mo', 'ms' ]
     #for a,b in zip(plot_markers, cluster_names):
@@ -167,19 +176,20 @@ def plotfits():
     #ax.text(0.7, 0.1,"bias, rms, precision = "+str(round1)+", "+str(round2)+", "+str(round3), ha='center', va='center',
 
     ax1.plot([0,6000], [0,6000], linewidth = 1.5, color = 'k' ) 
-    ax2.plot([0,5], [0,5], linewidth = 1.5, color = 'k' ) 
+    ax2.plot([0,5.5], [0,5.5], linewidth = 1.5, color = 'k' ) 
     ax3.plot([-3,2], [-3,2], linewidth = 1.5, color = 'k' ) 
-    ax1.set_xlim(3500, 6000) 
-    ax1.set_ylim(3500, 6000) 
-    ax2.set_xlim(0, 5) 
-    ax2.set_xlim(0, 5) 
-    ax1.set_xlabel(" Teff, [K]", fontsize = 14,labelpad = 2) 
-    ax1.set_ylabel("Teff, [K]", fontsize = 14,labelpad = 5) 
-    ax2.set_xlabel(" logg, [dex]", fontsize = 14,labelpad = 2) 
-    ax2.set_ylabel("logg, [dex]", fontsize = 14,labelpad = 5) 
-    ax3.set_xlabel(" [Fe/H], [dex]", fontsize = 14,labelpad = 2) 
-    ax3.set_ylabel("[Fe/H], [dex]", fontsize = 14,labelpad = 5) 
-    ax3.set_ylim(-3,2) 
+    ax1.set_xlim(3500, 5800) 
+    ax1.set_ylim(3500, 5800) 
+    ax2.set_xlim(0, 5.1) 
+    ax2.set_ylim(0, 5.1) 
+    ax3.set_ylim(-3,0.8) 
+    ax3.set_xlim(-3,0.8) 
+    ax1.set_xlabel(" Teff, (K)", fontsize = 14,labelpad = 2) 
+    ax1.set_ylabel("Teff, (K)", fontsize = 14,labelpad = 5) 
+    ax2.set_xlabel(" logg, (dex)", fontsize = 14,labelpad = 2) 
+    ax2.set_ylabel("logg, (dex)", fontsize = 14,labelpad = 5) 
+    ax3.set_xlabel(" [Fe/H], (dex)", fontsize = 14,labelpad = 2) 
+    ax3.set_ylabel("[Fe/H], (dex)", fontsize = 14,labelpad = 5) 
     # attach lines to plots
     fig.subplots_adjust(hspace=0.22)
     #prefix = "/Users/ness/Downloads/Apogee_Raw/calibration_apogeecontinuum/documents/plots/fits_3_self_cut"

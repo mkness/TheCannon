@@ -78,9 +78,9 @@ def continuum_normalize_tsch(dataall,mask, pixlist, delta_lambda=150):
         take1 = logical_and(dataall[:,jj,0] > 15150, dataall[:,jj,0] < 15800)
         take2 = logical_and(dataall[:,jj,0] > 15890, dataall[:,jj,0] < 16430)
         take3 = logical_and(dataall[:,jj,0] > 16490, dataall[:,jj,0] < 16950)
-        fit1 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take1,jj,0], y=dataall[take1,jj,1], w=ivar[take1],deg=3)
-        fit2 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take2,jj,0], y=dataall[take2,jj,1], w=ivar[take2],deg=3)
-        fit3 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take3,jj,0], y=dataall[take3,jj,1], w=ivar[take3],deg=3)
+        fit1 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take1,jj,0], y=dataall[take1,jj,1], w=ivar[take1],deg=2)
+        fit2 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take2,jj,0], y=dataall[take2,jj,1], w=ivar[take2],deg=2)
+        fit3 = numpy.polynomial.chebyshev.Chebyshev.fit(x=dataall[take3,jj,0], y=dataall[take3,jj,1], w=ivar[take3],deg=2)
         continuum[take1,jj] = fit1(dataall[take1,jj,0])
         continuum[take2,jj] = fit2(dataall[take2,jj,0])
         continuum[take3,jj] = fit3(dataall[take3,jj,0])
@@ -454,12 +454,15 @@ def get_normalized_training_data_tsch(pixlist):
         file_in2.close()
         return dataall, metaall, labels, Ametaall, cluster_name, ids
   fn = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
-  fn = 'test18.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+  #fn = 'test18.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+  #fn = 'test18_noP.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
   #T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
   if fn == 'test18.txt': 
     T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
   if fn == 'mkn_labels_Atempfeh_edit.txt': 
     T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (3,5,7,2,4,6), unpack =1) 
+  if fn == 'test18_noP.txt': 
+    T_est,g_est,feh_est,T_A, g_A, feh_A = np.loadtxt(fn, usecols = (4,6,8,3,5,7), unpack =1) 
   labels = ["teff", "logg", "feh"]
   a = open(fn, 'r') 
   al = a.readlines() 
@@ -532,9 +535,9 @@ def get_normalized_training_data():
         return dataall, metaall, labels, Ametaall, cluster_name, ids
   fn = "starsin_new_all_ordered.txt"
   fn = "test4_selfg.txt"
-  fn = 'test14.txt' # this is for teff < 600 cut which worked quite nicely 
   fn = 'mkn_labels_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
   fn = 'mkn_labels_Atempfeh_edit.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
+  fn = 'test14.txt' # this is for teff < 600 cut which worked quite nicely 
   fn = 'test18.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
   #fn = 'test14.txt' # this is for teff < 600 cut which worked quite nicely 
   #fn = 'test18_apstar.txt'  # this is for using all stars ejmk < 0.3 but with offest to aspcap values done in a consistent way to rest of labels 
@@ -729,7 +732,8 @@ def train(dataall, metaall, order, fn, Ametaall, cluster_name, logg_cut=100., te
     diff_t = np.abs(array(metaall[:,0] - Ametaall[:,0]) ) 
     #good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 600. ) ) 
     good = np.logical_and((metaall[:, 1] > 0.2), (diff_t < 6000. ) ) 
-    good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 6000. ) ) 
+    #good = np.logical_and((metaall[:, 1] < 4.0), (diff_t < 6000. ) ) 
+    #good = np.logical_and((metaall[:, 1] < logg_cut), (diff_t < 6000. ) ) 
     dataall = dataall[:, good]
     metaall = metaall[good]
     nstars, nmeta = metaall.shape
@@ -1031,7 +1035,7 @@ def savefig(fig, prefix, **kwargs):
 
 def leave_one_cluster_out():
 # this is the test routine to leave one cluster out 
-    dataall, metaall, labels, Ametaall, cluster_name, ids= get_normalized_training_data()
+    dataall, metaall, labels, Ametaall, cluster_name, ids= get_normalized_training_data_tsch()
     nameu = unique(cluster_name) 
     nameu = array(nameu) 
     cluster_name = array(cluster_name)
@@ -1052,7 +1056,7 @@ def leave_one_cluster_out():
     return 
 
 def leave_one_star_out():
-# this is the test routine to leave one cluster out 
+# this is the test routine to leave one star out 
     dataall, metaall, labels, Ametaall, cluster_name, ids= get_normalized_training_data()
     #nameu = unique(cluster_name) 
     #nameu = array(nameu) 
@@ -1080,6 +1084,7 @@ def leave_one_star_out():
       file_in = open(normed_training_data, 'r') 
       testdataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in)
       file_in.close() 
+      #testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall[:,take], idsnew[take], field+str(star_take)+"_itags_mknA.pickle",-10.950,10.99) 
       testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order.pickle", testdataall[:,take], idsnew[take], field+str(star_take)+"_itags.pickle",-10.950,10.99) 
       #plot_leave_one_out(field, clust_pick) 
     return 
@@ -1215,7 +1220,7 @@ if __name__ == "__main__":
     self_flag = 2
     self_flag = 1
     self_flag = 0
-    #self_flag = 2
+    self_flag = 2
     #self_flag = 3
     
     if self_flag < 1:

@@ -1,6 +1,7 @@
 a = open("starsin_new_all_ordered.txt",'r')
 a = open("test4_selfg.txt",'r')
 a = open("test14.txt",'r')
+a = open("test18.txt",'r')
 al = a.readlines()
 bl = [] 
 name = [] 
@@ -29,7 +30,7 @@ a_M3 = 11.4
 a_M5 = 13.0
 a_M53 = 12.67
 a_M67 = 3.2
-a_M71 = 10.0
+a_M71 = 11.0# was 10 but looked up and some literatre said 11 or 12 
 a_M92 = 14.
 a_N188 = 5.
 a_N2158 = 1.05
