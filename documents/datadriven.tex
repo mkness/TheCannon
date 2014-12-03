@@ -53,17 +53,14 @@
 
 
 \begin{abstract}%
-
-Unprecedented spectroscopic stellar surveys, homogeneously
-observing over 100,000 stars each, offer the
-promise and challenge to deliver stellar parameters and
-abundances (collectively `stellar labels') for vast numbers of
+New spectroscopic surveys offer the
+promise of consistent stellar parameters and
+abundances (`stellar labels') for hundreds of thousands of
 stars in the Milky Way. These labels are currently derived
-through comparison with physics-based model spectra,
-which presents a number of serious technical
-challenges, and often uses only a modest fraction of the
-observed spectral range.  Commonly, there is a sub-set of
-{\it reference} objects in any survey for which the stellar labels
+by comparisons with physics-based model spectra,
+which are technically challenging, and often use only a modest fraction of the
+spectral pixels.  In many cases, however, there is a sub-set of
+\emph{reference} objects for which the stellar labels
 are known with high(er) fidelity. For that case,
 we lay out a data-driven approach, \tc,
 that can determine stellar labels for all the other objects
@@ -73,15 +70,17 @@ depends on the `known' stellar labels. We then exploit this
 same dependence to derive stellar labels from the spectrum
 of any other star in the survey, effectively transferring the
 the information of how stellar parameters are reflected in
-the spectrum, $f_\lambda$, from the reference stars to the whole sample. We illustrate the Cannon by applying it to the spectra of DR10 of \apogee\ taking \teff, \logg\ and \feh\ as the stellar labels, and 545 stars in 19 clusters
-as the reference objects with presumed known labels.
+the spectrum, $f_\lambda$, from the reference stars to the whole sample. We illustrate \tc\ by applying it
+to the spectra of 59,000 stars from \apogee\ DR10.
+We take \teff, \logg\ and \feh\ as the labels, and 545 stars in 19 clusters
+as the reference objects (training set).
 The data-driven model underlying \tc\ is a generative model of the
-spectra; it is a very flexible model (70,000 parameters) trained to be
-a map from stellar parameter labels to intensity values on a wavelength
-grid. \tc\ label-transfer is very accurate and can derive stellar labels that are on par with the 
-37,500 stars in DR10 for which labels are provided, with at least the precision of the \apogee\ pipeline (\aspcap) 
-labels themselves; we obtain rms precisions of $\delta\teff< 100$~K,
-$\delta\logg< 0.2$~dex and $\delta\feh< 0.1$~dex. Aside from the modeling of the training-set stars (which could happen
+spectra; it is a very flexible model (80,000 parameters) trained to be
+a map from stellar parameter labels to a pdf for intensity on a wavelength
+grid. \tc\ is very accurate; its stellar labels compare well to the 
+37,500 stars for which \apogee\ pipeline (\aspcap) labels are provided; we obtain rms differences of $\delta\teff< 100$~K,
+$\delta\logg< 0.2$~dex and $\delta\feh< 0.1$~dex.
+Aside from the modeling of the training-set stars (which could happen
 in another dataset or at another wavelength), \tc\ makes no use of
 stellar models nor an infrared linelist whatsoever; its biggest limitation is that it requires a
 training set that spans the full stellar parameter label-space.
