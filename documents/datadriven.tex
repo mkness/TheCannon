@@ -53,43 +53,37 @@
 
 
 \begin{abstract}%
-New spectroscopic surveys offer the
-promise of consistent stellar parameters and
-abundances (`stellar labels') for hundreds of thousands of
-stars in the Milky Way. These labels are currently derived
-by comparisons with physics-based model spectra,
-which are technically challenging, and often use only a modest fraction of the
-spectral pixels.  In many cases, however, there is a sub-set of
-\emph{reference} objects for which the stellar labels
-are known with high(er) fidelity. For that case,
-we lay out a data-driven approach, \tc,
-that can determine stellar labels for all the other objects
-in the survey. From the reference spectra, we first determine how
-the flux in each pixel of a continuum-normalized spectrum
-depends on the `known' stellar labels. We then exploit this
-same dependence to derive stellar labels from the spectrum
-of any other star in the survey, effectively transferring the
-the information of how stellar parameters are reflected in
-the spectrum, $f_\lambda$, from the reference stars to the whole sample. We illustrate \tc\ by applying it
-to the spectra of 59,000 stars from \apogee\ DR10.
-We take \teff, \logg\ and \feh\ as the labels, and 545 stars in 19 clusters
-as the reference objects (training set).
-The data-driven model underlying \tc\ is a generative model of the
-spectra; it is a very flexible model (80,000 parameters) trained to be
-a map from stellar parameter labels to a pdf for intensity on a wavelength
-grid. \tc\ is very accurate; its stellar labels compare well to the 
-37,500 stars for which \apogee\ pipeline (\aspcap) labels are provided; we obtain rms differences of $\delta\teff< 100$~K,
-$\delta\logg< 0.2$~dex and $\delta\feh< 0.1$~dex.
+New spectroscopic surveys offer the promise of consistent stellar
+parameters and abundances (`stellar labels') for hundreds of thousands
+of stars in the Milky Way. 
+These labels are currently derived by comparisons with physics-based
+model spectra, which are technically challenging, and often use only a
+modest fraction of the spectral pixels. 
+In many cases, however, there is a sub-set of \emph{reference}
+objects for which the stellar labels are known with high(er)
+fidelity; this is the use case for \tc.
+From the reference stars, \tc\ learns (by fitting a very flexible
+model) how the flux in each pixel of a continuum-normalized spectrum
+depends on the `known' stellar labels; \tc\ then exploits this same
+dependence to derive new labels for the non-refererence stars.
+We illustrate \tc\ by applying it to the spectra of 59,000 stars from
+\apogee\ DR10. 
+We take \teff, \logg\ and \feh\ as the labels, and 545 stars in 19
+clusters as the reference objects (training set). 
+\tc\ is very accurate; its stellar labels compare well to the 37,500
+stars for which \apogee\ pipeline (\aspcap) labels are provided; we
+obtain rms differences of $\delta\teff< 100$~K, $\delta\logg< 0.2$~dex
+and $\delta\feh< 0.1$~dex.
 Aside from the modeling of the training-set stars (which could happen
 in another dataset or at another wavelength), \tc\ makes no use of
-stellar models nor any linelist; its biggest limitation is that it requires a
-training set that spans the label-space.
+stellar models nor any linelist; its biggest limitation is that it
+requires a training set that spans the label-space. 
 The method degrades very weakly with signal-to-noise; \tc\ delivers
-the labels with good fidelity even at one ninth the \apogee\ observing time.
-We discuss the limitations of \tc, and point
-out the potential of this approach to bring different spectroscopic
-surveys onto a consistent scale of stellar labels if they have
-sufficient objects in common. 
+the labels with good fidelity even at one ninth the
+\apogee\ observing time. 
+We discuss the limitations of \tc, and point out the potential of this
+approach to bring different spectroscopic surveys onto a consistent
+scale of stellar labels if they have sufficient objects in common.
 \end{abstract}
 
 \keywords{%
@@ -108,22 +102,80 @@ techniques: spectroscopic
 
 \section{Introduction}
 
+Large stellar spectra data sets, with hundreds of thousands of stellar
+spectra taken at high spectral resolution and high signal-to-noise
+ratio, are becoming available over the next few years.
+These new projects present many new challenges for hardware and
+software.
+One of these challenges---and the principal challenge motivating this
+project---is the determination of stellar parameters and abundances,
+which hereafter we will collectively call `labels'.
+Label determination involves imperfect numerical modeling of stars,
+customised specifically to the particular wavelength region of a given
+survey.
+Typically, different methods and groups obtain discrepant results for
+the same stars, even within the same survey.  These differences flow
+from different input assumptions and decisions \citep[e.g.]{Sm2014}.
 
-There are numerous challenges in exploiting the large datasets of stellar spectra that have become available only in recent years. One of these is that determining stellar parameters, or labels,  is typically a significant and iterative effort, customised specifically to the particular wavelength region of a given survey. Typically, different methods and groups obtain discrepant results for the same stars, even within the same survey due to different input assumptions and methods \citep[e.g.]{Sm2014}. Stellar models are almost always explicitly relied upon for stellar parameter determination, which are incomplete and simplified. For example, 1D models are adopted, that largely do not account for different molecular opacities, convection, dust, non linear thermal equilibrium effects, stellar winds and the stellar chromosphere. In almost all cases, stellar models are used to determine stellar parameters by determining a best-fit synthetic spectrum to the data using some minimisation technique across an often masked portion of the spectrum, determined from linelists to be most reliable or relevant. A post-calibration procedure is then applied, using for example benchmark stars studied at high resolution and/or well characterised open and globular cluster stars. The inputs to these procedures, uncertainties and assumptions vary between surveys. Consequently, different surveys are on different stellar parameter scales; this constitutes another major challenge of the era of large datasets. 
+For example, when a choice is made between 1D and 3D models,
+approximations or limitations are introduced around molecular
+opacities, convection, dust, non linear thermal equilibrium [DO YOU
+  MEAN NON-EQUILIBRIUM?] effects, winds, and chromosphere.
+For another example, in the traditional methods for label
+determination, a best-fit synthetic spectrum is found by the
+minimization of some objective function; this objective function often
+touches only certain lines or a masked portion of the spectrum,
+determined somewhat subjectively to be reliable or relevant.
+For another, a post-calibration procedure is often applied after
+optimization, using some chosen set of benchmark stars studied at high
+resolution or members of well characterised open and globular
+clusters.
+Consequentially, different surveys are effectively on different label
+systems---they have different stellar parameter and abundance scales
+and zero-points---this is the problem we hope to address at least
+partially in the present work.
 
-An optimal exploitation of all of the datasets present and future including \apogee\, \gaiaeso, \galah\ and \gaia\ relies on their homogenisation, i.e. a consistent stellar parameter scale for stars that have been observed by the Northern and Southern surveys, which operate across different wavelength regions. To facilitate this effort there are typically some calibration stars in common observed between surveys. Rather than simply being used to post-calibrate surveys to a standardised physical scale, these calibration or standard stars afford a critical opportunity to create a data-driven model.  This data-driven model can be used for label-transfer, to map the labels of the calibration set to new stars in the survey.  This relies on the parameter range and quality of the calibration set of stars. To homogenise surveys, this calibration set must be observed by all the different surveys, have a defined and consistent set of labels which is adopted and span the label space of interest of the survey. 
+An optimal exploitation of all of the datasets present and future
+including \apogee\, \gaiaeso, \galah\ and \gaia\ relies on their
+homogenization, that is, adoption and implementation of a consistent
+label system (stellar parameter and abundance scale) for stars that
+have been observed by different surveys, in the Northern and Southern
+skies, and which operate across different wavelength regions and at
+different resolutions.
+To facilitate this effort there are typically some calibration stars
+in common observed between surveys.
+Rather than simply being used to post-calibrate surveys to a
+standardized physical scale, these calibration or standard stars
+afford a critical opportunity to create a data-driven model.
+That is, it is conceivable that we might be able to learn (without
+stellar models) the relationship between the stellar spectra and the
+labels using the standard stars as inputs.
+Such a data-driven model could be used for label-transfer, that is, to
+map the labels of the calibration set to new stars in the survey.
 
-The basic idea of \tc\ is that stars with the same labels have the same spectra and spectra vary smoothly with label changes. The first step in \tc\ is to create a model that describes the flux as a function of the stellar labels and to create this model we use data. The data-driven model underlying \tc\ is a generative model of the spectra, which is \textit{trained} using a set of globular and open cluster stars across the (nominal) label range of the test data, our \textit{training data}. The model describes each pixel flux, at every wavelength $\lambda$ as a (polynomial) function of some labels and coefficients. It is these coefficients that are used to then determine the labels in other spectra, for all stars in the survey, the \textit{test data}. The training proceeds by optimizing the likelihood of the model parameters in the training data (where the labels are known); the label
-transfer then proceeds by optimizing the labels at fixed model parameters in the test data (where the labels aren't known). For this method to work we need spectra to train on that not only covers the parameter range of the data, but is observed across the same wavelength region and with the same line spread function, continuum normalised and shifted to the rest frame. 
-
-Large stellar spectra data sets, with hundreds of thousands of stellar spectra taken at high spectral resolution and high signal-to-noise ratio, are becoming available over the next few years.  These new projects present many new challenges for hardware and software.  One of these challenges---and the principal challenge motivating this project---is the determination of stellar parameters and abundances, which hereafter we will collectively call `labels'.  Label determination involves imperfect numerical modeling of stars, customised specifically to the particular wavelength region of a given survey. Typically, different methods and groups obtain discrepant results for the same stars, even within the same survey.  These differences flow from different input assumptions and decisions \citep[e.g.]{Sm2014}.
-
-For example, when a choice is made between 1D and 3D models, approximations or limitations are introduced around molecular opacities, convection, dust, non linear thermal equilibrium [DO YOU MEAN NON-EQUILIBRIUM?] effects, winds, and chromosphere.  For another example, in the traditional methods for label determination, a best-fit synthetic spectrum is found by the minimization of some objective function; this objective function often touches only certain lines or a masked portion of the spectrum, determined somewhat subjectively to be reliable or relevant.  For another, a post-calibration procedure is often applied after optimization, using some chosen set of benchmark stars studied at high resolution or members of well characterised open and globular clusters.  Consequentially, different surveys are effectively on different label systems---they have different stellar parameter and abundance scales and zero-points---this is the problem we hope to address at least partially in the present work.
-
-An optimal exploitation of all of the datasets present and future including \apogee\, \gaiaeso, \galah\ and \gaia\ relies on their homogenization, that is, adoption and implementation of a consistent label system (stellar parameter and abundance scale) for stars that have been observed by different surveys, in the Northern and Southern skies, and which operate across different wavelength regions and at different resolutions. To facilitate this effort there are typically some calibration stars in common observed between surveys. Rather than simply being used to post-calibrate surveys to a standardized physical scale, these calibration or standard stars afford a critical opportunity to create a data-driven model.  That is, it is conceivable that we might be able to learn (without stellar models) the relationship between the stellar spectra and the labels using the standard stars as inputs. Such a data-driven model could be used for label-transfer, that is, to map the labels of the calibration set to new stars in the survey.
-
-The basic idea of the system described here---\tc---is to create this data-driven model and use it to perform this label transfer.  The fundamental assumptions of this work are that stars with the same labels have similar spectra and that in general the spectra vary smoothly with label changes. The first step---at \emph{training time}---in \tc\ is to find the parameters of a very flexible model that describes the expected flux and variance around that expectation as a function of the stellar labels. This training relies on \emph{training data}, which are a set of standards (in the example case below, globular and open cluster stars) with known labels across the (nominal) label range of interest. The second step---at \emph{test time}---is to determine the labels for all the other stars in the survey with unknown labels---the \emph{test data}---by finding for each star the labels for which the prediction best matches the observed spectrum.  Both at training time and test time, the operation is optimization of a justified likelihood function for the observed data..
-For this method to work we need training data that not only cover the relevant label space expected for the test data, but also are observed across the same wavelength region and with the same line spread function (ideally with the same instrument), and calibrated and continuum normalised identically.
+The basic idea of the system described here---\tc---is to create this
+data-driven model and use it to perform this label transfer.
+The fundamental assumptions of this work are that stars with the same
+labels have similar spectra and that in general the spectra vary
+smoothly with label changes.
+The first step---at \emph{training time}---in \tc\ is to find the
+parameters of a very flexible model that describes the expected flux
+and variance around that expectation as a function of the stellar
+labels.
+This training relies on \emph{training data}, which are a set of
+standards (in the example case below, globular and open cluster stars)
+with known labels across the (nominal) label range of interest.
+The second step---at \emph{test time}---is to determine the labels for
+all the other stars in the survey with unknown labels---the \emph{test
+  data}---by finding for each star the labels for which the prediction
+best matches the observed spectrum.
+Both at training time and test time, the operation is optimization of
+a justified likelihood function for the observed data.
+For this method to work we need training data that not only cover the
+relevant label space expected for the test data, but also are observed
+across the same wavelength region and with the same line spread
+function (ideally with the same instrument), and calibrated and
+continuum normalised identically.
 
 With this train-and-test procedure, \tc\ falls into the class of \emph{supervised methods} in machine learning.
 However, what we implement is very different in a crucial way from standard supervised methods for regression,
@@ -143,13 +195,31 @@ In many real cases the training data will be much higher in signal-to-noise than
 A method that does not properly account for the observational uncertainties will not transfer labels to lower signal-to-noise
 spectra with high fidelity.
 In what follows, we show that \tc\ behaves very well as the signal-to-noise (or observing time) is decreased.
->>>>>>> c52d54a7736fb0a7f9508a99664fd236daa75550
 
-With \tc, we demonstrate that in addition to the challenges, there are numerous opportunities in this era of large surveys of the Milky Way to characterise the information in the data itself, by building highly informative data-driven models.  This can not only circumvent issues with needing stellar models to determine labels, but also identify where and how models diverge from data. \tc\ can be implemented for all surveys, across different wavelength regions, using a set of reference or benchmark stars for which labels have been determined, for example, the optical wavelength region. In the optical region there is a significant legacy of stellar abundance analyses which employ clean, well defined lines with reliable oscillator strengths and take into account isotopic and hyperfine splitting effects for individual abundances. Significant effort is currently underway with regard to the high resolution (UVES) analysis of a number of benchmark stars as part of the Gaia-ESO survey \citep[e.g.][]{Jofre2014}. These adopted ``standards'' would be ideal to include in any training set and supplement the open and globular cluster stars . What is key for homogenisation of different surveys is that for a set of stars there are agreed upon calibration-standard stellar parameters, which can be effectively transferred consistently within and between surveys.  
+With \tc, we demonstrate that in addition to the challenges, there are
+numerous opportunities in this era of large surveys of the Milky Way
+to characterise the information in the data itself, by building highly
+informative data-driven models. 
+This can not only circumvent issues with needing stellar models to
+determine labels, but also identify where and how models diverge from
+data. 
+\tc\ can be implemented for any survey, across different wavelength
+regions, using a set of reference or benchmark stars for which labels
+have been determined, for example, in the optical wavelength region. 
+In the optical region there is a significant legacy of stellar
+abundance analyses which employ clean, well defined lines with
+reliable oscillator strengths and take into account isotopic and
+hyperfine splitting effects for individual abundances. 
+Significant effort is currently underway with regard to the high
+resolution analysis of a number of benchmark stars as part of
+the Gaia-ESO survey \citep[e.g.,[]{Jofre2014}. 
+These adopted ``standards'' would be ideal to include in any training
+set and supplement the open and globular cluster stars. 
+What is key for homogenisation of different surveys is that for a set
+of stars there are agreed upon calibration-standard labels (stellar
+parameters and abundances), which can be effectively transferred consistently within
+and between surveys.
 
-%\citep[e.g.][]{Jofre2014}
-
-%We use the \apogee\ dataset to demonstrate the power of and information content in the data itself to implement a regression technique using a data-driven model to determine stellar parameter determination via label-transfer. 
 Although we use \apogee\ as an example, this method can be applied to any stellar survey.  Our aim is distinct from simply determining parameters or finding the best fit spectra similarly to minimisation techniques. Our aim is to implement a procedure which makes it possible to understand and characterise the spectra as a function of the labels which describe it.  Our methodology is very relevant for chemical tagging in large datasets, as it can formally describe and differentiate the spectra in multiple-abundance space, given additional input labels. In the same way it is possible to implement a differential analysis on large datasets using this approach. Our basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (e.g. [$\alpha$/Fe], [X/Fe]) and also more comprehensive models (e.g. Gaussian processes). Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower signal to noise (SNR) than minimisation techniques.% and provide a quantification of data-driven spectra comparison and differentiation, which may be a key tool in exploring the archeology of stars via chemical tagging. 
 
 Our overarching aim of describing stellar flux as a function of stellar labels is not dissimilar from the MATrix Inversion for Spectral SythEsis (\matisse) procedure for derivation of stellar parameters \citep{RB2006}. However, \matisse\ employs a large grid of synthetic spectra and characterises a set of basis vectors which project onto each observed spectrum to determine stellar labels by calculating an optimal combined synthetic spectrum describing the stellar flux. Conversely, we use a data-driven model and do not project onto any optimal combined theoretical spectrum. Rather we directly determine labels using a total of around 70,000 degrees of freedom of information in the data, given the 7200 pixels comprising the flux and the 10 parameters of the labels in our implemented model. 
