@@ -220,10 +220,6 @@ of stars there are agreed upon calibration-standard labels (stellar
 parameters and abundances), which can be effectively transferred consistently within
 and between surveys.
 
-Although we use \apogee\ as an example, this method can be applied to any stellar survey.  Our aim is distinct from simply determining parameters or finding the best fit spectra similarly to minimisation techniques. Our aim is to implement a procedure which makes it possible to understand and characterise the spectra as a function of the labels which describe it.  Our methodology is very relevant for chemical tagging in large datasets, as it can formally describe and differentiate the spectra in multiple-abundance space, given additional input labels. In the same way it is possible to implement a differential analysis on large datasets using this approach. Our basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (e.g. [$\alpha$/Fe], [X/Fe]) and also more comprehensive models (e.g. Gaussian processes). Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower signal to noise (SNR) than minimisation techniques.% and provide a quantification of data-driven spectra comparison and differentiation, which may be a key tool in exploring the archeology of stars via chemical tagging. 
-
-Our overarching aim of describing stellar flux as a function of stellar labels is not dissimilar from the MATrix Inversion for Spectral SythEsis (\matisse) procedure for derivation of stellar parameters \citep{RB2006}. However, \matisse\ employs a large grid of synthetic spectra and characterises a set of basis vectors which project onto each observed spectrum to determine stellar labels by calculating an optimal combined synthetic spectrum describing the stellar flux. Conversely, we use a data-driven model and do not project onto any optimal combined theoretical spectrum. Rather we directly determine labels using a total of around 70,000 degrees of freedom of information in the data, given the 7200 pixels comprising the flux and the 10 parameters of the labels in our implemented model. 
-
 We have adopted a bottom-up approach for this project, starting with the most basic implementation and upgrading this iteratively to determine the least complex implementation which works.  In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both training (545 stars) and test data ($\sim$ 59,000 stars from DR10). We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and so we extended our model to quadratic form, which satisfactorily describes the label-space of the training data. The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
 
 We demonstrate that the \tc\ implemented with a simple model is an efficient, powerful and robust method that can be applied to all surveys to return stellar labels. This first approach can be expanded to a more general form with additional labels, moving to a more comprehensive model that is robust over a wider parameter range of stars. 
@@ -763,20 +759,42 @@ These Figures illustrate that the continuum normalisation works well for both of
 \label{fig:SNR}
 \end{figure}
 
-
-
 \section{Discussion}
 
 We have demonstrated with \tc,  that label-transfer is an extremely successful techqniue for determination of labels in large surveys, simply and efficiently. We show how models in the optical, which can be used at the prior and initial stage to determine labels for our calibration stars, can be used directly in the infrared. This label-transfer can succeed with a data-driven model given a calibration set of stars which span the label range of the test data. In using a data-driven model, we do not rely on explicit models in a new wavelength region of analysis. In this way we can fully capitalise on large surveys and the information in the data itself and circumvent problems with simplified stellar models and uncertainties in linelists in new wavelength regions. We can also apply \tc\ to understand where models are wrong.  
+
+Although we use \apogee\ as an example, \tc\ can be applied to
+any stellar survey.
+Furthermore, the basic implementation of \tc\ presented here includes
+only three labels, but this can easily be extended to additional
+labels (for example, [$\alpha$/Fe], [X/Fe]) and also even more
+flexible models (for example, Gaussian processes instead of
+polynomials).
 
 %An example of where \tc\ may be directly applied to understand models, is with respect to the flat main sequence that is returned for dwarfs across the \teff, \logg\ plane, even with the highest resolution spectroscopic analysis \citep[e.g.][]{bensby2013}. It is unclear what causes this characteristic  in the model comparisons to determine stellar parameters e.g. it is is from missing physics with respect to rotation or micro turbulence in the models, or something else entirely? Using an extended implementation of \tc\ similarly to what we have presented in this paper, but with additional labels, the driving errors in the models in this label-space can be explicitly determined.
 
 From our implementation of \tc\ on \apogee\ data, we were motivated to examine the calibration space of the labels given the unphysically narrow giant branch returned for DR10 data at low \logg. We found by adopting a very naive calibration that shifts the stars to the red giant position on the isochrone (keeping the \teff\ and \feh\ fixed to \aspcap\ corrected values) rather than adopting the \apogee\ Kepler \logg\ corrected values, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical label-space of stars. This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
 
  For our first implementation of \tc\ presented here, it is trivial to run the almost 60,000 star sample (i.e. the size of DR10 from \apogee) through \tc\ on a single laptop, as it takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for each star, without any attempt at speed or method optimisation. We reproduce the \apogee\ labels, as provided for DR10 in Table 1, without adding any significant uncertainty because we use every pixel in the spectra and have a generative model. Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better.  %Similar speed advantages will be apply for determination of additional labels, for example [$\alpha$/Fe] and individual elemental abundances. %However in doing this our model should be upgraded from the simple quadratic form, to either constrain the number of coefficients in some determined way or move to a Gaussian process. We do not want to overfit our data nor compromise unnecessarily on processing speed.  
- 
 
 We have demonstrated that we can work at much lower SNR at least for the three primary stellar parameters with this approach. We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (e.g. alpha, light elements, neutron capture) of covariant spaces \citep[e.g.][]{Ting2012} and so exploit more pixels in the spectra and operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
+
+In using ell of the pixels in the spectrum to obtain the
+stellar labels, \tc\ is not dissimilar from the MATrix Inversion for
+Spectral SythEsis (\matisse) procedure for derivation of stellar
+parameters \citep{RB2006}.
+That is, \matisse\ does well at low signal-to-noise for the same
+reason as \tc:  They both use the full spectral range.
+However, \matisse\ employs a large grid of synthetic spectra and
+characterises a set of basis vectors which project onto each observed
+spectrum to determine stellar labels by calculating an optimal
+combined synthetic spectrum describing the stellar flux.
+Conversely, we use a data-driven model and do not project onto any
+optimal combined theoretical spectrum.
+Rather we directly determine labels using a total of around 80,000
+degrees of freedom of information in the data, given the 7200 pixels
+comprising the flux and the 10 parameters of the labels in our
+implemented model.
  
  \tc\ is readily expandable to a more general model, a larger training dataset and many more labels which include errors and/or partial characterisation of labels. As it is, our second-order model is hard-coded and extremely restrictive. We currently believe our input labels fully, given they are input without uncertainties, and assume no prior information. We therefore do not take advantage of any physical knowledge that is defined about the phase space the labels can reside in.  Furthermore, we currently treat every pixel as independent which is incorrect and therefore builds a physically incomplete model.
 
@@ -826,46 +844,3 @@ SDSS-III is managed by the Astrophysical Research Consortium for the Participati
 
 
 \end{document}
-
-
-
-
-%DWH abstract: 
-\begin{abstract}%
-
-Multiple spectroscopic surveys are planning on delivering
-automatically determined stellar parameters and multiple element
-abundances for hundreds of thousands of stars.
-These surveys currently rely on physics-driven models of stars,
-despite the fact that these models are simplified approximations and known to be flawed. 
-There is a possible alternative approach, which uses consistency in
-the spectroscopic data space to transfer stellar parameter labels from
-a set of benchmark standard stars to the large sets of survey targets.
-Here we present a method---\tc---for performing this label-transfer,
-specialized to the the labels \teff, \logg, and \feh, and implemented on 
-the data from the \sdss\ \apogee\ project.
-The training dataset of standards is a set of 545 stars from 19
-open and globular clusters.
-The data-driven model underlying \tc\ is a generative model of the
-spectra; it is a very flexible model (70,000 parameters) trained to be
-a map from stellar parameter labels to intensity values on a wavelength
-grid.
-The training proceeds by optimizing the likelihood of the model
-parameters in the training data (where the labels are known); the label
-transfer then proceeds by optimizing the labels at fixed
-model parameters in the test data (where the labels aren't known).
-\tc\ label-transfer is very accurate; it reproduces \apogee\ pipeline
-stellar parameter labels, and successfully cross-validates on the
-training data, with at least the precision of the \apogee\ pipeline
-labels themselves; we obtain rms precisions of $\delta\teff< 100$~K,
-$\delta\logg< 0.2$~dex and $\delta\feh< 0.1$~dex.
-Aside from the modeling of the training-set stars (which could happen
-in another dataset or at another wavelength), \tc\ makes no use of
-stellar models whatsoever; its biggest limitation is that it requires a
-training set that spans the full stellar parameter label-space.
-The method degrades very weakly with signal-to-noise; \tc\ delivers
-the three stellar parameters with good fidelity even where
-\apogee\ spectroscopy has one fourth the
-signal-to-noise (equivalent to one sixteenth the observing time).
-
-\end{abstract}
