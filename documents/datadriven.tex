@@ -220,9 +220,21 @@ of stars there are agreed upon calibration-standard labels (stellar
 parameters and abundances), which can be effectively transferred consistently within
 and between surveys.
 
-We have adopted a bottom-up approach for this project, starting with the most basic implementation and upgrading this iteratively to determine the least complex implementation which works.  In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both training (545 stars) and test data ($\sim$ 59,000 stars from DR10). We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and so we extended our model to quadratic form, which satisfactorily describes the label-space of the training data. The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
-
-We demonstrate that the \tc\ implemented with a simple model is an efficient, powerful and robust method that can be applied to all surveys to return stellar labels. This first approach can be expanded to a more general form with additional labels, moving to a more comprehensive model that is robust over a wider parameter range of stars. 
+We have adopted a bottom-up approach for this project, starting with
+the most basic implementation and upgrading this iteratively to
+determine the least complex implementation which works.
+In laying out the methodology of this approach we firstly describe the
+\apogee\ dataset and the way we process the data for both training
+(545 stars) and test data ($\sim59,000$ stars from DR10).
+We then describe perhaps the simplest implementation of label-transfer
+possible, using a first-order linear model.
+We found this first-order model to be insufficiently flexible to
+describe the labels of the stars and so we extended our model to
+quadratic form, which satisfactorily describes the label-space of the
+training data.
+The success of this model is demonstrated by running \tc\ through the
+DR10 data available through the SDSS-3 data server, the results for
+which we provide in an online machine-readable table.
 
 \section{Data}
 
