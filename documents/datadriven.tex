@@ -773,15 +773,7 @@ These Figures illustrate that the continuum normalisation works well for both of
 
 \section{Discussion}
 
-We have demonstrated with \tc,  that label-transfer is an extremely successful techqniue for determination of labels in large surveys, simply and efficiently. We show how models in the optical, which can be used at the prior and initial stage to determine labels for our calibration stars, can be used directly in the infrared. This label-transfer can succeed with a data-driven model given a calibration set of stars which span the label range of the test data. In using a data-driven model, we do not rely on explicit models in a new wavelength region of analysis. In this way we can fully capitalise on large surveys and the information in the data itself and circumvent problems with simplified stellar models and uncertainties in linelists in new wavelength regions. We can also apply \tc\ to understand where models are wrong.  
-
-Although we use \apogee\ as an example, \tc\ can be applied to
-any stellar survey.
-Furthermore, the basic implementation of \tc\ presented here includes
-only three labels, but this can easily be extended to additional
-labels (for example, [$\alpha$/Fe], [X/Fe]) and also even more
-flexible models (for example, Gaussian processes instead of
-polynomials).
+[DWH SAY: THIS PARAGRAPH IS WRONG] We have demonstrated with \tc,  that label-transfer is an extremely successful techqniue for determination of labels in large surveys, simply and efficiently. We show how models in the optical, which can be used at the prior and initial stage to determine labels for our calibration stars, can be used directly in the infrared. This label-transfer can succeed with a data-driven model given a calibration set of stars which span the label range of the test data. In using a data-driven model, we do not rely on explicit models in a new wavelength region of analysis. In this way we can fully capitalise on large surveys and the information in the data itself and circumvent problems with simplified stellar models and uncertainties in linelists in new wavelength regions. We can also apply \tc\ to understand where models are wrong.  
 
 %An example of where \tc\ may be directly applied to understand models, is with respect to the flat main sequence that is returned for dwarfs across the \teff, \logg\ plane, even with the highest resolution spectroscopic analysis \citep[e.g.][]{bensby2013}. It is unclear what causes this characteristic  in the model comparisons to determine stellar parameters e.g. it is is from missing physics with respect to rotation or micro turbulence in the models, or something else entirely? Using an extended implementation of \tc\ similarly to what we have presented in this paper, but with additional labels, the driving errors in the models in this label-space can be explicitly determined.
 
@@ -791,7 +783,7 @@ From our implementation of \tc\ on \apogee\ data, we were motivated to examine t
 
 We have demonstrated that we can work at much lower SNR at least for the three primary stellar parameters with this approach. We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (e.g. alpha, light elements, neutron capture) of covariant spaces \citep[e.g.][]{Ting2012} and so exploit more pixels in the spectra and operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
 
-In using ell of the pixels in the spectrum to obtain the
+In using all of the pixels in the spectrum to obtain the
 stellar labels, \tc\ is not dissimilar from the MATrix Inversion for
 Spectral SythEsis (\matisse) procedure for derivation of stellar
 parameters \citep{RB2006}.
@@ -812,6 +804,54 @@ implemented model.
 
  We have barely scratched the surface with what is possible with this methodology given our restricted training dataset, model and labels. Our training dataset itself is clearly too small, comprising only 545 stars including a set of dwarfs at a single metallicity (+0.03 dex). As we lack dwarfs, we can not return parameters in this space to the same precision as giants (\logg\ $\le$ 3.5).  We also are missing any dwarfs with rotation in our model and consequently these are returned in an unphysical \teff-\logg\ label-space in the label-transfer. 
  
+Although we use \apogee\ as an example, \tc\ can be applied to
+any stellar survey.
+Details of how the spectra are continuum-normalized might have to be
+customized for different surveys, which will have different
+line-spread functions and different absorption-line densities, and
+therefore different statistics.
+In all other respects, however, \apogee\ could be replaced by any spectroscopic
+survey that meets the following criteria:
+It must contain a set of reference stars with known labels to serve as
+a training set.
+It must deliver a set of spectra represented on a common rest-frame
+wavelength basis.
+It must deliver noise variance estimates at every specral pixel.
+
+The basic implementation of \tc\ presented here considers only three
+labels (\teff, \feh, and \logg).
+There is nothing fundamental abous this choice; in principle
+\tc\ could be extended to consider more labels, or a larger
+label space.
+For example, a next generation could include [$\alpha$/Fe] or [X/Fe]
+labels for elements X.
+The only limitation---and it is a \emph{substantial} limitation---is
+that as the label-space grows, the training set must grow to fill it;
+\tc\ is only as good as its training set.
+In general, the training set needs may scale as badly as exponentially
+with the dimensionality of the label space, and (as noted above), we
+are confident that we don't have enough training stars even now with
+a three-dimensional label space.
+For this reason, we don't imagine operating \tc\ in the full 30-ish
+dimensional label space imagined for the final outputs of surveys like
+\apogee\ and \galah; \tc\ is only for establishing the ``first-order'' labels of
+greatest importance in setting spectral properties.
+
+In the version of \tc\ presented here, we used a quadratic form for the
+relationship between the expected flux and the labels.
+This is a choice and can be generalized.
+Indeed, the polynomial family is probably not the best family of
+functions to be exploring, since they extrapolate badly (edge effects)
+and require explicit, qualitative choices about order and cross-terms.
+It is probably better to move to a non-parametric form for the functions,
+such as Gaussian Processes or similar.
+In this case, model complexity would be controlled by continuous
+parameters and the functional form could become very complex where the
+training data warrant it.
+This would be a natural extension of what has been implemented here.
+
+[DWH: SOMETHING ABOUT SPECTRAL REPRESENTATION]
+
 Despite all of this, we have shown using the \apogee\ data that even the simplest model with naive assumptions and an incomplete physical description, works. This method is directly transferrable as is, to all other surveys and we expect we would be similarly successful applying this to e.g. \textit{GALAH}, \gaiaeso and 4MOST. The success of \tc\ argues for defined stellar standards to effectively transfer labels of benchmark stars, studied at high resolution, to stars in surveys across any wavelength region. This would enable all stellar surveys to be unified. 
  
  It is also possible and likely desirable in some cases to implement exactly the same procedure we describe using a synthetic grid instead of data, to train the model. This will remove many of these limitations in the model that are derived from the label-space of the training data labels. However, this also eliminates many of the advantages in a full characterisation of the noise in the data and the true behaviour of labels with flux.%, which simplified models approximate. We propose this approach is used to understand models with a data-driven comparison, rather than be tied to them. 
