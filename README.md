@@ -1,5 +1,5 @@
 # The Cannon
-# just ad a perfunctory change
+ just add a perfunctory change
 
 A method for building data-driven models for high-resolution stellar spectra.
 Designed with *APOGEE2*, *Gaia-ESO*, *RAVE* and *HERMES* data in mind, but applicable generally.
