@@ -9,7 +9,6 @@
 *.pyc
 vc.tex
 *.synctex.gz
-*.pdf
 code/deprecated/*
 *.eps
 *.png
