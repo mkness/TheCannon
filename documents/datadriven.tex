@@ -776,7 +776,9 @@ Rather we directly determine labels using a total of around 80,000
 degrees of freedom of information in the data, given the 7200 pixels
 comprising the flux and the 10 parameters of the labels in our
 implemented model.
- 
+
+[DWH: THERE IS NOTHING SPECIAL OR REQUIRED ABOUT USING ALL THE PIXELS; \tc\ could be generalized to use a linelist or etc.]
+
  \tc\ is readily expandable to a more general model, a larger training dataset and many more labels which include errors and/or partial characterisation of labels. 
  As it is, our second-order model is hard-coded and extremely restrictive. 
  We currently believe our input labels fully, given they are input without uncertainties, and assume no prior information. 
@@ -821,7 +823,7 @@ dimensional label space imagined for the final outputs of surveys like
 \apogee\ and \galah; \tc\ is only for establishing the ``first-order'' labels of
 greatest importance in setting spectral properties.
 
-In the version of \tc\ presented here, we used a quadratic form for the
+In the above, we used a quadratic form for the
 relationship between the expected flux and the labels.
 This is a choice and can be generalized.
 Indeed, the polynomial family is probably not the best family of
@@ -858,29 +860,25 @@ A direct first additional upgrade for \tc\ aligned with directing this method to
  It is even possible to test what, if any, information in the spectra are correlated with an age label. 
  If such information is present in the spectra across a large set of stars in a survey, this method \textit{will} determine exactly which pixels are responsible for carrying this information. In addition, we will gain significantly by moving to a more flexible model like a Gaussian process and allowing our model to be informed by priors in these new directions for this work. 
 
+[DWH SAY:  THE DISCUSSION (above) IS A BIT REPETITIVE; WE CAN PROBABLY COMBINE AND SHORTEN PARAGRAPHS ABOUT GENERALIZATIONS.]
 
 \textbf{DWH can you expand on generative models: data-driven model that represents the noise -  very successful as it respects the noise model. generative - synth, L.F. - permits discovery, interpretation.}
 
 
-
-%As \tc\ is a way to understand the spectra, it is highly relevant for chemical tagging where simple determination of individual elemental abundances and analysis of grouping across this label-space will unlikely suffice. Conversely, a direct differential analysis of the data are a powerful approach using the data itself, without simplified assumptions in models. 
-
-\textbf{ $\bullet$ what else?} 
-
-%The future iteration of \tc\ will be to implement a gaussian process, bringing in errors and we can training on individual labels from DR12 to see if can reproduce individual labels in the rest of DR12 data given these labels in the training spectra, via the label-transfer. Will not be a function of synthetic spectra as data-driven model. 
-
-%Data-driven models carry physically correct details that will be missing from synthetic stelar models which make simplified assumptions about stellar physics.  and the agreement with Kepler \logg\ values was also found to be good
-
-%% add references!! There are not enough. 
-
-
-
 \section*{ Acknowledgements}
 
-The name \tc\ is inspired by the astronomer Annie Jump Cannon, who worked on stellar classification without stellar models. \textbf{DWH this is you: thank (1) DFM primary,  (2) JB, (3) your grant no}.,
+The name \tc\ is inspired by the astronomer Annie Jump Cannon,
+who was the pioneer on stellar classification without physical models!
+We would like to thank
+  Daniel Foreman-Mackey (NYU)
+  and [ADD NAMES HERE]
+for valuable discussions.
+DWH was partially supported by
+the NSF (grant IIS-1124794), NASA (grant NNX08AJ48G), and the
+Moore--Sloan Data Science Environment at NYU.
 The research has received funding from the European Research Council under the European
 Union's Seventh Framework Programme (FP 7) ERC Grant Agreement n.
-[321035]. 
+[321035].
 
 Funding for SDSS-III has been provided by the Alfred P. Sloan Foundation, the Participating Institutions, the National Science Foundation, and the U.S. Department of Energy Office of Science. The SDSS-III web site is $http://www.sdss3.org/.$\\
 
