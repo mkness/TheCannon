@@ -1,7 +1,7 @@
 # The Cannon
 
 A method for building data-driven models for high-resolution stellar spectra.
-Designed with *APOGEE2* and *HERMES* data in mind, but applicable generally.
+Designed with *APOGEE2*, *Gaia-ESO*, *RAVE* and *HERMES* data in mind, but applicable generally.
 
 ## Authors
 
@@ -23,7 +23,7 @@ We don't need complete and accurate stellar models to make important new progres
 Although **The Cannon** is fully data driven, it does not follow the usual pattern of "machine learning".
 At it's core, **The Cannon** is a generative model (forward model) of noisy spectrographic data.
 For this reason, it is very forgiving in the face of substantial noise, missing and heterogeneous data,
-and low signal-to-noise.
+and low signal-to-noise. 
 
 ## Sub-projects
 
