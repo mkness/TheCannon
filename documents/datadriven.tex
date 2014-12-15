@@ -662,13 +662,22 @@ These Figures illustrate that the continuum normalisation works well for both of
 
 \section{Discussion}
 
-[DWH SAY: THIS PARAGRAPH IS WRONG - MKN SAYS: I changed it] We have demonstrated with \tc,  that using a data-driven model, labels can be transferred from training to test data, simply and efficiently. In using a data-driven model which spans the label range of the test data, we do not rely on explicit models in the wavelength region of analysis of the survey. We can therefore fully capitalise on large surveys and the information in the data itself, circumvent problems with simplified stellar models , uncertainties in linelists in poorly studied wavelength regions and understand where models are wrong.  
+[DWH SAY: THIS PARAGRAPH IS WRONG - MKN SAYS: I changed it] We have demonstrated with \tc,  that using a data-driven model, labels can be transferred from training to test data, simply and efficiently. 
+In using a data-driven model which spans the label range of the test data, we do not rely on explicit models in the wavelength region of analysis of the survey. 
+We can therefore fully capitalise on large surveys and the information in the data itself, circumvent problems with simplified stellar models , uncertainties in linelists in poorly studied wavelength regions and understand where models are wrong.  
 
-From our implementation of \tc\ on \apogee\ data, we were motivated to examine the calibration space of the labels given the unphysically narrow giant branch returned for DR10 data at low \logg. We found by adopting a very naive calibration that shifts the stars to the nearest position on the isochrone from the \ascpap\ value described in Section 2, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical label-space of stars. This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
+From our implementation of \tc\ on \apogee\ data, we were motivated to examine the calibration space of the labels given the unphysically narrow giant branch returned for DR10 data at low \logg. 
+We found by adopting a very naive calibration that shifts the stars to the nearest position on the isochrone from the \aspcap\ value described in Section 2, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical label-space of stars. 
+This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. 
+This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
 
- For our first implementation of \tc\ presented here, it is trivial to run the almost 60,000 star sample (i.e. the size of DR10 from \apogee) through \tc\ on a single laptop, as it takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for each star, without any attempt at speed or method optimisation. We reproduce the \apogee\ labels, as provided for DR10 in Table 1, without adding any significant uncertainty because we use every pixel in the spectra and have a generative model. Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better.  %Similar speed advantages will be apply for determination of additional labels, for example [$\alpha$/Fe] and individual elemental abundances. %However in doing this our model should be upgraded from the simple quadratic form, to either constrain the number of coefficients in some determined way or move to a Gaussian process. We do not want to overfit our data nor compromise unnecessarily on processing speed.    
+For our first implementation of \tc\ presented here, it is trivial to run the almost 60,000 star sample (i.e. the size of DR10 from \apogee) through \tc\ on a single laptop, as it takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for each star, without any attempt at speed or method optimisation. 
+We reproduce the \apogee\ labels, as provided for DR10 in Table 1, without adding any significant uncertainty because we use every pixel in the spectra and have a generative model. 
+Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better. 
 
-We have demonstrated that we can work at much lower SNR at least for the three primary stellar parameters with this approach. We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (e.g. alpha, light elements, neutron capture) of covariant spaces \citep[e.g.][]{Ting2012} and so exploit more pixels in the spectra and operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
+We have demonstrated that we can work at much lower SNR at least for the three primary stellar parameters with this approach. 
+We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (e.g. alpha, light elements, neutron capture) of covariant spaces \citep[e.g.][]{Ting2012}. In this way we exploit more pixels in the spectra and can operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. 
+This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
 
 In using all of the pixels in the spectrum to obtain the
 stellar labels, \tc\ is not dissimilar from the MATrix Inversion for
@@ -687,9 +696,16 @@ degrees of freedom of information in the data, given the 7200 pixels
 comprising the flux and the 10 parameters of the labels in our
 implemented model.
  
- \tc\ is readily expandable to a more general model, a larger training dataset and many more labels which include errors and/or partial characterisation of labels. As it is, our second-order model is hard-coded and extremely restrictive. We currently believe our input labels fully, given they are input without uncertainties, and assume no prior information. We therefore do not take advantage of any physical knowledge that is defined about the phase space the labels can reside in.  Furthermore, we currently treat every pixel as independent which is incorrect and therefore builds a physically incomplete model.
+ \tc\ is readily expandable to a more general model, a larger training dataset and many more labels which include errors and/or partial characterisation of labels. 
+ As it is, our second-order model is hard-coded and extremely restrictive. 
+ We currently believe our input labels fully, given they are input without uncertainties, and assume no prior information. 
+ We therefore do not take advantage of any physical knowledge that is defined about the phase space the labels can reside in.  
+ Furthermore, we currently treat every pixel as independent which is incorrect and therefore builds a physically incomplete model.
 
- We have barely scratched the surface with what is possible with this methodology given our restricted training dataset, model and labels. Our training dataset itself is clearly too small, comprising only 545 stars including a set of dwarfs at a single metallicity (+0.03 dex). As we lack dwarfs, we can not return parameters in this space to the same precision as giants (\logg\ $\le$ 3.5).  We also are missing any dwarfs with rotation in our model and consequently these are returned in an unphysical \teff-\logg\ label-space in the label-transfer. 
+ We have barely scratched the surface with what is possible with this methodology given our restricted training dataset, model and labels. 
+ Our training dataset itself is clearly too small, comprising only 545 stars including a set of dwarfs at a single metallicity (+0.03 dex). 
+ As we lack dwarfs, we can not return parameters in this space to the same precision as giants (\logg\ $\le$ 3.5).  
+ We also are missing any dwarfs with rotation in our model and consequently these are returned in an unphysical \teff-\logg\ label-space in the label-transfer. 
  
 Although we use \apogee\ as an example, \tc\ can be applied to
 any stellar survey.
