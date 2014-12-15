@@ -561,14 +561,33 @@ The rms is comparable to the estimated \apogee\ errors. The take one out test is
 %\label{fig:takeonestarout_own}
 %\end{figure}
 
-The outlying stars in Figure \ref{fig:takeonestarout} may be due to an anomalous scale of the input labels of these stars compared to the other training data, or it may be a consequence of the model being too inflexible to properly model how flux changes with labels across the parameter space of the training dataset. The temperature of the dwarfs is offset low at increasing temperature, compared to the input labels, so the model may be limited in describing the difference between dwarf and giant spectra. There is a flattening at the low metallicity end of the model in \feh\ in the output labels at \feh\ $<$ -2.2, however this value of \feh\ = --2.2 also corresponds to the literature value of this cluster, M5 \citep{Meszaros2013}. The lower metallicity of the \aspcap\ label may represent internal scatter in the \aspcap\ results.
+The outlying stars in Figure \ref{fig:takeonestarout} may be due to an anomalous scale of the input labels of these stars compared to the other training data, or it may be a consequence of the model being too inflexible to properly model how flux changes with labels across the parameter space of the training dataset. 
+The temperature of the dwarfs is offset low at increasing temperature, compared to the input labels, so the model may be limited in describing the difference between dwarf and giant spectra. 
+There is a flattening at the low metallicity end of the model in \feh\ in the output labels at \feh\ $<$ -2.2, however this value of \feh\ = --2.2 also corresponds to the literature value of this cluster, M5 \citep{Meszaros2013}. 
+The lower metallicity of the \aspcap\ label may represent internal scatter in the \aspcap\ results.
 
-A take-one-cluster-out test significantly degrades the model, increasing the rms errors to $<$ 150 K in \teff, $<$ 0.4 dex in \logg\ and $<$ 0.12 dex in \feh. This indicates that our training set is too small and each cluster is very important to include in the model to return labels for the stars. The consequence of removing the Pleaides cluster is that dwarf stars can no longer be differentiated from giants. The model can certainly improve and training dataset represents a near minimal subset of stars. Tests including additional labels (e.g. [$\alpha$/Fe]) shows that the rms decreases across all labels with an additional label constraint. 
+A take-one-cluster-out test significantly degrades the model, increasing the rms errors to $<$ 150 K in \teff, $<$ 0.4 dex in \logg\ and $<$ 0.12 dex in \feh. 
+This indicates that our training set is too small and each cluster is very important to include in the model to return labels for the stars. 
+The consequence of removing the Pleaides cluster is that dwarf stars can no longer be differentiated from giants.
+ The model can certainly improve and training dataset represents a near minimal subset of stars. 
+ Tests including additional labels (e.g. [$\alpha$/Fe]) shows that the rms decreases across all labels with an additional label constraint. 
 % and our own label in \logg\ shows an improved performance in the rms for the take-one-star out test shown in Figure \ref{fig:takeonestarout_own}
 
-The results for the first-order coefficients $\theta_{0,1,2,3}$ and the scatter of the fit for the quadratic-in-labels model in Equation \ref{eq:10} is shown in Figure \ref{fig:coeffs} across the narrow regions (A) and (B) of the spectra, marked in Figure 1. The top panel shows the zeroth order-coefficient $\theta_0$ or the baseline spectra of the model. The mid panel shows the first order coefficients $\theta_{1,2,3}$ in \teff, \logg\ and \feh. In the top panel of Figure \ref{fig:coeffs}, the red, blue and green shaded regions show the highest 2$-\sigma$ coefficient values $\theta_{1,2,3}$ in the \feh, \teff\ and \logg\ labels respectively. These regions indicate where these flux levels are strongly proportional to these labels and highlights the differences between the labels in their flux dependancy. Note there are many regions where the \feh\ label dominates in contribution to the flux. For the first label profiles for example in the middle panel of Figure \ref{fig:coeffs}, there is typically asymmetry for a given absorption feature, in the flux and the labels. There are very few regions where the flux is a function of only one of the labels, and pixels are typically covariant (i.e. the same pixel will have a higher flux at both lower \teff\ and higher \feh). The strongest \logg\ dependence is typically associated with weak lines including the wings of the feature and the \feh\ label, with strong lines, particularly the depth of the line. 
+The results for the first-order coefficients $\theta_{0,1,2,3}$ and the scatter of the fit for the quadratic-in-labels model in Equation \ref{eq:10} is shown in Figure \ref{fig:coeffs} across the narrow regions (A) and (B) of the spectra, marked in Figure 1. 
+The top panel shows the zeroth order-coefficient $\theta_0$ or the baseline spectra of the model. 
+The mid panel shows the first order coefficients $\theta_{1,2,3}$ in \teff, \logg\ and \feh. 
+In the top panel of Figure \ref{fig:coeffs}, the red, blue and green shaded regions show the highest 2$-\sigma$ coefficient values $\theta_{1,2,3}$ in the \feh, \teff\ and \logg\ labels respectively. 
+These regions indicate where these flux levels are strongly proportional to these labels and highlights the differences between the labels in their flux dependancy. Note there are many regions where the \feh\ label dominates in contribution to the flux. 
+For the first label profiles for example in the middle panel of Figure \ref{fig:coeffs}, there is typically asymmetry for a given absorption feature, in the flux and the labels. There are very few regions where the flux is a function of only one of the labels, and pixels are typically covariant (i.e. the same pixel will have a higher flux at both lower \teff\ and higher \feh).
+ The strongest \logg\ dependence is typically associated with weak lines including the wings of the feature and the \feh\ label, with strong lines, particularly the depth of the line. 
 
-From the bottom panel of Figure \ref{fig:coeffs}, it is clear that there is significant covariance between the labels. The bottom panel shows the scatter of the fit, indicating the dispersion of the flux of the training data around the model at each pixel. The scatter is small and this indicates that our model is a good representation of the data. However, the scatter is highest where the most information in the spectra are contained. This indicates that either our model is restricted or the labels of our training dataset are imperfect, or both. From this baseline flux, the continuum pixels have been determined, and these are marked in the black dots in the top panel of the Figure. These continuum pixels are used for the final continuum normalisation for the stars, both training data and test data. 
+From the bottom panel of Figure \ref{fig:coeffs}, it is clear that there is significant covariance between the labels. 
+The bottom panel shows the scatter of the fit, indicating the dispersion of the flux of the training data around the model at each pixel. 
+The scatter is small and this indicates that our model is a good representation of the data. 
+However, the scatter is highest where the most information in the spectra are contained. 
+This indicates that either our model is restricted or the labels of our training dataset are imperfect, or both. 
+From this baseline flux, the continuum pixels have been determined, and these are marked in the black dots in the top panel of the Figure. 
+These continuum pixels are used for the final continuum normalisation for the stars, both training data and test data. 
 
 % and the mid-panel corresponds to the intersect of the model of the training sample, with regions of first order label dependence shaded in the different colours corresponding to \teff, \logg\ and \feh.
 
@@ -577,7 +596,7 @@ By returning coefficients, we have a tool which \textit{describes the flux in a 
   %made with run -i makeplot_scatter_test18_step.py
 \begin{figure}[h!]
 \centering
-    \includegraphics[width=\hsize]{./plots/R1_continuum3.pdf}
+    \includegraphics[width=\hsize]{./plots/R1_continuum4.png}
   \caption{The first order coefficients and scatter across the sample regions of the spectra from Figure 1, A and B. Top panel: the baseline spectra from the first coefficient from the training dataset; mid-panel; the first three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the first-order label terms ($\teff, \log, \feh$); bottom panel: the scatter of the fit.  The red, blue and green shaded regions in the top panel show the highest 2$-\sigma$ coefficient values in the \feh, \teff\ and \logg\ labels respectively. This indicates where these flux levels are strongly proportional to the labels. Note the \feh\ label is dominant in the contribution level and from the bottom panel it is clear that there is significant covariance between the labels and lesser regions of strong \logg\ dependence, across these sample wavelength intervals.}
 \label{fig:coeffs}
 \end{figure}
@@ -656,9 +675,9 @@ There are not priors to place the stars on any position on the isochrone and tha
 % made with makeonisochrone_v18_bw.py
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.25]{./plots/test5.pdf}
+  \includegraphics[scale=0.25]{./plots/test5.png}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/test4.pdf}
+    \includegraphics[scale=0.25]{./plots/test4.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
 \caption{The $\sim$ 38,000 stars from DR10 with \aspcap-corrected training labels, at left shown in four metallicity bins. There are $\sim$ 21,600, 14,000, 1700, and 900 stars in the most metal-rich to metal-poor metallicity bins, respectively. The panel on the right shows all stars coloured in [Fe/H] on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.}
 \label{fig:iso}
@@ -668,9 +687,9 @@ There are not priors to place the stars on any position on the isochrone and tha
 \begin{figure}[!h]
 \centering
 
-      \includegraphics[scale=0.25]{./plots/test5b.pdf}
+      \includegraphics[scale=0.25]{./plots/test5b.png}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/test4b.pdf}
+    \includegraphics[scale=0.25]{./plots/test4b.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
 \caption{As per Figure \ref{fig:iso} but for the isochrone-corrected'' labels, showing the stars follow the red giant branch on the isochrones.}
 \label{fig:iso2}
