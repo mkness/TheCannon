@@ -33,3 +33,5 @@ and low signal-to-noise.
 - Creation of a standard-star-based chemical abundance system.
 - Cross-calibration of stellar surveys using co-observed stars.
 - Probabilistic training of models with noisy labels.
+
+This is a perfunctory edit, as per Prof. Hogg's instructions
