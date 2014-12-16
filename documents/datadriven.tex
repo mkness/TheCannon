@@ -134,7 +134,7 @@ The first step, or \textit{training step} in \tc\ is to create from the spectra 
 The second step, or \textit{test step}, assumes that this same generative model holds for all the other objects in the survey (dubbed \textit{survey objects}). 
 Then, the spectra of the \textit{survey objects} and the generative model from the \textit{reference objects}
 allow us to solve for the labels of the \textit{survey objects}. 
-Taken together the \textit{training step} and the \testit{test step} effect a \textit{label transfer}. 
+Taken together the \textit{training step} and the \textit{test step} effect a \textit{label transfer}. 
 
 To make such an approach straigtforward, we must assume that the \textit{reference objects} and the \textit{survey objects} were observed with the identical instrumental set-up, a condition well satisfied with the large surveys listed above. 
 We take the generative model for the continuum normalized flux at each of $N_{pix}$ pixels to be a polynomial function of all the labels, and hence the model is defined by its $N_{pix}$ sets of polynomial coefficients. In practice, there may be different circumstances that make stars suitable reference objects. 
@@ -180,20 +180,19 @@ The success of this model is demonstrated by running \tc\ through the DR10 data 
 
 \section{Data}
 
-Our approach \tc \ is applicable to any large, homogeneous spectroscopic data set. Here, we use the \apogee\ data to showcase \tc . 
+Our approach \tc \ is applicable to any large, homogeneous spectroscopic data set. Here, we use the \apogee\ data [REF] to illustrate and showcase \tc .
 We describe how we prepare the data for the reference objects, to prepare the label-transfer and similarly, how to process the survey data.
 
 \subsection{Reference objects with high-fidelity stellar labels}
 
-The first step in \tc\ is to chose a set of reference (or training) objects for which we have spectra from the survey and 
-\emph{also} high-fidelity labels (i.e. stellar parameters and element abundances that are deemed both accurate and precise). 
-The set of reference objects is critical, as the subsequent label transfer to the survey objects can only be as good as the quality 
-of the reference labels. 
+For the training step in \tc\ we must choose a set of reference (or training) objects for which we have spectra from the survey under 
+consideration and \emph{also} high-fidelity labels (i.e. stellar parameters and element abundances that are deemed both accurate and precise).
+The set of reference objects is critical, as the overall label transfer to the survey objects can only be as good as the quality of the reference labels. 
 Also, as \tc\ may have to inter- and extrapolate to new parts of label space as
 it encounters new kinds of spectra among the survey objects, the quality
 of the label transfer depends on the density and extent to which the reference objects
 cover label space (\teff, \logg, [Fe/H], [X/Fe], and so on). 
-The performance of data-driven model like \tc\ can depend strongly on the size and quality of its set of reference objects.
+The performance of data-driven model like \tc\ can depend strongly on the size and quality of its training set of reference objects.
 
 Any set of reference objects in the survey with high fidelity labels is good for the implementation of \tc.
 In practice, a set of reference objects that satisfies these criteria (e.g. in \apogee )
@@ -263,30 +262,30 @@ The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Iso
 \end{figure}
 
 
-\subsection{Continuum Normalisation and \apogee\ Test Data}
+\subsection{Consistent Continuum Normalisation}
 
-The Cannon, as we present it here, operates on continuum-normalized spectra, reduced and re-sampled to the same wavelength grid
- (with the same line-spread function), and shifted to their rest-frame. 
+The Cannon, as we present it here, operates on continuum-normalized spectra, reduced and re-sampled to the same wavelength grid 
+(with the same line-spread function), and shifted to their rest-frame. 
  Therefore, a robust continuum normalisation of the spectra is critical.
-  It turns out that it is of particular importance to have an operational procedure to set the continuum,
-   that shows no systematic dependence on the S/N of the spectra.
+It turns out that it is of particular importance to have an operational procedure to set the continuum,
+that shows no systematic dependence on the S/N of the spectra.
 
-One can at first define a preliminary continuum normalisation by using polynomial fit to an upper quantile of the spectra
- in the \apogee\ pipeline \citep{Meszaros2013}. This is effective, but SNR dependent.
-Then the \tc\ can provide an improved identification of continuum regions in the spectrum,
+For the \tc\ we achieve a robust, S/N-insensitive continuum fit through
+an iterative procedure. At first, we define a preliminary pseudo-continuum normalisation by
+using polynomial fit to an upper quantile (e.g. 80\% or 90\%) of the spectra
+ in the \apogee\ pipeline \citep{Meszaros2013}, determined e.g. from a running median
+ This is effective, but SNR dependent.
+
+After a training step with spectra of reference objects that have been normalized by this pseudo-continuum,
+ the \tc\ can provide an improved identification of continuum regions in the spectrum,
 designated as those that show almost no dependence in their normalized flux on the stellar labels.
-I.e. we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in Section \ref{sec:results}. Subsequently, we fit a low order polynomial to the flux at those ``continuum pixels"
-and divide each spectrum by its fit. This normalisation is applied to both the reference and survey
-spectra.
 
-The continuum normalisation we implement can be applied to either the \apogee\ pseudo-normalised spectra in the \textit{aspcapstar} fits files, which we adopt for our primary training and test data, or the \textit{apStar} full spectrum flux files provided as part of the DR10 data release.
- We use the \textit{apstar} files, which are reduced, resampled but not pre pseudo-continuum normalised by \apogee\, in order to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files.  
-
-The selected continuum pixels are used to fit a Chebyshev polynomial, treating each of the three chips separately. 
-The contribution to the fit of each pixel is weighted by the inverse variance from the error array provided for each star in the \apogee\ fits files. A 2nd-order Chebyshev polynomial is sufficient to use for the pseudo-continuum normalised data provided by \apogee\ and we apply this normalisation to both \aspcapstar\ and  \apstar\ files. 
-Figure \ref{fig:norm} shows an example of this normalisation applied to test spectra with different labels (output from \tc). 
-This Figure demonstrates how the spectra changes as a function of metallicity at a given temperature and how a spectrum changes as a function of temperature at a given metallicity. 
-For a clearer impression of the spectral flux variation we use narrower regions marked in this Figure, (A) and (B), for all subsequent examination of the spectral data. 
+I.e. we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in Section \ref{sec:results}. Subsequently, we fit a low-order Chebyshev polynomial to these continuum pixels,
+treating each of the three chips separately, weighted by the inverse flux errors provided \apogee\ fits files. A 2nd-order Chebyshev polynomial is sufficient to use for the pseudo-continuum normalised data provided by \apogee\ and we apply this normalisation to both \aspcapstar\ and \apstar\ files.
+Figure \ref{fig:norm} shows an example of this normalisation applied to survey spectra with different labels (output from \tc).
+This Figure illustrates typical \apogee\ spectra and demonstrates how the spectra
+vary as a function of metallicity at a given temperature , and as a function of temperature at a given metallicity.
+For a clearer view of individual absorption linea features, we use narrower regions marked in this Figure, (A) and (B), for all subsequent examination of the spectral data. 
 
 %. The continuum pixels used for the Chebyshev polynomial fit are shown in the black points.
 
