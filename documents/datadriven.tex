@@ -103,7 +103,7 @@ techniques: spectroscopic
 \section{Introduction}
 
 The vast spectroscopic stellar surveys of recent years (REFs to: SEGUE, RAVE, LAMOST, APOGEE, Gaia-ESO, Galah) hold tremendous astrophysical promise, but at the same time present formidable data analysis and modeling challenges. 
-One of these challenges lies in consistently and accurately determining stellar labels, i.e. stellar parameters and element abundances, from survey spectra. 
+One of these challenges lies in consistently and accurately determining stellar labels, that is, stellar parameters and element abundances, from survey spectra. 
 These labels are usually determined from comparison of the data with synthetic model spectra, with approaches often 
 customised specifically to the particular wavelength region of a given survey (REF to APOGEE, SEGUE, RAVE \& Gaia-ESO pipeline papers). 
 The stellar photosphere models that are relied upon for stellar label determination have physical ingredients that are incomplete and simplified. 
@@ -211,13 +211,13 @@ Adopting the \aspcap\ corrected labels provided and documented by \apogee\  has 
 
 The corrections to the labels made by \apogee\ based on the cluster data are applied to the output of the \aspcap\ pipeline which returns the initial parameters from comparisons to a library of stellar models. 
 Temperature corrections are determined by comparing the infrared flux temperatures of the stars \citep{gonzalez2009}, \logg\ corrections are from the offset between \aspcap\ results and Kepler results for common stars and \feh\ corrections are from the difference between the \aspcap\ and  the literature value of each cluster.  
-The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs.  We adopt the \aspcap\ corrected [M/H] values for these clusters and these are corrected to the [Fe/H] of the clusters and so we adopt this label as an [Fe/H] (i.e. this label from \apogee\ therefore, does not explicitly use \feh\ lines, but is derived from an \feh\ correction). 
+The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs.  We adopt the \aspcap\ corrected [M/H] values for these clusters and these are corrected to the [Fe/H] of the clusters and so we adopt this label as an [Fe/H] (that is, this label from \apogee\ therefore, does not explicitly use \feh\ lines, but is derived from an \feh\ correction). 
 The analysis in \citet{Meszaros2013} is restricted not only to giants but also stars with SNR $>$ 70, determined to be the minimum SNR for reliable stellar parameters by \apogee.
 
 These corrections implemented by \apogee\ in \teff, \logg\ and  \feh\ place the giants in the cluster stars on or near the iscohrones (see Figures 7 and 8 in Meszaros et al., (2013)).  
 As there are no \aspcap\ corrections implemented for the dwarf spectra, we instead determine temperatures for the dwarfs, which are all in the Pleiades, directly using same correction method as in \citet{Meszaros2013}. We determine the infrared flux temperature for the stars from \citet{gonzalez2009} and apply a correction to the \aspcap\ output based on the offset in the temperature scales. We find the following relation: $T_{\mbox{corrected}}$= 0.855*T$_{\mbox{\textit{\aspcap}}}$ + 1206.7.
 We do not attempt an individual metallicity correction for each dwarf star but rather set all \feh\ of the dwarf spectra to \feh\ = 0.03 \citep{barrado2001}.
-Tests on the input labels to \tc\ demonstrate that there is only a small degradation of the results caused by adopting a single \feh\ for every cluster star for the literature value of the cluster, instead of individual \feh\ values for the stars (i.e. from the \aspcap\ corrected values). 
+Tests on the input labels to \tc\ demonstrate that there is only a small degradation of the results caused by adopting a single \feh\ for every cluster star for the literature value of the cluster, instead of individual \feh\ values for the stars (that is, from the \aspcap\ corrected values). 
 To determine the \logg\ for these dwarf stars, we shift the stars vertically to their nearest positions on an appropriate age-metallicity Padova isochrone of 150 Myr at [Fe/H] = 0.03 \citep{girardi2000}. 
 Due to the high differential reddening to the Pleiades, and the subsequent large temperature errors using the IR flux method that result from this, we only selected the 64 from a total of 72 Pleiades dwarfs, eliminating those with high extinction of SFD (corrected) E(J-K) $>$ 0.30 \citep{Schlafly2011}.
 
@@ -611,7 +611,7 @@ The top panel shows the zeroth order-coefficient $\theta_0$ or the baseline spec
 The mid panel shows the first order coefficients $\theta_{1,2,3}$ in \teff, \logg\ and \feh. 
 In the top panel of Figure \ref{fig:coeffs}, the red, blue and green shaded regions show the highest 2$-\sigma$ coefficient values $\theta_{1,2,3}$ in the \feh, \teff\ and \logg\ labels respectively. 
 These regions indicate where these flux levels are strongly proportional to these labels and highlights the differences between the labels in their flux dependancy. Note there are many regions where the \feh\ label dominates in contribution to the flux. 
-For the first label profiles for example in the middle panel of Figure \ref{fig:coeffs}, there is typically asymmetry for a given absorption feature, in the flux and the labels. There are very few regions where the flux is a function of only one of the labels, and pixels are typically covariant (i.e. the same pixel will have a higher flux at both lower \teff\ and higher \feh).
+For the first label profiles for example in the middle panel of Figure \ref{fig:coeffs}, there is typically asymmetry for a given absorption feature, in the flux and the labels. There are very few regions where the flux is a function of only one of the labels, and pixels are typically covariant (that is, the same pixel will have a higher flux at both lower \teff\ and higher \feh).
  The strongest \logg\ dependence is typically associated with weak lines including the wings of the feature and the \feh\ label, with strong lines, particularly the depth of the line. 
 
 From the bottom panel of Figure \ref{fig:coeffs}, it is clear that there is significant covariance between the labels. 
@@ -785,7 +785,7 @@ We found by adopting a very naive calibration that shifts the stars to the neare
 This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. 
 This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
 
-For our first implementation of \tc\ presented here, it is trivial to run the almost 60,000 star sample (i.e. the size of DR10 from \apogee) through \tc\ on a single laptop, as it takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for each star, without any attempt at speed or method optimisation. 
+For our first implementation of \tc\ presented here, it is trivial to run the almost 60,000 star sample (that is, the size of DR10 from \apogee) through \tc\ on a single laptop, as it takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for each star, without any attempt at speed or method optimisation. 
 We reproduce the \apogee\ labels, as provided for DR10 in Table 1, without adding any significant uncertainty because we use every pixel in the spectra and have a generative model. 
 Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better. 
 
