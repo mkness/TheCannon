@@ -41,7 +41,8 @@
 
 \begin{document}
 
-\title{\textsc{\tc:}\\ A data-driven model for stellar parameter determination}
+\title{\textsc{\tc: \footnote{The name \tc\ is inspired by the astronomer Annie Jump Cannon,
+who was the pioneer on stellar classification without physical models!}}\\ A data-driven model for stellar parameter determination}
 \author{
   MKN,
   DWH,
@@ -62,14 +63,14 @@ modest fraction of the spectral pixels.
 In many cases, however, there is a sub-set of \emph{reference}
 objects for which the stellar labels are known with high(er)
 fidelity; this is the use case for \tc.
-From the reference stars, \tc\ learns (by fitting a very flexible
-model) how the flux in each pixel of a continuum-normalized spectrum
+From the reference stars, \tc\ learns by fitting a very flexible
+model how the flux in each pixel of a continuum-normalized spectrum
 depends on the `known' stellar labels; \tc\ then exploits this same
-dependence to derive new labels for the non-refererence stars.
+dependence to derive new labels for the non-reference stars.
 We illustrate \tc\ by applying it to the spectra of 59,000 stars from
 \apogee\ DR10. 
 We take \teff, \logg\ and \feh\ as the labels, and 545 stars in 19
-clusters as the reference objects (training set). 
+clusters as the reference objects. 
 \tc\ is very accurate; its stellar labels compare well to the 37,500
 stars for which \apogee\ pipeline (\aspcap) labels are provided; we
 obtain rms differences of $\delta\teff< 100$~K, $\delta\logg< 0.2$~dex
@@ -914,8 +915,6 @@ A direct first additional upgrade for \tc\ aligned with directing this method to
 
 \section*{ Acknowledgements}
 
-The name \tc\ is inspired by the astronomer Annie Jump Cannon,
-who was the pioneer on stellar classification without physical models!
 We would like to thank Daniel Foreman-Mackey (NYU), 
 Morgan Fouesneau, Jon Holtzman,  Keivan Stassun and Jennifer Johnson
 for valuable discussions.
