@@ -41,7 +41,8 @@
 
 \begin{document}
 
-\title{\textsc{\tc:}\\ A data-driven model for stellar parameter determination}
+\title{\textsc{\tc: \footnote{The name \tc\ is inspired by the astronomer Annie Jump Cannon,
+who was the pioneer on stellar classification without physical models!}}\\ A data-driven model for stellar parameter determination}
 \author{
   MKN,
   DWH,
@@ -62,14 +63,14 @@ modest fraction of the spectral pixels.
 In many cases, however, there is a sub-set of \emph{reference}
 objects for which the stellar labels are known with high(er)
 fidelity; this is the use case for \tc.
-From the reference stars, \tc\ learns (by fitting a very flexible
-model) how the flux in each pixel of a continuum-normalized spectrum
+From the reference stars, \tc\ learns by fitting a very flexible
+model how the flux in each pixel of a continuum-normalized spectrum
 depends on the `known' stellar labels; \tc\ then exploits this same
-dependence to derive new labels for the non-refererence stars.
+dependence to derive new labels for the non-reference stars.
 We illustrate \tc\ by applying it to the spectra of 59,000 stars from
 \apogee\ DR10. 
 We take \teff, \logg\ and \feh\ as the labels, and 545 stars in 19
-clusters as the reference objects (training set). 
+clusters as the reference objects. 
 \tc\ is very accurate; its stellar labels compare well to the 37,500
 stars for which \apogee\ pipeline (\aspcap) labels are provided; we
 obtain rms differences of $\delta\teff< 100$~K, $\delta\logg< 0.2$~dex
@@ -102,32 +103,51 @@ techniques: spectroscopic
 
 \section{Introduction}
 
-The vast spectroscopic stellar surveys of recent years (REFs to: SEGUE, RAVE, LAMOST, APOGEE, Gaia-ESO, Galah) hold tremendous astrophysical promise, but at the same time present formidable data analysis and modeling challenges. One of these challenges lies in consistently and accurately determining stellar labels, i.e. stellar parameters and element abundances, from survey spectra. 
+The vast spectroscopic stellar surveys of recent years (REFs to: SEGUE, RAVE, LAMOST, APOGEE, Gaia-ESO, Galah) hold tremendous astrophysical promise, but at the same time present formidable data analysis and modeling challenges. 
+One of these challenges lies in consistently and accurately determining stellar labels, that is, stellar parameters and element abundances, from survey spectra. 
 These labels are usually determined from comparison of the data with synthetic model spectra, with approaches often 
-customised specifically to the particular wavelength region of a given survey (REF to APOGEE, SEGUE, RAVE \& Gaia-ESO pipeline papers).  The stellar photosphere models that are relied upon for stellar label determination have physical ingredients that are incomplete and simplified. For computational feasibility, almost always 1D stellar photosphere models are adopted for large surveys, often assumed to be in local thermal equilibrium. In many cases, the model spectra do not account for all relevant  molecular opacities, for convection, stellar winds and for the stellar chromosphere. As a consequence, it happens that different research groups obtain discrepant results even for the same data on the same stars, due to different input assumptions and methods \citep[e.g.]{Sm2014}. 
+customised specifically to the particular wavelength region of a given survey (REF to APOGEE, SEGUE, RAVE \& Gaia-ESO pipeline papers). 
+The stellar photosphere models that are relied upon for stellar label determination have physical ingredients that are incomplete and simplified. 
+For computational feasibility, almost always 1D stellar photosphere models are adopted for large surveys, often assumed to be in local thermal equilibrium. 
+In many cases, the model spectra do not account for all relevant  molecular opacities, for convection, stellar winds and for the stellar chromosphere. 
+As a consequence, it happens that different research groups obtain discrepant results even for the same data on the same stars, due to different input assumptions and methods \citep[e.g.]{Sm2014}. 
 
-Stellar labels are commonly determined by fitting a model spectrum (with known labels) to the data using some minimisation technique, often restricted to a masked portion of the spectrum that is focussed on the absorption line (regions) deemed to be most reliable or relevant. Stated minimal signal-to-noise requirement to obtain robust labels in this way are $S/N\sim 100$ per resolution element, especially if the labels are to include individual element abundances. Often, a post-calibration procedure is applied to bring the stellar labels derived by such a fitting pipeline in accord with external information of higher fidelity: for example with stellar labels from benchmark stars studied at high resolution and/or well characterised open and globular cluster stars (REF: which surveys have done that?). 
+Stellar labels are commonly determined by fitting a model spectrum (with known labels) to the data using some minimisation technique, often restricted to a masked portion of the spectrum that is focussed on the absorption line (regions) deemed to be most reliable or relevant. 
+Stated minimal signal-to-noise requirement to obtain robust labels in this way are $S/N\sim 100$ per resolution element, especially if the labels are to include individual element abundances. 
+Often, a post-calibration procedure is applied to bring the stellar labels derived by such a fitting pipeline in accord with external information of higher fidelity: for example with stellar labels from benchmark stars studied at high resolution and/or well characterised open and globular cluster stars (REF: which surveys have done that?). 
 
 In practice, different surveys end up having different calibrations of their labels: either their stellar parameter or their abundances are on slightly different scales; this complicates
 inter-survey comparisons and constitutes major challenge of the era of such large datasets. 
 
 In this paper we propose and lay out a data-driven approach to deriving stellar labels from stellar spectra in the context of large spectroscopic surveys, which we dub \tc\footnote{why it is called the Cannon}. 
-The main practical strengths of \tc\ lie in the fact that it is enormously fast, it can obtain labels of comparable accuracy to quoted in current approaches but with far less S/N, and it offers a consistent way to cross-calibrate surveys. To do so, \tc\ must rely on the existence of a subset of objects within a survey
+The main practical strengths of \tc\ lie in the fact that it is enormously fast, it can obtain labels of comparable accuracy to quoted in current approaches but with far less S/N, and it offers a consistent way to cross-calibrate surveys. 
+To do so, \tc\ must rely on the existence of a subset of objects within a survey
 (\textit{reference objects}), for which the stellar labels are known sufficiently well and cover label space sufficiently.
 
-In this context, the term {\sl labels} refers to the pieces of information that characterize and determine a stellar spectrum; these labels are commonly and sensibly split into {\sl stellar parameters} and {\sl element abundances}, though in the context of \tc\ it makes sense to treat them on a par. In most cases, it suffices to think of the labels as \teff , \logg, and the element abundances [X/H], though stellar rotation, microturbulence, etc.. can also be thought of as labels. It is central to the approach we lay out here that stars with the same labels have (nearly) identical spectra and that spectra vary smoothly with label changes. This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are e.g. only \teff, \logg \feh\ then this is obviously an approximation. 
+In this context, the term {\sl labels} refers to the pieces of information that characterize and determine a stellar spectrum; these labels are commonly and sensibly split into {\sl stellar parameters} and {\sl element abundances}, though in the context of \tc\ it makes sense to treat them on a par. 
+In most cases, it suffices to think of the labels as \teff , \logg, and the element abundances [X/H], though stellar rotation, microturbulence, etc.. can also be thought of as labels. It is central to the approach we lay out here that stars with the same labels have (nearly) identical spectra and that spectra vary smoothly with label changes. 
+This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are e.g. only \teff, \logg \feh\ then this is obviously an approximation. 
 
-There are fundamentally two steps in \tc . The first step in \tc\ is to create from the spectra of the \textit{reference objects} a generative model that describes the flux at every pixel in their continuum normalized spectra as a function of their known stellar labels. The second step assumes that this same generative model  holds for all the other objects in the survey (dubbed \textit{survey objects}). Then, the spectra of the \textit{survey objects} and the generative model from the \textit{reference objects}
+There are fundamentally two steps in \tc . 
+The first step in \tc\ is to create from the spectra of the \textit{reference objects} a generative model that describes the flux at every pixel in their continuum normalized spectra as a function of their known stellar labels. 
+The second step assumes that this same generative model  holds for all the other objects in the survey (dubbed \textit{survey objects}). 
+Then, the spectra of the \textit{survey objects} and the generative model from the \textit{reference objects}
 allow us to solve for the labels of the \textit{survey objects}. This second step we call ``\textit{label transfer}''.
 
-To make such an approach straigtforward, we must assume that the \textit{reference objects} and the \textit{survey objects} were observed with the identical instrumental set-up, a condition well satisfied with the large surveys listed above. We take the generative model for the continuum normalized flux at each of $N_{pix}$ pixels to be a polynomial function of all the labels, and hence the model is defined by its $N_{pix}$ sets of polynomial coefficients. In practice, there may be different circumstances that make stars suitable reference objects. They may be members of star clusters: there, external data and the fact that clusters are in good approximation single stellar populations (which have to fall onto an isochrone) lend credibility to their stellar labels. Alternatively, reference objects could be stars for which labels have been derived separately from spectra of particularly high signal to noise, or at other "easier" or more extensive wavelength regimes (e.g. in the optical as opposed to the IR). Finally, they may be subsets of stars in a survey  for whom other approaches to get stellar parameters (e.g. astroseismology ) may provide accurate stellar parameters.
+To make such an approach straigtforward, we must assume that the \textit{reference objects} and the \textit{survey objects} were observed with the identical instrumental set-up, a condition well satisfied with the large surveys listed above. 
+We take the generative model for the continuum normalized flux at each of $N_{pix}$ pixels to be a polynomial function of all the labels, and hence the model is defined by its $N_{pix}$ sets of polynomial coefficients. In practice, there may be different circumstances that make stars suitable reference objects. 
+They may be members of star clusters: there, external data and the fact that clusters are in good approximation single stellar populations (which have to fall onto an isochrone) lend credibility to their stellar labels. 
+Alternatively, reference objects could be stars for which labels have been derived separately from spectra of particularly high signal to noise, or at other "easier" or more extensive wavelength regimes (e.g. in the optical as opposed to the IR). 
+Finally, they may be subsets of stars in a survey  for whom other approaches to get stellar parameters (e.g. astroseismology ) may provide accurate stellar parameters.
 
-With this two-step procedure of training on spectra of reference objects and then transferring the label information to the survey objects, \tc\ falls into the class of \emph{supervised methods} in machine learning. However, what we implement is very different in a crucial way from standard supervised methods for regression, such as support vector machines, random forests, and deep learning.
+With this two-step procedure of training on spectra of reference objects and then transferring the label information to the survey objects, \tc\ falls into the class of \emph{supervised methods} in machine learning. 
+However, what we implement is very different in a crucial way from standard supervised methods for regression, such as support vector machines, random forests, and deep learning.
 These other methods also try to fit a very flexible model to the training data at training time
 and deploy that model on the test data at test time.
 The important difference, however, is that \tc\ is a \emph{generative model} of the observed spectra:
 That is, it constructs, as a function of labels, a probability density function (pdf) for the observed
-flux as a function of wavelength. This makes \tc\ a bespoke method, not cleanly falling into any established machine-learning methodology.
+flux as a function of wavelength. 
+This makes \tc\ a bespoke method, not cleanly falling into any established machine-learning methodology.
 However, it gives us the enormous advantage that we can account for the uncertainties in the spectral data,
 including all the issues of heteroscedasticity and missing data.
 It also makes the method agnostic about signal-to-noise.
@@ -137,64 +157,90 @@ In many real cases the training data will be much higher in signal-to-noise than
 A method that does not properly account for the observational uncertainties will not transfer labels to lower signal-to-noise spectra with high fidelity.
 In what follows, we show that \tc\ behaves very well as the signal-to-noise (or observing time) is decreased.
 
-In this paper we use \apogee\ as the sole example. However, \tc\ can be applied to any stellar survey.  Our aim is distinct from simply determining parameters or finding the best fit spectra similarly to minimisation techniques. Our aim is to implement a procedure which makes it possible to understand and characterise the spectra as a function of the labels which describe it.  Our methodology is very relevant for chemical tagging in large datasets, as it can formally describe and differentiate the spectra in multiple-abundance space, given additional input labels. In the same way it is possible to implement a differential analysis on large datasets using this approach. Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (e.g. [$\alpha$/Fe], [X/Fe]) and also more comprehensive models (e.g. Gaussian processes). Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower signal to noise (SNR) than minimisation techniques.% and provide a quantification of data-driven spectra comparison and differentiation, which may be a key tool in exploring the archeology of stars via chemical tagging. 
+In this paper we use \apogee\ as the sole example. 
+However, \tc\ can be applied to any stellar survey.  
+Our aim is distinct from simply determining parameters or finding the best fit spectra similarly to minimisation techniques. 
+Our aim is to implement a procedure which makes it possible to understand and characterise the spectra as a function of the labels which describe it.  
+Our methodology is very relevant for chemical tagging in large datasets, as it can formally describe and differentiate the spectra in multiple-abundance space, given additional input labels.
+In the same way it is possible to implement a differential analysis on large datasets using this approach. 
+Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (e.g. [$\alpha$/Fe], [X/Fe]) and also more comprehensive models (e.g. Gaussian processes). 
+Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower signal to noise (SNR) than minimisation techniques.% and provide a quantification of data-driven spectra comparison and differentiation, which may be a key tool in exploring the archeology of stars via chemical tagging. 
 
-Our overarching aim of describing stellar flux as a function of stellar labels is not dissimilar from the MATrix Inversion for Spectral SythEsis (\matisse) procedure for derivation of stellar parameters \citep{RB2006}. However, \matisse\ employs a large grid of synthetic spectra and characterises a set of basis vectors which project onto each observed spectrum to determine stellar labels by calculating an optimal combined synthetic spectrum describing the stellar flux. Conversely, we use a data-driven model and do not project onto any optimal combined theoretical spectrum. Rather we directly determine labels using a total of around 70,000 degrees of freedom of information in the data, given the 7200 pixels comprising the flux and the 10 parameters of the labels in our implemented model. 
+Our overarching aim of describing stellar flux as a function of stellar labels is not dissimilar from the MATrix Inversion for Spectral SythEsis (\matisse) procedure for derivation of stellar parameters \citep{RB2006}. 
+However, \matisse\ employs a large grid of synthetic spectra and characterises a set of basis vectors which project onto each observed spectrum to determine stellar labels by calculating an optimal combined synthetic spectrum describing the stellar flux. 
+Conversely, we use a data-driven model and do not project onto any optimal combined theoretical spectrum. 
+Rather we directly determine labels using a total of around 70,000 degrees of freedom of information in the data, given the 7200 pixels comprising the flux and the 10 parameters of the labels in our implemented model. 
 
-We have adopted a bottom-up approach for \tc\ , starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (545 stars) and survey objects ($\sim$ 59,000 stars from DR10). We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and so we extended our model to quadratic form, which satisfactorily describes the label-space of the training data. The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
+We have adopted a bottom-up approach for \tc\ , starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  
+In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (545 stars) and survey objects ($\sim$ 59,000 stars from DR10). 
+We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and so we extended our model to quadratic form, which satisfactorily describes the label-space of the training data.
+The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
 
 \section{Data}
 
-Our approach \tc \  is applicable to any large, homogeneous spectroscopic data set. Here, we use the \apogee\ data to showcase \tc . We describe how we prepare the data for the reference objects,
-to prepare the label-transfer and similarl, how to process the survey data.
+Our approach \tc \ is applicable to any large, homogeneous spectroscopic data set. Here, we use the \apogee\ data to showcase \tc . 
+We describe how we prepare the data for the reference objects, to prepare the label-transfer and similarly, how to process the survey data.
 
 \subsection{Reference objects with high-fidelity stellar labels}
 
-The first step in \tc\ is to chose a set of reference (or training) objects for which we have spectra from the survey and \emph{also}  high-fidelity labels (i.e. stellar parameters and element abundances that are deemed both 
-accurate and precise). The set of reference objects is critical, as the subsequent label transfer to the survey objects can only be as good as the quality of the reference labels. Also, as \tc\ 
-may have to inter- and extrapolate to new parts of label space as
+The first step in \tc\ is to chose a set of reference (or training) objects for which we have spectra from the survey and 
+\emph{also} high-fidelity labels (i.e. stellar parameters and element abundances that are deemed both accurate and precise). 
+The set of reference objects is critical, as the subsequent label transfer to the survey objects can only be as good as the quality 
+of the reference labels. 
+Also, as \tc\ may have to inter- and extrapolate to new parts of label space as
 it encounters new kinds of spectra among the survey objects, the quality
-of the label transfer depends on the density and extent to which the reference objects 
-cover label space (\teff, \logg, [Fe/H],
-[X/Fe], and so on). The performance of  data-driven model like \tc\ can depend 
-strongly on the size and quality of its set of reference objects.
+of the label transfer depends on the density and extent to which the reference objects
+cover label space (\teff, \logg, [Fe/H], [X/Fe], and so on). 
+The performance of data-driven model like \tc\ can depend strongly on the size and quality of its set of reference objects.
 
-Any set of reference objects in the survey with high fidelity labels is good for the implementation of \tc. 
-In practice, a set of reference objects that satisfies these criteria (e.g. in \apogee )  
+Any set of reference objects in the survey with high fidelity labels is good for the implementation of \tc.
+In practice, a set of reference objects that satisfies these criteria (e.g. in \apogee )
 consist of members of well studied open and globular clusters that have their labels derived from high resolution spectral analysis in the
 optical wavelength region.
 
-Specifically, the reference dataset we use is that of the globular and open cluster data observed by \apogee\ for calibration of their abundance pipeline \citep{Meszaros2013}. This reference dataset is comprised of about 545 stars from 19 open and globular clusters, which span stellar parameter ranges of 3500 $<$ \teff\ $<$ 5300, 0 $<$ \logg\ $<$ 5 and --2.5 $<$ [Fe/H] $<$ 0.45. Exactly which stellar labels we adopt for theses reference objects, is critical to the subsequent output, and hence we discuss it in detail here.
+Specifically, the reference dataset we use is that of the globular and open cluster data observed by \apogee\ for calibration of their abundance pipeline \citep{Meszaros2013}. 
+This reference dataset is comprised of about 545 stars from 19 open and globular clusters, which span stellar parameter ranges 
+of 3500 $<$ \teff\ $<$ 5300, 0 $<$ \logg\ $<$ 5 and --2.5 $<$ [Fe/H] $<$ 0.45. 
+Exactly which stellar labels we adopt for theses reference objects, is critical to the subsequent output, and hence we discuss it in detail here.
 
 % note there are 20 in their list but 1 gc has only 1 star and the abundance looks incorrect to me. 
 
-We  adopt the DR10 ``\aspcap\ corrected'' stellar parameters for each of those 545 stars  as their labels, which will then place the output from \tc\ for the survey objects after label transfer on the \apogee\ \aspcap\ scale.  This set of stars is the very same stars used by \apogee\ to  post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}. 
-Adopting the \aspcap\ corrected labels provided and documented by \apogee\  has the important advantage that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer of only 545 stars.
+We adopt the DR10 ``\aspcap\ corrected'' stellar parameters for each of those 545 stars as their labels, 
+which will then place the output from \tc\ for the survey objects after label transfer on the \apogee\ \aspcap\ scale.
+ This set of stars is the very same stars used by \apogee\ to post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}.
+Adopting the \aspcap\ corrected labels provided and documented by \apogee\ has the important advantage 
+that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer of only 545 stars.
 
-The corrections to the labels made by \apogee\ based on the cluster data are applied to the immediate output of the \aspcap\ pipeline that arose from comparisons to a library of stellar models. 
+The corrections to the labels made by \apogee\ based on the cluster data are applied to the immediate output of the \aspcap\ pipeline that arose from comparisons to a library of stellar models.
 Temperature corrections are determined by comparing the infrared flux temperatures of the stars \citep{gonzalez2009}, \logg\ corrections are from the offset between \aspcap\ results and Kepler results for common stars and \feh\ corrections are from the difference between the \aspcap\ and  the literature value of each cluster.  
-The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs.  We adopt the \aspcap\ corrected [M/H] values for these clusters and these are corrected to the [Fe/H] of the clusters and so we adopt this label as an [Fe/H] (i.e. this label from \apogee\ therefore, does not explicitly use \feh\ lines, but is derived from an \feh\ correction). 
+The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs.  We adopt the \aspcap\ corrected [M/H] values for these clusters and these are corrected to the [Fe/H] of the clusters and so we adopt this label as an [Fe/H] (that is, this label from \apogee\ therefore, does not explicitly use \feh\ lines, but is derived from an \feh\ correction). 
 The analysis in \citet{Meszaros2013} is restricted not only to giants but also stars with SNR $>$ 70, determined to be the minimum SNR for reliable stellar parameters by \apogee.
 
 These corrections implemented by \apogee\ in \teff, \logg\ and  \feh\ place the giants in the cluster stars on or near the iscohrones (see Figures 7 and 8 in Meszaros et al., (2013)).  
-As there are no \aspcap\ corrections implemented for the few main sequence stars among the reference objects, we instead determine temperatures for these dwarfs, which are all in the Pleiades, directly using same correction method as in \citet{Meszaros2013}. We determine the infrared flux temperature for the stars from \citet{gonzalez2009} and apply a correction to the \aspcap\ output based on the offset in the temperature scales. We find the following relation: $T_{\mbox{corrected}}$= 0.855*T$_{\mbox{\textit{\aspcap}}}$ + 1206.7.
+As there are no \aspcap\ corrections implemented for the few main sequence stars among the reference objects, 
+we instead determine temperatures for these dwarfs, which are all in the Pleiades, directly using same correction method 
+as in \citet{Meszaros2013}. 
+We determine the infrared flux temperature for the stars from \citet{gonzalez2009} and apply a correction to 
+the \aspcap\ output based on the offset in the temperature scales. We find the following relation:
+ $T_{\mbox{corrected}}$= 0.855*T$_{\mbox{\textit{\aspcap}}}$ + 1206.7.
+
+
 We do not attempt an individual metallicity correction for each dwarf star but rather set all \feh\ of the dwarf spectra to \feh\ = 0.03 \citep{barrado2001}.
-Tests on the input labels to \tc\ demonstrate that there is only a small degradation of the results caused by adopting a single \feh\ for every cluster star for the literature value of the cluster, instead of individual \feh\ values for the stars (i.e. from the \aspcap\ corrected values). 
-To determine the \logg\ for these Plaijades main sequence stars, we shift the stars vertically to their nearest positions on an appropriate age-metallicity Padova isochrone of 150 Myr at [Fe/H] = 0.03 \citep{girardi2000}. 
+Tests on the input labels to \tc\ demonstrate that there is only a small degradation of the results caused by adopting a single \feh\ for every cluster star for the literature value of the cluster, instead of individual \feh\ values for the stars (that is, from the \aspcap\ corrected values). 
+To determine the \logg\ for these Pleiades main sequence stars, we shift the stars vertically to their nearest positions on an appropriate age-metallicity Padova isochrone of 150 Myr at [Fe/H] = 0.03 \citep{girardi2000}. 
 Due to the high differential reddening to the Pleiades, and the subsequent large temperature errors using the IR flux method that result from this, we only selected the 64 from a total of 72 Pleiades dwarfs, eliminating those with high extinction of SFD (corrected) E(J-K) $>$ 0.30 \citep{Schlafly2011}.
 
 Adopting the input labels from the \aspcap-corrected parameters determined from calibrations to literature cluster values also transfers the errors from the \aspcap\ pipeline: of $<$ 150K in \teff,  $<$ 0.2 dex in \logg\ and $<$ 0.1 dex in \feh.   
 The uncertainties on the input labels will be included as an input parameter of the labels in a future development stage of \tc. Inclusion of uncertainties may be particularly relevant when introducing multiple labels of individual elements. 
 
-% the subsequengt seems to be foreboding results, which is too soon, and distracting here...
-%Adopting the labels from the \aspcap\ output places \tc\ directly on the \aspcap\ scale which is very instructive for comparison and analysis of the label-transfer method. 
-%We demonstrate excellent reproducibility of \aspcap\ labels with our method, including at lower SNR than required by \apogee\ (SNR $\ge$ 70). This is detailed in Section \ref{sec:results}. 
-%We also return results for dwarfs using this method, subject to the restriction that only $\sim$ 10\% of the stars in the training sample are dwarfs, all at the same metallicity. 
-%Nevertheless, \tc\ is still able to differentiate dwarfs and giants and operates remarkably well given the constrained training set at \logg\ $>$ 3.5. 
+For a comparative analysis to the ``\aspcap\ corrected'' labels, we adopt a \logg\ label for all of the training stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). 
+We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the age and \feh\ of each cluster. 
 
-The above set of labels for the reference objects is well defined, but still means that the reference objects in the clusters do not lie on a single model isochrone (see Fig. XXX). As an alternative set of reference labels, we consider one where the stellar parameters (\teff , \logg )  of the reference objects lie by construction on a single isochrone. For that we adopt a \logg\ label for all of the reference
-stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). 
-We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the literature age and \feh\ of each cluster. 
+The above set of labels for the reference objects is well defined, but still means that the reference objects in the clusters do not lie on a single model isochrone 
+(see Fig. \ref{fig:trainingaspcap}). 
+As an alternative set of reference labels, we consider one where the stellar parameters (\teff , \logg ) of the reference objects lie by construction on a single isochrone. 
+For that we adopt a \logg\ label for all of the reference stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the literature age and \feh\ of each cluster. 
+
 We discuss our motivation for doing this and our results in the Discussion section of our paper.  
 The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Isochrone-corrected'' labels, are shown in Figures \ref{fig:trainingaspcap} and \ref{fig:trainingisochrone}, respectively. 
 
@@ -217,13 +263,18 @@ The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Iso
 
 \subsection{Continuum Normalisation and \apogee\ Test Data}
 
-\tc\ , as we present it here, operates on continuum-normalized spectra, reduced and re-sampled to the same wavelenth grid (with the same line-spread function), and shifted to their rest-frame. Therefore, a robust continuum normalisation of the spectra is critical. It turns out that it is of particular importance to have an operational procedure to set the continuum, that shows no systematic dependence on the S/N of the spectra.
+The Cannon, as we present it here, operates on continuum-normalized spectra, reduced and re-sampled to the same wavelength grid
+ (with the same line-spread function), and shifted to their rest-frame. 
+ Therefore, a robust continuum normalisation of the spectra is critical.
+  It turns out that it is of particular importance to have an operational procedure to set the continuum,
+   that shows no systematic dependence on the S/N of the spectra.
 
-One can at first define a preliminary continuum normalisation by using polynomial fit to an upper quantile of the spectra in the \apogee\ pipeline \citep{Meszaros2013}. This is effective, but SNR dependent.  
-Then the \tc\ can provide an improved identification of  continuum regions in the spectrum, 
-designated as those that show almost no dependence in their normalized flux on the stellar labels. 
-I.e. we can determine with the \tc\ the  `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in Section \ref{sec:results}. Subsequently, we fit a low order polynomial to the flux at those ``continuum pixels"
-and divide each spectrum by its fit.  This normalisation is applied to both the reference and survey
+One can at first define a preliminary continuum normalisation by using polynomial fit to an upper quantile of the spectra
+ in the \apogee\ pipeline \citep{Meszaros2013}. This is effective, but SNR dependent.
+Then the \tc\ can provide an improved identification of continuum regions in the spectrum,
+designated as those that show almost no dependence in their normalized flux on the stellar labels.
+I.e. we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in Section \ref{sec:results}. Subsequently, we fit a low order polynomial to the flux at those ``continuum pixels"
+and divide each spectrum by its fit. This normalisation is applied to both the reference and survey
 spectra.
 
 The continuum normalisation we implement can be applied to either the \apogee\ pseudo-normalised spectra in the \textit{aspcapstar} fits files, which we adopt for our primary training and test data, or the \textit{apStar} full spectrum flux files provided as part of the DR10 data release.
@@ -575,7 +626,7 @@ The top panel shows the zeroth order-coefficient $\theta_0$ or the baseline spec
 The mid panel shows the first order coefficients $\theta_{1,2,3}$ in \teff, \logg\ and \feh. 
 In the top panel of Figure \ref{fig:coeffs}, the red, blue and green shaded regions show the highest 2$-\sigma$ coefficient values $\theta_{1,2,3}$ in the \feh, \teff\ and \logg\ labels respectively. 
 These regions indicate where these flux levels are strongly proportional to these labels and highlights the differences between the labels in their flux dependancy. Note there are many regions where the \feh\ label dominates in contribution to the flux. 
-For the first label profiles for example in the middle panel of Figure \ref{fig:coeffs}, there is typically asymmetry for a given absorption feature, in the flux and the labels. There are very few regions where the flux is a function of only one of the labels, and pixels are typically covariant (i.e. the same pixel will have a higher flux at both lower \teff\ and higher \feh).
+For the first label profiles for example in the middle panel of Figure \ref{fig:coeffs}, there is typically asymmetry for a given absorption feature, in the flux and the labels. There are very few regions where the flux is a function of only one of the labels, and pixels are typically covariant (that is, the same pixel will have a higher flux at both lower \teff\ and higher \feh).
  The strongest \logg\ dependence is typically associated with weak lines including the wings of the feature and the \feh\ label, with strong lines, particularly the depth of the line. 
 
 From the bottom panel of Figure \ref{fig:coeffs}, it is clear that there is significant covariance between the labels. 
@@ -642,20 +693,20 @@ In Figure \ref{fig:cal} we show the residuals of \tc\ $-$ \aspcap\ for the 1400 
 %makeplot_fits_v19_bw.py
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.23]{./plots/4431_v19.pdf}
-    \includegraphics[scale=0.23]{./plots/4383_v19.pdf} \\
-      \includegraphics[scale=0.23]{./plots/4399_v19.pdf}
-        \includegraphics[scale=0.23]{./plots/4309_v19.pdf} \\
-              \includegraphics[scale=0.23]{./plots/4311_v19.pdf}
-        \includegraphics[scale=0.23]{./plots/4255_v19.pdf} 
+  \includegraphics[scale=0.23]{./plots/4431_v19.png}
+    \includegraphics[scale=0.23]{./plots/4383_v19.png} \\
+      \includegraphics[scale=0.23]{./plots/4399_v19.png}
+        \includegraphics[scale=0.23]{./plots/4309_v19.png} \\
+              \includegraphics[scale=0.23]{./plots/4311_v19.png}
+        \includegraphics[scale=0.23]{./plots/4255_v19.png} 
 \caption{\small{\aspcap\ DR10 versus \tc\ for six different fields including in the disk, bulge and halo. The number of stars is, for each subfigure is 211 (4431), 207 (4384), 217 (4399), 210 (4309), 198 (4311) 319 (4255) }}
 \label{fig:cal}
 \end{figure}
 
-%run -i makeplot_fits_v19_3by3c.py with lotfits_v19('listin.txt')
+%run -i makeplot_fits_v19_3by3c.py with plotfits_v19('listin.txt')
 \begin{figure}[!h]
 \centering
-        \includegraphics[scale=0.35]{./plots/cplot2.pdf} 
+        \includegraphics[scale=0.35]{./plots/cplot2.png} 
 \caption{The \teff, \logg, and \feh\ trends for the 1400 stars shown in six different fields in Figure \ref{fig:cal}. There are slight trends at the extreme ends of the range in parameters.}
 \label{fig:cplot}
 \end{figure}
@@ -672,9 +723,9 @@ There are not priors to place the stars on any position on the isochrone and tha
 % made with makeonisochrone_v18_bw.py
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.25]{./plots/test5.png}
+  \includegraphics[scale=0.25]{./plots/iso1.png}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/test4.png}
+    \includegraphics[scale=0.25]{./plots/iso1a.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
 \caption{The $\sim$ 38,000 stars from DR10 with \aspcap-corrected training labels, at left shown in four metallicity bins. There are $\sim$ 21,600, 14,000, 1700, and 900 stars in the most metal-rich to metal-poor metallicity bins, respectively. The panel on the right shows all stars coloured in [Fe/H] on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.}
 \label{fig:iso}
@@ -684,9 +735,9 @@ There are not priors to place the stars on any position on the isochrone and tha
 \begin{figure}[!h]
 \centering
 
-      \includegraphics[scale=0.25]{./plots/test5b.png}
+      \includegraphics[scale=0.25]{./plots/iso2.png}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/test4b.png}
+    \includegraphics[scale=0.25]{./plots/iso2a.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
 \caption{As per Figure \ref{fig:iso} but for the isochrone-corrected'' labels, showing the stars follow the red giant branch on the isochrones.}
 \label{fig:iso2}
@@ -699,7 +750,7 @@ There are not priors to place the stars on any position on the isochrone and tha
  %run -i makeplot_scatter_test18_coeffs_dwarfs_RevB.py
   \begin{figure}[!h]
    \centering
- \includegraphics[width=\hsize]{./plots/2dwarfs.pdf}
+ \includegraphics[width=\hsize]{./plots/2dwarfs.png}
   \caption{Examples of hot rotating dwarfs in the \apogee\ DR10 data across regions A and B, comparable to Figure \ref{fig:coeffs}. These types of stars are \textit{not} included in our training data; we can not determine stellar parameters for these stars as they are not captured in our model.}
 \label{fig:dwarfs}
 \end{figure}
@@ -730,10 +781,10 @@ These Figures illustrate that the continuum normalisation works well for both of
 %makeplot_fits_SNRtest.py in /play but changed to makeplot_fits_SNRtest_bw.py
  \begin{figure}[!h]
  \centering
- \includegraphics[scale=0.25]{./plots/SNR100to200.pdf}
-\includegraphics[scale=0.25]{./plots/SNR50to100.pdf}\\
-\includegraphics[scale=0.25]{./plots/SNR30to50.pdf}
-\includegraphics[scale=0.25]{./plots/SNR20to30.pdf}
+ \includegraphics[scale=0.25]{./plots/SNR100to200.png}
+\includegraphics[scale=0.25]{./plots/SNR50to100.png}\\
+\includegraphics[scale=0.25]{./plots/SNR30to50.png}
+\includegraphics[scale=0.25]{./plots/SNR20to30.png}
     \caption{Four regimes of SNR for single visit spectra. There are 60 stars in the 300 $<$  SNR $<$ 30 bin, 1200 stars in the 30 $<$ SNR $<$ 50 bin, 1100 stars in the 50 $<$ SNR $<$ 100 bin and 670 stars in the 100 $<$  SNR $<$ 200 bin.}
 \label{fig:SNR}
 \end{figure}
@@ -749,7 +800,7 @@ We found by adopting a very naive calibration that shifts the stars to the neare
 This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. 
 This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
 
-For our first implementation of \tc\ presented here, it is trivial to run the almost 60,000 star sample (i.e. the size of DR10 from \apogee) through \tc\ on a single laptop, as it takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for each star, without any attempt at speed or method optimisation. 
+For our first implementation of \tc\ presented here, it is trivial to run the almost 60,000 star sample (that is, the size of DR10 from \apogee) through \tc\ on a single laptop, as it takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for each star, without any attempt at speed or method optimisation. 
 We reproduce the \apogee\ labels, as provided for DR10 in Table 1, without adding any significant uncertainty because we use every pixel in the spectra and have a generative model. 
 Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better. 
 
@@ -864,11 +915,8 @@ A direct first additional upgrade for \tc\ aligned with directing this method to
 
 \section*{ Acknowledgements}
 
-The name \tc\ is inspired by the astronomer Annie Jump Cannon,
-who was the pioneer on stellar classification without physical models!
-We would like to thank
-  Daniel Foreman-Mackey (NYU)
-  and [ADD NAMES HERE]
+We would like to thank Daniel Foreman-Mackey (NYU), 
+Morgan Fouesneau, Jon Holtzman,  Keivan Stassun and Jennifer Johnson
 for valuable discussions.
 DWH was partially supported by
 the NSF (grant IIS-1124794), NASA (grant NNX08AJ48G), and the
@@ -877,14 +925,18 @@ The research has received funding from the European Research Council under the E
 Union's Seventh Framework Programme (FP 7) ERC Grant Agreement n.
 [321035].
 
-We thank Morgan Fouesneau, Jon Holtzman,  Keivan Stassun, Jennifer Johnson, Matthew Shetrone, XXX 
-(MKN look up the APOKASC discussion ppl who emailed you) for their feedback. 
+Funding for SDSS-III has been provided by the Alfred P. Sloan Foundation, the Participating Institutions, 
+the National Science Foundation, and the U.S. Department of Energy Office of Science. The SDSS-III web site is $http://www.sdss3.org/.$\\
 
 Funding for SDSS-III has been provided by the Alfred P. Sloan Foundation, the Participating Institutions, the National Science Foundation, and the U.S. Department of Energy Office of Science. The SDSS-III web site is $http://www.sdss3.org/.$\\
 
-Funding for SDSS-III has been provided by the Alfred P. Sloan Foundation, the Participating Institutions, the National Science Foundation, and the U.S. Department of Energy Office of Science. The SDSS-III web site is $http://www.sdss3.org/.$\\
-
-SDSS-III is managed by the Astrophysical Research Consortium for the Participating Institutions of the SDSS-III Collaboration including the University of Arizona, the Brazilian Participation Group, Brookhaven National Laboratory, Carnegie Mellon University, University of Florida, the French Participation Group, the German Participation Group, Harvard University, the Instituto de Astrofisica de Canarias, the Michigan State/Notre Dame/JINA Participation Group, Johns Hopkins University, Lawrence Berkeley National Laboratory, Max Planck Institute for Astrophysics, Max Planck Institute for Extraterrestrial Physics, New Mexico State University, New York University, Ohio State University, Pennsylvania State University, University of Portsmouth, Princeton University, the Spanish Participation Group, University of Tokyo, University of Utah, Vanderbilt University, University of Virginia, University of Washington, and Yale University
+SDSS-III is managed by the Astrophysical Research Consortium for the Participating Institutions of the SDSS-III Collaboration
+ including the University of Arizona, the Brazilian Participation Group, Brookhaven National Laboratory, Carnegie Mellon University, 
+ University of Florida, the French Participation Group, the German Participation Group, Harvard University, the Instituto de Astrofisica 
+ de Canarias, the Michigan State/Notre Dame/JINA Participation Group, Johns Hopkins University, Lawrence Berkeley National Laboratory, 
+ Max Planck Institute for Astrophysics, Max Planck Institute for Extraterrestrial Physics, New Mexico State University, New York University, 
+ Ohio State University, Pennsylvania State University, University of Portsmouth, Princeton University, the Spanish Participation Group, 
+ University of Tokyo, University of Utah, Vanderbilt University, University of Virginia, University of Washington, and Yale University
 
 
 \bibliography{tc3.bib}
