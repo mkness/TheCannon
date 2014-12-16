@@ -129,10 +129,12 @@ In most cases, it suffices to think of the labels as \teff , \logg, and the elem
 This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are e.g. only \teff, \logg \feh\ then this is obviously an approximation. 
 
 There are fundamentally two steps in \tc . 
-The first step in \tc\ is to create from the spectra of the \textit{reference objects} a generative model that describes the flux at every pixel in their continuum normalized spectra as a function of their known stellar labels. 
-The second step assumes that this same generative model  holds for all the other objects in the survey (dubbed \textit{survey objects}). 
+The first step, or \textit{training step} in \tc\ is to create from the spectra of the \textit{reference objects} a generative model that describes
+ the flux at every pixel in their continuum normalized spectra as a function of their known stellar labels.
+The second step, or \textit{test step}, assumes that this same generative model holds for all the other objects in the survey (dubbed \textit{survey objects}). 
 Then, the spectra of the \textit{survey objects} and the generative model from the \textit{reference objects}
-allow us to solve for the labels of the \textit{survey objects}. This second step we call ``\textit{label transfer}''.
+allow us to solve for the labels of the \textit{survey objects}. 
+Taken together the \textit{training step} and the \testit{test step} effect a \textit{label transfer}. 
 
 To make such an approach straigtforward, we must assume that the \textit{reference objects} and the \textit{survey objects} were observed with the identical instrumental set-up, a condition well satisfied with the large surveys listed above. 
 We take the generative model for the continuum normalized flux at each of $N_{pix}$ pixels to be a polynomial function of all the labels, and hence the model is defined by its $N_{pix}$ sets of polynomial coefficients. In practice, there may be different circumstances that make stars suitable reference objects. 
@@ -249,7 +251,7 @@ The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Iso
 \begin{figure}[h!]
 \centering
     \includegraphics[scale=0.33]{./plots/training_aspcap.pdf}
-\caption{\aspcap\ corrected training labels in \teff-\logg\ plane for every cluster. All labels adopted from DR10 except for the Pleiades. }
+\caption{\aspcap\ corrected training labels in \teff-\logg\ plane for for 545 stars in the 19 clusters observed within DR10 in \apogee\. All labels adopted from DR10 except for the Pleiades. }
 \label{fig:trainingaspcap}
 \end{figure}
 
