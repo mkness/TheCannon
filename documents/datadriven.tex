@@ -177,60 +177,69 @@ The success of this model is demonstrated by running \tc\ through the DR10 data 
 
 \section{Data}
 
-The data we employ can be from any large survey, but here we use the \apogee\ data to showcase \tc . 
-We describe how we prepare the training data for the label-transfer and similarly process the input test data.
+Our approach \tc \ is applicable to any large, homogeneous spectroscopic data set. Here, we use the \apogee\ data to showcase \tc . 
+We describe how we prepare the data for the reference objects, to prepare the label-transfer and similarly, how to process the survey data.
 
-\subsection{Training dataset}
+\subsection{Reference objects with high-fidelity stellar labels}
 
-The first step in \tc\ is to chose a training set. This is a set of stars for which we have spectra from the survey and
-\emph{also} reliable stellar parameter estimates, both accurate and
-precise (inasmuch as that is possible).
-The training data are critical, as the output can only be as good as
-the input training set, in the sense that if the training data are
-wrong, the parameters output by \tc\ will be wrong in the same ways.
-Also, because \tc\ may have to extrapolate to new parts of parameter
-space as it encounters new kinds of spectra, the better the training
-set covers the label-space of interest (in \teff, \logg, [Fe/H],
-[X/Fe], and so on), the less it has to perform uncertain
-extrapolation.
-The performance of a data-driven model like \tc\ can depend very
-strongly on the size and quality of its training set.
+The first step in \tc\ is to chose a set of reference (or training) objects for which we have spectra from the survey and 
+\emph{also} high-fidelity labels (i.e. stellar parameters and element abundances that are deemed both accurate and precise). 
+The set of reference objects is critical, as the subsequent label transfer to the survey objects can only be as good as the quality 
+of the reference labels. 
+Also, as \tc\ may have to inter- and extrapolate to new parts of label space as
+it encounters new kinds of spectra among the survey objects, the quality
+of the label transfer depends on the density and extent to which the reference objects
+cover label space (\teff, \logg, [Fe/H], [X/Fe], and so on). 
+The performance of data-driven model like \tc\ can depend strongly on the size and quality of its set of reference objects.
 
-Any training set with high fidelity labels is good for the implementation of \tc. For our purposes, an ideal training dataset may consist of members of
-well studied open and globular clusters that have their labels derived from high resolution spectral analysis in the
+Any set of reference objects in the survey with high fidelity labels is good for the implementation of \tc.
+In practice, a set of reference objects that satisfies these criteria (e.g. in \apogee )
+consist of members of well studied open and globular clusters that have their labels derived from high resolution spectral analysis in the
 optical wavelength region.
 
-
-The training dataset we use is that of the globular and open cluster data observed by \apogee\ for calibration of their abundance pipeline \citep{Meszaros2013}. This training dataset is comprised of about 545 stars from 19 open and globular clusters, which span stellar parameter ranges of 3500 $<$ \teff\ $<$ 5300, 0 $<$ \logg\ $<$ 5 and --2.5 $<$ [Fe/H] $<$ 0.45. 
+Specifically, the reference dataset we use is that of the globular and open cluster data observed by \apogee\ for calibration of their abundance pipeline \citep{Meszaros2013}. 
+This reference dataset is comprised of about 545 stars from 19 open and globular clusters, which span stellar parameter ranges 
+of 3500 $<$ \teff\ $<$ 5300, 0 $<$ \logg\ $<$ 5 and --2.5 $<$ [Fe/H] $<$ 0.45. 
+Exactly which stellar labels we adopt for theses reference objects, is critical to the subsequent output, and hence we discuss it in detail here.
 
 % note there are 20 in their list but 1 gc has only 1 star and the abundance looks incorrect to me. 
 
-To place our output results from \tc\ on the \apogee\ \aspcap\ scale, we adopt the DR10 ``\aspcap\ corrected'' stellar parameters for each of the stars in the training set as our labels for the stars. 
-This set of stars is the very same stars used by \apogee\ to  post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}. 
-Adopting the \aspcap\ corrected labels provided and documented by \apogee\  has the important advantage that we can test exactly how well we can reproduce the results from \apogee\ via label-transfer of only 545 stars.
+We adopt the DR10 ``\aspcap\ corrected'' stellar parameters for each of those 545 stars as their labels, 
+which will then place the output from \tc\ for the survey objects after label transfer on the \apogee\ \aspcap\ scale.
+ This set of stars is the very same stars used by \apogee\ to post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}.
+Adopting the \aspcap\ corrected labels provided and documented by \apogee\ has the important advantage 
+that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer of only 545 stars.
 
-The corrections to the labels made by \apogee\ based on the cluster data are applied to the output of the \aspcap\ pipeline which returns the initial parameters from comparisons to a library of stellar models. 
+The corrections to the labels made by \apogee\ based on the cluster data are applied to the immediate output of the \aspcap\ pipeline that arose from comparisons to a library of stellar models.
 Temperature corrections are determined by comparing the infrared flux temperatures of the stars \citep{gonzalez2009}, \logg\ corrections are from the offset between \aspcap\ results and Kepler results for common stars and \feh\ corrections are from the difference between the \aspcap\ and  the literature value of each cluster.  
 The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs.  We adopt the \aspcap\ corrected [M/H] values for these clusters and these are corrected to the [Fe/H] of the clusters and so we adopt this label as an [Fe/H] (that is, this label from \apogee\ therefore, does not explicitly use \feh\ lines, but is derived from an \feh\ correction). 
 The analysis in \citet{Meszaros2013} is restricted not only to giants but also stars with SNR $>$ 70, determined to be the minimum SNR for reliable stellar parameters by \apogee.
 
 These corrections implemented by \apogee\ in \teff, \logg\ and  \feh\ place the giants in the cluster stars on or near the iscohrones (see Figures 7 and 8 in Meszaros et al., (2013)).  
-As there are no \aspcap\ corrections implemented for the dwarf spectra, we instead determine temperatures for the dwarfs, which are all in the Pleiades, directly using same correction method as in \citet{Meszaros2013}. We determine the infrared flux temperature for the stars from \citet{gonzalez2009} and apply a correction to the \aspcap\ output based on the offset in the temperature scales. We find the following relation: $T_{\mbox{corrected}}$= 0.855*T$_{\mbox{\textit{\aspcap}}}$ + 1206.7.
+As there are no \aspcap\ corrections implemented for the few main sequence stars among the reference objects, 
+we instead determine temperatures for these dwarfs, which are all in the Pleiades, directly using same correction method 
+as in \citet{Meszaros2013}. 
+We determine the infrared flux temperature for the stars from \citet{gonzalez2009} and apply a correction to 
+the \aspcap\ output based on the offset in the temperature scales. We find the following relation:
+ $T_{\mbox{corrected}}$= 0.855*T$_{\mbox{\textit{\aspcap}}}$ + 1206.7.
+
+
 We do not attempt an individual metallicity correction for each dwarf star but rather set all \feh\ of the dwarf spectra to \feh\ = 0.03 \citep{barrado2001}.
 Tests on the input labels to \tc\ demonstrate that there is only a small degradation of the results caused by adopting a single \feh\ for every cluster star for the literature value of the cluster, instead of individual \feh\ values for the stars (that is, from the \aspcap\ corrected values). 
-To determine the \logg\ for these dwarf stars, we shift the stars vertically to their nearest positions on an appropriate age-metallicity Padova isochrone of 150 Myr at [Fe/H] = 0.03 \citep{girardi2000}. 
+To determine the \logg\ for these Pleiades main sequence stars, we shift the stars vertically to their nearest positions on an appropriate age-metallicity Padova isochrone of 150 Myr at [Fe/H] = 0.03 \citep{girardi2000}. 
 Due to the high differential reddening to the Pleiades, and the subsequent large temperature errors using the IR flux method that result from this, we only selected the 64 from a total of 72 Pleiades dwarfs, eliminating those with high extinction of SFD (corrected) E(J-K) $>$ 0.30 \citep{Schlafly2011}.
 
 Adopting the input labels from the \aspcap-corrected parameters determined from calibrations to literature cluster values also transfers the errors from the \aspcap\ pipeline: of $<$ 150K in \teff,  $<$ 0.2 dex in \logg\ and $<$ 0.1 dex in \feh.   
 The uncertainties on the input labels will be included as an input parameter of the labels in a future development stage of \tc. Inclusion of uncertainties may be particularly relevant when introducing multiple labels of individual elements. 
 
-Adopting the labels from the \aspcap\ output places \tc\ directly on the \aspcap\ scale which is very instructive for comparison and analysis of the label-transfer method. 
-We demonstrate excellent reproducibility of \aspcap\ labels with our method, including at lower SNR than required by \apogee\ (SNR $\ge$ 70). This is detailed in Section \ref{sec:results}. 
-We also return results for dwarfs using this method, subject to the restriction that only $\sim$ 10\% of the stars in the training sample are dwarfs, all at the same metallicity. 
-Nevertheless, \tc\ is still able to differentiate dwarfs and giants and operates remarkably well given the constrained training set at \logg\ $>$ 3.5. 
-
 For a comparative analysis to the ``\aspcap\ corrected'' labels, we adopt a \logg\ label for all of the training stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). 
 We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the age and \feh\ of each cluster. 
+
+The above set of labels for the reference objects is well defined, but still means that the reference objects in the clusters do not lie on a single model isochrone 
+(see Fig. \ref{fig:trainingaspcap}). 
+As an alternative set of reference labels, we consider one where the stellar parameters (\teff , \logg ) of the reference objects lie by construction on a single isochrone. 
+For that we adopt a \logg\ label for all of the reference stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the literature age and \feh\ of each cluster. 
+
 We discuss our motivation for doing this and our results in the Discussion section of our paper.  
 The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Isochrone-corrected'' labels, are shown in Figures \ref{fig:trainingaspcap} and \ref{fig:trainingisochrone}, respectively. 
 
@@ -253,14 +262,19 @@ The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Iso
 
 \subsection{Continuum Normalisation and \apogee\ Test Data}
 
-A robust flux normalisation of the spectra are critical to the label-transfer method and the flux normalisation must provide consistently scaled spectra across the range of stellar parameters and SNRs. For both training and test data. 
-Our data are 1) reduced and resampled, 2) shifted back to the rest frame and 3) continuum normalised.  
-We use the calibrated \apogee\ data which is already shifted back to rest frame and resampled onto a common wavelength grid and implement our own model-driven continuum normalisation before we perform the label-transfer. 
+The Cannon, as we present it here, operates on continuum-normalized spectra, reduced and re-sampled to the same wavelength grid
+ (with the same line-spread function), and shifted to their rest-frame. 
+ Therefore, a robust continuum normalisation of the spectra is critical.
+  It turns out that it is of particular importance to have an operational procedure to set the continuum,
+   that shows no systematic dependence on the S/N of the spectra.
 
-Our first step is to train our model using \apogee\ training spectra that has been pseudo-continuum normalised by \apogee.
-This pseudo-continuum normalisation uses a polynomial fit to an upper quantile of the spectra in the \apogee\ pipeline \citep{Meszaros2013} and is effective, but SNR dependent.  
- For the continuum normalisation we implement with \tc, we firstly determine the  `true' continuum using the model from the pseudo-continuum normalised training data provided by \apogee, as described in Section \ref{sec:results}, then fit a low order polynomial to this continuum which we divide each spectra by. 
- This normalisation is applied on both the test and training datasets. 
+One can at first define a preliminary continuum normalisation by using polynomial fit to an upper quantile of the spectra
+ in the \apogee\ pipeline \citep{Meszaros2013}. This is effective, but SNR dependent.
+Then the \tc\ can provide an improved identification of continuum regions in the spectrum,
+designated as those that show almost no dependence in their normalized flux on the stellar labels.
+I.e. we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in Section \ref{sec:results}. Subsequently, we fit a low order polynomial to the flux at those ``continuum pixels"
+and divide each spectrum by its fit. This normalisation is applied to both the reference and survey
+spectra.
 
 The continuum normalisation we implement can be applied to either the \apogee\ pseudo-normalised spectra in the \textit{aspcapstar} fits files, which we adopt for our primary training and test data, or the \textit{apStar} full spectrum flux files provided as part of the DR10 data release.
  We use the \textit{apstar} files, which are reduced, resampled but not pre pseudo-continuum normalised by \apogee\, in order to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files.  
