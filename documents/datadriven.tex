@@ -678,20 +678,20 @@ In Figure \ref{fig:cal} we show the residuals of \tc\ $-$ \aspcap\ for the 1400 
 %makeplot_fits_v19_bw.py
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.23]{./plots/4431_v19.pdf}
-    \includegraphics[scale=0.23]{./plots/4383_v19.pdf} \\
-      \includegraphics[scale=0.23]{./plots/4399_v19.pdf}
-        \includegraphics[scale=0.23]{./plots/4309_v19.pdf} \\
-              \includegraphics[scale=0.23]{./plots/4311_v19.pdf}
-        \includegraphics[scale=0.23]{./plots/4255_v19.pdf} 
+  \includegraphics[scale=0.23]{./plots/4431_v19.png}
+    \includegraphics[scale=0.23]{./plots/4383_v19.png} \\
+      \includegraphics[scale=0.23]{./plots/4399_v19.png}
+        \includegraphics[scale=0.23]{./plots/4309_v19.png} \\
+              \includegraphics[scale=0.23]{./plots/4311_v19.png}
+        \includegraphics[scale=0.23]{./plots/4255_v19.png} 
 \caption{\small{\aspcap\ DR10 versus \tc\ for six different fields including in the disk, bulge and halo. The number of stars is, for each subfigure is 211 (4431), 207 (4384), 217 (4399), 210 (4309), 198 (4311) 319 (4255) }}
 \label{fig:cal}
 \end{figure}
 
-%run -i makeplot_fits_v19_3by3c.py with lotfits_v19('listin.txt')
+%run -i makeplot_fits_v19_3by3c.py with plotfits_v19('listin.txt')
 \begin{figure}[!h]
 \centering
-        \includegraphics[scale=0.35]{./plots/cplot2.pdf} 
+        \includegraphics[scale=0.35]{./plots/cplot2.png} 
 \caption{The \teff, \logg, and \feh\ trends for the 1400 stars shown in six different fields in Figure \ref{fig:cal}. There are slight trends at the extreme ends of the range in parameters.}
 \label{fig:cplot}
 \end{figure}
@@ -708,9 +708,9 @@ There are not priors to place the stars on any position on the isochrone and tha
 % made with makeonisochrone_v18_bw.py
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.25]{./plots/test5.png}
+  \includegraphics[scale=0.25]{./plots/iso1.png}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/test4.png}
+    \includegraphics[scale=0.25]{./plots/iso1a.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
 \caption{The $\sim$ 38,000 stars from DR10 with \aspcap-corrected training labels, at left shown in four metallicity bins. There are $\sim$ 21,600, 14,000, 1700, and 900 stars in the most metal-rich to metal-poor metallicity bins, respectively. The panel on the right shows all stars coloured in [Fe/H] on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.}
 \label{fig:iso}
@@ -720,9 +720,9 @@ There are not priors to place the stars on any position on the isochrone and tha
 \begin{figure}[!h]
 \centering
 
-      \includegraphics[scale=0.25]{./plots/test5b.png}
+      \includegraphics[scale=0.25]{./plots/iso2.png}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/test4b.png}
+    \includegraphics[scale=0.25]{./plots/iso2a.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
 \caption{As per Figure \ref{fig:iso} but for the isochrone-corrected'' labels, showing the stars follow the red giant branch on the isochrones.}
 \label{fig:iso2}
@@ -766,10 +766,10 @@ These Figures illustrate that the continuum normalisation works well for both of
 %makeplot_fits_SNRtest.py in /play but changed to makeplot_fits_SNRtest_bw.py
  \begin{figure}[!h]
  \centering
- \includegraphics[scale=0.25]{./plots/SNR100to200.pdf}
-\includegraphics[scale=0.25]{./plots/SNR50to100.pdf}\\
-\includegraphics[scale=0.25]{./plots/SNR30to50.pdf}
-\includegraphics[scale=0.25]{./plots/SNR20to30.pdf}
+ \includegraphics[scale=0.25]{./plots/SNR100to200.png}
+\includegraphics[scale=0.25]{./plots/SNR50to100.png}\\
+\includegraphics[scale=0.25]{./plots/SNR30to50.png}
+\includegraphics[scale=0.25]{./plots/SNR20to30.png}
     \caption{Four regimes of SNR for single visit spectra. There are 60 stars in the 300 $<$  SNR $<$ 30 bin, 1200 stars in the 30 $<$ SNR $<$ 50 bin, 1100 stars in the 50 $<$ SNR $<$ 100 bin and 670 stars in the 100 $<$  SNR $<$ 200 bin.}
 \label{fig:SNR}
 \end{figure}
