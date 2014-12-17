@@ -285,7 +285,7 @@ treating each of the three chips separately, weighted by the inverse flux errors
 Figure \ref{fig:norm} shows an example of this normalisation applied to survey spectra with different labels (output from \tc).
 This Figure illustrates typical \apogee\ spectra and demonstrates how the spectra
 vary as a function of metallicity at a given temperature , and as a function of temperature at a given metallicity.
-For a clearer view of individual absorption linea features, we use narrower regions marked in this Figure, (A) and (B), for all subsequent examination of the spectral data. 
+For a clearer view of individual absorption line features, we use narrower regions marked in this Figure, (A) and (B), for all subsequent examination of the spectral data. 
 
 %. The continuum pixels used for the Chebyshev polynomial fit are shown in the black points.
 
@@ -304,7 +304,8 @@ We include the bad pixel masks by setting the variance values to a large value w
 
 The resampled, reduced and combined spectra arespectra are available for 49,000 stars in 150 of the 170 DR10 fields in the \aspcapstar\ files. There are a further 4000 stars in 20 fields taken in commissioning which are available in the radial velocity combined but not continuum normalised data format in the \apstar\ files and a further 8000 stars taken during commissioning across different fields. 
 The commissioning data, for which the \aspcap-corrected labels are not all provided in the DR10 release, is only available in the radial velocity combined but not continuum normalised data format in the \apstar\ files. 
-We run \tc\ through the commissioning data but can not evaluate the fidelity of these results as the line spread function of the commissioning data are different from the main survey and consequently the training dataset of stars. 
+We use the \apogee -provided bad pixel masks for the \textit{apStar} files run through \tc.
+We did attempt to apply the \tc\ to the commissioning data, but could not evaluate the fidelity of these results as the line spread function of the commissioning data are different from the main survey and consequently the reference dataset of stars in the training step. 
 Therefore, although we similarly process the \apstar\ spectra, returning the labels for these stars in our online table of DR10 parameters, the reliability of these is uncertain and they are subsequently flagged as commissioning data (see Table 1).
 
 %For the tests on these latter files, the training data input was also taken from the \textit{apStar} and the same continuum normalisation procedure as for the \apogee\ \textit{aspcapstar} pseudo-continuum normalised files was implemented using the 3rd order polynomial weighted fit for each of the three chips, using the pre-defined continuum pixels.
