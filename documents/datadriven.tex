@@ -37,6 +37,8 @@
 \newcommand{\sdss}{\textsl{SDSS-III}} 
 \newcommand{\aspcapstar}{\textsl{aspcapStar}} 
 \newcommand{\apstar}{\textsl{apStar}} 
+\newcommand{\noise}{\sigma_{n\lambda}}
+\newcommand{\scatter}{\s_{\lambda}}
 
 
 \begin{document}
@@ -129,13 +131,6 @@ In most cases, it suffices to think of the labels as \teff , \logg, and the elem
 This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are e.g. only \teff, \logg \feh\ then this is obviously an approximation. 
 
 There are fundamentally two steps in \tc . 
-<<<<<<< HEAD
-The first step, or \textit{training step} in \tc\ is to create from the spectra of the \textit{reference objects} a generative model that describes the flux at every pixel in their continuum normalized spectra as a function of their known stellar labels. 
-The second step, or \textit{test step}, assumes that this same generative model  holds for all the other objects in the survey (dubbed \textit{survey objects}). 
-Then, the spectra of the \textit{survey objects} and the generative model from the \textit{reference objects}
-allow us to solve for the labels of the \textit{survey objects}. Taken together the \textit{training step}
-and the \textit{test step} effect a \textit{label transfer}. 
-=======
 The first step, or \textit{training step} in \tc\ is to create from the spectra of the \textit{reference objects} a generative model that describes
  the flux at every pixel in their continuum normalized spectra as a function of their known stellar labels.
 The second step, or \textit{test step}, assumes that this same generative model holds for all the other objects in the survey (dubbed \textit{survey objects}). 
@@ -143,7 +138,6 @@ Then, the spectra of the \textit{survey objects} and the generative model from t
 allow us to solve for the labels of the \textit{survey objects}. 
 Taken together the \textit{training step} and the \textit{test step} effect a \textit{label transfer}. 
 
->>>>>>> 6e93f0e3695854cbc3d599df7eec31523532b48d
 To make such an approach straigtforward, we must assume that the \textit{reference objects} and the \textit{survey objects} were observed with the identical instrumental set-up, a condition well satisfied with the large surveys listed above. 
 We take the generative model for the continuum normalized flux at each of $N_{pix}$ pixels to be a polynomial function of all the labels, and hence the model is defined by its $N_{pix}$ sets of polynomial coefficients. In practice, there may be different circumstances that make stars suitable reference objects. 
 They may be members of star clusters: there, external data and the fact that clusters are in good approximation single stellar populations (which have to fall onto an isochrone) lend credibility to their stellar labels. 
@@ -248,13 +242,8 @@ that shows no systematic dependence on the S/N of the spectra.
 For the \tc\ we achieve a robust, S/N-insensitive continuum fit through 
 an iterative procedure. At first, we define a preliminary pseudo-continuum normalisation by 
 using polynomial fit to an upper quantile (e.g. 80\% or 90\%) of the spectra
-<<<<<<< HEAD
- in the \apogee\ pipeline \citep{Meszaros2013}, determined e.g. from a running median
- [IS THAT STILL WHAT YOU DO FOR THE FIRST STEP?].
-=======
  in the \apogee\ pipeline \citep{Meszaros2013}, determined e.g. from a running median.
->>>>>>> 6e93f0e3695854cbc3d599df7eec31523532b48d
-  This is effective, but SNR dependent.
+ This is effective, but SNR dependent.
   
 After a training step with spectra of reference objects that have been  normalized  by this pseudo-continuum,
  the \tc\ can provide an improved identification of continuum regions in the spectrum,
@@ -279,18 +268,7 @@ The pixel-by-pixel inverse variances are critical for all steps of the \tc\ : co
 [IT SAID: IT'S IMPORTANT FOR TEST DATA; ALSO THE TRAINING DATA, NO? PUZZLED... HWR]
 Aside from photon noise, a number of other factors can contribute to the errors of any pixel in \apogee\ specta: poor sky subtraction, cosmic rays, reduction induced errors, high persistence and other noise sources. In addition to the variance arrays, one must also use any bad pixel masks, where the 
 inverse variance and weighing of that pixel becomes $\sim$ 0. 
-<<<<<<< HEAD
 
-\subsection{Specific Example: APOGEE}
-
-\subsubsection{ Apogee Spectra}
-
-In the application of \tc\ to  \apogee, we start with the \aspcapstar\ and \textit{apstar} files of DR10,
-which are reduced,  resampled. 
-The \textit{apstar}  (ONLY THOSE?) are not pseudo-continuum normalised by \apogee\,
-which will enable us to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files. 
-
-=======
 
 \subsection{Specific Example: APOGEE}
 
@@ -301,7 +279,6 @@ which are reduced,  resampled.
 The \textit{apstar}  data are not pseudo-continuum normalised by \apogee\,
 which will enable us to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files. 
 
->>>>>>> 6e93f0e3695854cbc3d599df7eec31523532b48d
 The resampled, reduced and combined spectra are available for 49,000 stars in 150 of the 170 DR10 fields in the \aspcapstar\ files. There are a further 4000 stars in 20 fields taken in commissioning which are available in the radial velocity combined but not continuum normalised data format in the \apstar\ files and a further 8000 stars taken during commissioning across different fields. 
 The commissioning data, for which the \aspcap-corrected labels are not all provided in the DR10 release, is only available in the radial velocity combined but not continuum normalised data format in the \apstar\ files. 
 We use the \apogee -provided bad pixel masks for the \textit{apStar} files run through \tc .
@@ -345,57 +322,41 @@ Due to the high differential reddening to the Pleiades, and the subsequent large
 
 Adopting the input labels from the \aspcap-corrected parameters determined from calibrations to literature cluster values also transfers the errors from the \aspcap\ pipeline: of $<$ 150K in \teff,  $<$ 0.2 dex in \logg\ and $<$ 0.1 dex in \feh.   
 The uncertainties on the input labels will be included as an input parameter of the labels in a future development stage of \tc. Inclusion of uncertainties may be particularly relevant when introducing multiple labels of individual elements. 
-<<<<<<< HEAD
-
 For a comparative analysis to the ``\aspcap\ corrected'' labels, we adopt a \logg\ label for all of the training stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). 
 We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the age and \feh\ of each cluster. 
-
-=======
-
-For a comparative analysis to the ``\aspcap\ corrected'' labels, we adopt a \logg\ label for all of the training stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). 
-We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the age and \feh\ of each cluster. 
-
->>>>>>> 6e93f0e3695854cbc3d599df7eec31523532b48d
-
 
 \section{A Spectral Model for the Training Step of The Cannon}
 \label{sec:spectralmodel}
 
 We now lay out the specifics of the spectral model, whose parameters are determined 
 from the spectra and stellar labels of the reference objects in the training step.
-As mentioned, it is based on the notion that continuum normalized spectra of
+The spectral model is based on the notion that \textit{continuum-normalized} spectra of
 stars with identical labels look near-identical at every pixel, save for the observational errors
-and passibly some intrinsic scatter; and that the expected  flux at every pixel changes continuously
-with changes in any label.  
+and possibly some intrinsic scatter; and that the expected  flux at every pixel changes continuously
+with changes in any label.
 
-
-The model is that the observed, continuum-normalized spectrum, at each
-wavelength, can be explained as a linear combination of real-valued
-``labels'', or a linear combination of functions of those labels.
-Here the labels will be stellar parameters like effective temperature $\teff$,
-logarithmic surface gravity $\logg$, and metallicity $\feh$.
-Additionally, the model is that at each wavelength, the observed
-spectrum will deviate from the linear combination by some additive
-noise contribution, some of which comes from photon noise and
-sky-subtraction noise and other instrumental contributions, and some
-of which is an intrinsic scatter, presumed independent at each
-wavelength.
-The model is built using ``training data'' (with known labels) and then
-used to tag (or infer labels for) the ``test data''.
-
-In the training data there are $N$ spectra $n$, each of which has
+We presume there are $N$ refernce objects $n$, each of which has
 a continuum-normalized flux measurement $f_{n\lambda}$ at wavelength
 $\lambda$. Each of the training spectra $n$ has $K$ labels $\boldsymbol{l_{nk}}$, each of which
 is (for now) presumed to have negligible uncertainty and contained within a label vector $\boldsymbol{\ell_n}$.
 
-The general model is:
+We then presume that for any star, $n$, at any pixel, $\lambda$,
+the flux $f_{n\lambda}$  can be described as some smooth function of the star's labels $\set{l}_n$
+($\teff,\logg,\feh,$..). The observations $f_{n\lambda}$ will differ from such a model by the observational noise (form all relevant sources), $\noise$. But even for perfect measurements we presume that there will be
+deviations from the above approximate model for the true flux, characterized by a scatter $\scatter$,
+which is a property of any particular pixel; we will subsume $\scatter$ as a contributor to the noise.
+
+As a specific, but still flexible functional form for the spectral model we presume that it can be written as
+a linear function of $\boldsymbol{\ell_n}$: 
 \begin{eqnarray}
 f_{n\lambda} &=&
-\boldsymbol{\theta_\lambda}^T \cdot \boldsymbol{\ell_n} + \mbox{noise}
+\boldsymbol{\theta_\lambda}^T \cdot \boldsymbol{\ell_n} + \mbox{noise},
 \
 \end{eqnarray}
-
-where the flux $f_{n\lambda}$ of each spectra at every pixel is a general function of the labels which predict the spectrum given some noise, where $\boldsymbol{\ell_n}$ is some (possibly complicated) function of the full set of $K$ labels, $\set{l}_n$, which is is a vector or blob of the $K$ labels for spectrum $n$ and $\set{\theta}_\lambda$ is the set of parameters controlling the function $\boldsymbol{\ell_n}$ that determines the flux, at each wavelength.
+where $\set{\theta}_\lambda$ is the set of spectral parameters at each $\lambda$.  Each element of $\boldsymbol{\ell_n}$ can be some (possibly complicated) function of the full set of $K$ labels, $\set{l}_n$, which
+results in the flexibility of this model. The noise is a \textot{rms} combination of the associated uncertainty variance
+$\sigma_{n\lambda}^2$ of each of the pixels of the flux from finite photon counts and instrumental effects and the intrinsic variance or scatter of the model at each wavelength of the fit, $s_\lambda^2$. We assumed that the noise is Gaussian, zero mean, and independent for every measurement and the noise model is $\mbox{noise} = [s_\lambda^2+ \sigma_{n\lambda}^2]\xi_{n\lambda}$, where $\xi_{n\lambda}$ is a Gaussian random number with zero mean and unit
+variance.
 %%
 
 The simplest spectral model is that in which the function $\boldsymbol{\ell_n}$ is
@@ -405,24 +366,16 @@ linear in the labels, so this label vector is described as:
 \label{eq:linear}
 \end{eqnarray}.
 
-The $\mean{l_k}$ are offsets (possibly means of the training data) to keep the model ``pivoting'' around a reasonable point in tag space.
+The $\mean{l_k}$ are offsets (possibly means of the training data) to keep the model ``pivoting'' around a reasonable point in label space.
 
-
-Our general model then becomes
+Generally, such models can be written as
 \begin{eqnarray}
 f_{n\lambda} &=&
 g(\boldsymbol{l_n} |  \boldsymbol{\theta_\lambda}) + \mbox{noise}
 \end{eqnarray}
 
-Where the noise is a rms combination of the associated uncertainty variance
-$\sigma_{n\lambda}^2$ of each of the pixels of the flux from finite photon counts and instrumental effects and the intrinsic variance or scatter of the model at each wavelength of the fit, $s_\lambda^2$. We assumed that the noise is Gaussian, zero mean, and independent for every measurement and the noise model is $\mbox{noise} = [s_\lambda^2+ \sigma_{n\lambda}^2]\xi_{n\lambda}$, where $\xi_{n\lambda}$ is a Gaussian random number with zero mean and unit
-variance.
 
-If there are missing flux values in the training data, these can be
-handled by setting variances to something very large (or inverse
-variances to something very small).
-
-This model leads to the single-pixel log-likelihood function 
+Such a  model leads to the single-pixel log-likelihood function 
 \begin{eqnarray}
 \ln p(f_{n\lambda}\given\set{\theta^T}_\lambda, \boldsymbol{\ell_n}, s_\lambda^2) &=&
  -\frac{1}{2}\frac{[f_{n\lambda} - \set{\theta}_\lambda \cdot \set{\ell_n}]^2}{s_\lambda^2 + \sigma_{n\lambda}^2}
