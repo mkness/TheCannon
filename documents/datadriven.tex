@@ -650,10 +650,10 @@ By returning coefficients, we have a tool which \textit{describes the flux in a 
 \begin{figure}[h!]
 \centering
     \includegraphics[width=\hsize]{./plots/R1_continuum4.png}
-  \caption{The first-order coefficients and scatter across the sample regions of the spectra from Figure 1, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; mid-panel: the first three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \log, \feh$); bottom panel: the scatter of the fit.  The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see Section X).}
+  \caption{The first-order coefficients and scatter across the sample regions of the spectra from Figure 1, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \log, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see Section X).}
 \label{fig:coeffs}
 \end{figure}
-\textbf{We had once talked about scaling these coefficients - how do I do this exactly - x mean/range?}
+\textbf{We had once talked about scaling these coefficients - how do I do this exactly - x mean/range? Note to HWR - This is the first order coefficients for the quadratic model, I can use the simple first order model to make this (which the changes to the caption in the marked up pdf are consistent with doing) but the scatter is higher - let me know which is preferable}
 
 
 
@@ -712,7 +712,7 @@ In Figure \ref{fig:cal} we show the residuals of \tc\ $-$ \aspcap\ for the 1400 
 \begin{figure}[!h]
 \centering
         \includegraphics[scale=0.35]{./plots/cplot2.png} 
-\caption{The \teff, \logg, and \feh\ trends for the 1400 stars shown in six different fields in Figure \ref{fig:cal}. There are slight trends at the extreme ends of the range in parameters.}
+\caption{Difference between the labels (\teff, \logg, and \feh) derived through \tc\ and their \aspcap\ DR10 values for all the 1400 stars shown in Figure 6. The error bars are dominated by those quoted by \aspcap. There are systematic offsets at the coolest temperatures.}
 \label{fig:cplot}
 \end{figure}
 
@@ -732,7 +732,7 @@ There are not priors to place the stars on any position on the isochrone and tha
   \hspace{-20pt}
     \includegraphics[scale=0.25]{./plots/iso1a.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
-\caption{The $\sim$ 38,000 stars from DR10 with \aspcap-corrected training labels, at left shown in four metallicity bins. There are $\sim$ 21,600, 14,000, 1700, and 900 stars in the most metal-rich to metal-poor metallicity bins, respectively. The panel on the right shows all stars coloured in [Fe/H] on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.}
+\caption{Labels for the $\sim$ 38,000 stars from DR10 derived by \tc\ based on \aspcap-corrected labels for the set of reference objects. The set of panels on the left shows \teff-\logg\ in four metallicity bins. There are $\sim$ 21,600, 14,000, 1700, and 900 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.  The panel on the right shows all stars coloured in [Fe/H] on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. }
 \label{fig:iso}
 \end{figure}
 
@@ -744,7 +744,7 @@ There are not priors to place the stars on any position on the isochrone and tha
   \hspace{-20pt}
     \includegraphics[scale=0.25]{./plots/iso2a.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
-\caption{As per Figure \ref{fig:iso} but for the isochrone-corrected'' labels, showing the stars follow the red giant branch on the isochrones.}
+\caption{Same as Figure \ref{fig:iso} but based on the isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of the Cannon (equation \ref{eq:10} that forces resulting labels to lie in physically plausible location sod label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects.}
 \label{fig:iso2}
 \end{figure}
 
@@ -756,7 +756,7 @@ There are not priors to place the stars on any position on the isochrone and tha
   \begin{figure}[!h]
    \centering
  \includegraphics[width=\hsize]{./plots/2dwarfs.png}
-  \caption{Examples of hot rotating dwarfs in the \apogee\ DR10 data across regions A and B, comparable to Figure \ref{fig:coeffs}. These types of stars are \textit{not} included in our training data; we can not determine stellar parameters for these stars as they are not captured in our model.}
+  \caption{Examples of hot rotating dwarfs in the \apogee\ DR10 data across regions A and B, comparable to Figure \ref{fig:coeffs}. These types of stars are \textit{not} included in our set of reference objects. Therefore, the label transfer by \tc\ leads to grossly unphysical label estimates.}
 \label{fig:dwarfs}
 \end{figure}
 
@@ -768,7 +768,7 @@ It is possible to differentiate these stars with \tc\ because they are output in
 
 
 
- \subsection{Performance at low SNR}
+ \subsection{Performance at modest SNR}
 
 
 By identifying `true' continuum pixels we have been able to implement a simple continuum normalisation that is robust across low and high SNR, which is valid across the parameter range of our training set. To examine how \tc\ performs at lower SNR, we have taken individual visits from the \apstar\ fits files, when there are $\ge$ 4 visits, and run \tc\ on a single visit spectra which we have continuum-normalised. Note, we have not simply noisifyed the combined visit data for our low SNR tests so this relies on both a robust continuum normalisation and the success of the label-transfer method. Figure \ref{fig:lowsnr} shows a comparison of a sample star for a single visit and combined visits ($>$ 4 total visits). Figure \ref{fig:SNR} presents the results of \tc\ compared to \apogee\ for these stars, showing \textit{only} the \apogee\ stars with errors of $<$ 150 K in \teff\ and $<$ 0.25 dex in \logg, across four SNR intervals, from 20 $<$ SNR $<$ 30 to 100 $<$ SNR $<$ 200. 
@@ -779,7 +779,7 @@ These Figures illustrate that the continuum normalisation works well for both of
  % run -i makecontin_data1_split.py
  \begin{figure}[!h]
   \includegraphics[width=\hsize]{./plots/SNR_continuum3.pdf}
-  \caption{Demonstration of the continuum normalisation of the same star at high and low SNR. The \apogee\ reported SNR of the combined visit spectra are SNR = 120 (top two panels) and of the 4th visit shown in the third pane is 25 (bottom two panels). \textbf{mkn: clean up this plot further} }
+  \caption{Comparison of the continuum normalisation of the same star at high and modest SNR. The \apogee\ reported SNR of the combined visit spectra are SNR = 120 (top two panels) and of the 4th visit shown in the third pane is 25 (bottom two panels). \textbf{mkn: clean up this plot further} }
 \label{fig:lowsnr}
 \end{figure}
 
