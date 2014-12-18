@@ -227,7 +227,7 @@ The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Iso
 \begin{figure}[h!]
 \centering
   \includegraphics[scale=0.33]{./plots/training_mkn2.pdf}
-\caption{Stellar labels for all reference objects as is Figure \ref{fig:trainingaspcap} except that the \logg\ values have been adjusted from the \aspcap\ value to exactly match the isochrone, we call  'isochrone-corrected' labels to differentiate this from the correction in Figure \ref{fig:trainingaspcap}.  }
+\caption{Stellar labels for all reference objects as is Figure \ref{fig:trainingaspcap}, except that the \logg\ values have been adjusted from the \aspcap\ value to exactly match the isochrone, we refer to this set of labels as  'isochrone-corrected' labels to differentiate them from the correction in Figure \ref{fig:trainingaspcap}.  }
 \label{fig:trainingisochrone}
 \end{figure}
 
@@ -260,7 +260,7 @@ For a clearer view of individual absorption linea features, we use narrower regi
 %made with makecontin_data2.py
 \begin{figure}[h!]
   \includegraphics[width=\hsize]{./plots/four_examples3.pdf}
-\caption{Continuum normalised spectra for stars across a range of stellar parameters; at top, two stars of similar temperatures at different metallicities and at bottom, two stars of similar metallicities and different temperatures. The grey shaded regions A and B indicate demonstrative sample wavelength regions used for subsequent Figures in the paper.}
+\caption{Continuum normalised spectra for stars across a range of stellar labels; at top, two stars of similar temperatures at different metallicities and at bottom, two stars of similar metallicities and different temperatures. The grey shaded regions A and B indicate \apogee\ sample wavelength regions used for subsequent Figures in the paper.}
 \label{fig:norm}
 \end{figure}
 
@@ -603,7 +603,7 @@ The rms is comparable to the estimated \apogee\ errors. The take one out test is
 \centering
 %  \includegraphics[scale=0.3]{./plots/takeoneout_diag_test18_222.pdf}
     \includegraphics[scale=0.45]{./plots/takeout_hist.pdf}
-\caption{The take-one-star-out cross-validation of the 545 stars in the training dataset and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels, where the y axis on the histograms is the number of stars.}
+\caption{The take-one-star-out cross-validation of the 545 stars in the training dataset using the quadratic model in Equation  \ref{eq:10} and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
 \label{fig:takeonestarout}
 \end{figure}
 
@@ -650,7 +650,7 @@ By returning coefficients, we have a tool which \textit{describes the flux in a 
 \begin{figure}[h!]
 \centering
     \includegraphics[width=\hsize]{./plots/R1_continuum4.png}
-  \caption{The first order coefficients and scatter across the sample regions of the spectra from Figure 1, A and B. Top panel: the baseline spectra from the first coefficient from the training dataset; mid-panel; the first three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the first-order label terms ($\teff, \log, \feh$); bottom panel: the scatter of the fit.  The red, blue and green shaded regions in the top panel show the highest 2$-\sigma$ coefficient values in the \feh, \teff\ and \logg\ labels respectively. This indicates where these flux levels are strongly proportional to the labels. Note the \feh\ label is dominant in the contribution level and from the bottom panel it is clear that there is significant covariance between the labels and lesser regions of strong \logg\ dependence, across these sample wavelength intervals.}
+  \caption{The first-order coefficients and scatter across the sample regions of the spectra from Figure 1, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; mid-panel: the first three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \log, \feh$); bottom panel: the scatter of the fit.  The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see Section X).}
 \label{fig:coeffs}
 \end{figure}
 \textbf{We had once talked about scaling these coefficients - how do I do this exactly - x mean/range?}
