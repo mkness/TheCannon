@@ -69,7 +69,7 @@ From the reference stars, \tc\ learns by fitting a very flexible
 model how the flux in each pixel of a continuum-normalized spectrum
 depends on the `known' stellar labels; \tc\ then exploits this same
 dependence to derive new labels for the non-reference stars.
-We illustrate \tc\ by applying it to the spectra of 59,000 stars from
+We illustrate \tc\ by applying it to the spectra of 55,000 stars from
 \apogee\ DR10. 
 We take \teff, \logg\ and \feh\ as the labels, and 545 stars in 19
 clusters as the reference objects. 
@@ -176,7 +176,7 @@ Conversely, we use a data-driven model and do not project onto any optimal combi
 Rather we directly determine labels using a total of around 70,000 degrees of freedom of information in the data, given the 7200 pixels comprising the flux and the 10 parameters of the labels in our implemented model. 
 
 We have adopted a bottom-up approach for \tc\ , starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  
-In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (545 stars) and survey objects ($\sim$ 59,000 stars from DR10). 
+In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (545 stars) and survey objects ($\sim$ 55,000 stars from DR10). 
 We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and so we extended our model to quadratic form, which satisfactorily describes the label-space of the training data.
 The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
 
@@ -279,7 +279,7 @@ which are reduced,  resampled.
 The \textit{apstar}  data are not pseudo-continuum normalised by \apogee\,
 which will enable us to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files. 
 
-The resampled, reduced and combined spectra are available for 49,000 stars in 150 of the 170 DR10 fields in the \aspcapstar\ files. There are a further 4000 stars in 20 fields taken in commissioning which are available in the radial velocity combined but not continuum normalised data format in the \apstar\ files and a further 8000 stars taken during commissioning across different fields. 
+The resampled, reduced and combined spectra are available for 49,200 stars in 150 of the 170 DR10 fields in the \aspcapstar\ files. There are a further 4800 stars in 20 fields taken in commissioning only in DR10 which are available in the radial velocity combined but not continuum normalised data format in the \apstar\ files and a further 3100 stars taken during commissioning across different fields. 
 The commissioning data, for which the \aspcap-corrected labels are not all provided in the DR10 release, is only available in the radial velocity combined but not continuum normalised data format in the \apstar\ files. 
 We use the \apogee -provided bad pixel masks for the \textit{apStar} files run through \tc .
 
@@ -289,7 +289,7 @@ Therefore, although we similarly process the \apstar\ spectra, returning the lab
 %For the tests on these latter files, the training data input was also taken from the \textit{apStar} and the same continuum normalisation procedure as for the \apogee\ \textit{aspcapstar} pseudo-continuum normalised files was implemented using the 3rd order polynomial weighted fit for each of the three chips, using the pre-defined continuum pixels.
 
 In the following sections we demonstrate that \tc\ reproduces \apogee\ \teff, \logg\ and \feh\ using a number of selected fields across the bulge, disk and halo with very small intrinsic errors which are comparable to \aspcap\ intrinsic errors at lower SNR than minimisation techniques. 
-We provide an online table with the full set of parameters for \tc\ run through the \apogee\ DR10 data comprising 59,000 stars in 170 fields \textbf{note to mkn you need to add the commissioning stars to this table}.  
+We provide an online table with the full set of parameters for \tc\ run through the \apogee\ DR10 data comprising 55,000 stars in 170 fields \textbf{note to mkn you need to add the commissioning stars to this table}.  
 We show all the stars run through \tc\ in the \teff-\logg\ plane and validate our method at low SNR.
 
 \subsubsection{Labels for the Reference Objects in APOGEE}\label{sec:RefLabels}
@@ -597,14 +597,15 @@ The single dwarf cluster shows the poorest determination in the \feh\ label and 
 The rms is comparable to the estimated \apogee\ errors. The take one out test is performed with training data input with \aspcap-corrected labels and the rms error improves by a further 10\% in \teff\ and \logg\  by adopting `isochrone-corrected' labels, obtained by moving the star to the nearest position on the isochrone. 
 %Removing this cluster improves the rms in the \teff\ and \logg\ labels by $>$ 10\%
 
+% made with takeonestarout_all_stars_diag_6panel.py in code/
 \begin{figure}[h!]
 \centering
 %  \includegraphics[scale=0.3]{./plots/takeoneout_diag_test18_222.pdf}
-    \includegraphics[scale=0.45]{./plots/takeout_hist.pdf}
+    \includegraphics[scale=0.45]{./plots/takeout_histb.png}
 \caption{The take-one-star-out cross-validation of the 545 stars in the training dataset using the quadratic model in Equation  \ref{eq:10} and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
 \label{fig:takeonestarout}
 \end{figure}
-
+\textbf{note to HWR: left the text where it was as fitted better is this okay}
 %\begin{figure}[h!]
 %\centering
 %  \includegraphics[scale=0.45]{./plots/mkn_labels.pdf}
@@ -664,7 +665,7 @@ The continuum pixels, which are shown in Figure \ref{fig:coeffs} for wavelength 
 
 \subsection{DR10 Comparison}
 
-Although our model is sub-optimal in its size and its diversity of spectra, we are nevertheless able to reproduce all of the \aspcap\ labels for (non-comissioning) DR10 spectra. We have run \tc\ through all 47,000 stars in 150 fields in DR10 contained in the available \textit{aspcapstar} files as well as an additional 4800 stars in 20 commissioning fields for which no \aspcap\ parameters were provided in DR10, made available in the (non pseudo-continuum normalised) \textit{apStar} files. We also have run \tc\ through the additional commissioning stars available in the \apstar\ files across the fields and in total this comprises 59,000 DR10 stars in 170 fields. %These 170 fields comprise a total of $\sim$ 51,600 \apogee\ DR10 stars. 
+Although our model is sub-optimal in its size and its diversity of spectra, we are nevertheless able to reproduce all of the \aspcap\ labels for (non-comissioning) DR10 spectra. We have run \tc\ through all 47,000 stars in 150 fields in DR10 contained in the available \textit{aspcapstar} files as well as an additional 4800 stars in 20 commissioning fields for which no \aspcap\ parameters were provided in DR10, made available in the (non pseudo-continuum normalised) \textit{apStar} files. We also have run \tc\ through the additional commissioning stars available in the \apstar\ files across the fields and in total this comprises 55,000 DR10 stars in 170 fields. %These 170 fields comprise a total of $\sim$ 51,600 \apogee\ DR10 stars. 
 
 The results of \tc\ for all DR10 stars for which we return parameters are provided online in Table \ref{tab:online}. For the 30,500 stars with parameters provided by DR10, we find we reproduce the \apogee\ labels as follows: \teff\ = +12 K $\pm$ 87 K ,  \logg\ = --0.04 dex $\pm$  0.18 dex and \feh\ = +0.01 $\pm$ 0.10 dex in \feh. The rms errors are comparable to the error estimates for \apogee\ parameters in \citet{Meszaros2013} of $\delta$(\teff) $<$ 150 K, $\delta$(\logg) $<$  0.2 dex and $\delta$(\feh) $<$  0.1 dex in.  The typical internal precision on the measured parameters from \tc\ is  $\delta$(\teff) $<$ 5.6 K in ,  $\delta$(\teff) $<$ 0.01 dex in \logg\ and  $\delta$(\teff) $<$ 0.006 dex in \feh.
 
@@ -672,7 +673,7 @@ The results of \tc\ for all DR10 stars for which we return parameters are provid
 \begin{table*}[!h]
 \small{
 \centering
-\caption{Excerpt from full online version of table of parameters for the 59,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with rotation warning = 1 flag set have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data.} \begin{tabular}{| c | c | c |  c | c | c |  c | c | c |} %51,500
+\caption{Excerpt from full online version of table of parameters for the 55,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with rotation warning = 1 flag set have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data.} \begin{tabular}{| c | c | c |  c | c | c |  c | c | c |} %51,500
 \hline
 star ID & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{ROT WARN}\\
 {2MASS} &  K &  dex  & dex & K & dex & dex & & \\    
@@ -776,8 +777,8 @@ These Figures illustrate that the continuum normalisation works well for both of
  
  % run -i makecontin_data1_split.py
  \begin{figure}[!h]
-  \includegraphics[width=\hsize]{./plots/SNR_continuum3.pdf}
-  \caption{Comparison of the continuum normalisation of the same star at high and modest SNR. The \apogee\ reported SNR of the combined visit spectra are SNR = 120 (top two panels) and of the 4th visit shown in the third pane is 25 (bottom two panels). \textbf{mkn: clean up this plot further} }
+  \includegraphics[width=\hsize]{./plots/SNR_continuum4.png}
+  \caption{Comparison of the continuum normalisation of the same star at high and modest SNR. The \apogee\ \apstar\ combined visit spectra is shown in the top panel (SNR = 120) and the \apstar\ spectra for the 4th visit (SNR = 25) is shown in the second panel. The bottom panel is the ratio of the continuum normalised spectra of the high and medium signal to noise spectra. }
 \label{fig:lowsnr}
 \end{figure}
 
@@ -788,7 +789,7 @@ These Figures illustrate that the continuum normalisation works well for both of
 \includegraphics[scale=0.25]{./plots/SNR50to100.png}\\
 \includegraphics[scale=0.25]{./plots/SNR30to50.png}
 \includegraphics[scale=0.25]{./plots/SNR20to30.png}
-    \caption{Illustration of \tc's ability to estimate labels for spectra of modest signal to noise. Shown is the comparison of \tc\ labels derived for some single visit spectra, compared to the \aspcap\ label values derived from the co-added high signal to noise spectra. The single vista spectra are grouped in four different regimes of signal to noise. There are 60 stars in the 300 $<$  SNR $<$ 30 bin, 1200 stars in the 30 $<$ SNR $<$ 50 bin, 1100 stars in the 50 $<$ SNR $<$ 100 bin and 670 stars in the 100 $<$  SNR $<$ 200 bin. Note that the rms difference between those two label estimates increases more slowly than expected from the signal to noise of the single visit spectra: label transfer with \tc\  therefore enables label estimates at modest signal-to-noise.}
+    \caption{Illustration of \tc's ability to estimate labels for spectra of modest signal to noise. Shown is the comparison of \tc\ labels derived for some single visit spectra, compared to the \aspcap\ label values derived from the co-added high signal to noise spectra. The single vista spectra are grouped in four different regimes of signal to noise. There are 60 stars in the 300 $<$  SNR $<$ 30 bin, 1200 stars in the 30 $<$ SNR $<$ 50 bin, 1100 stars in the 50 $<$ SNR $<$ 100 bin and 670 stars in the 100 $<$  SNR $<$ 200 bin. Note that the rms difference between those two label estimates increases more slowly than expected from the signal to noise of the single visit spectra: label transfer with \tc\  therefore enables label estimates at modest signal-to-noise. NOTE CHANGED FIG HERE NEED TO SAY DIVIDED}
 \label{fig:SNR}
 \end{figure}
 
