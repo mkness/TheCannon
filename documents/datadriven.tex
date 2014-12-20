@@ -348,21 +348,32 @@ the flux $f_{n\lambda}$  can be described as some smooth function of the star's 
 deviations from the above approximate model for the true flux, characterized by a scatter $\scatter$,
 which is a property of any particular pixel; we will subsume $\scatter$ as a contributor to the noise.
 
+
+Generally, we take a spectral model to be characterized by a coefficient vector $\boldsymbol{\theta_\lambda}$
+that allows to predict the flux at every pixel $f_\lambda$ for a given label vector 
+$\boldsymbol{l}$:  
+\begin{eqnarray}
+f_{n\lambda} &=&
+g(\boldsymbol{l_n} |  \boldsymbol{\theta_\lambda}) + \mbox{noise}.
+ \label{eq:specmodel}
+\end{eqnarray}
+
 As a specific, but still flexible functional form for the spectral model we presume that it can be written as
 a linear function of $\boldsymbol{\ell_n}$: 
 \begin{eqnarray}
 f_{n\lambda} &=&
 \boldsymbol{\theta_\lambda}^T \cdot \boldsymbol{\ell_n} + \mbox{noise},
 \
+\label{eq:linearmodel}
 \end{eqnarray}
 where $\set{\theta}_\lambda$ is the set of spectral parameters at each $\lambda$.  Each element of $\boldsymbol{\ell_n}$ can be some (possibly complicated) function of the full set of $K$ labels, $\set{l}_n$, which
-results in the flexibility of this model. The noise is a \textit{rms} combination of the associated uncertainty variance
+results in the flexibility of this model. The noise is an \textit{rms} combination of the associated uncertainty variance
 $\sigma_{n\lambda}^2$ of each of the pixels of the flux from finite photon counts and instrumental effects and the intrinsic variance or scatter of the model at each wavelength of the fit, $s_\lambda^2$. We assumed that the noise is Gaussian, zero mean, and independent for every measurement and the noise model is $\mbox{noise} = [s_\lambda^2+ \sigma_{n\lambda}^2]\xi_{n\lambda}$, where $\xi_{n\lambda}$ is a Gaussian random number with zero mean and unit
 variance.
 %%
 
-The simplest spectral model is that in which the function $\boldsymbol{\ell_n}$ is
-linear in the labels, so this label vector is described as:
+The simplest spectral model is that in which the label vector $\boldsymbol{\ell_n}$ is
+linear in the labels, i.e. is the vector of the individual labels themselves:
 \begin{eqnarray}
 \set{\ell_n} =  [1, l_1 - \bar{l}_1, l_2 - \bar{l_2}, l_k - \bar{l_k}, .. ] &\equiv& [l_{n1}, l_{n2}, \cdots, l_{nK}]
 \label{eq:linear}
@@ -370,29 +381,24 @@ linear in the labels, so this label vector is described as:
 
 The $\mean{l_k}$ are offsets (possibly means of the training data) to keep the model ``pivoting'' around a reasonable point in label space.
 
-Generally, such models can be written as
-\begin{eqnarray}
-f_{n\lambda} &=&
-g(\boldsymbol{l_n} |  \boldsymbol{\theta_\lambda}) + \mbox{noise}
-\end{eqnarray}
 
 Such a  model leads to the single-pixel log-likelihood function 
 \begin{eqnarray}
 \ln p(f_{n\lambda}\given\set{\theta^T}_\lambda, \boldsymbol{\ell_n}, s_\lambda^2) &=&
- -\frac{1}{2}\frac{[f_{n\lambda} - \set{\theta}_\lambda \cdot \set{\ell_n}]^2}{s_\lambda^2 + \sigma_{n\lambda}^2}
+ -\frac{1}{2}\frac{[f_{n\lambda} - \set{\theta}^T_\lambda \cdot \set{\ell_n}]^2}{s_\lambda^2 + \sigma_{n\lambda}^2}
 \label{eq:like}
 \end{eqnarray}
 
 
 The vector $\set{f}_\lambda$ is the set of spectral flux values for
 the $N$ objects all at wavelengths $\lambda$.
-We can set the parameters $[\set{\theta}_\lambda,s_\lambda^2]$ either by
+We can set the coefficients $[\set{\theta}_\lambda,s_\lambda^2]$ either by
 optimizing the likelihood (\ref{eq:like}) or by applying priors and
-performing some kind of probabilistic inference (with, say, Markov
+performing some form of probabilistic inference (with, say, Markov
 Chain Monte Carlo techniques).
 Here we will optimize for now.
 
-In this \sectionname, we are treating the function parameters
+For the \tc 's training step, we are treating the spectral model coefficients
 $\set{\theta}_\lambda$ and the scatter $s_\lambda^2$ as free parameters, and the
 labels in the label vector $\set{\ell_n}$, $l_{nk}$ as fixed.
 The likelihood function (\ref{eq:like}) is presented as being a
@@ -404,16 +410,15 @@ The difference is that here we are treating the training data as
 having perfectly known labels, and later we will be inferring labels for
 new spectra.
 
-Then, in training, we determine the coefficients at every wavelength for our model:
-
+Then, in the training step of \tc\ we exploit the fact that we know the $f_{n\lambda}$
+and the $\set{\ell_n}$, which permits to solve for the coefficients and the scatter of the spectral model:
 \begin{eqnarray}
-\set{\theta_\lambda} \leftarrow \substack{\mbox{argmax}\\
+\set{\theta_\lambda},s_\lambda \leftarrow \substack{\mbox{argmax}\\
 {\theta_\lambda}  }
-\sum_{n=1}^N \mbox{ln p}(\set{f_\lambda} | {\theta_1,...\theta_\lambda})
+\sum_{n=1}^N \ln p(f_{n\lambda}\given\set{\theta^T}_\lambda, \boldsymbol{\ell_n}, s_\lambda^2)
+\label{eq:trainingstep}
 \end{eqnarray}
-
-The linear-in-labels form (\ref{eq:linear}) has many useful and
-excellent properties.
+The linear-in-labels form (Eq. \ref{eq:linear}) has a number of useful properties.
 The first is that optimization of the model, at fixed scatter
 $s_\lambda^2$ is a pure linear-algebra operation (weighted least
 squares); simultaneous optimization of all the parameters
@@ -433,20 +438,19 @@ over the range of the training data.
 
 The (perhaps) second-simplest spectral model is that in which the
 vector $\set{\ell_n}$ is quadratic in the labels: so this label vector is described as:
-\begin{eqnarray}
-\set{\ell_n} =  [1, l_1 - \bar{l}_1, l_2 - \bar{l_2}, l_k - \bar{l_k}, (l_1 - \bar{l_1})(l_1 - \bar{l_1}), (l_1 - \bar{l_1})(l_2 - \bar{l_2}), .. ] &\equiv& [l_{n1}, l_{n2}, \cdots, l_{nK}] 
-\label{eq:quad}
-\end{eqnarray}.
+\begin{equation}
+\set{\ell_n} =  [1, l_1 - \bar{l}_1, l_2 - \bar{l_2}, l_k - \bar{l_k}, (l_1 - \bar{l_1})(l_1 - \bar{l_1}), (l_1 - \bar{l_1})(l_2 - \bar{l_2}), .. ] \equiv [l_{n1}, l_{n2}, \cdots, l_{nK}].
+\label{eq:quadinlabels}
+\end{equation}
 
-This quadratic-in-labels form (\ref{eq:quad}) is similar to and
-different from the linear-in-labels form (\ref{eq:linear}) in a number
+For the training step of \tc , this quadratic-in-labels form  of the spectral model (Eq. \ref{eq:quadinlabels}) is similar to a the linear-in-labels form (Eq. \ref{eq:linear}) in a number
 of ways.
 It is still the case that optimization of the model, at fixed scatter
 $s_\lambda^2$ is a pure linear-algebra operation (weighted least
-squares).
-However, tag inference (described in the next Section) on the test
-data will no longer be simple; it will now require non-linear
-optimization.
+squares), expect that $\set{\ell_n}$ has become longer for a given number of labels. 
+However, test step on the survey (described in the next Section) the quadratic-in-labels form
+ will no longer be simple; it will require non-linear
+optimization to estimate the labels.
 
 The coefficients $\theta_{\lambda 0}$ can still be seen as an estimate of the
 \emph{baseline spectrum} (provided that the offsets $\mean{l_k}$ are the
@@ -487,104 +491,91 @@ equation~(\ref{eq:like}), but this time seen as
 being functions not of the function parameters $\set{\theta}_\lambda$ and
 scatter $s_\lambda^2$ but instead as functions of the \emph{labels}.
 
-Then, in determining labels, we use the coefficients of the flux at every wavelength for a star m: 
-
+Then, in the test step of \tc\ , we use the known coefficients and scatter of the spectral model
+($\set{\theta}_\lambda,\ s_\lambda^2$),
+take the entire $N_{pix}$ spectrum of survey star $m$, $f_{m\lambda}$ and optimize for the labels of that star:
 \begin{eqnarray}
-\set{l_\lambda} \leftarrow \substack{\mbox{argmax}\\
-{l_m}  }
-\sum_{\lambda=1}^\Lambda \mbox{ln p}(\set{f_\lambda} | {\theta_1,...\theta_\lambda})
-\end{eqnarray}
-
-where the likelihood functions are given as a function of labels now,
-the sum is now over the full set of wavelengths
-$\lambda$, and the vector $\set{f}_\lambda$ is the vector of fluxes from
-spectrum $m$ for all wavelengths $\lambda$.
-These likelihood functions effectively assume that the function
-parameters $\set{\theta}_\lambda$ and scatters $s_\lambda^2$ are all known (from
-the training data).
-New labels $\l_{mk}$ for object $m$ can be obtained either by maximizing
+\boldsymbol{\ell_m} \leftarrow \substack{\mbox{argmax}\\
+{\boldsymbol{\ell_m}  }}
+\sum_{\lambda=1}^{Npix}
+\ln p(f_{m\lambda}\given\set{\theta^T}_\lambda, \boldsymbol{\ell_n}, s_\lambda^2)
+\label{eq:teststep}
+\end{eqnarray} 
+%\begin{eqnarray}
+%\set{l_\lambda} \leftarrow \substack{\mbox{argmax}\\
+%{l_m}  }
+%\sum_{\lambda=1}^\Lambda \mbox{ln p}(\set{f_\lambda} | {\theta_1,...\theta_\lambda})
+%\end{eqnarray}
+The labels $\l_{mk}$ for each survey star $m$ can be obtained either by maximizing
 the likelihood function, or else by applying priors
 and performing probabilistic inference.
 Here we will optimize for now.
 
-When we use the simple linear-in-labels form (\ref{eq:linear}) for the
-mean model $\set{\ell_n}$, the optimization to obtain maximum-likelihood labels
+When we use the simple linear-in-labels form (Eq. \ref{eq:linear}) for the
+mean model $\set{\ell_m}$, the optimization to obtain maximum-likelihood labels
 (given parameters $[\set{\theta}_\lambda, s_\lambda^2]$) is simple linear
 least-square fitting.
 This optimization is obtained by straightforward linear algebra on the
 spectral pixels $y_{m\lambda}$, and standard frequentist confidence
 intervals can be obtained similarly.
 
-When we use the quadratic-in-labels form (\ref{eq:quad}) for the
-mean model $Y()$, there is no simple linear-algebra operation that
+When we use the quadratic-in-labels form (\ref{eq:quadinlabels}) for the
+spectral, there is no simple linear-algebra operation that
 optimizes the likelihood. 
 Instead an optimisation function is used, the python curve$\_$fit routine, which uses a non-linear least squares fit to fit the function to the data. 
 
-We have described how we construct our model and then apply our model to get labels for new stars. 
+We have described how we construct a spectral model from the reference objects in the training step and then 
+estimate stellar labels for survey stars with that model in the test step. 
 We now present in Section \ref{sec:results} the results of implementing our model for all \apogee\ data, where we applied a quadratic model; linear in the coefficients and non-linear in the label-inference.  
 For the quadratic model we then show this applied to the DR10 data, including at lower SNR and investigate different input training labels. 
 
 
-
-
-
-\section{Results}
+\section{The Cannon in Action: Illustrative Results with APOGEE Data}
 \label{sec:results}
 
 %\textbf{have written but revisit this: placeholder for MKN:  that commissioning data has different line spread function (LSF) and have run it through but unsure how to evaluate results. The stars do not fall in unphysical places on the isochrone and these commissioning data are indicated in the flag in the table with a C. We do find different parameters compared to \apogee\ for the commissioning data, for the fields where params are available. .Also discuss field 4330 centre field seems to fail for coolest stars for aspcapstar files but is okay if I do the normalisation on the apstar files without pre-continuum normalisation} % - only field where results diverge form apogee though for non-commissioning files, but in sensible place on isochrone.} 
 
-Using only 545 stars as a training dataset, \tc\ successfully reproduces all \aspcap\ DR10 labels and we present five primary results from the implementation of \tc\ through the DR10 \apogee\ dataset. 
-The first is the demonstration, via tdhe scatter of the fit, that our model is a good fit to the data. 
-This shows that our model is predictive and we perform a cross validation to assess the errors we expect for the test data. 
-A cross validation performed with a take-one-cluster out test however tells us that our training data sample is too small, each cluster is critical to the results. 
-It is clear from our results that we are also critically lacking in dwarf training data. If the Pleiades stars, which comprise the dwarfs, are removed we can not recover parameters for dwarfs and so can not differentiate dwarfs in the test data.
+We now illustrate how \tc\ works in practice, using \apogee\  data.
+We start by considering all but one of the 545 clusters stars as the reference set for the training step, and then consider the one remaining cluster star as the survey star in the test step. We use such leave-one-out cross-validation to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects to use the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual visits that have far lower S/N than the co-added spectra in DR10 to explore and illustrate how well \tc\ does at modest S/N (with appropriate continnum fitting).
 
-Via our method, we can use the model for determining continuum pixels, which are robust and true continuum over the label-space of the training data. 
-The determination of continuum pixels used in continuum normalisation is a key second result and we implement this for both training and test data and validate it is robust across SNR. 
 
-This success of the method using the DR10 data are our third result. 
+%[HWR; AS TECHNIQUE THIS HAS BEEN LAID OUT BEFORE..]Via our method, we can use the model for determining continuum pixels, which are robust and true continuum over the label-space of the training data. 
+%The determination of continuum pixels used in continuum normalisation is a key second result and we implement this for both training and test data and validate it is robust across SNR. 
+
+\textit{{\bf{HWR: we probably have that in the abstract, and will get it  the discussion section again..}} This success of the method using the DR10 data are our third result. 
 Despite the critically constrained training dataset for our model, the label-transfer to the DR10 test data works extremely well.
 This showcases the strength in this approach, that with only 545 training stars, we can reproduce all DR10 labels for the stars in the \apogee\ survey, quickly and simply.  
 We reproduce the \aspcap\ DR10 labels, of \teff, \logg\ and \feh\ with errors of \teff\ $<$ 100 K, \logg\ $<$ 0.20 dex and \feh\ $<$ 0.10 dex. 
 The rms dispersion of \apogee\ -- \tc\ is no larger than \apogee\ parameter errors reported in \citep{Meszaros2013} as our method generates insignificant errors at the SNR of the combined visit \apogee\ data.
 We also report results for dwarfs but these are constrained by the very limited dwarf set in our training dataset, and we do not provide a robust measurement of these stars across metallicity, given our single metallicity dwarf training dataset.
-
 The fourth result is that objects which are not in our training dataset have unphysical labels. 
 These objects were found to be fast rotators, which can be excluded using the \aspcap\ rotation warning set flag. 
 This demonstrates that we can only be as good as our training set. 
-
 The final result that we report is that \tc\ returns robust stellar parameters at an SNR of $<$ 30. 
 For this test we do not nosify the spectra but rather use the single visit spectra available in the \textit{apStar} DR10 data files. 
-The performance of \tc\ at low SNR reflects both the success of the continuum identification and the advantage in using \textit{all} of the available information in the spectral range to characterise the labels by allowing the regression to determine which pixels control the labels themselves.
+The performance of \tc\ at low SNR reflects both the success of the continuum identification and the advantage in using \textit{all} of the available information in the spectral range to characterise the labels by allowing the regression to determine which pixels control the labels themselves.}
 
+\subsection{The Choice of the Spectral Model Complexity} 
 
-\subsection{The model} 
+To evaluate the \tc 's label-transfer we have to settle on a suitable functional form for the spectral model  (Equation \ref{eq:specmodel}). To start, one could pick the simplest model, first-order linear model comprised of four coefficients (Equation \ref{eq:linearmodel}). 
+However, through take-on-out tests on the set of reference objects, we found that this simple linear model was too inflexible to describe the behaviour of flux with the labels. As a consequence, the lables that emerged from the test step showed large and systematic deviations compared to ``known" label values, especially at the extremes of the labels' ranges. 
+This is perhaps not surprising, as absorption features, particularly strong lines, are knoen to vary non-linearly as a function of stellar labels. If one were to insist on a label transfer with a first-order, linear function, the systematic discrepancies could be greatly reduced by selecting only weak line regions, but at the severe price of leaving much of the spectral range unexploited.
 
-To evaluate the label-transfer method, we performed the simplest implementation of a first-order linear model comprised of four coefficients (Equation \ref{eq:4}). 
-
-\begin{equation}
-\ell_n = \theta_0 + \theta_1 \teff\ + \theta_2 \logg + \theta_3 \feh 
- \label{eq:4}
- \end{equation}
-
-The first-order linear model was too inflexible to describe the behaviour of flux with the labels and at the parameter limits of the \feh\ and \logg\ the input training labels could not be returned by the model. 
-Different metallicity regimes showed different trends in temperature and \logg\ and the dwarf labels were not well reproduced and dwarfs and giants separated out into different behaviours in the labels. 
-This is not surprising given it is known that absorption features and particularly strong lines, do not behave linearly to the first-order, as a function of stellar parameters. 
-The linear first-order model can be vastly improved by selecting only weak line regions, and excluding all strong lines by implementing a cut on the normalised flux considered for the coefficients fit in the label-transfer. 
-The loss of information in the exclusion of a pixels to compensate for an inflexbile model is however clearly suboptimal. 
-An exception where this basic implementation would prove extremely useful is for any front-end to other methodologies of label-determination. 
-This most simple version of the regression analysis is extremely fast for determining baseline stellar labels. 
+%An exception where this basic implementation would prove extremely useful is for any front-end to other methodologies of label-determination. 
+%This most simple version of the regression analysis is extremely fast for determining baseline stellar labels. 
 % I am putting this in because at present a lot of surveys use some "fast" method first to get a first pass estimate to input to their pipelines - this might get their attention as this is *a lot* faster than what they are currently doing I believe. 
 
-The second simplest model we can implement is the quadratic model, with ten coefficients, $\theta_{1,2..10}$ describing the labels (\teff, \logg, \feh) (Equation \ref{eq:10}).  
-Overall, this model describes the behaviour of the flux with the labels across their label-space fairly well and significantly better than the first-order linear model within the parameter range of these stars. 
-
+The next simplest spectral model, the quadratic-in-labels case,
+ presumes that the continuum normalized flux is a general second-order polynomial of the stellar labels, $f_{n\lambda} =
+\boldsymbol{\theta_\lambda}^T \cdot \boldsymbol{\ell_n} + \mbox{noise}$ 
+(Eq. \ref{eq:linearmodel}), 
+but where $\boldsymbol{\theta_\lambda}$ now contains 10 elements at every pixel.
+For the case of the three labels $(\teff , \logg , \feh)$ the label vector $\boldsymbol{\ell_n}$
+(Eq. \ref{eq:quadinlabels})
+becomes  
 \begin{equation}
-\begin{split}
-\ell_n = \theta_0 + \theta_1 \teff\ + \theta_2 \logg + \theta_3 \feh + \theta_4 \teff^2 + \theta_5 (\teff \logg) + \\
-\theta_6 (\teff \feh) + \theta_7 \logg^2 + \theta_8 (\logg \feh) + \theta_9 \feh^2
-\end{split}
- \label{eq:10}
+\boldsymbol{\ell_n}\equiv(\teff\  , \logg\  , \feh\  , \teff^2\ , \teff\cdot \logg\ , \teff \cdot\feh\ , \logg^2 \ , \logg\cdot \feh\  , \feh^2)
+ \label{eq:quadin3labels}
  \end{equation}
 
 To assess the uncertainty of our quadratic model implemented in \tc\, we perform a take-one-star out test on the training data. 
@@ -604,10 +595,9 @@ The rms is comparable to the estimated \apogee\ errors. The take one out test is
 \centering
 %  \includegraphics[scale=0.3]{./plots/takeoneout_diag_test18_222.pdf}
     \includegraphics[scale=0.45]{./plots/takeout_histc.png}
-\caption{The take-one-star-out cross-validation of the 545 stars \citep{Meszaros2013} for the training step using the quadratic model in Equation  \ref{eq:10}. The histograms at right show \tc\ output -- \apogee\ input labels.}
+\caption{The take-one-star-out cross-validation of the 545 stars in the training dataset using the quadratic model in Equation  \ref{eq:quadin3labels} and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
 \label{fig:takeonestarout}
 \end{figure}
-\textbf{note to HWR: left the text where it was as fitted better is this okay}
 %\begin{figure}[h!]
 %\centering
 %  \includegraphics[scale=0.45]{./plots/mkn_labels.pdf}
@@ -627,7 +617,7 @@ The consequence of removing the Pleaides cluster is that dwarf stars can no long
  Tests including additional labels (e.g. [$\alpha$/Fe]) shows that the rms decreases across all labels with an additional label constraint. 
 % and our own label in \logg\ shows an improved performance in the rms for the take-one-star out test shown in Figure \ref{fig:takeonestarout_own}
 
-The results for the first-order coefficients $\theta_{0,1,2,3}$ and the scatter of the fit for the quadratic-in-labels model in Equation \ref{eq:10} is shown in Figure \ref{fig:coeffs} across the narrow regions (A) and (B) of the spectra, marked in Figure 1. 
+The results for the first-order coefficients $\theta_{0,1,2,3}$ and the scatter of the fit for the quadratic-in-labels model in Equation \ref{eq:quadinlabels} is shown in Figure \ref{fig:coeffs} across the narrow regions (A) and (B) of the spectra, marked in Figure 1. 
 The top panel shows the zeroth order-coefficient $\theta_0$ or the baseline spectra of the model. 
 The mid panel shows the first order coefficients $\theta_{1,2,3}$ in \teff, \logg\ and \feh. 
 In the top panel of Figure \ref{fig:coeffs}, the red, blue and green shaded regions show the highest 2$-\sigma$ coefficient values $\theta_{1,2,3}$ in the \feh, \teff\ and \logg\ labels respectively. 
@@ -654,10 +644,7 @@ By returning coefficients, we have a tool which \textit{describes the flux in a 
   \caption{The first-order coefficients and scatter across the sample regions of the spectra from Figure 1, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \log, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see Section 5.2).}
 \label{fig:coeffs}
 \end{figure}
-\textbf{We had once talked about scaling these coefficients - how do I do this exactly - x mean/range? Note to HWR - This is the first order coefficients for the quadratic model, I can use the simple first order model to make this (which the changes to the caption in the marked up pdf are consistent with doing) but the scatter is higher - let me know which is preferable}
-
-
-
+\textbf{We had once talked about scaling these coefficients - how do I do this exactly - x mean/range? Note to HWR - This is the first order coefficients for the quadratic model, I can use the simple first order model to make this (which the changes to the caption in the marked up pdf are consistent with doing) but the scatter is higher - let me know which is preferable.}
 
 \textbf{DWH: caveat about our cross-validation and signal to noise}. 
 
@@ -777,7 +764,7 @@ By identifying `true' continuum pixels we have been able to implement a simple c
 
 These Figures illustrate that the continuum normalisation works well for both of these SNR regimes and is SNR independent, which is not true for a weighted-quantile normalisation. At the highest SNR (and \apogee\ estimates a upper noise floor of 200 although stars do measure above this), the rms difference between \tc\ and \aspcap\ is comparable to the \aspcap\ measurement errors, at 73K in \teff\, 0.18 dex in \logg\ and 0.11 dex in \feh.  At a SNR of 30-50, the rms error increases to 100 K, 0.2 dex and 0.10 dex in \teff, \logg\ and \feh\, respectively. At an SNR of 20-30 the rms error is significantly higher and here the internal errors of \tc\ become comparable to typical minimisation methods and at SNR $<$ 20 exceed them. With this method we can return stellar parameters of \teff, \logg, \feh\ to as good a precisions as minimisation techniques ( \teff\ $<$ 100K, \logg\ $<$ 0.2 dex, \feh\ $< $0.1 dex) with an SNR of $\ge$ 25. 
  
- % run -i makecontin_data1_split.py
+ % run -i makecontin_data1_revc.py
  \begin{figure}[!h]
   \includegraphics[width=\hsize]{./plots/SNR_continuum4.png}
   \caption{Comparison of the continuum normalisation of the same star at high and modest SNR. The \apogee\ \apstar\ combined visit spectra is shown in the top panel (SNR = 120) and the \apstar\ spectra for the 4th visit (SNR = 25) is shown in the second panel. The bottom panel is the ratio of the continuum normalised spectra of the high and medium signal to noise spectra. }
