@@ -69,7 +69,7 @@ From the reference stars, \tc\ learns by fitting a very flexible
 model how the flux in each pixel of a continuum-normalized spectrum
 depends on the `known' stellar labels; \tc\ then exploits this same
 dependence to derive new labels for the non-reference stars.
-We illustrate \tc\ by applying it to the spectra of 59,000 stars from
+We illustrate \tc\ by applying it to the spectra of 55,000 stars from
 \apogee\ DR10. 
 We take \teff, \logg\ and \feh\ as the labels, and 545 stars in 19
 clusters as the reference objects. 
@@ -176,7 +176,7 @@ Conversely, we use a data-driven model and do not project onto any optimal combi
 Rather we directly determine labels using a total of around 70,000 degrees of freedom of information in the data, given the 7200 pixels comprising the flux and the 10 parameters of the labels in our implemented model. 
 
 We have adopted a bottom-up approach for \tc\ , starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  
-In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (545 stars) and survey objects ($\sim$ 59,000 stars from DR10). 
+In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (545 stars) and survey objects ($\sim$ 55,000 stars from DR10). 
 We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and so we extended our model to quadratic form, which satisfactorily describes the label-space of the training data.
 The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
 
@@ -278,7 +278,7 @@ which are reduced,  resampled.
 The \textit{apstar}  data are not pseudo-continuum normalised by \apogee\,
 which will enable us to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files. 
 
-The resampled, reduced and combined spectra are available for 49,000 stars in 150 of the 170 DR10 fields in the \aspcapstar\ files. There are a further 4000 stars in 20 fields taken in commissioning which are available in the radial velocity combined but not continuum normalised data format in the \apstar\ files and a further 8000 stars taken during commissioning across different fields. 
+The resampled, reduced and combined spectra are available for 49,200 stars in 150 of the 170 DR10 fields in the \aspcapstar\ files. There are a further 4800 stars in 20 fields taken in commissioning only in DR10 which are available in the radial velocity combined but not continuum normalised data format in the \apstar\ files and a further 3100 stars taken during commissioning across different fields. 
 The commissioning data, for which the \aspcap-corrected labels are not all provided in the DR10 release, is only available in the radial velocity combined but not continuum normalised data format in the \apstar\ files. 
 We use the \apogee -provided bad pixel masks for the \textit{apStar} files run through \tc .
 
@@ -288,7 +288,7 @@ Therefore, although we similarly process the \apstar\ spectra, returning the lab
 %For the tests on these latter files, the training data input was also taken from the \textit{apStar} and the same continuum normalisation procedure as for the \apogee\ \textit{aspcapstar} pseudo-continuum normalised files was implemented using the 3rd order polynomial weighted fit for each of the three chips, using the pre-defined continuum pixels.
 
 In the following sections we demonstrate that \tc\ reproduces \apogee\ \teff, \logg\ and \feh\ using a number of selected fields across the bulge, disk and halo with very small intrinsic errors which are comparable to \aspcap\ intrinsic errors at lower SNR than minimisation techniques. 
-We provide an online table with the full set of parameters for \tc\ run through the \apogee\ DR10 data comprising 59,000 stars in 170 fields \textbf{note to mkn you need to add the commissioning stars to this table}.  
+We provide an online table with the full set of parameters for \tc\ run through the \apogee\ DR10 data comprising 55,000 stars in 170 fields \textbf{note to mkn you need to add the commissioning stars to this table}.  
 We show all the stars run through \tc\ in the \teff-\logg\ plane and validate our method at low SNR.
 
 \subsubsection{Labels for the Reference Objects in APOGEE}\label{sec:RefLabels}
@@ -667,7 +667,7 @@ The continuum pixels, which are shown in Figure \ref{fig:coeffs} for wavelength 
 
 \subsection{DR10 Comparison}
 
-Although our model is sub-optimal in its size and its diversity of spectra, we are nevertheless able to reproduce all of the \aspcap\ labels for (non-comissioning) DR10 spectra. We have run \tc\ through all 47,000 stars in 150 fields in DR10 contained in the available \textit{aspcapstar} files as well as an additional 4800 stars in 20 commissioning fields for which no \aspcap\ parameters were provided in DR10, made available in the (non pseudo-continuum normalised) \textit{apStar} files. We also have run \tc\ through the additional commissioning stars available in the \apstar\ files across the fields and in total this comprises 59,000 DR10 stars in 170 fields. %These 170 fields comprise a total of $\sim$ 51,600 \apogee\ DR10 stars. 
+Although our model is sub-optimal in its size and its diversity of spectra, we are nevertheless able to reproduce all of the \aspcap\ labels for (non-comissioning) DR10 spectra. We have run \tc\ through all 47,000 stars in 150 fields in DR10 contained in the available \textit{aspcapstar} files as well as an additional 4800 stars in 20 commissioning fields for which no \aspcap\ parameters were provided in DR10, made available in the (non pseudo-continuum normalised) \textit{apStar} files. We also have run \tc\ through the additional commissioning stars available in the \apstar\ files across the fields and in total this comprises 55,000 DR10 stars in 170 fields. %These 170 fields comprise a total of $\sim$ 51,600 \apogee\ DR10 stars. 
 
 The results of \tc\ for all DR10 stars for which we return parameters are provided online in Table \ref{tab:online}. For the 30,500 stars with parameters provided by DR10, we find we reproduce the \apogee\ labels as follows: \teff\ = +12 K $\pm$ 87 K ,  \logg\ = --0.04 dex $\pm$  0.18 dex and \feh\ = +0.01 $\pm$ 0.10 dex in \feh. The rms errors are comparable to the error estimates for \apogee\ parameters in \citet{Meszaros2013} of $\delta$(\teff) $<$ 150 K, $\delta$(\logg) $<$  0.2 dex and $\delta$(\feh) $<$  0.1 dex in.  The typical internal precision on the measured parameters from \tc\ is  $\delta$(\teff) $<$ 5.6 K in ,  $\delta$(\teff) $<$ 0.01 dex in \logg\ and  $\delta$(\teff) $<$ 0.006 dex in \feh.
 
@@ -675,7 +675,7 @@ The results of \tc\ for all DR10 stars for which we return parameters are provid
 \begin{table*}[!h]
 \small{
 \centering
-\caption{Excerpt from full online version of table of parameters for the 59,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with rotation warning = 1 flag set have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data.} \begin{tabular}{| c | c | c |  c | c | c |  c | c | c |} %51,500
+\caption{Excerpt from full online version of table of parameters for the 55,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with rotation warning = 1 flag set have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data.} \begin{tabular}{| c | c | c |  c | c | c |  c | c | c |} %51,500
 \hline
 star ID & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{ROT WARN}\\
 {2MASS} &  K &  dex  & dex & K & dex & dex & & \\    
