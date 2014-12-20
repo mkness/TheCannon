@@ -220,14 +220,14 @@ The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Iso
 \begin{figure}[h!]
 \centering
     \includegraphics[scale=0.33]{./plots/training_aspcap.pdf}
-\caption{\aspcap\ corrected training labels in \teff-\logg\ plane for 545 stars in the 19 clusters for which parameters are provided by APOGEE \citep{Meszaros2013}. The age and \feh\ of the isochrones (in parentheses) is shown in each sub-panel. All labels adopted from DR10 except for the Pleiades. }
+\caption{\aspcap-corrected DR10 labels  for the training step in \teff-\logg\ plane for 545 stars in the 19 clusters for which parameters are provided by APOGEE \citep{Meszaros2013}. The age and \feh\ of the isochrones (in parentheses) is shown in each sub-panel. All labels adopted from DR10 except for the Pleiades. }
 \label{fig:trainingaspcap}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
   \includegraphics[scale=0.33]{./plots/training_mkn2.pdf}
-\caption{Stellar labels for all reference objects as is Figure \ref{fig:trainingaspcap}, except that the \logg\ values have been adjusted from the \aspcap\ value to exactly match the isochrone, we refer to this set of labels as  'isochrone-corrected' labels to differentiate them from the correction in Figure \ref{fig:trainingaspcap}.  }
+\caption{Stellar labels for all reference objects as is Figure \ref{fig:trainingaspcap}, except that the \logg\ values have been adjusted from the \aspcap-corrected value to exactly match the isochrone, we refer to this set of labels as  'isochrone-corrected' labels to differentiate them from the correction in Figure \ref{fig:trainingaspcap}.  }
 \label{fig:trainingisochrone}
 \end{figure}
 
@@ -604,7 +604,7 @@ The rms is comparable to the estimated \apogee\ errors. The take one out test is
 \centering
 %  \includegraphics[scale=0.3]{./plots/takeoneout_diag_test18_222.pdf}
     \includegraphics[scale=0.45]{./plots/takeout_histb.png}
-\caption{The take-one-star-out cross-validation of the 545 stars in the training dataset using the quadratic model in Equation  \ref{eq:10} and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
+\caption{The take-one-star-out cross-validation of the 545 stars \citep{Meszaros2013} for the training step using the quadratic model in Equation  \ref{eq:10}. The histograms at right show \tc\ output -- \apogee\ input labels.}
 \label{fig:takeonestarout}
 \end{figure}
 \textbf{note to HWR: left the text where it was as fitted better is this okay}
@@ -713,7 +713,7 @@ In Figure \ref{fig:cal} we show the residuals of \tc\ $-$ \aspcap\ for the 1400 
 \begin{figure}[!h]
 \centering
         \includegraphics[scale=0.35]{./plots/cplot2.png} 
-\caption{Difference between the labels (\teff, \logg, and \feh) derived through \tc\ and their \aspcap\ DR10 values for all the 1400 stars shown in Figure 6. The error bars are dominated by those quoted by \aspcap. There are systematic offsets at the coolest temperatures.}
+\caption{Difference between the labels (\teff, \logg, and \feh) derived through \tc\ in the test step and their \aspcap\ DR10 values for all the 1400 stars shown in Figure 6. The error bars are dominated by those quoted by \aspcap. There are systematic offsets at the coolest temperatures.}
 \label{fig:cplot}
 \end{figure}
 
