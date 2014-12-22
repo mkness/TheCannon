@@ -779,7 +779,7 @@ These Figures illustrate that the continuum normalisation works well for both of
 \includegraphics[scale=0.25]{./plots/SNR50to100.png}\\
 \includegraphics[scale=0.25]{./plots/SNR30to50.png}
 \includegraphics[scale=0.25]{./plots/SNR20to30.png}
-    \caption{Illustration of \tc's ability to estimate labels for spectra of modest signal to noise. Shown is the comparison of \tc\ labels derived for some single visit spectra, compared to the \aspcap\ label values derived from the co-added high signal to noise spectra. The single vista spectra are grouped in four different regimes of signal to noise. There are 60 stars in the 300 $<$  SNR $<$ 30 bin, 1200 stars in the 30 $<$ SNR $<$ 50 bin, 1100 stars in the 50 $<$ SNR $<$ 100 bin and 670 stars in the 100 $<$  SNR $<$ 200 bin. Note that the rms difference between those two label estimates increases more slowly than expected from the signal to noise of the single visit spectra: label transfer with \tc\  therefore enables label estimates at modest signal-to-noise. NOTE CHANGED FIG HERE NEED TO SAY DIVIDED}
+    \caption{Illustration of \tc's ability to estimate labels for spectra of modest signal to noise. Shown is the comparison of \tc\ labels derived for some single visit spectra, compared to the \aspcap\ label values derived from the co-added high signal to noise spectra. The single vista spectra are grouped in four different regimes of signal to noise. There are 60 stars in the 300 $<$  SNR $<$ 30 bin, 1200 stars in the 30 $<$ SNR $<$ 50 bin, 1100 stars in the 50 $<$ SNR $<$ 100 bin and 670 stars in the 100 $<$  SNR $<$ 200 bin. Note that the rms difference between those two label estimates increases more slowly than expected from the signal to noise of the single visit spectra: label transfer with \tc\  therefore enables label estimates at modest signal-to-noise. Each SNR regime shows the corresponding histograms of \tc\ - \aspcap\ for each label, at right.}
 \label{fig:SNR}
 \end{figure}
 
@@ -794,7 +794,7 @@ We found by adopting a very naive calibration that shifts the stars to the neare
 This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. 
 This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
 
-For our first implementation of \tc\ presented here, it is trivial to run the almost 60,000 star sample (that is, the size of DR10 from \apogee) through \tc\ on a single laptop, as it takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for each star, without any attempt at speed or method optimisation. 
+For our first implementation of \tc\ presented here, it is trivial to run the 55,000 star sample (that is, the size of DR10 from \apogee) through \tc\ on a single laptop, as it takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for each star, without any attempt at speed or method optimisation. 
 We reproduce the \apogee\ labels, as provided for DR10 in Table 1, without adding any significant uncertainty because we use every pixel in the spectra and have a generative model. 
 Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better. 
 
@@ -819,18 +819,17 @@ degrees of freedom of information in the data, given the 7200 pixels
 comprising the flux and the 10 parameters of the labels in our
 implemented model.
 
-[DWH: THERE IS NOTHING SPECIAL OR REQUIRED ABOUT USING ALL THE PIXELS; \tc\ could be generalized to use a linelist or etc.]
 
- \tc\ is readily expandable to a more general model, a larger training dataset and many more labels which include errors and/or partial characterisation of labels. 
+ \tc\ is readily expandable to a more general model, a larger training dataset and many more labels which include errors and/or partial characterisation of labels. Furthermore we do not need to use all of the pixels in the spectra for our model and \tc\ can be generalised to use a linelist to select for particular regions or features.
  As it is, our second-order model is hard-coded and extremely restrictive. 
  We currently believe our input labels fully, given they are input without uncertainties, and assume no prior information. 
  We therefore do not take advantage of any physical knowledge that is defined about the phase space the labels can reside in.  
- Furthermore, we currently treat every pixel as independent which is incorrect and therefore builds a physically incomplete model.
-
- We have barely scratched the surface with what is possible with this methodology given our restricted training dataset, model and labels. 
- Our training dataset itself is clearly too small, comprising only 545 stars including a set of dwarfs at a single metallicity (+0.03 dex). 
- As we lack dwarfs, we can not return parameters in this space to the same precision as giants (\logg\ $\le$ 3.5).  
+ Furthermore, we currently treat every pixel as independent which is incorrect and therefore builds a physically incomplete model.  As we lack dwarfs, we can not return parameters in this space to the same precision as giants (\logg\ $\le$ 3.5).  
  We also are missing any dwarfs with rotation in our model and consequently these are returned in an unphysical \teff-\logg\ label-space in the label-transfer. 
+
+ %We have barely scratched the surface with what is possible with this methodology given our restricted training dataset, model and labels. 
+ %Our training dataset itself is clearly too small, comprising only 545 stars including a set of dwarfs at a single metallicity (+0.03 dex). 
+
  
 Although we use \apogee\ as an example, \tc\ can be applied to
 any stellar survey.
@@ -879,30 +878,32 @@ training data warrant it.
 This would be a natural extension of what has been implemented here.
 
 [DWH: SOMETHING ABOUT SPECTRAL REPRESENTATION]
-
-Despite all of this, we have shown using the \apogee\ data that even the simplest model with naive assumptions and an incomplete physical description, works. 
-This method is directly transferrable as is, to all other surveys and we expect we would be similarly successful applying this to e.g. \textit{GALAH}, \gaiaeso and 4MOST. 
-The success of \tc\ argues for defined stellar standards to effectively transfer labels of benchmark stars, studied at high resolution, to stars in surveys across any wavelength region. 
-This would enable all stellar surveys to be unified. 
+%
+%Despite all of this, we have shown using the \apogee\ data that even the simplest model with naive assumptions and an incomplete physical description, works. 
+%This method is directly transferrable as is, to all other surveys and we expect we would be similarly successful applying this to e.g. \textit{GALAH}, \gaiaeso and 4MOST. 
+%The success of \tc\ argues for defined stellar standards to effectively transfer labels of benchmark stars, studied at high resolution, to stars in surveys across any wavelength region. 
+%This would enable all stellar surveys to be unified. 
  
  It is also possible and likely desirable in some cases to implement exactly the same procedure we describe using a synthetic grid instead of data, to train the model. 
  This will remove many of these limitations in the model that are derived from the label-space of the training data labels. However, this also eliminates many of the advantages in a full characterisation of the noise in the data and the true behaviour of labels with flux.
  
+Given common benchmark stars observed between different surveys, these surveys can be unified on to a common scale with \tc. This approach can therefore optimally utilise the data that will be in hand in the coming years. 
+ 
  %,  we argue for adopting a wider set of benchmark stars from data in surveys, given labels determined at high resolution, in order to mitigate the issues with limited training datasets. 
  
-There are a number of immediate new opportunities with this approach. 
-The primary and obvious opportunity is to unify all stellar parameter systems and a key necessity of this is that all common benchmark stars be observed in all surveys. 
-The data-driven model approach enables an analysis and characterisation of how and where stellar templates diverge from data, but the ultimate consequence of this methodology is that by using the coefficients of the labels returned in this method for example in our quadratic implementation, we can directly identify and learn \textit{where} the information in a stellar spectrum resides. 
-This can be used to make quantitative assessments of the flux dependence on the labels, at the detail of the individual line profiles (asymmetries are clear, a depth versus width versus wings of the features is clear) and, for example, determine continuum pixels as we have done to obtain a robust continuum normalisation across SNR. 
-The information in the spectra  is a direct output from the model, which is immensely more informative than the reverse assumption of assessing regions of interest as informed by linelists.  
-\tc\ is therefore extremely relevant for chemical tagging and we take an approach of a data-driven differential analysis of spectra, by characterising the behaviour of flux and labels, as a way to fingerprint stars with a common formation history.
+%There are a number of immediate new opportunities with this approach. 
+%The primary and obvious opportunity is to unify all stellar parameter systems and a key necessity of this is that all common benchmark stars be observed in all surveys. 
+%The data-driven model approach enables an analysis and characterisation of how and where stellar templates diverge from data, but the ultimate consequence of this methodology is that by using the coefficients of the labels returned in this method for example in our quadratic implementation, we can directly identify and learn \textit{where} the information in a stellar spectrum resides. 
+%This can be used to make quantitative assessments of the flux dependence on the labels, at the detail of the individual line profiles and, for example, determine continuum pixels as we have done to obtain a robust continuum normalisation across SNR. 
+%The information in the spectra  is a direct output from the model, which is immensely more informative than the reverse assumption of assessing regions of interest as informed by linelists.  
+%\tc\ is therefore extremely relevant for chemical tagging and we take an approach of a data-driven differential analysis of spectra, by characterising the behaviour of flux and labels, as a way to fingerprint stars with a common formation history.
 
-A direct first additional upgrade for \tc\ aligned with directing this method toward chemical tagging, which large surveys like \galah\ and \apogee\ have been constructed around,  is  to add more labels.
- An obvious initial choice is $\alpha$-enhancement and a subset of key individual abundances [X/Fe]. 
- It is even possible to test what, if any, information in the spectra are correlated with an age label. 
- If such information is present in the spectra across a large set of stars in a survey, this method \textit{will} determine exactly which pixels are responsible for carrying this information. In addition, we will gain significantly by moving to a more flexible model like a Gaussian process and allowing our model to be informed by priors in these new directions for this work. 
+%A direct first additional upgrade for \tc\ aligned with directing this method toward chemical tagging, which large surveys like \galah\ and \apogee\ have been constructed around,  is  to add more labels.
+% An obvious initial choice is $\alpha$-enhancement and a subset of key individual abundances [X/Fe]. 
+% It is even possible to test what, if any, information in the spectra are correlated with an age label. 
+% If such information is present in the spectra across a large set of stars in a survey, this method \textit{will} determine exactly which pixels are responsible for carrying this information. In addition, we will gain significantly by moving to a more flexible model like a Gaussian process and allowing our model to be informed by priors in these new directions for this work. 
 
-[DWH SAY:  THE DISCUSSION (above) IS A BIT REPETITIVE; WE CAN PROBABLY COMBINE AND SHORTEN PARAGRAPHS ABOUT GENERALIZATIONS.]
+[MKN - removed/commented out some of the repetition DWH SAY:  THE DISCUSSION (above) IS A BIT REPETITIVE; WE CAN PROBABLY COMBINE AND SHORTEN PARAGRAPHS ABOUT GENERALIZATIONS.]
 
 \textbf{DWH can you expand on generative models: data-driven model that represents the noise -  very successful as it respects the noise model. generative - synth, L.F. - permits discovery, interpretation.}
 
