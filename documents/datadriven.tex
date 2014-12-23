@@ -74,7 +74,7 @@ depends on the `known' stellar labels; \tc\ then exploits this same
 dependence to derive new labels for the non-reference stars.
 We illustrate \tc\ by applying it to the spectra of 55,000 stars from
 \apogee\ DR10. 
-We take \teff, \logg\ and \feh\ as the labels, and 545 stars in 19
+We take \teff, \logg\ and \feh\ as the labels, and 543 stars in 19
 clusters as the reference objects. 
 \tc\ is very accurate; its stellar labels compare well to the 37,500
 stars for which \apogee\ pipeline (\aspcap) labels are provided; we
@@ -180,7 +180,7 @@ Conversely, we use a data-driven model and do not project onto any optimal combi
 Rather we directly determine labels using a total of around 70,000 degrees of freedom of information in the data, given the 7200 pixels comprising the flux and the 10 parameters of the labels in our implemented model. 
 
 We have adopted a bottom-up approach for \tc\ , starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  
-In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (545 stars) and survey objects ($\sim$ 55,000 stars from DR10). 
+In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (543 stars) and survey objects ($\sim$ 55,000 stars from DR10). 
 We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and so we extended our model to quadratic form, which satisfactorily describes the label-space of the training data.
 The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
 
@@ -204,7 +204,7 @@ consist of members of well studied open and globular clusters that have their la
 optical wavelength region.
 
 Specifically, the reference dataset we use is that of the globular and open cluster data observed by \apogee\ for calibration of their abundance pipeline \citep{Meszaros2013}. 
-This reference dataset is comprised of about 545 stars from 19 open and globular clusters, which span stellar parameter ranges 
+This reference dataset is comprised of about 543 stars from 19 open and globular clusters, which span stellar parameter ranges 
 of 3500 $<$ \teff\ $<$ 5300, 0 $<$ \logg\ $<$ 5 and --2.5 $<$ [Fe/H] $<$ 0.45. 
 Exactly which stellar labels we adopt for theses reference objects, is critical to the subsequent output, and hence we discuss it in ~\ref{sec:RefLabels} .
 
@@ -224,7 +224,7 @@ The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Iso
 \begin{figure}[h!]
 \centering
     \includegraphics[scale=0.33]{./plots/training_aspcap.pdf}
-\caption{\aspcap-corrected DR10 labels  for the training step in \teff-\logg\ plane for 545 stars in the 19 clusters for which parameters are provided by APOGEE \citep{Meszaros2013}. The age and \feh\ of the isochrones (in parentheses) is shown in each sub-panel. All labels adopted from DR10 except for the Pleiades. }
+\caption{\aspcap-corrected DR10 labels  for the training step in \teff-\logg\ plane for 543 stars in the 19 clusters for which parameters are provided by APOGEE \citep{Meszaros2013}. The age and \feh\ of the isochrones (in parentheses) is shown in each sub-panel. All labels adopted from DR10 except for the Pleiades. }
 \label{fig:trainingaspcap}
 \end{figure}
 
@@ -298,10 +298,10 @@ We show all the stars run through \tc\ in the \teff-\logg\ plane and validate ou
 
 Which labels to adopt for the reference objects used in \tc 's training step is a citical issue
 in any survey. We discuss two options here for \apogee . 
-First, we adopt the DR10 ``\aspcap\ corrected'' stellar parameters for each of the 545 reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale.
+First, we adopt the DR10 ``\aspcap\ corrected'' stellar parameters for each of the 543 reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale.
  This set of stars is the very same stars used by \apogee\ to post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}.
 Adopting the \aspcap\ corrected labels provided and documented by \apogee\ has the important advantage 
-that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer of only 545 stars.
+that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer of only 543 stars.
 
 The corrections to the labels made by \apogee\ based on the cluster data are applied to the immediate output of the \aspcap\ pipeline that arose from comparisons to a library of stellar models.
 Temperature corrections are determined by comparing the infrared flux temperatures of the stars \citep{gonzalez2009}, \logg\ corrections are from the offset between \aspcap\ results and Kepler results for common stars and \feh\ corrections are from the difference between the \aspcap\ and  the literature value of each cluster.  
@@ -539,7 +539,7 @@ For the quadratic model we then show this applied to the DR10 data, including at
 %\textbf{have written but revisit this: placeholder for MKN:  that commissioning data has different line spread function (LSF) and have run it through but unsure how to evaluate results. The stars do not fall in unphysical places on the isochrone and these commissioning data are indicated in the flag in the table with a C. We do find different parameters compared to \apogee\ for the commissioning data, for the fields where params are available. .Also discuss field 4330 centre field seems to fail for coolest stars for aspcapstar files but is okay if I do the normalisation on the apstar files without pre-continuum normalisation} % - only field where results diverge form apogee though for non-commissioning files, but in sensible place on isochrone.} 
 
 We now illustrate how \tc\ works in practice, using \apogee\  data.
-We start by considering all but one of the 545 clusters stars as the reference set for the training step, and then consider the one remaining cluster star as the survey star in the test step. We use such leave-one-out cross-validation to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects to use the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual visits that have far lower S/N than the co-added spectra in DR10 to explore and illustrate how well \tc\ does at modest S/N (with appropriate continnum fitting).
+We start by considering all but one of the 543 clusters stars as the reference set for the training step, and then consider the one remaining cluster star as the survey star in the test step. We use such leave-one-out cross-validation to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects to use the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual visits that have far lower S/N than the co-added spectra in DR10 to explore and illustrate how well \tc\ does at modest S/N (with appropriate continnum fitting).
 
 
 %[HWR; AS TECHNIQUE THIS HAS BEEN LAID OUT BEFORE..]Via our method, we can use the model for determining continuum pixels, which are robust and true continuum over the label-space of the training data. 
@@ -600,7 +600,7 @@ shown in Figure \ref{fig:takeonestarout} for each of the three labels. Here we o
 This Figure immediately shows how well \tc\ works, at least in the above circumstance. 
 \tc 's purely mathematical approach can estimate the stellar (at least) as well as the astrophysical label pipeline, 
 over the full label range of our the reference data. The \textit{rms} of the 3 labels are
-+95~K in $\teff$, 0.24 in in $logg$, 0.08 in $\feh$, with biases $\Delta$ bthat are 3-7 times smaller. 
++95~K in $\teff$, 0.24 in in $logg$, 0.08 in $\feh$, with biases $\Delta$ that are 3-7 times smaller. 
 These variances inherently include some portion the uncertainties on the input labels (from ASCPAP corrected values, 
 of \teff\ $<$ 150 K, \logg\ $<$ 0.2 dex and \feh\ $<$ 0.1 dex \citep{Meszaros2013}.
 The precision values stated in Figure \ref{fig:takeonestarout} are the formal uncertainties in the labels arising 
@@ -618,7 +618,7 @@ The rms is comparable to the estimated \apogee\ errors. The \logg\ label has the
 \centering
 %  \includegraphics[scale=0.3]{./plots/takeoneout_diag_test18_222.pdf}
     \includegraphics[scale=0.45]{./plots/takeout_histc.png}
-\caption{The take-one-star-out cross-validation of the 545 stars in the training dataset using the quadratic model in Equation  \ref{eq:quadin3labels} and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
+\caption{The take-one-star-out cross-validation of the 543 stars in the training dataset using the quadratic model in Equation  \ref{eq:quadin3labels} and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
 \label{fig:takeonestarout}
 \end{figure}
 %\begin{figure}[h!]
@@ -807,7 +807,7 @@ These Figures illustrate that the continuum normalisation works well for both of
 \includegraphics[scale=0.25]{./plots/SNR50to100.png}\\
 \includegraphics[scale=0.25]{./plots/SNR30to50.png}
 \includegraphics[scale=0.25]{./plots/SNR20to30.png}
-    \caption{Illustration of \tc's ability to estimate labels for spectra of modest signal to noise. Shown is the comparison of \tc\ lGaabels derived for some single visit spectra, compared to the \aspcap\ label values derived from the co-added high signal to noise spectra. The single vista spectra are grouped in four different regimes of signal to noise. There are 60 stars in the 300 $<$  SNR $<$ 30 bin, 1200 stars in the 30 $<$ SNR $<$ 50 bin, 1100 stars in the 50 $<$ SNR $<$ 100 bin and 670 stars in the 100 $<$  SNR $<$ 200 bin. Note that the rms difference between those two label estimates increases more slowly than expected from the signal to noise of the single visit spectra: label transfer with \tc\  therefore enables label estimates at modest signal-to-noise. Each SNR regime shows the corresponding histograms of \tc\ - \aspcap\ for each label, at right.}
+    \caption{Illustration of \tc's ability to estimate labels for spectra of modest signal to noise. Shown is the comparison of \tc\ labels derived for some single visit spectra, compared to the \aspcap\ label values derived from the co-added high signal to noise spectra. The single vista spectra are grouped in four different regimes of signal to noise. There are 60 stars in the 300 $<$  SNR $<$ 30 bin, 1200 stars in the 30 $<$ SNR $<$ 50 bin, 1100 stars in the 50 $<$ SNR $<$ 100 bin and 670 stars in the 100 $<$  SNR $<$ 200 bin. Note that the rms difference between those two label estimates increases more slowly than expected from the signal to noise of the single visit spectra: label transfer with \tc\  therefore enables label estimates at modest signal-to-noise. Each SNR regime shows the corresponding histograms of \tc\ - \aspcap\ for each label, at right.}
 \label{fig:SNR}
 \end{figure}
 
