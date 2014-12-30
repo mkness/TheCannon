@@ -43,12 +43,12 @@
 \newcommand{\apstar}{\textsl{apStar}} 
 \newcommand{\noise}{\sigma_{n\lambda}}
 \newcommand{\scatter}{s_{\lambda}}
-
+\newcommand{\pix}{\mathrm{pix}}
+\newcommand{\rfn}{\mathrm{ref}}
 
 \begin{document}
 
-\title{\textsc{\tc: \footnote{The name \tc\ is inspired by the astronomer Annie Jump Cannon,
-who was the pioneer on stellar classification without physical models!}}\\ A data-driven model for stellar parameter determination}
+\title{\tc:\\ A data-driven model for stellar parameter determination}
 \author{
   MKN,
   DWH,
@@ -63,7 +63,7 @@ who was the pioneer on stellar classification without physical models!}}\\ A dat
 New spectroscopic surveys offer the promise of consistent stellar
 parameters and abundances (`stellar labels') for hundreds of thousands
 of stars in the Milky Way. 
-These labels are currently derived by comparisons with physics-based
+These labels are usually derived by comparisons with physics-based
 model spectra, which are technically challenging, and often use only a
 modest fraction of the spectral pixels. 
 In many cases, however, there is a sub-set of \emph{reference}
@@ -109,45 +109,52 @@ techniques: spectroscopic
 
 \section{Introduction}\label{sec:Intro}
 
-The vast spectroscopic stellar surveys of recent years (e.g. \segue\ \citep{Beers2006}, \rave\ \citep{Steinmetz2006}, \lamost\ \citep{Newberg2012}, \apogee\ \citep{Majewski2012}, \gaiaeso\ \citep{Gilmore2012}, \galah\ \citep{Freeman2012}) hold tremendous astrophysical promise, but at the same time present formidable data analysis and modeling challenges. 
-One of these challenges lies in consistently and accurately determining stellar labels, that is, stellar parameters and element abundances, from survey spectra. 
+The vast spectroscopic stellar surveys of recent years (e.g., \segue\ \citep{Beers2006}, \rave\ \citep{Steinmetz2006}, \lamost\ \citep{Newberg2012}, \apogee\ \citep{Majewski2012}, \gaiaeso\ \citep{Gilmore2012}, \galah\ \citep{Freeman2012}) hold tremendous astrophysical promise, but at the same time present formidable data analysis and modeling challenges. 
+One of these challenges lies in consistently and accurately determining what we call ``stellar labels'', that is, stellar parameters and element abundances, from survey spectra. 
 These labels are usually determined from comparison of the data with synthetic model spectra, with approaches often 
-customised specifically to the particular wavelength region of a given survey \citep[e.g.][]{ Lee2006, Boeche2011, Liu2014, Meszaros2013, Sm2014}. 
+customised specifically to the particular wavelength region of a given survey \citep[e.g.,][]{ Lee2006, Boeche2011, Liu2014, Meszaros2013, Sm2014}. 
 
 The stellar photosphere models that are relied upon for stellar label determination have physical ingredients that are incomplete and simplified. 
-For computational feasibility, almost always 1D stellar photosphere models are adopted for large surveys, often assumed to be in local thermal equilibrium. 
-In many cases, the model spectra do not account for all relevant  molecular opacities, for convection, stellar winds and for the stellar chromosphere. 
-As a consequence, it happens that different research groups obtain discrepant results even for the same data on the same stars, due to different input assumptions and methods \citep[e.g.][]{Sm2014} [MKN: add more refs]. 
+For computational feasibility, almost always 1D stellar photosphere models are adopted for large surveys, often assumed to be in local thermal equilibrium; these approximations are both severe. 
+In many cases, the model spectra do not account for all relevant  molecular opacities, for convection, stellar winds, and the chromosphere. 
+As a consequence, it happens that different research groups obtain discrepant results even for the same data on the same stars, resulting from different input assumptions and methods \citep[e.g.,][]{Sm2014} [MKN: add more refs].
+Even when the input assumptions are held fixed, differences in how different parts of the spectrum are used lead to substantial differences in assigned labels [MKN: refs for this? It came up at Ringberg]
 
-Stellar labels are commonly determined by fitting a model spectrum (with known labels) to the data using some minimisation technique, often restricted to a masked portion of the spectrum that is focussed on the absorption line (regions) deemed to be most reliable or relevant. 
+Stellar labels are commonly determined by fitting a grid of model spectra (with known labels) to the data using some minimisation technique, often restricted to a masked portion of the spectrum that is focussed on the absorption line (regions) deemed to be most reliable or relevant. 
 Stated minimal signal-to-noise requirement to obtain robust labels in this way are $S/N\sim 100$ per resolution element, especially if the labels are to include individual element abundances. 
-Often, a post-calibration procedure is applied to bring the stellar labels derived by such a fitting pipeline in accord with external information of higher fidelity: for example with stellar labels from benchmark stars studied at high resolution and/or well characterised open and globular cluster stars \citep[e.g.][]{Meszaros2013, Freeman2013}
-
-In practice, different surveys end up having different calibrations of their labels: either their stellar parameter or their abundances are on slightly different scales; this complicates
+Often, a post-calibration procedure is applied to bring the stellar labels derived by such a fitting pipeline in accord with external information of higher fidelity: for example with stellar labels from benchmark stars studied at high resolution or well characterised open and globular cluster stars \citep[e.g.,][]{Meszaros2013, Freeman2013}
+In practice, different surveys or different pipelines end up delivering labels with different calibrations:
+Either their stellar parameter or their abundances are on slightly different scales; this complicates
 inter-survey comparisons and constitutes major challenge of the era of such large datasets. 
 
-In this paper we propose and lay out a data-driven approach to deriving stellar labels from stellar spectra in the context of large spectroscopic surveys, which we dub \tc\footnote{why it is called the Cannon}. 
-The main practical strengths of \tc\ lie in the fact that it is enormously fast, it can obtain labels of comparable accuracy to quoted in current approaches but with far less S/N, and it offers a consistent way to cross-calibrate surveys. 
-To do so, \tc\ must rely on the existence of a subset of objects within a survey
+In this paper we propose and lay out a data-driven approach to deriving stellar labels from stellar spectra in the context of large spectroscopic surveys,
+which we dub ``\tc''\footnote{The name \tc\ is inspired by the astronomer Annie Jump Cannon,
+who was the pioneer in producing stellar classifications without any input of physical models!}.
+The main practical strengths of \tc\ are that it requires no physical model of the spectra, it is enormously fast, it can obtain labels of comparable accuracy to that quoted in current physics-based approaches
+ but at far lower signal-to-noise ratio, and it offers a consistent way to cross-calibrate surveys. 
+To achieve this, \tc\ relies on the existence of a subset of objects within a survey
 (\textit{reference objects}), for which the stellar labels are known sufficiently well and cover label space sufficiently.
 
-In this context, the term {\sl labels} refers to the pieces of information that characterize and determine a stellar spectrum; these labels are commonly and sensibly split into {\sl stellar parameters} and {\sl element abundances}, though in the context of \tc\ it makes sense to treat them on a par. 
-In most cases, it suffices to think of the labels as \teff , \logg, and the element abundances [X/H], though stellar rotation, microturbulence, etc.. can also be thought of as labels. It is central to the approach we lay out here that stars with the same labels have (nearly) identical spectra and that spectra vary smoothly with label changes. 
-This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are e.g. only \teff, \logg\ and \feh\ then this is obviously an approximation. 
+In this context, the term ``\emph{labels}'' refers to the pieces of information
+that characterize and determine a stellar spectrum; these labels are commonly and sensibly split into \emph{stellar parameters} and \emph{element abundances}, although in the context of \tc\ it makes sense to treat them on a par. 
+In most cases, it suffices to think of the labels as \teff , \logg, and the element abundances [X/H], though stellar rotation, microturbulence, age, and so forth can also be thought of as labels.
+It is central to the approach we lay out here that stars with the same labels have (nearly) identical spectra and that spectra vary smoothly with label changes. 
+This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are (for example) only \teff, \logg\ and \feh\ then this is an approximation.
 
-There are fundamentally two steps in \tc . 
-The first step, or \textit{training step} in \tc\ is to create from the spectra of the \textit{reference objects} a generative model that describes
- the flux at every pixel in their continuum normalized spectra as a function of their known stellar labels.
+There are fundamentally two steps in \tc. 
+The first step, or \textit{training step} in \tc\ is to create from the spectra of the \textit{reference objects} a very flexible generative model (with $\sim 80,000$ parameters) that describes a probability density function (pdf) for
+ the flux at every pixel in the continuum-normalized spectrum as a function of stellar labels.
 The second step, or \textit{test step}, assumes that this same generative model holds for all the other objects in the survey (dubbed \textit{survey objects}). 
 Then, the spectra of the \textit{survey objects} and the generative model from the \textit{reference objects}
-allow us to solve for the labels of the \textit{survey objects}. 
-Taken together the \textit{training step} and the \textit{test step} effect a \textit{label transfer}. 
+allow us to solve for---or infer---the labels of the \textit{survey objects}. 
+Taken together the \textit{training step} and the \textit{test step} effect a \textit{label transfer},
+transfering the known labels in the reference objects to the survey objects.
 
 To make such an approach straigtforward, we must assume that the \textit{reference objects} and the \textit{survey objects} were observed with the identical instrumental set-up, a condition well satisfied with the large surveys listed above. 
-We take the generative model for the continuum normalized flux at each of $N_{pix}$ pixels to be a polynomial function of all the labels, and hence the model is defined by its $N_{pix}$ sets of polynomial coefficients. In practice, there may be different circumstances that make stars suitable reference objects. 
+We take the generative model for the continuum normalized flux at each of $N_\pix$ pixels to be a polynomial function of all the labels, and hence the model is defined by its $N_\pix$ sets of polynomial coefficients. In practice, there may be different circumstances that make stars suitable reference objects. 
 They may be members of star clusters: there, external data and the fact that clusters are in good approximation single stellar populations (which have to fall onto an isochrone) lend credibility to their stellar labels. 
-Alternatively, reference objects could be stars for which labels have been derived separately from spectra of particularly high signal to noise, or at other ``easier'' or more extensive wavelength regimes (e.g. in the optical as opposed to the IR). 
-Finally, they may be subsets of stars in a survey  for whom other approaches to get stellar parameters (e.g. astroseismology ) may provide accurate stellar parameters.
+Alternatively, reference objects could be stars for which labels have been derived separately from spectra of particularly high signal to noise, or at other ``easier'' or more extensive wavelength regimes (for example, in the optical as opposed to the infrared). 
+Finally, they may be subsets of stars for which other approaches to get stellar parameters (for example, astroseismology) may provide accurate stellar parameters.
 
 With this two-step procedure of training on spectra of reference objects and then transferring the label information to the survey objects, \tc\ falls into the class of \emph{supervised methods} in machine learning. 
 However, what we implement is very different in a crucial way from standard supervised methods for regression, such as support vector machines, random forests, and deep learning.
@@ -163,22 +170,25 @@ It also makes the method agnostic about signal-to-noise.
 This point is technical, but important:
 In many real cases the training data will be much higher in signal-to-noise than the test data
 (standard stars tend to be bright and well observed).
-A method that does not properly account for the observational uncertainties will not transfer labels to lower signal-to-noise spectra with high fidelity.
+A method that does not properly account for the observational uncertainties will not transfer labels from high signal-to-noise reference objects to lower signal-to-noise survey objects with high fidelity.
 In what follows, we show that \tc\ behaves very well as the signal-to-noise (or observing time) is decreased.
 
 In this paper we use \apogee\ as the sole example. 
 However, \tc\ can be applied to any stellar survey.  
 Our aim is distinct from simply determining parameters or finding the best fit spectra similarly to minimisation techniques. 
-Our aim is to implement a procedure which makes it possible to understand and characterise the spectra as a function of the labels which describe it.  
+Our aim is to implement a procedure that makes it possible to understand and characterise the spectra as a function of the labels which describe it.  
 Our methodology is very relevant for chemical tagging in large datasets, as it can formally describe and differentiate the spectra in multiple-abundance space, given additional input labels.
 In the same way it is possible to implement a differential analysis on large datasets using this approach. 
 Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (e.g. [$\alpha$/Fe], [X/Fe]) and also more comprehensive models (e.g. Gaussian processes). 
 Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower signal to noise (SNR) than minimisation techniques.% and provide a quantification of data-driven spectra comparison and differentiation, which may be a key tool in exploring the archeology of stars via chemical tagging. 
 
-Our overarching aim of describing stellar flux as a function of stellar labels is not dissimilar from the MATrix Inversion for Spectral SythEsis (\matisse) procedure for derivation of stellar parameters \citep{RB2006}. 
-However, \matisse\ employs a large grid of synthetic spectra and characterises a set of basis vectors which project onto each observed spectrum to determine stellar labels by calculating an optimal combined synthetic spectrum describing the stellar flux. 
-Conversely, we use a data-driven model and do not project onto any optimal combined theoretical spectrum. 
-Rather we directly determine labels using a total of around 70,000 degrees of freedom of information in the data, given the 7200 pixels comprising the flux and the 10 parameters of the labels in our implemented model. 
+\tc\ is similar to the MATrix Inversion for Spectral SythEsis (\matisse) procedure
+for derivation of stellar parameters \citep{RB2006} in that it uses the full spectrum
+(and not just a line list) for label determination.
+However, \matisse\ employs a large grid of synthetic spectra
+and is thus limited in all the ways that physics-based methods are limited.
+That said, a big part of why \tc\ is successful at lower signal-to-noise
+is that it uses all of the pixels in the data.
 
 We have adopted a bottom-up approach for \tc, starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  
 In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (543 stars) and survey objects ($\sim$ 55,000 stars from DR10). 
@@ -504,11 +514,11 @@ scatter $s_\lambda^2$ but instead as functions of the \emph{labels}.
 
 Then, in the test step of \tc\ , we use the known coefficients and scatter of the spectral model
 ($\set{\theta}_\lambda,\ s_\lambda^2$),
-take the entire $N_{pix}$ spectrum of survey star $m$, $f_{m\lambda}$ and optimize for the labels of that star:
+take the entire $N_\pix$ spectrum of survey star $m$, $f_{m\lambda}$ and optimize for the labels of that star:
 \begin{eqnarray}
 \boldsymbol{\ell_m} \leftarrow \substack{\mbox{argmax}\\
 {\boldsymbol{\ell_m}  }}
-\sum_{\lambda=1}^{Npix}
+\sum_{\lambda=1}^{N_\pix}
 \ln p(f_{m\lambda}\given\set{\theta^T}_\lambda, \boldsymbol{\ell_n}, s_\lambda^2)
 \label{eq:teststep}
 \end{eqnarray} 
@@ -601,8 +611,8 @@ The exploration of higher-order polynomials for the spectral model at every pixe
 \label{sec:take-one-out}
 
 As a first illustration of how well \tc\ works in practice, we perform a take-one-star out test on the set of reference objects.
-For the take-one-star out test we train the spectral model iteratively on the spectra of all but one of the $N_{ref}$ (=541) 
-reference objects, and then apply \tc 's test step to the spectrum of that remaining object. If we repeat this procedure $N_{ref}$ times, 
+For the take-one-star out test we train the spectral model iteratively on the spectra of all but one of the $N_\rfn$ (=541) 
+reference objects, and then apply \tc 's test step to the spectrum of that remaining object. If we repeat this procedure $N_\rfn$ times, 
 we have a first powerful test of how the result of this parameter transfer compares to the (known) labels for the reference objects.
  Here we only consider three labels $(\teff , \logg , \feh)$, and the results are shown in Figure~ref{fig:takeonestarout}.
 
