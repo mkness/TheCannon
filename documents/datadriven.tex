@@ -1,14 +1,6 @@
 % This file is part of the TheCannon project.
 % Copyright 2014 the authors.
 
-% # short-term to-do
-% - finish first draft
-% - send out to \apogee\ collab for comments.
-
-% # style notes
-% - are they ``labels'' or ``labels''?  MKN:  Make a call and audit the whole text.
-% - needs a name and to use it consistently as \thename
-
 \documentclass[12pt, preprint]{aastex}
 \usepackage{bm, graphicx, subfigure, amsmath, morefloats}
 \usepackage{color}
@@ -196,13 +188,13 @@ We then describe perhaps the simplest implementation of label-transfer possible,
 The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
 
 \section{Data}\label{sec:Data}
-Our approach \tc \ is applicable to any large, homogeneous spectroscopic data set. Here, we use the \apogee\ data \citep{Ahn2014} to illustrate and showcase \tc . 
+Our approach \tc \ is applicable to any large, homogeneous spectroscopic data set. Here, we use the \apogee\ data \citep{Ahn2014} to illustrate and showcase \tc. 
 We describe how we prepare the data for the reference objects, to prepare the label-transfer and similarly, how to process the survey data.
 
 \subsection{Choosing reference objects for the training step}
 \label{sec:ReferenceObjects}
 
-For the training step in \tc\ we must choose a set of reference (or training) objects for which we have spectra from the survey under consideration and \emph{also} high-fidelity labels (i.e. stellar parameters and element abundances that are deemed both accurate and precise).
+For the training step in \tc\ we must choose a set of reference (or training) objects for which we have spectra from the survey under consideration and \emph{also} high-fidelity labels (that is, stellar parameters and element abundances that are deemed both accurate and precise).
 The set of reference objects is critical, as the overall label transfer to the survey objects can only be as good as the quality of the reference labels. 
 Also, as \tc\ may have to interpolate and extrapolate to new parts of label space as
 it encounters new kinds of spectra among the survey objects, the quality
@@ -266,7 +258,7 @@ After a training step with spectra of reference objects that have been  normaliz
 the \tc\ can provide an improved identification of continuum regions in the spectrum: 
 we take those pixels to be continuum that show nearly unity flux in the spectral model's baseline spectrum (see \S~\ref{sec:spectralmodel}), 
 say within a few percent, and at the same time show almost no dependence in their normalized flux on the stellar labels.
-I.e. we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in Section \ref{sec:results}. Subsequently, we fit a low-order Chebyshev polynomial to these continuum pixels,
+That is, we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in Section \ref{sec:results}. Subsequently, we fit a low-order Chebyshev polynomial to these continuum pixels,
  treating each of the three chips separately, weighted by the inverse flux errors provided \apogee\ fits files. A 2nd-order Chebyshev polynomial is sufficient to use for the pseudo-continuum normalised data provided by \apogee\ and we apply this normalisation to both \aspcapstar\ and  \apstar\ files. 
 Figure \ref{fig:norm} shows an example of this normalisation applied to survey spectra with different labels (output from \tc). 
 This Figure illustrates typical \apogee\ spectra and demonstrates how the spectra 
@@ -390,7 +382,7 @@ variance.
 %%
 
 The simplest spectral model is that in which the label vector $\boldsymbol{\ell_n}$ is
-linear in the labels, i.e. is the vector of the individual labels themselves:
+linear in the labels, that is, in the vector of the individual labels themselves:
 \begin{eqnarray}
 \set{\ell_n} =  [1, l_1 - \bar{l}_1, l_2 - \bar{l_2}, l_k - \bar{l_k}, .. ] &\equiv& [l_{n1}, l_{n2}, \cdots, l_{nK}]
 \label{eq:linear}
@@ -685,7 +677,7 @@ The scatter is small and this indicates that our model is a good representation 
 However, the scatter is highest where the most information in the spectra are contained. 
 This implies that either our quadratic-in-labels spectral model is still somewhat too restricted, or that the labels of our training dataset are imperfect or incomplete 
 (e.g. lacking $[\alpha / Fe]$ as a label), or a combination of these effects. 
-From the coefficients of an initial fit of this spectral models (i.e. the middle panel of Fig.~\ref{fig:coeffs}), 
+From the coefficients of an initial fit of this spectral models (see, for example, the middle panel of Fig.~\ref{fig:coeffs}), 
 the continuum pixels have been determined following \S~\ref{sec:ContNorm}. 
 These are marked in the black dots in the top panel of the Figure, and are used for an iterated, 
 consistent continuum normalisation for all spectra, both of the reference and of the survey objects.
@@ -708,7 +700,7 @@ consistent continuum normalisation for all spectra, both of the reference and of
 
 The continuum pixels, which are shown in Figure \ref{fig:coeffs} for wavelength regions A and B, 
 have been determined from the quadratic model using a combination of the flux level and the coefficients returned
-(cf. \S~\ref{sec:ContNorm}). Specifically, we found that 35\% of the pixels in the baseline spectrum of the model (the vector $\theta^0_\lambda$) flux levels within 1\% of unity. However, not all these pixels are suitable continuum pixels, as many of them have significant dependencies (i.e. $\theta^{1,2,3}_\lambda$)
+(cf. \S~\ref{sec:ContNorm}). Specifically, we found that 35\% of the pixels in the baseline spectrum of the model (the vector $\theta^0_\lambda$) flux levels within 1\% of unity. However, not all these pixels are suitable continuum pixels, as many of them have significant dependencies (that is, $\theta^{1,2,3}_\lambda$)
 on the three labels. 
 In practice, we make a continuum selection taking the 15\% of pixels with coefficients nearest 0 for each coefficient and a flux selection of 1 $\pm$ 0.15 [{\bf HWR: really $\pm$ 15\% ? I thought 35\% are within 1\% ?, MKN - they are this is just what worked well - I can redo some tests of this.}]
 These criteria return around 7\% of pixels, which we adopt as true continuum pixels for data that span the label range of the training set. We use the inverse variance weighting of these pixels for the corresponding 2nd order Chebyshev polynomial fit. 
@@ -916,12 +908,7 @@ characterises a set of basis vectors which project onto each observed
 spectrum to determine stellar labels by calculating an optimal
 combined synthetic spectrum describing the stellar flux.
 Conversely, we use a data-driven model and do not project onto any
-optimal combined theoretical spectrum.
-Rather we directly determine labels using a total of around 80,000
-degrees of freedom of information in the data, given the 7200 pixels
-comprising the flux and the 10 parameters of the labels in our
-implemented model.
-
+subspace or combined theoretical spectrum.
 
  \tc\ is readily expandable to a more general model, a larger training dataset and many more labels which include errors and/or partial characterisation of labels. Furthermore we do not need to use all of the pixels in the spectra for our model and \tc\ can be generalised to use a linelist to select for particular regions or features.
  As it is, our second-order model is hard-coded and extremely restrictive. 
