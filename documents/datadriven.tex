@@ -171,7 +171,7 @@ Our aim is distinct from simply determining parameters or finding the best fit s
 Our aim is to implement a procedure that makes it possible to understand and characterise the spectra as a function of the labels which describe it.  
 Our methodology is very relevant for chemical tagging in large datasets, as it can formally describe and differentiate the spectra in multiple-abundance space, given additional input labels.
 In the same way it is possible to implement a differential analysis on large datasets using this approach. 
-Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (e.g. [$\alpha$/Fe], [X/Fe]) and also more comprehensive models (e.g. Gaussian processes). 
+Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (for example, [$\alpha$/Fe], [X/Fe]) and also more comprehensive models (for example, Gaussian processes). 
 Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower signal to noise (SNR) than minimisation techniques.% and provide a quantification of data-driven spectra comparison and differentiation, which may be a key tool in exploring the archeology of stars via chemical tagging. 
 
 \tc\ is similar to the MATrix Inversion for Spectral SythEsis (\matisse) procedure
@@ -188,8 +188,10 @@ We then describe perhaps the simplest implementation of label-transfer possible,
 The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
 
 \section{Data}\label{sec:Data}
-Our approach \tc \ is applicable to any large, homogeneous spectroscopic data set. Here, we use the \apogee\ data \citep{Ahn2014} to illustrate and showcase \tc. 
-We describe how we prepare the data for the reference objects, to prepare the label-transfer and similarly, how to process the survey data.
+In principle, \tc\ is applicable to any large, homogeneous spectroscopic data set.
+Here, we use the \apogee\ data \citep{Ahn2014} to illustrate and showcase \tc.
+
+% syntactical reference point
 
 \subsection{Choosing reference objects for the training step}
 \label{sec:ReferenceObjects}
@@ -203,7 +205,7 @@ cover label space (\teff, \logg, [Fe/H], [X/Fe], and so on).
 The performance of data-driven model like \tc\ can depend strongly on the size and quality of its traininf set of reference objects.
 
 Any set of reference objects in the survey with high fidelity labels is good for the implementation of \tc.
-In practice, a set of reference objects that satisfies these criteria (e.g. in \apogee )
+In practice, a set of reference objects that satisfies these criteria (for example, in \apogee)
 consist of members of well studied open and globular clusters that have their labels derived from high resolution spectral analysis in the
 optical wavelength region.
 
@@ -250,8 +252,8 @@ that shows no systematic dependence on the S/N of the spectra.
 
 For the \tc\ we achieve a robust, S/N-insensitive continuum fit through 
 an iterative procedure. At first, we define a preliminary pseudo-continuum normalisation by 
-using polynomial fit to an upper quantile (e.g. 80\% or 90\%) of the spectra
- in the \apogee\ pipeline \citep{Meszaros2013}, determined e.g. from a running median.
+using polynomial fit to an upper quantile (for example, 80 or 90~percent) of the spectra
+ in the \apogee\ pipeline \citep{Meszaros2013}, determined, for example, from a running median.
   This is effective, but SNR dependent.
   
 After a training step with spectra of reference objects that have been  normalized  by this pseudo-continuum,
@@ -667,7 +669,7 @@ For the first label vector for example in the middle panel of Figure \ref{fig:co
 there is typically asymmetry for a given absorption feature, in the flux and the labels. 
 There are very few regions where the flux is a function of only one of the labels, and pixels are typically covariant 
 (that is, the same pixel will have a higher flux at both lower \teff\ and higher \feh). 
-This simply reflects well-known covariances between e.g. temperature and \feh .
+This simply reflects well-known covariances between, for example, temperature and \feh .
 The strongest \logg\ dependence is typically associated with weak lines including the wings of the 
 feature and the \feh\ label, with strong lines, particularly the depth of the line. 
 
@@ -676,7 +678,7 @@ indicating the dispersion of the flux of the training data around the best-fit s
 The scatter is small and this indicates that our model is a good representation of the data. 
 However, the scatter is highest where the most information in the spectra are contained. 
 This implies that either our quadratic-in-labels spectral model is still somewhat too restricted, or that the labels of our training dataset are imperfect or incomplete 
-(e.g. lacking $[\alpha / Fe]$ as a label), or a combination of these effects. 
+(for example, lacking $[\alpha / Fe]$ as a label), or a combination of these effects. 
 From the coefficients of an initial fit of this spectral models (see, for example, the middle panel of Fig.~\ref{fig:coeffs}), 
 the continuum pixels have been determined following \S~\ref{sec:ContNorm}. 
 These are marked in the black dots in the top panel of the Figure, and are used for an iterated, 
@@ -796,7 +798,7 @@ The labels for the main sequence stars are presumably much more poorly determine
 Remarkably, though, only a handful of stars at low \feh\ and low \logg\ do not lie near conceivable isochrones. 
 
 At metallicities \feh\ $<$ --0.25 the red clump is offset too high in the \logg\ label. This is noted in \citet{bovy2014} who estimate that this offset shifts the red clump and red giant branches 0.2 dex closer together. 
-Our \logg\ labels in Figure \ref{fig:iso} are essentially identical to \apogee\ ASPCAP labels (offset -0.04 dex in \logg\ for DR10) and the left panels show that the red clump stars which should be seen as a density maxima of stars around \logg\ $\sim$ 2.5, \teff\ $\sim$ 4800K \citep[e.g.][]{Zhao2001} 
+Our \logg\ labels in Figure \ref{fig:iso} are essentially identical to \apogee\ ASPCAP labels (offset -0.04 dex in \logg\ for DR10) and the left panels show that the red clump stars which should be seen as a density maxima of stars around \logg\ $\sim$ 2.5, \teff\ $\sim$ 4800K \citep[e.g.,][]{Zhao2001} 
 are offset to higher \logg\ than the red clump branch of the Padova isochrone, for stars \feh\ $<$ --0.25. 
 This offset is on the order of 0.2 dex at \feh\ = -0.5 and is present for both \aspcap-corrected labels and isochrone-corrected labels. 
 This may indicate that the \aspcap\ temperature scale is offset too cool in DR10 (but as a function of \feh).
@@ -894,7 +896,7 @@ Our model is comprised of data which represents the probability space of the lab
 By returning coefficients, we have a tool which \textit{describes the flux in a quantitative way as a function of stellar labels}, thus removing degeneracies and improving the prospects for determining stellar parameters, by modelling covariance rather than attempting to minimise it. Regions that have dependencies on only one of the labels can also be easily identified. 
 
 We have demonstrated that we can work at much lower SNR at least for the three primary stellar parameters with this approach. 
-We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (e.g. alpha, light elements, neutron capture) of covariant spaces \citep[e.g.][]{Ting2012}. In this way we exploit more pixels in the spectra and can operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. 
+We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (for example, alpha, light elements, neutron capture) of covariant spaces \citep[e.g.,][]{Ting2012}. In this way we exploit more pixels in the spectra and can operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. 
 This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
 
 In using all of the pixels in the spectrum to obtain the
