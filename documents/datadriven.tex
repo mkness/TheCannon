@@ -1,5 +1,5 @@
-% This file is part of the Apogee project.
-% Copyright 2014 Melissa Ness and David W. Hogg.
+% This file is part of the TheCannon project.
+% Copyright 2014 the authors.
 
 % # short-term to-do
 % - finish first draft
@@ -251,7 +251,7 @@ The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Iso
 
 \subsection{Consistent Continuum Normalization}\label{sec:ContNorm}
 
-The Cannon, as we present it here, operates on continuum-normalized spectra, reduced and re-sampled to the same wavelength grid (with the same line-spread function), and shifted to their rest-frame. 
+\tc, as we present it here, operates on continuum-normalized spectra, reduced and re-sampled to the same wavelength grid (with the same line-spread function), and shifted to their rest-frame. 
  Therefore, a robust continuum normalisation of the spectra is critical.
 It turns out that it is of particular importance to have an operational procedure to set the continuum,
 that shows no systematic dependence on the S/N of the spectra.
@@ -344,9 +344,7 @@ The uncertainties on the input labels will be included as an input parameter of 
 For a comparative analysis to the ``\aspcap\ corrected'' labels, we adopt a \logg\ label for all of the training stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). 
 We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the age and \feh\ of each cluster. 
 
-
-
-\section{A Spectral Model for the Training Step of The Cannon}
+\section{The Generative Model of \tc}
 \label{sec:spectralmodel}
 
 We now lay out the specifics of the spectral model, whose parameters are determined 
@@ -356,7 +354,7 @@ stars with identical labels look near-identical at every pixel, save for the obs
 and possibly some intrinsic scatter; and that the expected  flux at every pixel changes continuously
 with changes in any label.
 
-We presume there are $N$ refernce objects $n$, each of which has
+We presume there are $N$ reference objects $n$, each of which has
 a continuum-normalized flux measurement $f_{n\lambda}$ at wavelength
 $\lambda$. Each of the training spectra $n$ has $K$ labels $\boldsymbol{l_{nk}}$, each of which
 is (for now) presumed to have negligible uncertainty and contained within a label vector $\boldsymbol{\ell_n}$.
@@ -483,7 +481,7 @@ second-order coefficients $\theta_{\lambda kk'}$ can now be seen as mean
 second derivatives of the expected spectrum with respect to pairs of
 labels $k$ and $k'$.
 
-\section{The Cannon's Test Step: Stellar Label from Survey Spectra}
+\section{\tc's Test Step: Stellar Label from Survey Spectra}
 \label{sec:paramestimate}
 
 In the previous Section, we built data-driven spectral models from training data.
@@ -551,7 +549,7 @@ We now present in Section \ref{sec:results} the results of implementing our mode
 For the quadratic model we then show this applied to the DR10 data, including at lower SNR and investigate different input training labels. 
 
 
-\section{The Cannon in Action: Illustrative Results with APOGEE Data}
+\section{\tc\ in Action: Illustrative Results with APOGEE Data}
 \label{sec:results}
 
 %\textbf{have written but revisit this: placeholder for MKN:  that commissioning data has different line spread function (LSF) and have run it through but unsure how to evaluate results. The stars do not fall in unphysical places on the isochrone and these commissioning data are indicated in the flag in the table with a C. We do find different parameters compared to \apogee\ for the commissioning data, for the fields where params are available. .Also discuss field 4330 centre field seems to fail for coolest stars for aspcapstar files but is okay if I do the normalisation on the apstar files without pre-continuum normalisation} % - only field where results diverge form apogee though for non-commissioning files, but in sensible place on isochrone.} 
@@ -832,7 +830,7 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
   \hspace{-20pt}
     \includegraphics[scale=0.25]{./plots/iso2a.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
-\caption{Same as Figure \ref{fig:iso} but based on the isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of the Cannon (equation \ref{eq:10} that forces resulting labels to lie in physically plausible location sod label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects.}
+\caption{Same as Figure \ref{fig:iso} but based on the isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (equation \ref{eq:10} that forces resulting labels to lie in physically plausible location sod label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects.}
 \label{fig:iso2}
 \end{figure}
 
