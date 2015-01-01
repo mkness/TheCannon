@@ -188,30 +188,28 @@ We then describe perhaps the simplest implementation of label-transfer possible,
 The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
 
 \section{Data}\label{sec:Data}
-In principle, \tc\ is applicable to any large, homogeneous spectroscopic data set.
+In principle, \tc\ (which we describe below) is applicable to any large, homogeneous spectroscopic data set.
 Here, we use the \apogee\ data \citep{Ahn2014} to illustrate and showcase \tc.
-
-% syntactical reference point
+We begin by explaining this data set.
 
 \subsection{Choosing reference objects for the training step}
 \label{sec:ReferenceObjects}
 
 For the training step in \tc\ we must choose a set of reference (or training) objects for which we have spectra from the survey under consideration and \emph{also} high-fidelity labels (that is, stellar parameters and element abundances that are deemed both accurate and precise).
-The set of reference objects is critical, as the overall label transfer to the survey objects can only be as good as the quality of the reference labels. 
+The set of reference objects is critical, as the label transfer to the survey objects can only be as good as the quality of the reference labels. 
 Also, as \tc\ may have to interpolate and extrapolate to new parts of label space as
 it encounters new kinds of spectra among the survey objects, the quality
-of the label transfer depends on the density and extent to which the reference objects
-cover label space (\teff, \logg, [Fe/H], [X/Fe], and so on). 
-The performance of data-driven model like \tc\ can depend strongly on the size and quality of its traininf set of reference objects.
+of the label transfer depends on the extent to which the reference objects
+cover label space (\teff, \logg, [Fe/H], [X/Fe], and so on) and the density with which they cover it.
+The performance of a data-driven model like \tc\ can depend strongly on the size and quality of its training set of reference objects, much more strongly than the square-root of the number!
 
-Any set of reference objects in the survey with high fidelity labels is good for the implementation of \tc.
-In practice, a set of reference objects that satisfies these criteria (for example, in \apogee)
-consist of members of well studied open and globular clusters that have their labels derived from high resolution spectral analysis in the
+In practice, for the \apogee\ data,
+a good set of reference objects can be built from 
+members of well studied open and globular clusters that have their labels derived from high resolution spectral analysis in the
 optical wavelength region.
-
 Specifically, the reference dataset we use is that of the globular and open cluster data observed by \apogee\ for calibration of their abundance pipeline \citep{Meszaros2013}. 
-This reference dataset is comprised of about 543 stars from 19 open and globular clusters, which span stellar parameter ranges 
-of 3500 $<$ \teff\ $<$ 5300, 0 $<$ \logg\ $<$ 5 and --2.5 $<$ [Fe/H] $<$ 0.45. 
+This reference dataset comprises about 543 stars from 19 open and globular clusters, which span stellar parameter ranges 
+of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
 Exactly which stellar labels we adopt for theses reference objects, is critical to the subsequent output, and hence we discuss it in ~\ref{sec:ApogeeRefLabels} .
 
 
