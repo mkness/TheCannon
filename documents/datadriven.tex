@@ -11,9 +11,13 @@
 %\usepackage{natbib}
 \bibliographystyle{apj}
 
+% naming macros
+\newcommand{\documentname}{\textsl{Article}}
 \newcommand{\sectionname}{Section}
 \renewcommand{\S}{\sectionname}
 \newcommand{\figurenames}{\figurename s}
+
+% math and symbol macros
 \newcommand{\set}[1]{\bm{#1}}
 \newcommand{\mean}[1]{\overline{#1}}
 \newcommand{\given}{\,|\,}
@@ -196,7 +200,8 @@ The success of this model is demonstrated by running \tc\ through the DR10 data 
 \section{Data}\label{sec:Data}
 In principle, \tc\ (which we describe below) is applicable to any large, homogeneous spectroscopic data set.
 Here, we use the \apogee\ data \citep{Ahn2014} to illustrate and showcase \tc.
-We begin by explaining this data set.
+Because all of the exposition of the method underlying \tc\ involves specificities of the data,
+we begin by explaining the \apogee\ data and our adjustments to it.
 
 \subsection{Choosing reference objects for the training step}
 \label{sec:ReferenceObjects}
@@ -216,16 +221,19 @@ optical wavelength region.
 Specifically, the reference dataset we use is that of the globular and open cluster data observed by \apogee\ for calibration of their abundance pipeline \citep{Meszaros2013}. 
 This reference dataset comprises about 543 stars from 19 open and globular clusters, which span stellar parameter ranges 
 of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
-Exactly which stellar labels we adopt for theses reference objects is critical to the subsequent output, and hence we discuss it all in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
+Exactly which stellar labels we adopt for these reference objects is critical to the subsequent output, and hence we discuss it all in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
 
 % MKN:  SHOULD THIS BE IN THE MAIN TEXT?  note there are 20 in their list but 1 gc has only 1 star and the abundance looks incorrect to me. 
 
-The above set of labels for the reference objects is well defined, but still means that the reference objects in the clusters do not lie on a single model isochrone 
+The above set of labels for the reference objects is well defined,
+but in fact the reference objects in the clusters do not lie on any single model isochrone 
 (see \figurename~\ref{fig:trainingaspcap}). 
-As an alternative set of reference labels, we consider one where the stellar parameters (\teff , \logg ) of the reference objects lie by construction on a single isochrone. 
+As an alternative set of reference labels, we consider one for which the stellar parameters (\teff , \logg ) of the reference objects lie by construction on a single isochrone.
+[MKN I THINK THE PREVIOUS SENTENCE IS WRONG; YOU MEAN EACH STAR ON ITS OWN ISOCHRONE, RIGHT?]
 For that we adopt a \logg\ label for all of the reference stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the literature age and \feh\ of each cluster. 
+[MKN THERE IS NO MEANING TO THE WORDS ``vertical fits'']
 
-We discuss our motivation for doing this and our results in the Discussion section of our paper.  
+We discuss our motivation for doing this and our results in the Discussion \sectionname\ of this \documentname.
 The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Isochrone-corrected'' labels, are shown in \figurenames~\ref{fig:trainingaspcap} and \ref{fig:trainingisochrone}, respectively. 
 
 %run -i fitiso_apogeetempfeh_paperrework2.py
@@ -244,6 +252,7 @@ The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Iso
 \label{fig:trainingisochrone}
 \end{figure}
 
+% HOGG syntactical reference point
 
 \subsection{Consistent Continuum Normalization}\label{sec:ContNorm}
 
