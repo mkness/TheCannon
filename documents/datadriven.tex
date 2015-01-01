@@ -11,12 +11,18 @@
 %\usepackage{natbib}
 \bibliographystyle{apj}
 
+\newcommand{\sectionname}{Section}
+\renewcommand{\S}{\sectionname}
+\newcommand{\figurenames}{\figurename s}
 \newcommand{\set}[1]{\bm{#1}}
 \newcommand{\mean}[1]{\overline{#1}}
 \newcommand{\given}{\,|\,}
 \newcommand{\teff}{\mbox{$\rm T_{eff}$}}
 \newcommand{\kms}{\mbox{$\rm kms^{-1}$}}
 \newcommand{\feh}{\mbox{$\rm [Fe/H]$}}
+\newcommand{\xfe}{\mbox{$\rm [X/Fe]$}}
+\newcommand{\alphafe}{\mbox{$\rm [\alpha/Fe]$}}
+\newcommand{\mh}{\mbox{$\rm [M/H]$}}
 \newcommand{\logg}{\mbox{$\rm \log g$}}
 \newcommand{\tc}{\textsl{The~Cannon}} 
 \newcommand{\apogee}{\textsl{APOGEE}} 
@@ -129,7 +135,7 @@ To achieve this, \tc\ relies on the existence of a subset of objects within a su
 
 In this context, the term ``\emph{labels}'' refers to the pieces of information
 that characterize and determine a stellar spectrum; these labels are commonly and sensibly split into \emph{stellar parameters} and \emph{element abundances}, although in the context of \tc\ it makes sense to treat them on a par. 
-In most cases, it suffices to think of the labels as \teff , \logg, and the element abundances [X/H], though stellar rotation, microturbulence, age, and so forth can also be thought of as labels.
+In most cases, it suffices to think of the labels as \teff , \logg, and the element abundances \xfe, though stellar rotation, microturbulence, age, and so forth can also be thought of as labels.
 It is central to the approach we lay out here that stars with the same labels have (nearly) identical spectra and that spectra vary smoothly with label changes. 
 This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are (for example) only \teff, \logg\ and \feh\ then this is an approximation.
 
@@ -171,7 +177,7 @@ Our aim is distinct from simply determining parameters or finding the best fit s
 Our aim is to implement a procedure that makes it possible to understand and characterise the spectra as a function of the labels which describe it.  
 Our methodology is very relevant for chemical tagging in large datasets, as it can formally describe and differentiate the spectra in multiple-abundance space, given additional input labels.
 In the same way it is possible to implement a differential analysis on large datasets using this approach. 
-Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (for example, [$\alpha$/Fe], [X/Fe]) and also more comprehensive models (for example, Gaussian processes). 
+Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (for example, \alphafe, \xfe) and also more comprehensive models (for example, Gaussian processes). 
 Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower signal to noise (SNR) than minimisation techniques.% and provide a quantification of data-driven spectra comparison and differentiation, which may be a key tool in exploring the archeology of stars via chemical tagging. 
 
 \tc\ is similar to the MATrix Inversion for Spectral SythEsis (\matisse) procedure
@@ -200,7 +206,7 @@ The set of reference objects is critical, as the label transfer to the survey ob
 Also, as \tc\ may have to interpolate and extrapolate to new parts of label space as
 it encounters new kinds of spectra among the survey objects, the quality
 of the label transfer depends on the extent to which the reference objects
-cover label space (\teff, \logg, [Fe/H], [X/Fe], and so on) and the density with which they cover it.
+cover label space (\teff, \logg, \feh, \xfe, and so on) and the density with which they cover it.
 The performance of a data-driven model like \tc\ can depend strongly on the size and quality of its training set of reference objects, much more strongly than the square-root of the number!
 
 In practice, for the \apogee\ data,
@@ -210,19 +216,17 @@ optical wavelength region.
 Specifically, the reference dataset we use is that of the globular and open cluster data observed by \apogee\ for calibration of their abundance pipeline \citep{Meszaros2013}. 
 This reference dataset comprises about 543 stars from 19 open and globular clusters, which span stellar parameter ranges 
 of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
-Exactly which stellar labels we adopt for theses reference objects, is critical to the subsequent output, and hence we discuss it in ~\ref{sec:ApogeeRefLabels} .
+Exactly which stellar labels we adopt for theses reference objects is critical to the subsequent output, and hence we discuss it all in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
 
-
-% note there are 20 in their list but 1 gc has only 1 star and the abundance looks incorrect to me. 
-
+% MKN:  SHOULD THIS BE IN THE MAIN TEXT?  note there are 20 in their list but 1 gc has only 1 star and the abundance looks incorrect to me. 
 
 The above set of labels for the reference objects is well defined, but still means that the reference objects in the clusters do not lie on a single model isochrone 
-(see Fig. \ref{fig:trainingaspcap}). 
+(see \figurename~\ref{fig:trainingaspcap}). 
 As an alternative set of reference labels, we consider one where the stellar parameters (\teff , \logg ) of the reference objects lie by construction on a single isochrone. 
 For that we adopt a \logg\ label for all of the reference stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the literature age and \feh\ of each cluster. 
 
 We discuss our motivation for doing this and our results in the Discussion section of our paper.  
-The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Isochrone-corrected'' labels, are shown in Figures \ref{fig:trainingaspcap} and \ref{fig:trainingisochrone}, respectively. 
+The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Isochrone-corrected'' labels, are shown in \figurenames~\ref{fig:trainingaspcap} and \ref{fig:trainingisochrone}, respectively. 
 
 %run -i fitiso_apogeetempfeh_paperrework2.py
 %makeonisochrone_training_4panel_revb.py
@@ -236,7 +240,7 @@ The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Iso
 \begin{figure}[h!]
 \centering
   \includegraphics[scale=0.33]{./plots/training_mkn2.pdf}
-\caption{Stellar labels for all reference objects as is Figure \ref{fig:trainingaspcap}, except that the \logg\ values have been adjusted from the \aspcap-corrected value to exactly match the isochrone, we refer to this set of labels as  'isochrone-corrected' labels to differentiate them from the correction in Figure \ref{fig:trainingaspcap}.  }
+\caption{Stellar labels for all reference objects as is \figurename~\ref{fig:trainingaspcap}, except that the \logg\ values have been adjusted from the \aspcap-corrected value to exactly match the isochrone, we refer to this set of labels as  'isochrone-corrected' labels to differentiate them from the correction in \figurename~\ref{fig:trainingaspcap}.  }
 \label{fig:trainingisochrone}
 \end{figure}
 
@@ -256,11 +260,11 @@ using polynomial fit to an upper quantile (for example, 80 or 90~percent) of the
   
 After a training step with spectra of reference objects that have been  normalized  by this pseudo-continuum,
 the \tc\ can provide an improved identification of continuum regions in the spectrum: 
-we take those pixels to be continuum that show nearly unity flux in the spectral model's baseline spectrum (see \S~\ref{sec:spectralmodel}), 
+we take those pixels to be continuum that show nearly unity flux in the spectral model's baseline spectrum (see \sectionname~\ref{sec:spectralmodel}), 
 say within a few percent, and at the same time show almost no dependence in their normalized flux on the stellar labels.
-That is, we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in Section \ref{sec:results}. Subsequently, we fit a low-order Chebyshev polynomial to these continuum pixels,
+That is, we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in \sectionname~\ref{sec:results}. Subsequently, we fit a low-order Chebyshev polynomial to these continuum pixels,
  treating each of the three chips separately, weighted by the inverse flux errors provided \apogee\ fits files. A 2nd-order Chebyshev polynomial is sufficient to use for the pseudo-continuum normalised data provided by \apogee\ and we apply this normalisation to both \aspcapstar\ and  \apstar\ files. 
-Figure \ref{fig:norm} shows an example of this normalisation applied to survey spectra with different labels (output from \tc). 
+\figurename~\ref{fig:norm} shows an example of this normalisation applied to survey spectra with different labels (output from \tc). 
 This Figure illustrates typical \apogee\ spectra and demonstrates how the spectra 
 vary as a function of metallicity at a given temperature , and as a function of temperature at a given metallicity. 
 For a clearer view of individual absorption linea features, we use narrower regions marked in this Figure, (A) and (B), for all subsequent examination of the spectral data. 
@@ -313,7 +317,7 @@ that we can test exactly how well we can reproduce the results from \apogee\ for
 
 The corrections to the labels made by \apogee\ based on the cluster data are applied to the immediate output of the \aspcap\ pipeline that arose from comparisons to a library of stellar models.
 Temperature corrections are determined by comparing the infrared flux temperatures of the stars \citep{gonzalez2009}, \logg\ corrections are from the offset between \aspcap\ results and Kepler results for common stars and \feh\ corrections are from the difference between the \aspcap\ and  the literature value of each cluster.  
-The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs.  We adopt the \aspcap\ corrected [M/H] values for these clusters and these are corrected to the [Fe/H] of the clusters and so we adopt this label as an [Fe/H] (that is, this label from \apogee\ therefore, does not explicitly use \feh\ lines, but is derived from an \feh\ correction). 
+The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs.  We adopt the \aspcap\ corrected \mh\ values for these clusters and these are corrected to the \feh\ of the clusters and so we adopt this label as an \feh\ (that is, this label from \apogee\ therefore, does not explicitly use \feh\ lines, but is derived from an \feh\ correction). 
 The analysis in \citet{Meszaros2013} is restricted not only to giants but also stars with SNR $>$ 70, determined to be the minimum SNR for reliable stellar parameters by \apogee.
 
 These corrections implemented by \apogee\ in \teff, \logg\ and  \feh\ place the giants in the cluster stars on or near the iscohrones (see Figures 7 and 8 in Meszaros et al., (2013)).  
@@ -327,7 +331,7 @@ the \aspcap\ output based on the offset in the temperature scales. We find the f
 
 We do not attempt an individual metallicity correction for each dwarf star but rather set all \feh\ of the dwarf spectra to \feh\ = 0.03 \citep{barrado2001}.
 Tests on the input labels to \tc\ demonstrate that there is only a small degradation of the results caused by adopting a single \feh\ for every cluster star for the literature value of the cluster, instead of individual \feh\ values for the stars (that is, from the \aspcap\ corrected values). 
-To determine the \logg\ for these Pleiades main sequence stars, we shift the stars vertically to their nearest positions on an appropriate age-metallicity Padova isochrone of 150 Myr at [Fe/H] = 0.03 \citep{girardi2000}. 
+To determine the \logg\ for these Pleiades main sequence stars, we shift the stars vertically to their nearest positions on an appropriate age-metallicity Padova isochrone of 150~Myr at $\feh = 0.03$ \citep{girardi2000}. 
 Due to the high differential reddening to the Pleiades, and the subsequent large temperature errors using the IR flux method that result from this, we only selected the 64 from a total of 72 Pleiades dwarfs, eliminating those with high extinction of SFD (corrected) E(J-K) $>$ 0.30 \citep{Schlafly2011}.
 
 Adopting the input labels from the \aspcap-corrected parameters determined from calibrations to literature cluster values also transfers the errors from the \aspcap\ pipeline: of $<$ 150K in \teff,  $<$ 0.2 dex in \logg\ and $<$ 0.1 dex in \feh.   
@@ -427,7 +431,7 @@ and the $\set{\ell_n}$, which permits to solve for the coefficients and the scat
 \sum_{n=1}^N \ln p(f_{n\lambda}\given\set{\theta^T}_\lambda, \boldsymbol{\ell_n}, s_\lambda^2)
 \label{eq:trainingstep}
 \end{eqnarray}
-The linear-in-labels form (Eq. \ref{eq:linear}) has a number of useful properties.
+The linear-in-labels form (\ref{eq:linear}) has a number of useful properties.
 The coefficient vector $\theta^0_\lambda$ has a simple interpretation, it is the ``baseline spectrum" of the spectral model. 
 The next coefficient vectors,  $\theta^{1,2,3}_\lambda$, linear in \teff , \logg ~and \feh\ 
 describe the lowers-order dependence of the spectrum on these labels.
@@ -455,7 +459,7 @@ vector $\set{\ell_n}$ is quadratic in the labels: so this label vector is descri
 \label{eq:quadinlabels}
 \end{equation}
 
-For the training step of \tc , this quadratic-in-labels form  of the spectral model (Eq. \ref{eq:quadinlabels}) is similar to a the linear-in-labels form (Eq. \ref{eq:linear}) in a number
+For the training step of \tc , this quadratic-in-labels form  of the spectral model (\ref{eq:quadinlabels}) is similar to a the linear-in-labels form (\ref{eq:linear}) in a number
 of ways.
 It is still the case that optimization of the model, at fixed scatter
 $s_\lambda^2$ is a pure linear-algebra operation (weighted least
@@ -522,7 +526,7 @@ the likelihood function, or else by applying priors
 and performing probabilistic inference.
 Here we will optimize for now.
 
-When we use the simple linear-in-labels form (Eq. \ref{eq:linear}) for the
+When we use the simple linear-in-labels form (\ref{eq:linear}) for the
 mean model $\set{\ell_m}$, the optimization to obtain maximum-likelihood labels
 (given parameters $[\set{\theta}_\lambda, s_\lambda^2]$) is simple linear
 least-square fitting.
@@ -537,7 +541,7 @@ Instead an optimisation function is used, the python curve$\_$fit routine, which
 
 We have described how we construct a spectral model from the reference objects in the training step and then 
 estimate stellar labels for survey stars with that model in the test step. 
-We now present in Section \ref{sec:results} the results of implementing our model for all \apogee\ data, where we applied a quadratic model; linear in the coefficients and non-linear in the label-inference.  
+We now present in \sectionname~\ref{sec:results} the results of implementing our model for all \apogee\ data, where we applied a quadratic model; linear in the coefficients and non-linear in the label-inference.  
 For the quadratic model we then show this applied to the DR10 data, including at lower SNR and investigate different input training labels. 
 
 
@@ -569,9 +573,9 @@ We start by considering all but one of the 543 cluster stars as the reference se
 \subsection{The Choice of the Spectral Model Complexity}
 \label{sec:ModelComplexity} 
 
-To evaluate the \tc 's label-transfer we have to settle on a suitable functional form for the spectral model (Eq.~\ref{eq:specmodel}).
-To start, one could consider picking the simplest -- namely linear-in-label -- spectral model, comprised of only four coefficients at every pixel (Eq.~\ref{eq:linear}).
-However, through take-one-out tests on the set of reference objects (see \S \ref{sec:take-one-out}), we found that this simple linear model was too inflexible to describe the spectral flux dependence on the labels.
+To evaluate the \tc 's label-transfer we have to settle on a suitable functional form for the spectral model (\ref{eq:specmodel}).
+To start, one could consider picking the simplest -- namely linear-in-label -- spectral model, comprised of only four coefficients at every pixel (\ref{eq:linear}).
+However, through take-one-out tests on the set of reference objects (see \sectionname~\ref{sec:take-one-out}), we found that this simple linear model was too inflexible to describe the spectral flux dependence on the labels.
 As a consequence, the lables that emerged from the test step applied to the reference objects showed large and systematic deviations compared to ``known" input label values,
 especially at the extremes of the labels' ranges. 
 
@@ -584,10 +588,10 @@ This is perhaps not surprising, as absorption features, particularly strong line
 The next simplest spectral model, the quadratic-in-labels case,
  presumes that the continuum normalized flux is a general second-order polynomial of the stellar labels, $f_{n\lambda} =
 \boldsymbol{\theta_\lambda}^T \cdot \boldsymbol{\ell_n} + \mbox{noise}$ 
-(Eq. \ref{eq:linearmodel}), 
+(\ref{eq:linearmodel}), 
 but where $\boldsymbol{\theta_\lambda}$ now contains 10 elements at every pixel.
 For the case of the three labels $(\teff , \logg , \feh)$ the label vector $\boldsymbol{\ell_n}$
-(Eq. \ref{eq:quadinlabels})
+(\ref{eq:quadinlabels})
 becomes  
 \begin{equation}
 \boldsymbol{\ell_n}\equiv(\teff\  , \logg\  , \feh\  , \teff^2\ , \teff\cdot \logg\ , \teff \cdot\feh\ , \logg^2 \ , \logg\cdot \feh\  , \feh^2)
@@ -612,16 +616,16 @@ over the full label range of our the reference data. The \textit{rms} of the dif
 95~K in $\teff$, 0.24 in in $logg$, 0.08 in $\feh$, with biases $\Delta$ that are 3-7 times smaller.  
 These variances inherently include some portion the uncertainties on the input labels (from ASCPAP corrected values, 
 of \teff\ $<$ 150 K, \logg\ $<$ 0.2 dex and \feh\ $<$ 0.1 dex \citep{Meszaros2013}.
-The precision values stated in Figure \ref{fig:takeonestarout} are the formal uncertainties in the labels arising 
+The precision values stated in \figurename~\ref{fig:takeonestarout} are the formal uncertainties in the labels arising 
 in the test step's optimization; for the S/N of the spectra in this take-one-out test, these errors are very small.
 It is important to remember that the one left-out object and its spectrum are completely detached from the training step, 
 except that they have the same experimental set-up and are likely drawn from a part of label space well-represented by the remaining reference objects.
 
-There are a few outliers in Figure \ref{fig:takeonestarout}, cluster members of M3 in particular, that are offset in \teff\ and \logg\ space. 
+There are a few outliers in \figurename~\ref{fig:takeonestarout}, cluster members of M3 in particular, that are offset in \teff\ and \logg\ space. 
 
 The Pleiades cluster, which has only spectra for main sequence stars, shows the poorest determination in the \feh\ label. We assigned all its members a single \feh ~as reference labels, unlike the other reference objects, where we used their \aspcap -corrected labels from DR10.
 The \textit{rms} is comparable to the estimated \apogee\ errors. The \logg\ label has the largest relative \textit{rms} in the ASPCAP--\tc\ comparison, larger than the \apogee\ uncertainty, suggesting an internal uncertainty of $<$ 0.1 dex in \logg\ determined by \tc.
-If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \logg 's (cf. \S \ref{sec:ApogeeRefLabels}), the \textit{rms} improves by 10\% in \teff\ and \logg .
+If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \logg 's (cf. \sectionname~\ref{sec:ApogeeRefLabels}), the \textit{rms} improves by 10\% in \teff\ and \logg .
 
 
 %Removing this cluster improves the rms in the \teff\ and \logg\ labels by $>$ 10\%
@@ -631,7 +635,7 @@ If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \
 \centering
 %  \includegraphics[scale=0.3]{./plots/takeoneout_diag_test18_222.pdf}
     \includegraphics[scale=0.45]{./plots/takeout_histc.png}
-\caption{The take-one-star-out cross-validation of the 543 stars in the training dataset using the quadratic model in Equation  \ref{eq:quadin3labels} and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
+\caption{The take-one-star-out cross-validation of the 543 stars in the training dataset using the quadratic model in equation~(\ref{eq:quadin3labels}) and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
 \label{fig:takeonestarout}
 \end{figure}
 %\begin{figure}[h!]
@@ -641,11 +645,11 @@ If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \
 %\label{fig:takeonestarout_own}
 %\end{figure}
 
-The outlying stars in Figure \ref{fig:takeonestarout} may be due to an anomalous scale of the input labels of these stars compared to the other training data, or it may be a consequence of the model being too inflexible to properly model how flux changes with labels across the parameter space of the training dataset. 
+The outlying stars in \figurename~\ref{fig:takeonestarout} may be due to an anomalous scale of the input labels of these stars compared to the other training data, or it may be a consequence of the model being too inflexible to properly model how flux changes with labels across the parameter space of the training dataset. 
 The temperature of the dwarfs is offset low at increasing temperature, compared to the input labels, so the model may be limited in describing the difference between dwarf and giant spectra. 
 There is a flattening at the low metallicity end of the model in \feh\ in the output labels at \feh\ $<$ -2.2, however this value of \feh\ = --2.2 also corresponds to the literature value of this cluster, M5 \citep{Meszaros2013}. 
 The lower metallicity of the \aspcap\ label may represent internal scatter in the \aspcap\ results.
-The fact that Figure \ref{fig:takeonestarout} shows only very small systematic offsets and such tight scatter leads us to conclude that for the
+The fact that \figurename~\ref{fig:takeonestarout} shows only very small systematic offsets and such tight scatter leads us to conclude that for the
 current context the quadratic-in-labels spectral model is sufficient in the label tranfer. 
 
 Interestingly, an analogous take-one-cluster-out test significantly increases the scatter in the label transfer, 
@@ -653,17 +657,17 @@ increasing the rms differences to $<$ 150 K in \teff, $<$ 0.4 dex in \logg\ and 
 This indicates that our training set is sufficiently small that each cluster matters for a good label transfer. 
 One particular case in the \apogee\ context is the Pleiades cluster: it is the \textit{only} cluster for which dwarf stars have been observed and hence we can draw reference labels for main sequence stars. 
  
-We now turn to illustrating where the information that led to the accurate label transfer (Fig. \ref{fig:takeonestarout}) came from in the spectra.
-Figure \ref{fig:coeffs} shows -- across the narrow regions (A) and (B) of the spectra, marked in Fig. \ref{fig:norm} -- the first coefficient vectors $\theta_{0,1,2,3}$ of the spectral model (those linear in the three labels), which were fit in the training step for the quadratic-in-labels model in Equation \ref{eq:quadinlabels}. 
+We now turn to illustrating where the information that led to the accurate label transfer (\figurename~\ref{fig:takeonestarout}) came from in the spectra.
+\figurename~\ref{fig:coeffs} shows -- across the narrow regions (A) and (B) of the spectra, marked in \figurename~\ref{fig:norm} -- the first coefficient vectors $\theta_{0,1,2,3}$ of the spectral model (those linear in the three labels), which were fit in the training step for the quadratic-in-labels model in equation~(\ref{eq:quadinlabels}). 
 
 
 The top panel shows the zeroth order-coefficient vector $\theta_0$, or the baseline spectrum, of the model. 
 The mid panel shows the coefficients that are simply linear in \teff, \logg\ and \feh.
-In the top panel of Figure \ref{fig:coeffs}, the red, blue and green shaded wavelength regions with the 5\% 
+In the top panel of \figurename~\ref{fig:coeffs}, the red, blue and green shaded wavelength regions with the 5\% 
 highest coefficient values $|\theta_{1,2,3}|$ in the \feh, \teff\ and \logg\ labels respectively. 
 These regions indicate where the spectra's flux levels strongly vary with these labels.
 This also highlights that different parts of the spectrum depend differently on the labels. Note there are many regions where the \feh\ label dominates in contribution to the flux.
-For the first label vector for example in the middle panel of Figure \ref{fig:coeffs}, 
+For the first label vector for example in the middle panel of \figurename~\ref{fig:coeffs}, 
 there is typically asymmetry for a given absorption feature, in the flux and the labels. 
 There are very few regions where the flux is a function of only one of the labels, and pixels are typically covariant 
 (that is, the same pixel will have a higher flux at both lower \teff\ and higher \feh). 
@@ -671,14 +675,14 @@ This simply reflects well-known covariances between, for example, temperature an
 The strongest \logg\ dependence is typically associated with weak lines including the wings of the 
 feature and the \feh\ label, with strong lines, particularly the depth of the line. 
 
-The bottom panel of Figure \ref{fig:coeffs} shows the scatter vector of the spectral model, 
+The bottom panel of \figurename~\ref{fig:coeffs} shows the scatter vector of the spectral model, 
 indicating the dispersion of the flux of the training data around the best-fit spectral model at each pixel. 
 The scatter is small and this indicates that our model is a good representation of the data. 
 However, the scatter is highest where the most information in the spectra are contained. 
 This implies that either our quadratic-in-labels spectral model is still somewhat too restricted, or that the labels of our training dataset are imperfect or incomplete 
 (for example, lacking $[\alpha / Fe]$ as a label), or a combination of these effects. 
-From the coefficients of an initial fit of this spectral models (see, for example, the middle panel of Fig.~\ref{fig:coeffs}), 
-the continuum pixels have been determined following \S~\ref{sec:ContNorm}. 
+From the coefficients of an initial fit of this spectral models (see, for example, the middle panel of \figurename~\ref{fig:coeffs}), 
+the continuum pixels have been determined following \sectionname~\ref{sec:ContNorm}. 
 These are marked in the black dots in the top panel of the Figure, and are used for an iterated, 
 consistent continuum normalisation for all spectra, both of the reference and of the survey objects.
 
@@ -688,7 +692,7 @@ consistent continuum normalisation for all spectra, both of the reference and of
 \begin{figure}[h!]
 \centering
     \includegraphics[width=\hsize]{./plots/R1_continuum4.png}
-  \caption{The first-order coefficients and scatter across the sample regions of the spectra from Figure 1, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \log, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see Section 5.2).}
+  \caption{The first-order coefficients and scatter across the sample regions of the spectra from \figurename~\ref{MKNFIXME}, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \log, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see Section 5.2).}
 \label{fig:coeffs}
 \end{figure}
 \textbf{We had once talked about scaling these coefficients - how do I do this exactly - x mean/range? Note to HWR - This is the first order coefficients for the quadratic model, I can use the simple first order model to make this (which the changes to the caption in the marked up pdf are consistent with doing) but the scatter is higher - let me know which is preferable.}
@@ -698,27 +702,27 @@ consistent continuum normalisation for all spectra, both of the reference and of
 \subsection{Identification of \apogee\ Continuum Pixels}
 \label{sec:ApogeeContinuum}
 
-The continuum pixels, which are shown in Figure \ref{fig:coeffs} for wavelength regions A and B, 
+The continuum pixels, which are shown in \figurename~\ref{fig:coeffs} for wavelength regions A and B, 
 have been determined from the quadratic model using a combination of the flux level and the coefficients returned
-(cf. \S~\ref{sec:ContNorm}). Specifically, we found that 35\% of the pixels in the baseline spectrum of the model (the vector $\theta^0_\lambda$) flux levels within 1\% of unity. However, not all these pixels are suitable continuum pixels, as many of them have significant dependencies (that is, $\theta^{1,2,3}_\lambda$)
+(cf. \sectionname~\ref{sec:ContNorm}). Specifically, we found that 35\% of the pixels in the baseline spectrum of the model (the vector $\theta^0_\lambda$) flux levels within 1\% of unity. However, not all these pixels are suitable continuum pixels, as many of them have significant dependencies (that is, $\theta^{1,2,3}_\lambda$)
 on the three labels. 
 In practice, we make a continuum selection taking the 15\% of pixels with coefficients nearest 0 for each coefficient and a flux selection of 1 $\pm$ 0.15 [{\bf HWR: really $\pm$ 15\% ? I thought 35\% are within 1\% ?, MKN - they are this is just what worked well - I can redo some tests of this.}]
 These criteria return around 7\% of pixels, which we adopt as true continuum pixels for data that span the label range of the training set. We use the inverse variance weighting of these pixels for the corresponding 2nd order Chebyshev polynomial fit. 
-As we show explicitly in \S~\ref{sec:lowSNR}, we find this to provide a robust continuum normalisation across the stars that are within the parameter range of the training set, 
+As we show explicitly in \sectionname~\ref{sec:lowSNR}, we find this to provide a robust continuum normalisation across the stars that are within the parameter range of the training set, 
 across all SNR. 
 
 \subsection{\tc 's Label Transfer for \apogee\ DR10}
 \label{sec:APOGEE_DR10_comparison}
 
 Going beyond leave-one-out tests on the set of reference objects, we now apply \tc\ to effect a label transfer to the entire \apogee\ DR10.
-We take the spectral model built in the \apogee\ cluster stars in \S~\ref{sec:ModelComplexity}, \S~\ref{sec:take-one-out} and \S~\ref{sec:ApogeeContinuum},
+We take the spectral model built in the \apogee\ cluster stars in \sectionname~\ref{sec:ModelComplexity}, \sectionname~\ref{sec:take-one-out} and \sectionname~\ref{sec:ApogeeContinuum},
 and apply the test step with this model to all DR10 spectra.
 Remarkably, we are able to reproduce well the \aspcap\ labels for DR10 spectra. We have run \tc\ through all 47,000 stars in 150 fields in DR10 contained in the available \textit{aspcapstar} files as well as an additional 4800 stars in 20 commissioning fields for which no \aspcap\ parameters were provided in DR10, 
 made available in the (non pseudo-continuum normalised) \textit{apStar} files. 
 We also have run \tc\ through the additional commissioning stars available in the \apstar\ files across the fields and in total this
  comprises 55,000 DR10 stars in 170 fields. %These 170 fields comprise a total of $\sim$ 51,600 \apogee\ DR10 stars. 
 
-These results of \tc\ for all DR10 stars for which we return parameters are provided online in Table \ref{tab:online}. 
+These results of \tc\ for all DR10 stars for which we return parameters are provided online in \tablename~\ref{tab:online}. 
 For the 30,500 stars with parameters provided by DR10, we find we reproduce the \apogee\ labels as follows: 
 \teff\ = +12 K $\pm$ 87 K , \logg\ = --0.04 dex $\pm$ 0.18 dex and \feh\ = +0.01 $\pm$ 0.10 dex in \feh. 
 The rms errors are comparable to the error estimates for \apogee\ parameters in \citet{Meszaros2013} 
@@ -743,13 +747,13 @@ star ID & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$
 \label{tab:online} }
 \end{table*}  
  
-The comparison of \tc\ with ASPCAP, showing the bias, rms and formal precision for the labels (\teff , \logg , \feh ) in six sample fields, with bulge, disk and halo targeting, is illustrated in Figure \ref{fig:cal}. As for all stars in the survey with \aspcap\ labels, these fields show that we reproduce the \aspcap\ corrected stellar parameters with typical rms uncertainties of \teff\ $<$ 100 K, \logg\ $<$ 0.20 dex and $<$ \feh\ $<$ 0.10. These variances are slightly smaller than expected from our cross-validation leave-one-star-out test. This may be because the median of the stellar labels for the D10 survey object are near the median labels of the reference objects from the training step. 
+The comparison of \tc\ with ASPCAP, showing the bias, rms and formal precision for the labels (\teff , \logg , \feh ) in six sample fields, with bulge, disk and halo targeting, is illustrated in \figurename~\ref{fig:cal}. As for all stars in the survey with \aspcap\ labels, these fields show that we reproduce the \aspcap\ corrected stellar parameters with typical rms uncertainties of \teff\ $<$ 100 K, \logg\ $<$ 0.20 dex and $<$ \feh\ $<$ 0.10. These variances are slightly smaller than expected from our cross-validation leave-one-star-out test. This may be because the median of the stellar labels for the D10 survey object are near the median labels of the reference objects from the training step. 
 They are not concentrated to the extreme ends of the range, which have a higher weighting in evaluating the test data with cross validation. 
 The \tc 's label transfer also returns values for those +15\% of stars in DR10 are that must be main-sequence dwarf stars. 
-These are not shown in Fig.~\ref{fig:cal}, as \apogee\ does not report ASCAP corrected dwarf parameters for DR10. 
-We exclude the rapid rotators using the \aspcap\ \rotwarn\ flag as we can not return parameters for spectral types not included in our training set (see \S~\ref{sec:AnomalousSpectra}). 
+These are not shown in \figurename~\ref{fig:cal}, as \apogee\ does not report ASCAP corrected dwarf parameters for DR10. 
+We exclude the rapid rotators using the \aspcap\ \rotwarn\ flag as we can not return parameters for spectral types not included in our training set (see \sectionname~\ref{sec:AnomalousSpectra}). 
 
-In Figure \ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ for the 1400 stars from the six sample fields as a function of \aspcap\ \teff, \logg\ and \feh. There are weak trends; at low \teff\ $\sim$ 3700 K, we find temperatures about 100 K cooler than \apogee\, at low \logg\ we find $\sim$ 0.15 dex larger \logg\ than \apogee\ and at the lowest metallicities \feh\ $<$ --2.0, we typically report higher metallicities on the order of 0.05 to 0.3 dex.
+In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ for the 1400 stars from the six sample fields as a function of \aspcap\ \teff, \logg\ and \feh. There are weak trends; at low \teff\ $\sim$ 3700 K, we find temperatures about 100 K cooler than \apogee\, at low \logg\ we find $\sim$ 0.15 dex larger \logg\ than \apogee\ and at the lowest metallicities \feh\ $<$ --2.0, we typically report higher metallicities on the order of 0.05 to 0.3 dex.
 
 
 %makeplot_fits_v19_bw.py
@@ -769,34 +773,34 @@ In Figure \ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ for t
 \begin{figure}[!h]
 \centering
         \includegraphics[scale=0.35]{./plots/cplot2.png} 
-\caption{Difference between the labels (\teff, \logg, and \feh) derived through \tc\ in the test step and their \aspcap\ DR10 values for all the 1400 stars shown in Figure 6. The error bars are dominated by those quoted by \aspcap. There are systematic offsets at the coolest temperatures.}
+\caption{Difference between the labels (\teff, \logg, and \feh) derived through \tc\ in the test step and their \aspcap\ DR10 values for all the 1400 stars shown in \figurename~\ref{MKNFIXME}. The error bars are dominated by those quoted by \aspcap. There are systematic offsets at the coolest temperatures.}
 \label{fig:cplot}
 \end{figure}
 
 
-We show \tc 's resulting label distribution in the \teff-\logg\ plane from \tc\ for the stars in DR10 in Figure \ref{fig:iso}. 
-This Figure shows the result when \aspcap -corrected labels labels are used for the reference objects in teh training step; \ref{fig:iso2} shows the analogous results but for isochrone-corrected reference labels. There are 37,500 stars in these Figures that are remain after excluding stars with the \rotwarn\ flag set, with velocity scatter $>$ 10 \kms\ and telluric calibration target set. These Figures also show the labels for the 15\% stars with \logg $>$ 4 dex that must be main sequence stars.
+We show \tc 's resulting label distribution in the \teff-\logg\ plane from \tc\ for the stars in DR10 in \figurename~\ref{fig:iso}. 
+This \figurename\ shows the result when \aspcap -corrected labels labels are used for the reference objects in teh training step; \figurename~\ref{fig:iso2} shows the analogous results but for isochrone-corrected reference labels. There are 37,500 stars in these Figures that are remain after excluding stars with the \rotwarn\ flag set, with velocity scatter $>$ 10 \kms\ and telluric calibration target set. These Figures also show the labels for the 15\% stars with \logg $>$ 4 dex that must be main sequence stars.
  Only the stars that have been determined using targeting flags and inspection of the spectra to be dwarfs with rotation, 
  have been removed using the \aspcap\ rotation warning set flag. 
  Were we to force label transfer with \tc , we find that the labels lie an unphysical space at very low \feh and \logg and high \teff.
 
 In short, for all stars with good \aspcap\ labels, we find excellent agreement between \tc\ and \aspcap\ by adopting ASCPAP corrected labels in the training step.
-In addition, we are able to derive plausible parameters for dwarf stars in DR10. However, the \teff-\logg\ plane for these stars shows a deviation from the giant branch of the isochrone at low \logg\ (see the right panel of Figure \ref{fig:iso}). This is a consequence of the input labels of the training spectra. 
+In addition, we are able to derive plausible parameters for dwarf stars in DR10. However, the \teff-\logg\ plane for these stars shows a deviation from the giant branch of the isochrone at low \logg\ (see the right panel of \figurename~\ref{fig:iso}). This is a consequence of the input labels of the training spectra. 
 
 If instead we use the isochrone-corrected \logg\ labels to fix \tc 's spectral model
-(cf. \S~\ref{sec:ReferenceObjects}), the results of the label transfer deviate slightly from the \aspcap\ scale in each of the parameters. 
+(cf. \sectionname~\ref{sec:ReferenceObjects}), the results of the label transfer deviate slightly from the \aspcap\ scale in each of the parameters. 
 However, with these new \logg\ labels, we find a broad giant branch width that is consistent with expectations in \teff-\logg\ space 
-given the metallicity of these stars (see the right hand panel of Figure \ref{fig:iso2}). 
+given the metallicity of these stars (see the right hand panel of \figurename~\ref{fig:iso2}). 
 
 This comparison again illustrates both the power of \tc\ to transfer labels, but also its dependence on the choice of suitable reference labels. 
 
 Currently, no priors are incorporated in the \tc\ to place the resulting label estimates near physically plausible isochrones. 
-Nonetheless, almost all stars lie in physical spaces on the isochrones as shown in Figures \ref{fig:iso} and \ref{fig:iso2} validates the labels. 
+Nonetheless, almost all stars lie in physical spaces on the isochrones as shown in \figurenames~\ref{fig:iso} and \ref{fig:iso2} validates the labels. 
 The labels for the main sequence stars are presumably much more poorly determined, given the limitations of the reference objects in the training step. 
 Remarkably, though, only a handful of stars at low \feh\ and low \logg\ do not lie near conceivable isochrones. 
 
 At metallicities \feh\ $<$ --0.25 the red clump is offset too high in the \logg\ label. This is noted in \citet{bovy2014} who estimate that this offset shifts the red clump and red giant branches 0.2 dex closer together. 
-Our \logg\ labels in Figure \ref{fig:iso} are essentially identical to \apogee\ ASPCAP labels (offset -0.04 dex in \logg\ for DR10) and the left panels show that the red clump stars which should be seen as a density maxima of stars around \logg\ $\sim$ 2.5, \teff\ $\sim$ 4800K \citep[e.g.,][]{Zhao2001} 
+Our \logg\ labels in \figurename~\ref{fig:iso} are essentially identical to \apogee\ ASPCAP labels (offset -0.04 dex in \logg\ for DR10) and the left panels show that the red clump stars which should be seen as a density maxima of stars around \logg\ $\sim$ 2.5, \teff\ $\sim$ 4800K \citep[e.g.,][]{Zhao2001} 
 are offset to higher \logg\ than the red clump branch of the Padova isochrone, for stars \feh\ $<$ --0.25. 
 This offset is on the order of 0.2 dex at \feh\ = -0.5 and is present for both \aspcap-corrected labels and isochrone-corrected labels. 
 This may indicate that the \aspcap\ temperature scale is offset too cool in DR10 (but as a function of \feh).
@@ -810,7 +814,7 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
   \hspace{-20pt}
     \includegraphics[scale=0.25]{./plots/iso1a.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
-\caption{Labels for the $\sim$ 38,000 stars from DR10 derived by \tc\ based on \aspcap-corrected labels for the set of reference objects. The set of panels on the left shows \teff-\logg\ in four metallicity bins. There are $\sim$ 21,600, 14,000, 1700, and 900 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.  The panel on the right shows all stars coloured in [Fe/H] on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. }
+\caption{Labels for the $\sim$ 38,000 stars from DR10 derived by \tc\ based on \aspcap-corrected labels for the set of reference objects. The set of panels on the left shows \teff-\logg\ in four metallicity bins. There are $\sim$ 21,600, 14,000, 1700, and 900 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.  The panel on the right shows all stars coloured in \feh\ on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. }
 \label{fig:iso}
 \end{figure}
 
@@ -822,7 +826,7 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
   \hspace{-20pt}
     \includegraphics[scale=0.25]{./plots/iso2a.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
-\caption{Same as Figure \ref{fig:iso} but based on the isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (equation \ref{eq:10} that forces resulting labels to lie in physically plausible location sod label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects.}
+\caption{Same as \figurename~\ref{fig:iso} but based on the isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (\ref{eq:10}) that forces resulting labels to lie in physically plausible location sod label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects.}
 \label{fig:iso2}
 \end{figure}
 
@@ -834,7 +838,7 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
   \begin{figure}[!h]
    \centering
  \includegraphics[width=\hsize]{./plots/2dwarfs.png}
-  \caption{Examples of hot rotating dwarfs in the \apogee\ DR10 data across regions A and B, comparable to Figure \ref{fig:coeffs}. These types of stars are \textit{not} included in our set of reference objects. Therefore, the label transfer by \tc\ leads to grossly unphysical label estimates.}
+  \caption{Examples of hot rotating dwarfs in the \apogee\ DR10 data across regions A and B, comparable to \figurename~\ref{fig:coeffs}. These types of stars are \textit{not} included in our set of reference objects. Therefore, the label transfer by \tc\ leads to grossly unphysical label estimates.}
 \label{fig:dwarfs}
 \end{figure}
 
@@ -843,7 +847,7 @@ The dwarf spectra in our reference set only come from the Pleiades cluster, at a
 This restricted sample limits our ability to determine the stellar parameters for dwarf stars. 
 Given these training data, our model \textit{can} differentiate dwarfs from giants, as long as their spectra are comparable to that of the Pleiades. 
 However, none of the dwarfs in our training set are hot rotating objects with broad line features. 
-Three examples of stars with broad line features that are in the test data but not included in our training dataset are shown in Figure \ref{fig:dwarfs}.
+Three examples of stars with broad line features that are in the test data but not included in our training dataset are shown in \figurename~\ref{fig:dwarfs}.
 
 It is possible to differentiate these stars with \tc\ because they are output in non-physical space in \teff-\logg, and present as a group of very metal poor, \feh\ $\sim$ --2.0, low \logg\ stars $\sim$ 0, with cool temperatures $\sim$ 4000 K. The metal poor solution determined by \tc\ reflects the dearth of lines in the spectra for these hot stars, given the training model. This group of stars is flagged in \aspcap\ with a \rotwarn\ flag set. We therefore are able to exclude these stars from our analysis using this condition. 
  
@@ -854,7 +858,7 @@ It is possible to differentiate these stars with \tc\ because they are output in
  \label{sec:lowSNR}
 
 
-By identifying `true' continuum pixels we have been able to implement a simple continuum normalisation that is robust across low and high SNR, which is valid across the parameter range of our training set. To examine how \tc\ performs at lower SNR, we have taken individual visits from the \apstar\ fits files, when there are $\ge$ 4 visits, and run \tc\ on a single visit spectra, when consistently continuum normalized (\S~\ref{sec:ApogeeContinuum}) . Note, that we have not simply added noise to the combined DR10 spectra for our low SNR tests, which would bypass the question of how consistently the continuum can be defined at different S/N levels. Instead, we have treated single-visit spectra as (formally) independent survey objects. Figure \ref{fig:lowsnr} shows a comparison of a sample star for a single visit and combined visits ($>$ 4 total visits). Figure \ref{fig:SNR} presents the results of \tc\ compared to \apogee\ for these stars, showing \textit{only} the \apogee\ stars with errors of $<$ 150 K in \teff\ and $<$ 0.25 dex in \logg, across four SNR intervals, from 20 $<$ SNR $<$ 30 to 100 $<$ SNR $<$ 200.
+By identifying `true' continuum pixels we have been able to implement a simple continuum normalisation that is robust across low and high SNR, which is valid across the parameter range of our training set. To examine how \tc\ performs at lower SNR, we have taken individual visits from the \apstar\ fits files, when there are $\ge$ 4 visits, and run \tc\ on a single visit spectra, when consistently continuum normalized (\sectionname~\ref{sec:ApogeeContinuum}) . Note, that we have not simply added noise to the combined DR10 spectra for our low SNR tests, which would bypass the question of how consistently the continuum can be defined at different S/N levels. Instead, we have treated single-visit spectra as (formally) independent survey objects. \figurename~\ref{fig:lowsnr} shows a comparison of a sample star for a single visit and combined visits ($>$ 4 total visits). \figurename~\ref{fig:SNR} presents the results of \tc\ compared to \apogee\ for these stars, showing \textit{only} the \apogee\ stars with errors of $<$ 150 K in \teff\ and $<$ 0.25 dex in \logg, across four SNR intervals, from 20 $<$ SNR $<$ 30 to 100 $<$ SNR $<$ 200.
 
 These Figures illustrate that our approach to continuum normalization works well for both of these SNR regimes and is SNR independent, which is not true for a weighted-quantile normalisation. At the highest SNR (and \apogee\ estimates a upper noise floor of 200 although stars do measure above this), the rms difference between \tc\ and \aspcap\ is comparable to the \aspcap\ measurement errors, at 73K in \teff\, 0.18 dex in \logg\ and 0.11 dex in \feh. At a SNR of 30-50, the rms error increases to 100 K, 0.2 dex and 0.10 dex in \teff, \logg\ and \feh\, respectively. At an SNR of 20-30 the rms error is significantly higher and here the internal errors of \tc\ become comparable to typical minimisation methods and at SNR $<$ 20 exceed them. With this method we can return stellar parameters of \teff, \logg, \feh\ to as good a precisions as minimisation techniques ( \teff\ $<$ 100K, \logg\ $<$ 0.2 dex, \feh\ $< $0.1 dex) with an SNR of $\ge$ 25. 
  
@@ -942,7 +946,7 @@ labels (\teff, \feh, and \logg).
 There is nothing fundamental abous this choice; in principle
 \tc\ could be extended to consider more labels, or a larger
 label space.
-For example, a next generation could include [$\alpha$/Fe] or [X/Fe]
+For example, a next generation could include \alphafe\ or \xfe\
 labels for elements X.
 The only limitation---and it is a \emph{substantial} limitation---is
 that as the label-space grows, the training set must grow to fill it;
@@ -992,7 +996,7 @@ Given common benchmark stars observed between different surveys, these surveys c
 %\tc\ is therefore extremely relevant for chemical tagging and we take an approach of a data-driven differential analysis of spectra, by characterising the behaviour of flux and labels, as a way to fingerprint stars with a common formation history.
 
 %A direct first additional upgrade for \tc\ aligned with directing this method toward chemical tagging, which large surveys like \galah\ and \apogee\ have been constructed around,  is  to add more labels.
-% An obvious initial choice is $\alpha$-enhancement and a subset of key individual abundances [X/Fe]. 
+% An obvious initial choice is $\alpha$-enhancement and a subset of key individual abundances \xfe.
 % It is even possible to test what, if any, information in the spectra are correlated with an age label. 
 % If such information is present in the spectra across a large set of stars in a survey, this method \textit{will} determine exactly which pixels are responsible for carrying this information. In addition, we will gain significantly by moving to a more flexible model like a Gaussian process and allowing our model to be informed by priors in these new directions for this work. 
 
