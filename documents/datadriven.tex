@@ -541,7 +541,7 @@ take the entire $N_\pix$ spectrum of survey star $m$, $f_{m\lambda}$ and optimiz
 The labels $\l_{mk}$ for each survey star $m$ can be obtained either by maximizing
 the likelihood function, or else by applying priors
 and performing probabilistic inference.
-Here we will optimize for now.
+Here we will optimize for now. Our optimisation is not convex in general, but in practice it is insensitive to initialisation. 
 
 When we use the simple linear-in-labels form (\ref{eq:linear}) for the
 mean model $\set{\ell_m}$, the optimization to obtain maximum-likelihood labels
