@@ -180,10 +180,10 @@ In what follows, we show that \tc\ behaves very well as the signal-to-noise (or 
 
 In this paper we use \apogee\ as the sole example. 
 However, \tc\ can be applied to any stellar survey.  
-Our aim is distinct from simply determining parameters or finding the best fit spectra similarly to minimisation techniques. 
-Our aim is to implement a procedure that makes it possible to understand and characterise the spectra as a function of the labels which describe it.  
-Our methodology is very relevant for chemical tagging in large datasets, as it can formally describe and differentiate the spectra in multiple-abundance space, given additional input labels.
-In the same way it is possible to implement a differential analysis on large datasets using this approach. 
+%Our aim is distinct from simply determining parameters or finding the best fit spectra similarly to minimisation techniques. 
+%Our aim is to implement a procedure that makes it possible to understand and characterise the spectra as a function of the labels which describe it.  
+%Our methodology is very relevant for chemical tagging in large datasets, as it can formally describe and differentiate the spectra in multiple-abundance space, given additional input labels.
+%In the same way it is possible to implement a differential analysis on large datasets using this approach. 
 Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (for example, \alphafe, \xfe) and also more comprehensive models (for example, Gaussian processes). 
 Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower signal to noise (SNR) than minimisation techniques.% and provide a quantification of data-driven spectra comparison and differentiation, which may be a key tool in exploring the archeology of stars via chemical tagging. 
 
@@ -237,10 +237,9 @@ Exactly which stellar labels we adopt for these reference objects is critical to
 The above set of labels for the reference objects is well defined,
 but in fact the reference objects in the clusters do not lie on any single model isochrone 
 (see \figurename~\ref{fig:trainingaspcap}). 
-As an alternative set of reference labels, we consider one for which the stellar parameters (\teff , \logg ) of the reference objects lie by construction on a single isochrone.
-[MKN I THINK THE PREVIOUS SENTENCE IS WRONG; YOU MEAN EACH STAR ON ITS OWN ISOCHRONE, RIGHT?]
-For that we adopt a \logg\ label for all of the reference stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed). We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the literature age and \feh\ of each cluster. 
-[MKN THERE IS NO MEANING TO THE WORDS ``vertical fits'']
+As an alternative set of reference labels, we consider one for which the stellar parameters (\teff , \logg ) of the reference objects lie by construction on its own isochrone. 
+For that we adopt a \logg\ label for all of the reference stars not from the Kepler scale, but rather from the best fits to the isochrone for the ages and metallicities for the clusters from the literature with the temperatures fixed. We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the literature age and \feh\ of each cluster. 
+
 
 We discuss our motivation for doing this and our results in the Discussion \sectionname\ of this \documentname.
 The two calibration sets of data, the ``\aspcap-corrected'' labels and the ``Isochrone-corrected'' labels, are shown in \figurenames~\ref{fig:trainingaspcap} and \ref{fig:trainingisochrone}, respectively. 
@@ -565,7 +564,7 @@ take the entire $N_\pix$ spectrum of survey star $m$, $f_{m\lambda}$ and optimiz
 The labels $\l_{mk}$ for each survey star $m$ can be obtained either by maximizing
 the likelihood function, or else by applying priors
 and performing probabilistic inference.
-Here we will optimize for now.
+Here we will optimize for now. Our optimisation is not convex in general, but in practice it is insensitive to initialisation. 
 
 When we use the simple linear-in-labels form (\ref{eq:linear}) for the
 mean model $\set{\ell_m}$, the optimization to obtain maximum-likelihood labels
@@ -729,10 +728,10 @@ consistent continuum normalisation for all spectra, both of the reference and of
 
 %+\textbf{HWR: }\texttt{If that is the place where we praise, based on practical examples, the advantages of \tc\ vis-a-vis hand-defined \textit{indices} of physical models, it should be more extensive... else, defer to discussion. - moved the paragraph on \tc\ being a tool to return coefficients so a full model - to the discussion} 
 
-  %made with run -i makeplot_scatter_test18_step.py
+  %made with run -i makeplot_scatter_test18_step_revc.py
 \begin{figure}[h!]
 \centering
-    \includegraphics[width=\hsize]{./plots/R1_continuum4.png}
+    \includegraphics[width=\hsize]{./plots/R1_continuum5.png}
   \caption{The first-order coefficients and scatter across the sample regions of the spectra from \figurename~\ref{MKNFIXME}, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \log, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see Section 5.2).}
 \label{fig:coeffs}
 \end{figure}
