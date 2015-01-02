@@ -393,6 +393,9 @@ The spectral model is based on the notion that the continuum-normalized spectra 
 stars with identical labels look near-identical at every pixel, save for the observational errors
 and some intrinsic scatter; and that the expected flux at every pixel changes continuously
 with changes in the labels.
+Importantly, the model is a probabilistic generative model that produces,
+for every object spectrum at every wavelength,
+a pdf for the flux, with an expectation value (mean) and a variance.
 
 We presume there are $N_\rfn$ reference objects $n$, each of which has
 a continuum-normalized flux measurement $f_{n\lambda}$ at wavelength
@@ -401,31 +404,33 @@ is (for now) presumed to have negligible uncertainty and contained (possibly wit
 within a label vector $\starlabelvec_n$.
 
 We then presume that for any star, $n$, at any pixel, $\lambda$,
-the flux $f_{n\lambda}$  can be described as some smooth function of the star's labels $\set{l}_n$
-($\teff,\logg,\feh,$..). The observations $f_{n\lambda}$ will differ from such a model by the observational noise (form all relevant sources), $\noise$. But even for perfect measurements we presume that there will be
+the flux $f_{n\lambda}$  can be described as some smooth function of the star's labels $\starlabel_{nk}$
+($\teff,\logg,\feh,\cdots$).
+The observations $f_{n\lambda}$ will differ from such a model by the observational noise (form all relevant sources), $\noise$. But even for perfect measurements we presume that there will be
 deviations from the above approximate model for the true flux, characterized by a scatter $\scatter$,
 which is a property of any particular pixel; we will subsume $\scatter$ as a contributor to the noise.
-
 
 Generally, we take a spectral model to be characterized by a coefficient vector $\set{\theta}_\lambda$
 that allows to predict the flux at every pixel $f_{n\lambda}$ for a given label vector 
 $\starlabelvec_n$:
 \begin{eqnarray}
 f_{n\lambda} &=&
-g(\starlabelvec_n |  \set{\theta}_\lambda) + \mbox{noise}.
- \label{eq:specmodel}
+g(\starlabelvec_n |  \set{\theta}_\lambda) + \mbox{noise}
+\label{eq:specmodel}\quad .
 \end{eqnarray}
 As a specific, but still flexible functional form for the spectral model we presume that it can be written as
 a linear function of some vector $\starlabelvec_n$ built from the labels: 
 \begin{eqnarray}
 f_{n\lambda} &=&
-\set{\theta}_\lambda^T \cdot \starlabelvec_n + \mbox{noise},
-\
-\label{eq:linearmodel}
+\set{\theta}_\lambda^T \cdot \starlabelvec_n + \mbox{noise}
+\label{eq:linearmodel}\quad ,
 \end{eqnarray}
-where $\set{\theta}_\lambda$ is the set of spectral parameters at each $\lambda$.  Each element of $\starlabelvec_n$ can be some (possibly complicated) function of the full set of $K$ labels, $\set{l}_n$, which
+where $\set{\theta}_\lambda$ is the set of spectral parameters at each $\lambda$.  Each element of $\starlabelvec_n$ can be some (possibly complicated) function of the full set of $K$ labels, $\starlabelvec_n$, which
 results in the flexibility of this model. The noise is an \textit{rms} combination of the associated uncertainty variance
-$\sigma_{n\lambda}^2$ of each of the pixels of the flux from finite photon counts and instrumental effects and the intrinsic variance or scatter of the model at each wavelength of the fit, $s_\lambda^2$. We assumed that the noise is Gaussian, zero mean, and independent for every measurement and the noise model is
+$\sigma_{n\lambda}^2$ of each of the pixels of the flux from finite photon counts and instrumental effects and the intrinsic variance or scatter of the model at each wavelength of the fit, $s_\lambda^2$.
+This model assumes that the noise is Gaussian, zero mean,
+and independent for every measurement.
+That is, the noise model is
 $\mbox{noise} = [s_\lambda^2+ \sigma_{n\lambda}^2]\,\xi_{n\lambda}$,
 where $\xi_{n\lambda}$ is a Gaussian random number with zero mean and unit
 variance.
@@ -445,13 +450,14 @@ The $\mean{\starlabel_k}$ are offsets (possibly means of the training data) to
 keep the model ``pivoting'' around a reasonable point in label space.
 This model leads to the single-pixel log-likelihood function 
 \begin{eqnarray}
-\ln p(f_{n\lambda}\given\set{\theta^T}_\lambda, \starlabelvec_n, s_\lambda^2) &=&
- -\frac{1}{2}\frac{[f_{n\lambda} - \set{\theta}^T_\lambda \cdot \starlabelvec_n]^2}{s_\lambda^2 + \sigma_{n\lambda}^2}
+\ln p(f_{n\lambda}\given\set{\theta}^T_\lambda, \starlabelvec_n, s_\lambda^2) &=&
+ -\frac{1}{2}\,\frac{[f_{n\lambda} - \set{\theta}^T_\lambda \cdot \starlabelvec_n]^2}{s_\lambda^2 + \sigma_{n\lambda}^2}
+ -\frac{1}{2}\,\ln(s_\lambda^2 + \sigma_{n\lambda}^2)
 \label{eq:like}\quad.
 \end{eqnarray}
 
 The vector $\set{f}_\lambda$ is the set of spectral flux values for
-the $N$ objects all at wavelengths $\lambda$.
+all $N$ objects at the one wavelength $\lambda$.
 We can set the coefficients $[\set{\theta}_\lambda,s_\lambda^2]$ either by
 optimizing the likelihood (\ref{eq:like}) or by applying priors and
 performing some form of probabilistic inference (with, say, Markov
@@ -473,8 +479,8 @@ new spectra.
 Then, in the training step of \tc\ we exploit the fact that we know the $f_{n\lambda}$
 and the $\starlabelvec_n$, which permits to solve for the coefficients and the scatter of the spectral model:
 \begin{eqnarray}
-\set{\theta_\lambda},s_\lambda \leftarrow \substack{\mbox{argmax}\\{\theta_\lambda}}
-\sum_{n=1}^N \ln p(f_{n\lambda}\given\set{\theta^T}_\lambda, \starlabelvec_n, s_\lambda^2)
+\set{\theta}_\lambda,s_\lambda \leftarrow \substack{\mbox{argmax}\\{\set{\theta}_\lambda}, s_\lambda}
+\sum_{n=1}^N \ln p(f_{n\lambda}\given\set{\theta}^T_\lambda, \starlabelvec_n, s_\lambda^2)
 \label{eq:trainingstep}
 \end{eqnarray}
 The linear-in-labels form (\ref{eq:linear}) has a number of useful properties.
@@ -491,16 +497,17 @@ parameter.
 The (perhaps) second-simplest spectral model is that in which the
 vector $\starlabelvec_n$ is quadratic in the labels: so this label vector is described as:
 \begin{eqnarray}
-\starlabelvec_n &\equiv& [1,
+\starlabelvec_n &\equiv& \begin{array}{l}[1,
                           \starlabel_{n1} - \bar{\starlabel_1},
                           \starlabel_{n2} - \bar{\starlabel_2},
                           \cdots,
-                          \starlabel_{nK} - \bar{\starlabel_K},
+                          \starlabel_{nK} - \bar{\starlabel_K},\\
                           (\starlabel_{n1} - \bar{\starlabel_1})\,(\starlabel_{n1} - \bar{\starlabel_1}),
                           (\starlabel_{n1} - \bar{\starlabel_1})\,(\starlabel_{n2} - \bar{\starlabel_2}),
-                          \cdots,
-                          (\starlabel_{nK} - \bar{\starlabel_K})\,(\starlabel_{nK} - \bar{\starlabel_K})]
-\label{eq:quadinlabels}\quad ,
+                          \cdots,\\
+                          (\starlabel_{nK} - \bar{\starlabel_K})\,(\starlabel_{nK} - \bar{\starlabel_K})]\quad ,
+\end{array}
+\label{eq:quadinlabels}
 \end{eqnarray}
 where the leading ``1'' permits an offset, and the quadratic terms
 contain all possible products exactly once.
@@ -556,10 +563,10 @@ Then, in the test step of \tc\ , we use the known coefficients and scatter of th
 ($\set{\theta}_\lambda,\ s_\lambda^2$),
 take the entire $N_\pix$ spectrum of survey star $m$, $f_{m\lambda}$ and optimize for the labels of that star:
 \begin{eqnarray}
-\starlabelvec_m \leftarrow \substack{\mbox{argmax}\\{\starlabelvec_m}}
+\left\{\starlabel_{mk}\right\} \leftarrow \substack{\mbox{argmax}\\{\left\{\starlabel_{mk}\right\}}}
 \sum_{\lambda=1}^{N_\pix}
-\ln p(f_{m\lambda}\given\set{\theta^T}_\lambda, \starlabelvec_m, s_\lambda^2)
-\label{eq:teststep}
+\ln p(f_{m\lambda}\given\set{\theta}^T_\lambda, \starlabelvec_m, s_\lambda^2)
+\label{eq:teststep}\quad .
 \end{eqnarray} 
 The labels $\starlabel_{mk}$ for each survey star $m$ can be obtained either by maximizing
 the likelihood function, or else by applying priors
@@ -567,13 +574,12 @@ and performing probabilistic inference.
 Here we will optimize for now. Our optimisation is not convex in general, but in practice it is insensitive to initialisation. 
 
 When we use the simple linear-in-labels form (\ref{eq:linear}) for the
-mean model $\starlabelvec_m$, the optimization to obtain maximum-likelihood labels
+mean model, the optimization to obtain maximum-likelihood labels
 (given parameters $[\set{\theta}_\lambda, s_\lambda^2]$) is simple linear
 least-square fitting.
 This optimization is obtained by straightforward linear algebra on the
 spectral pixels $y_{m\lambda}$, and standard frequentist confidence
 intervals can be obtained similarly.
-
 When we use the quadratic-in-labels form (\ref{eq:quadinlabels}) for the
 spectral, there is no simple linear-algebra operation that
 optimizes the likelihood. 
@@ -584,9 +590,10 @@ estimate stellar labels for survey stars with that model in the test step.
 We now present in \sectionname~\ref{sec:results} the results of implementing our model for all \apogee\ data, where we applied a quadratic model; linear in the coefficients and non-linear in the label-inference.  
 For the quadratic model we then show this applied to the DR10 data, including at lower SNR and investigate different input training labels. 
 
-
 \section{\tc\ in Action: Illustrative Results with APOGEE Data}
 \label{sec:results}
+
+MKN: ONCE AGAIN THIS SECTION NAME MAKES NO SENSE: THIS IS THE TITLE OF THE WHOLE PAPER!
 
 %\textbf{have written but revisit this: placeholder for MKN:  that commissioning data has different line spread function (LSF) and have run it through but unsure how to evaluate results. The stars do not fall in unphysical places on the isochrone and these commissioning data are indicated in the flag in the table with a C. We do find different parameters compared to \apogee\ for the commissioning data, for the fields where params are available. .Also discuss field 4330 centre field seems to fail for coolest stars for aspcapstar files but is okay if I do the normalisation on the apstar files without pre-continuum normalisation} % - only field where results diverge form apogee though for non-commissioning files, but in sensible place on isochrone.} 
 
