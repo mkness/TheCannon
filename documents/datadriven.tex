@@ -284,11 +284,13 @@ That is, we can determine with the \tc\ the `true' continuum, using the model de
 
 Given the list of continuum pixels found by this procedure,
 we determine the continuum by fitting a low-order Chebyshev polynomial to these continuum pixels,
- treating each of the three chips separately, weighted by the inverse flux errors provided \apogee\ fits files. A 2nd-order Chebyshev polynomial is sufficient to use for the pseudo-continuum normalised data provided by \apogee\ and we apply this normalisation to both \aspcapstar\ and  \apstar\ files. 
+ treating each of the three chips separately, weighted by the inverse flux errors provided \apogee\ fits files. A 2nd-order Chebyshev polynomial is sufficient to use for the pseudo-continuum normalised data provided by \apogee\ and we apply this normalisation to both \aspcapstar\ and  \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. \textbf{MKN Keep going with this boarding now annoying}.
+ 
+
 \figurename~\ref{fig:norm} shows an example of this normalisation applied to survey spectra with different labels (output from \tc). 
 This \figurename\ illustrates typical \apogee\ spectra and demonstrates how the spectra 
 vary as a function of metallicity at a given temperature , and as a function of temperature at a given metallicity. 
-For a clearer view of individual absorption linea features, we use narrower regions marked in this \figurename, (A) and (B), for all subsequent examination of the spectral data. 
+For a clearer view of individual absorption line features, we use narrower regions marked in this \figurename, (A) and (B), for all subsequent examination of the spectral data. 
 
 MKN:  IN THE ABOVE, I DON'T THINK YOU SAID WHAT ORDER OF POLYNOMIAL OR OVER WHAT REGIONS WE DO THIS ETC?
 WE HAVE TO GIVE ENOUGH INFORMATION FOR SOMEONE TO BE ABLE TO REPEAT IT.
