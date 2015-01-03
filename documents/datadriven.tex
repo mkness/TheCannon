@@ -155,7 +155,7 @@ allow us to solve for---or infer---the labels of the \textit{survey objects}.
 Taken together the \textit{training step} and the \textit{test step} effect a \textit{label transfer},
 transfering the known labels in the reference objects to the survey objects.
 
-To make such an approach straigtforward, we must assume that the \textit{reference objects} and the \textit{survey objects} were observed with the identical instrumental set-up, a condition well satisfied with the large surveys listed above. 
+To make such an approach straightforward, we must assume that the \textit{reference objects} and the \textit{survey objects} were observed with the identical instrumental set-up, a condition well satisfied with the large surveys listed above. 
 We take the generative model for the continuum normalized flux at each of $N_\pix$ pixels to be a polynomial function of all the labels, and hence the model is defined by its $N_\pix$ sets of polynomial coefficients. In practice, there may be different circumstances that make stars suitable reference objects. 
 They may be members of star clusters: there, external data and the fact that clusters are in good approximation single stellar populations (which have to fall onto an isochrone) lend credibility to their stellar labels. 
 Alternatively, reference objects could be stars for which labels have been derived separately from spectra of particularly high signal to noise, or at other ``easier'' or more extensive wavelength regimes (for example, in the optical as opposed to the infrared). 
@@ -180,12 +180,9 @@ In what follows, we show that \tc\ behaves very well as the signal-to-noise (or 
 
 In this paper we use \apogee\ as the sole example. 
 However, \tc\ can be applied to any stellar survey.  
-%Our aim is distinct from simply determining parameters or finding the best fit spectra similarly to minimisation techniques. 
-%Our aim is to implement a procedure that makes it possible to understand and characterise the spectra as a function of the labels which describe it.  
-%Our methodology is very relevant for chemical tagging in large datasets, as it can formally describe and differentiate the spectra in multiple-abundance space, given additional input labels.
-%In the same way it is possible to implement a differential analysis on large datasets using this approach. 
+
 Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (for example, \alphafe, \xfe) and also more comprehensive models (for example, Gaussian processes). 
-Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower signal to noise (SNR) than minimisation techniques.% and provide a quantification of data-driven spectra comparison and differentiation, which may be a key tool in exploring the archeology of stars via chemical tagging. 
+Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower signal to noise (SNR) than minimisation techniques.
 
 \tc\ is similar to the MATrix Inversion for Spectral SythEsis (\matisse) procedure
 for derivation of stellar parameters \citep{RB2006} in that it uses the full spectrum
@@ -343,9 +340,9 @@ Therefore, although we similarly process the \apstar\ spectra, returning the lab
 \subsubsection{Labels for the Reference Objects in APOGEE}
 \label{sec:ApogeeRefLabels}
 
-Which labels to adopt for the reference objects used in \tc 's training step is a citical issue
+Which labels to adopt for the reference objects used in \tc 's training step is a critical issue
 in any survey. We discuss two options here for \apogee . 
-First, we adopt the DR10 ``\aspcap\ corrected'' stellar parameters for each of the 543 reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale.
+First, we adopt the DR10 ``\aspcap\ corrected'' stellar parameters for each of the reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale. These \aspcap\ corrected labels are available for all stars except the 65 dwarf stars from the Pleiades cluster. 
  This set of stars is the very same stars used by \apogee\ to post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}.
 Adopting the \aspcap\ corrected labels provided and documented by \apogee\ has the important advantage 
 that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer of only 543 stars.
