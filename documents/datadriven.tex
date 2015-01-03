@@ -268,7 +268,7 @@ are very signal-to-noise dependent, because pixels that are clearly \emph{not} c
 spectra are completely consistent with being continuum at lower signal-to-noise.
 Therefore, to make \tc\ as independent of signal-to-noise (hereafter ``SNR'') as possible,
 we base the continuum estimation on a pre-tabulated set of wavelength locations that we know
-(from running \tc\ itself iterativel) are not strongly affected by absorption lines.
+(from running \tc\ itself iteratively) are not strongly affected by absorption lines.
 This constitutes a data-driven method for finding continuum pixels.
 We find that this method 
 leads to very small systematic dependence of the spectra on SNR.
@@ -339,11 +339,6 @@ Therefore, although we similarly process the \apstar\ spectra, returning the lab
 
 %For the tests on these latter files, the training data input was also taken from the \textit{apStar} and the same continuum normalisation procedure as for the \apogee\ \textit{aspcapstar} pseudo-continuum normalised files was implemented using the 3rd order polynomial weighted fit for each of the three chips, using the pre-defined continuum pixels.
 
-MKN:  I THINK YOU CAN DELETE THE NEXT PARAGRAPH?
-
-In the following sections we demonstrate that \tc\ reproduces \apogee\ \teff, \logg\ and \feh\ using a npumber of selected fields across the bulge, disk and halo with very small intrinsic errors which are comparable to \aspcap\ intrinsic errors at lower SNR than minimisation techniques. 
-We provide an online table with the full set of parameters for \tc\ run through the \apogee\ DR10 data comprising 55,000 stars in 170 fields \textbf{note to mkn you need to add the commissioning stars to this table}.  
-We show all the stars run through \tc\ in the \teff-\logg\ plane and validate our method at low SNR.
 
 \subsubsection{Labels for the Reference Objects in APOGEE}
 \label{sec:ApogeeRefLabels}
