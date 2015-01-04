@@ -73,7 +73,7 @@ model spectra, which are technically challenging, and often use only a
 modest fraction of the spectral pixels. 
 In many cases, however, there is a sub-set of \emph{reference}
 objects for which the stellar labels are known with high(er)
-fidelity; this is the use case for \tc.
+fidelity; this is the case for \tc.
 From the reference stars, \tc\ learns by fitting a very flexible
 model how the flux in each pixel of a continuum-normalized spectrum
 depends on the `known' stellar labels; \tc\ then exploits this same
@@ -123,7 +123,7 @@ The stellar photosphere models that are relied upon for stellar label determinat
 For computational feasibility, almost always 1D stellar photosphere models are adopted for large surveys, often assumed to be in local thermal equilibrium; these approximations are both severe. 
 In many cases, the model spectra do not account for all relevant  molecular opacities, for convection, stellar winds, and the chromosphere. 
 As a consequence, it happens that different research groups obtain discrepant results even for the same data on the same stars, resulting from different input assumptions and methods \citep[e.g.,][]{Sm2014} [MKN: add more refs].
-Even when the input assumptions are held fixed, differences in how different parts of the spectrum are used lead to substantial differences in assigned labels [MKN: refs for this? It came up at Ringberg]
+Even when the input assumptions are held fixed, differences in how different parts of the spectrum are used lead to substantial differences in assigned labels \citep[e.g.][]{Hinkel2014}.
 
 Stellar labels are commonly determined by fitting a grid of model spectra (with known labels) to the data using some minimisation technique, often restricted to a masked portion of the spectrum that is focussed on the absorption line (regions) deemed to be most reliable or relevant. 
 Stated minimal signal-to-noise requirement to obtain robust labels in this way are $SNR\sim 100$ per resolution element, especially if the labels are to include individual element abundances. 
