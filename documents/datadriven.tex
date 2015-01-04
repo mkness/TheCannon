@@ -522,7 +522,7 @@ and performing probabilistic inference.
 Again, we will optimize here. Our optimisation is not convex in general, but in practice it is insensitive to initialisation.
 The right-hand sides of the training step (\ref{eq:trainingstep}) and test step (\ref{eq:teststep}) look formally quite analogous.
 But in the test step we optimize over the labels, considering all pixels of one survey object at a time. In contrast,
-in the training step, we optimized over the spectral model coefficients and scatter, considering all reference objects
+in the training step, we optimize over the spectral model coefficients and scatter, considering all reference objects
 at one pixel at a time.
 
 When we use the simple linear-in-labels form (\ref{eq:linear}) for the
@@ -542,10 +542,10 @@ estimate stellar labels for survey stars with that model in the test step.
 We now present in \sectionname~\ref{sec:results} the results of implementing our model for all \apogee\ data, where we applied a quadratic model; linear in the coefficients and non-linear in the label-inference.  
 For the quadratic model we then show this applied to the DR10 data, including at lower SNR and investigate different input training labels. 
 
-\section{\tc\ in Action: Illustrative Results with APOGEE Data}
+\section{\tc\ in Action: Results with APOGEE Data}
 \label{sec:results}
 
-MKN: ONCE AGAIN THIS SECTION NAME MAKES NO SENSE: THIS IS THE TITLE OF THE WHOLE PAPER!
+MKN: ONCE AGAIN THIS SECTION NAME MAKES NO SENSE: THIS IS THE TITLE OF THE WHOLE PAPER! DWH: Is it better now with the removal of the word ``Illustrative''? This is a subtle but important difference. I am not entirely sure how to make it clear APOGEE is an example but satisfy that you think it makes sense.
 
 %\textbf{have written but revisit this: placeholder for MKN:  that commissioning data has different line spread function (LSF) and have run it through but unsure how to evaluate results. The stars do not fall in unphysical places on the isochrone and these commissioning data are indicated in the flag in the table with a C. We do find different parameters compared to \apogee\ for the commissioning data, for the fields where params are available. .Also discuss field 4330 centre field seems to fail for coolest stars for aspcapstar files but is okay if I do the normalisation on the apstar files without pre-continuum normalisation} % - only field where results diverge form apogee though for non-commissioning files, but in sensible place on isochrone.} 
 
