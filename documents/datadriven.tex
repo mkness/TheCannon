@@ -219,14 +219,19 @@ of the label transfer depends on the extent to which the reference objects
 cover label space and the density with which they cover it.
 The performance of a data-driven model like \tc\ will depend strongly on the size and quality of its training set of reference objects, much more strongly than the square-root of the number!
 
-In practice, for the \apogee\ data,
+In practice, also for the \apogee\ data,
 a good set of reference objects can be built from 
-members of well studied open and globular clusters that have their labels derived from high resolution spectral analysis in the
-optical wavelength region.
-Specifically, the reference dataset we use is that of the globular and open cluster data observed by \apogee\ for calibration of their abundance pipeline \citep{Meszaros2013}. 
-This reference dataset comprises about 543 stars from 19 open and globular clusters, which span stellar parameter ranges 
-of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
-Exactly which stellar labels we adopt for these reference objects is critical to the subsequent output, and hence we discuss it all in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
+members of well studied open and globular clusters that have been observed in the context of the survey.
+There is a variety of reasons why the stellar labels for cluster stars may be particularly accurate and robust.
+For one, they could have their labels derived from independent, high resolution spectral analysis of these
+stars, e.g. from observations in a well understood portion of the optical wavelength region. The
+labels for the reference objects only have to be accurate and trustworthy; but they are of course a property of the
+star, and hence do not have to arise from the survey data at hand. They may have been derived from different data.
+
+For the case of \apogee, we will use as reference objects 543 members of 19 globular and open clusters data observed for the
+calibration of their abundance pipeline \citep{Meszaros2013}. In their stellar labels they span the range 
+Exactly which stellar labels we adopt for these reference objects is critical to the subsequent output, and hence 
+we discuss it in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
 
 % MKN:  SHOULD THIS BE IN THE MAIN TEXT?  note there are 20 in their list but 1 gc has only 1 star and the abundance looks incorrect to me. DWH: No I don't think we should call this out explicitly in the paper it's more pointing out what I think is an error than adding anything useful. 
 
