@@ -250,7 +250,7 @@ A spectral survey may also contain other sub-sets of objects with labels of part
 \begin{figure}[h!]
 \centering
   \includegraphics[scale=0.33]{./plots/training_mkn2.pdf}
-\caption{Stellar labels for all reference objects as is \figurename~\ref{fig:trainingaspcap}, except that the \logg\ values have been adjusted from the \aspcap-corrected value to exactly match the isochrone, we refer to this set of labels as  'isochrone-corrected' labels to differentiate them from the correction in \figurename~\ref{fig:trainingaspcap}.  }
+\caption{Stellar labels for all reference objects as is \figurename~\ref{fig:trainingaspcap}, except that the \logg\ values have been adjusted from the \aspcap-corrected value to exactly match the isochrone, we refer to this set of labels as  ``isochrone-corrected'' labels to differentiate them from the correction in \figurename~\ref{fig:trainingaspcap}.  }
 \label{fig:trainingisochrone}
 \end{figure}
 
@@ -276,11 +276,11 @@ we take those pixels to be continuum that show nearly unity flux in the spectral
 That is, we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in \sectionname~\ref{sec:results}. This constitutes a data-driven method for finding continuum pixels, and we find it to have only a very small systematic dependence of the spectra on SNR (see \sectionname~\ref{sec:ApogeeContinuum}).
 
 We are now in a position to determine the continuum by least-squares fitting a low-order Chebyshev polynomial, but only to these just determined continuum pixels.
-For \apogee\ we treated each of the three chips separately, and found that 2nd-order Chebyshev polynomial was sufficient to apply to the pseudo-continuum normalised data provided by \apogee\ . We apply this normalisation to both \aspcapstar\ and \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. Fitting a polynomial has the disadvantage that they are poorly constrained at the edges of the data and this continuum procedure could be improved using a more sophisticated sine or cosine function in place of a polynomial fit. 
+For \apogee\ we treat each of the three chips separately, and find a 2nd-order Chebyshev polynomial to be sufficient to apply to the pseudo-continuum normalised data provided by \apogee\ . We apply this normalisation to both \aspcapstar\ and \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. Fitting a polynomial has the disadvantage that they are poorly constrained at the edges of the data. An alternative implementation could use a more sophisticated sine or cosine function in place of a polynomial fit. 
 
 
 \figurename~\ref{fig:norm} shows an example of this normalisation applied to survey spectra with different labels.
-To illustrated the result, \figurename\ shows typical \apogee\ spectra and demonstrates how the spectra 
+To illustrate the result, \figurename\ shows typical \apogee\ spectra and demonstrates how the spectra 
 vary as a function of metallicity at a given temperature , and as a function of temperature at a given metallicity. 
 For a clearer view of individual absorption line features, we use narrower regions marked in this \figurename, (A) and (B), for all subsequent examination of the spectral data. 
 
