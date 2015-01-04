@@ -298,7 +298,7 @@ For a clearer view of individual absorption line features, we use narrower regio
 \label{sec:Apogee_as_worked_Example}
 
 In the application of \tc\ to  \apogee, we start with the \aspcapstar\ and \textit{apstar} files of DR10,
-which are reduced,  resampled. 
+which are reduced and resampled. 
 The \textit{apstar}  data are not pseudo-continuum normalised by \apogee\,
 which will enable us to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files. 
 
@@ -319,7 +319,7 @@ Therefore, although we similarly process the \apstar\ spectra, returning the lab
 
 Which labels to adopt for the reference objects used in \tc 's training step is a critical issue
 in any survey. We discuss two options here for \apogee . 
-First, we adopt the DR10 ``\aspcap\ corrected'' stellar parameters that are available for each of the reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale (\figurenames~\ref{fig:trainingaspcap} ). ``\aspcap\ corrected'' labels were not available for the cluster comprised of main sequence stars, the Pleaides cluster and for this cluster we made our own corrections in \teff\, \logg\ and assumed a single literature value for the \feh\ label, as described below. 
+First, we adopt the DR10 ``\aspcap\ corrected'' stellar parameters that are available for each of the reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale (\figurename~\ref{fig:trainingaspcap}). ``\aspcap\ corrected'' labels were not available for the cluster comprised of main sequence stars, the Pleaides cluster and for this cluster we made our own corrections in \teff\ and \logg\ and assumed a single literature value for the \feh\ label, as described below. 
 The reference set of stars we use is the very same stars used by \apogee\ to post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}.
 Adopting the \aspcap\ corrected labels provided and documented by \apogee\ has the important advantage 
 that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer from only 543 stars.
@@ -330,7 +330,7 @@ The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for s
 The analysis in \citet{Meszaros2013} is restricted not only to giants but also stars with SNR $>$ 70, determined to be the minimum SNR for reliable stellar parameters by \apogee.
 
 These corrections implemented by \apogee\ in \teff, \logg\ and  \feh\ place the giants in the cluster stars on or near the iscohrones (see \figurenames~7 and 8 in Meszaros et al., (2013)).  
-As there are no \aspcap\ corrections implemented for the 65 main sequence stars among the reference objects that we use, 
+As there are no \aspcap\ corrections implemented for the 64 main sequence stars among the reference objects that we use, 
 we instead determine temperatures for these dwarfs, which are all in the Pleiades, directly using same correction method 
 as in \citet{Meszaros2013}. 
 We determine the infrared flux temperature for the stars from \citet{gonzalez2009} and apply a correction to 
@@ -345,7 +345,7 @@ Due to the high differential reddening to the Pleiades, and the subsequent large
 Adopting the input labels from the \aspcap-corrected parameters determined from calibrations to literature cluster values also transfers the errors from the \aspcap\ pipeline: of $<$ 150K in \teff,  $<$ 0.2 dex in \logg\ and $<$ 0.1 dex in \feh.   
 The uncertainties on the input labels will be included as an input parameter of the labels in a future development stage of \tc. Inclusion of uncertainties may be particularly relevant when introducing multiple labels of individual elements. 
 
-For a comparative analysis to the ``\aspcap\ corrected'' labels (\figurenames\ref{fig:trainingisochrone}), we adopt a \logg\ label for all of the training stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed).
+For a comparative analysis to the ``\aspcap\ corrected'' labels (\figurename\ref{fig:trainingisochrone}), we adopt a \logg\ label for all of the training stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed).
 We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the age and \feh\ of each cluster. 
 
 \section{The Generative Model of \tc}
@@ -382,14 +382,14 @@ $\starlabelvec_n$:
 \begin{eqnarray}
 f_{n\lambda} &=&
 g(\starlabelvec_n |  \set{\theta}_\lambda) + \mbox{noise}
-\label{eq:specmodel}\quad .
+\label{eq:specmodel}\quad 
 \end{eqnarray}
 As a specific, but still flexible functional form for the spectral model we presume that it can be written as
 a linear function of some vector $\starlabelvec_n$ built from the labels: 
 \begin{eqnarray}
 f_{n\lambda} &=&
 \set{\theta}_\lambda^T \cdot \starlabelvec_n + \mbox{noise}
-\label{eq:linearmodel}\quad ,
+\label{eq:linearmodel}\quad
 \end{eqnarray}
 where $\set{\theta}_\lambda$ is the set of spectral model coefficients at each $\lambda$. Each element of $\starlabelvec_n$ can be some (possibly complicated) function of the full set of $K$ labels, $\starlabelvec_n$, which
 results in the flexibility of this model. The noise is an \textit{rms} combination of the associated uncertainty variance
@@ -470,7 +470,7 @@ of ways.
 It is still the case that optimization of the model, at fixed scatter
 $s_\lambda^2$ is a pure linear-algebra operation (weighted least
 squares), except that $\starlabelvec_n$ has become longer for a given number of labels. 
-However, test step on the survey (described in the next Section) the quadratic-in-labels form
+However, the test step on the survey (described in the next Section) of the quadratic-in-labels form
  will no longer be simple; it will require non-linear
 optimization to estimate the labels.
 
