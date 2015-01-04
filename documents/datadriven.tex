@@ -547,29 +547,11 @@ For the quadratic model we then show this applied to the DR10 data, including at
 
 MKN: ONCE AGAIN THIS SECTION NAME MAKES NO SENSE: THIS IS THE TITLE OF THE WHOLE PAPER! DWH: Is it better now with the removal of the word ``Illustrative''? This is a subtle but important difference. I am not entirely sure how to make it clear APOGEE is an example but satisfy that you think it makes sense.
 
-%\textbf{have written but revisit this: placeholder for MKN:  that commissioning data has different line spread function (LSF) and have run it through but unsure how to evaluate results. The stars do not fall in unphysical places on the isochrone and these commissioning data are indicated in the flag in the table with a C. We do find different parameters compared to \apogee\ for the commissioning data, for the fields where params are available. .Also discuss field 4330 centre field seems to fail for coolest stars for aspcapstar files but is okay if I do the normalisation on the apstar files without pre-continuum normalisation} % - only field where results diverge form apogee though for non-commissioning files, but in sensible place on isochrone.} 
-
-MKN: THIS PARAGRAPH (below) ISN'T THE WAY TO START -- THIS DESCRIBES THE CROSS-VALIDATION, WHICH IS TWO SUBSECTIONS DOWN.  CAN YOU MOVE THIS THERE AND OPEN THIS SECTION BY SAYING THAT WE ARE GOING TO TRAIN THE QUADRATIC MODEL ON THE THREE LABELS WE HAVE CHOSEN USING THE TRAINING SET DESCRIBED ABOVE AND APPLY IT TO EVERYTHING?
+MKN: THIS PARAGRAPH (below) ISN'T THE WAY TO START -- THIS DESCRIBES THE CROSS-VALIDATION, WHICH IS TWO SUBSECTIONS DOWN.  CAN YOU MOVE THIS THERE AND OPEN THIS SECTION BY SAYING THAT WE ARE GOING TO TRAIN THE QUADRATIC MODEL ON THE THREE LABELS WE HAVE CHOSEN USING THE TRAINING SET DESCRIBED ABOVE AND APPLY IT TO EVERYTHING? 
 
 We now illustrate how \tc\ works in practice, using \apogee\ DR10 data.
 We start by considering all but one of the 543 cluster stars as the reference set for the training step, and then consider the one remaining cluster star as the survey star in the test step. We use such leave-one-out cross-validation to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
 
-
-%[HWR; AS TECHNIQUE THIS HAS BEEN LAID OUT BEFORE..]Via our method, we can use the model for determining continuum pixels, which are robust and true continuum over the label-space of the training data. 
-%The determination of continuum pixels used in continuum normalisation is a key second result and we implement this for both training and test data and validate it is robust across SNR. 
-
-%\textit{{\bf{HWR: we probably have that in the abstract, and will get it  the discussion section again..}} This success of the method using the DR10 data are our third result. 
-%Despite the critically constrained training dataset for our model, the label-transfer to the DR10 test data works extremely well.
-%This showcases the strength in this approach, that with only 545 training stars, we can reproduce all DR10 labels for the stars in the \apogee\ survey, quickly and simply.  
-%We reproduce the \aspcap\ DR10 labels, of \teff, \logg\ and \feh\ with errors of \teff\ $<$ 100 K, \logg\ $<$ 0.20 dex and \feh\ $<$ 0.10 dex. 
-%The rms dispersion of \apogee\ -- \tc\ is no larger than \apogee\ parameter errors reported in \citep{Meszaros2013} as our method generates insignificant errors at the SNR of the combined visit \apogee\ data.
-%We also report results for dwarfs but these are constrained by the very limited dwarf set in our training dataset, and we do not provide a robust measurement of these stars across metallicity, given our single metallicity dwarf training dataset.
-%The fourth result is that objects which are not in our training dataset have unphysical labels. 
-%These objects were found to be fast rotators, which can be excluded using the \aspcap\ rotation warning set flag. 
-%This demonstrates that we can only be as good as our training set. 
-%The final result that we report is that \tc\ returns robust stellar parameters at an SNR of $<$ 30. 
-%For this test we do not nosify the spectra but rather use the single visit spectra available in the \textit{apStar} DR10 data files. 
-%The performance of \tc\ at low SNR reflects both the success of the continuum identification and the advantage in using \textit{all} of the available information in the spectral range to characterise the labels by allowing the regression to determine which pixels control the labels themselves.}
 
 \subsection{The Choice of the Spectral Model Complexity}
 \label{sec:ModelComplexity} 
@@ -582,9 +564,8 @@ especially at the extremes of the labels' ranges.
 
 This is perhaps not surprising, as absorption features, particularly strong lines, are known to vary non-linearly as a function of stellar labels. If one were to insist on a label transfer with a first-order, spectral model, the systematic discrepancies could presumably be reduced by selecting only weak-line regions, but at the severe price of leaving much of the spectral range unexploited. Therefore, we have not pursued the linear-in-labels \textit{Ansatz} for the spectral model.
 
-%An exception where this basic implementation would prove extremely useful is for any front-end to other methodologies of label-determination. 
-%This most simple version of the regression analysis is extremely fast for determining baseline stellar labels. 
-% I am putting this in because at present a lot of surveys use some "fast" method first to get a first pass estimate to input to their pipelines - this might get their attention as this is *a lot* faster than what they are currently doing I believe. 
+An exception where this basic implementation would prove extremely useful is for any front-end to other methodologies of label-determination and this very simple version of the regression analysis is extremely fast for determining baseline stellar labels. 
+% I am putting this in because at present a lot of surveys use some "fast" method first to get a first pass estimate to input to their pipelines - this might get their attention as this is *a lot* faster than what they are currently doing I believe. Someone commented this out I am putting it back. 
 
 The next simplest spectral model, the quadratic-in-labels case,
  presumes that the continuum normalized flux is a general second-order polynomial of the stellar labels, $f_{n\lambda} =
