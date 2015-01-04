@@ -259,14 +259,11 @@ A spectral survey may also contain other sub-sets of objects with labels of part
 
 \tc, as we present it here, operates on continuum-normalized spectra.
 Continuum-normalization that is based on quantiles of the data (medians or 90-th percentiles or the like)
-are very signal-to-noise dependent, because pixels that are clearly \emph{not} continuum in high signal-to-noise
+are very signal-to-noise dependent, e.g. because pixels that are clearly \emph{not} continuum in high signal-to-noise
 spectra are completely consistent with being continuum at lower signal-to-noise.
 Therefore, to make \tc\ as independent of signal-to-noise (hereafter ``SNR'') as possible,
 we base the continuum estimation on a pre-tabulated set of wavelength locations that we know
-(from running \tc\ itself iteratively) are not strongly affected by absorption lines.
-This constitutes a data-driven method for finding continuum pixels.
-We find that this method 
-leads to very small systematic dependence of the spectra on SNR.
+(iteratively, from running \tc\ itself) are not strongly affected by absorption lines.
 
 To initialize the continuum-pixel determination,
 we define a preliminary pseudo-continuum normalisation by 
@@ -276,17 +273,13 @@ using polynomial fit to an upper quantile (for example, 80 or 90~percent) of the
   
 After a training step with spectra of reference objects that have been  normalized  by this pseudo-continuum,
 the \tc\ can provide an improved identification of continuum regions in the spectrum: 
-we take those pixels to be continuum that show nearly unity flux in the spectral model's baseline spectrum (see \sectionname~\ref{sec:spectralmodel}), 
-say within a few percent, and at the same time show almost no dependence in their normalized flux on the stellar labels.
-That is, we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in \sectionname~\ref{sec:results}.
+we take those pixels to be continuum that show nearly unity flux in the spectral model's baseline spectrum (see \sectionname~\ref{sec:spectralmodel}), and at the same time show almost no dependence in their normalized flux on the stellar labels.
+That is, we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in \sectionname~\ref{sec:results}. This constitutes a data-driven method for finding continuum pixels, and we find it to have only a very small systematic dependence of the spectra on SNR (see \sectionname~\ref{sec:ApogeeContinuum}).
 
-Given the list of continuum pixels found by this procedure,
-we determine the continuum by fitting a low-order Chebyshev polynomial to these continuum pixels,
- treating each of the three chips separately, weighted by the inverse flux errors provided \apogee\ fits files. A 2nd-order Chebyshev polynomial is sufficient to use for the pseudo-continuum normalised data provided by \apogee\ and we apply this normalisation to both \aspcapstar\ and  \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. \textbf{MKN Keep going with this boarding now annoying}.
- 
-
-\figurename~\ref{fig:norm} shows an example of this normalisation applied to survey spectra with different labels (output from \tc). 
-This \figurename\ illustrates typical \apogee\ spectra and demonstrates how the spectra 
+We are now in a position to determine the continuum by least-squares fitting a low-order Chebyshev polynomial, but only to these just determined continuum pixels.
+For \apogee\ we treated each of the three chips separately, and found that 2nd-order Chebyshev polynomial was sufficient to apply to the pseudo-continuum normalised data provided by \apogee\ . We apply this normalisation to both \aspcapstar\ and \apstar\ files.
+\figurename~\ref{fig:norm} shows an example of this normalisation applied to survey spectra with different labels.
+To illustrated the result, \figurename\ shows typical \apogee\ spectra and demonstrates how the spectra 
 vary as a function of metallicity at a given temperature , and as a function of temperature at a given metallicity. 
 For a clearer view of individual absorption line features, we use narrower regions marked in this \figurename, (A) and (B), for all subsequent examination of the spectral data. 
 
