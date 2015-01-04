@@ -141,7 +141,7 @@ To achieve this, \tc\ relies on the existence of a subset of objects within a su
 
 In this context, the term ``\emph{labels}'' refers to the pieces of information
 that characterize and determine a stellar spectrum; these labels are commonly and sensibly split into \emph{stellar parameters} and \emph{element abundances}, although in the context of \tc\ it makes sense to treat them on a par. 
-In most cases, it suffices to think of the labels as \teff , \logg, and the element abundances \xfe, though stellar rotation, microturbulence, age, and so forth can also be thought of as labels.
+In most cases, it suffices to think of the labels as \teff , \logg, and the element abundances \xfe, athough stellar rotation, microturbulence, age, and so forth can also be thought of as labels.
 It is central to the approach we lay out here that stars with the same labels have (nearly) identical spectra and that spectra vary smoothly with label changes. 
 This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are (for example) only \teff, \logg\ and \feh\ then this is an approximation.
 
@@ -228,7 +228,7 @@ labels for the reference objects only have to be accurate and trustworthy; but t
 star, and hence do not have to arise from the survey data at hand. They may have been derived from different data.
 
 For the case of \apogee, we will use as reference objects 543 members of 19 globular and open clusters data observed for the
-calibration of their abundance pipeline \citep{Meszaros2013}. In their stellar labels they span the range 
+calibration of their abundance pipeline \citep{Meszaros2013}. In their stellar labels they span the range of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
 Exactly which stellar labels we adopt for these reference objects is critical to the subsequent output, and hence 
 we discuss it in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
 
@@ -321,8 +321,8 @@ Therefore, although we similarly process the \apstar\ spectra, returning the lab
 
 Which labels to adopt for the reference objects used in \tc 's training step is a critical issue
 in any survey. We discuss two options here for \apogee . 
-First, we adopt the DR10 ``\aspcap\ corrected'' stellar parameters for each of the 543 reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale (\figurenames~\ref{fig:trainingaspcap} ).
- This set of stars is the very same stars used by \apogee\ to post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}.
+First, we adopt the DR10 ``\aspcap\ corrected'' stellar parameters that are available for each of the reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale (\figurenames~\ref{fig:trainingaspcap} ). ``\aspcap\ corrected'' labels were not available for the cluster comprised of main sequence stars, the Pleaides cluster and for this cluster we made our own corrections in \teff\, \logg\ and assumed a single literature value for the \feh\ label, as described below. 
+The reference set of stars we use is the very same stars used by \apogee\ to post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}.
 Adopting the \aspcap\ corrected labels provided and documented by \apogee\ has the important advantage 
 that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer from only 543 stars.
 
@@ -332,7 +332,7 @@ The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for s
 The analysis in \citet{Meszaros2013} is restricted not only to giants but also stars with SNR $>$ 70, determined to be the minimum SNR for reliable stellar parameters by \apogee.
 
 These corrections implemented by \apogee\ in \teff, \logg\ and  \feh\ place the giants in the cluster stars on or near the iscohrones (see \figurenames~7 and 8 in Meszaros et al., (2013)).  
-As there are no \aspcap\ corrections implemented for the few main sequence stars among the reference objects, 
+As there are no \aspcap\ corrections implemented for the 65 main sequence stars among the reference objects that we use, 
 we instead determine temperatures for these dwarfs, which are all in the Pleiades, directly using same correction method 
 as in \citet{Meszaros2013}. 
 We determine the infrared flux temperature for the stars from \citet{gonzalez2009} and apply a correction to 
