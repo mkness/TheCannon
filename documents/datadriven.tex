@@ -545,12 +545,14 @@ For the quadratic model we then show this applied to the DR10 data, including at
 \section{\tc\ in Action: Results with APOGEE Data}
 \label{sec:results}
 
-MKN: ONCE AGAIN THIS SECTION NAME MAKES NO SENSE: THIS IS THE TITLE OF THE WHOLE PAPER! DWH: Is it better now with the removal of the word ``Illustrative''? This is a subtle but important difference. I am not entirely sure how to make it clear APOGEE is an example but satisfy that you think it makes sense.
+MKN: ONCE AGAIN THIS SECTION NAME MAKES NO SENSE: THIS IS THE TITLE OF THE WHOLE PAPER! DWH: Is it better now with the removal of the word ``Illustrative''? This is a subtle but important difference. I am not entirely sure how to make it clear APOGEE is an example but satisfy that you think it makes sense. On that note, is it a little confusing having a title "specifics of the APOGEE dataset" in section 2.3, as a lot of the info outside of that is also specific to the APOGEE dataset"?
 
-MKN: THIS PARAGRAPH (below) ISN'T THE WAY TO START -- THIS DESCRIBES THE CROSS-VALIDATION, WHICH IS TWO SUBSECTIONS DOWN.  CAN YOU MOVE THIS THERE AND OPEN THIS SECTION BY SAYING THAT WE ARE GOING TO TRAIN THE QUADRATIC MODEL ON THE THREE LABELS WE HAVE CHOSEN USING THE TRAINING SET DESCRIBED ABOVE AND APPLY IT TO EVERYTHING? 
+MKN: THIS PARAGRAPH (below) ISN'T THE WAY TO START -- THIS DESCRIBES THE CROSS-VALIDATION, WHICH IS TWO SUBSECTIONS DOWN.  CAN YOU MOVE THIS THERE AND OPEN THIS SECTION BY SAYING THAT WE ARE GOING TO TRAIN THE QUADRATIC MODEL ON THE THREE LABELS WE HAVE CHOSEN USING THE TRAINING SET DESCRIBED ABOVE AND APPLY IT TO EVERYTHING? Yes have started doing this you probably still object to how much info is there I am not done with editing. 
 
-We now illustrate how \tc\ works in practice, using \apogee\ DR10 data.
-We start by considering all but one of the 543 cluster stars as the reference set for the training step, and then consider the one remaining cluster star as the survey star in the test step. We use such leave-one-out cross-validation to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
+We now illustrate how \tc\ works in practice, using \apogee\ DR10 data. We first train the quadratic model in Equation~\ref{eq:quadinlabels} using the reference data and three labels chosen as described in Section~\ref{sec:ApogeeRefLabels}. We then apply this model to all of the DR10 continuum normalised data, using continuum normalised \aspcapStar\ spectra described in Section~ \ref{sec:ApogeeContinuum}. We use a leave-one-out cross-validation test to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
+
+
+%We start by considering all but one of the 543 cluster stars as the reference set for the training step, and then consider the one remaining cluster star as the survey star in the test step. We use such leave-one-out cross-validation to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
 
 
 \subsection{The Choice of the Spectral Model Complexity}
@@ -586,7 +588,7 @@ The exploration of higher-order polynomials for the spectral model at every pixe
 \label{sec:take-one-out}
 
 As a first illustration of how well \tc\ works in practice, we perform a take-one-star out test on the set of reference objects.
-For the take-one-star out test we train the spectral model iteratively on the spectra of all but one of the $N_\rfn$ (=541) 
+For the take-one-star out test we train the spectral model iteratively on the spectra of all but one of the $N_\rfn$ (=543) 
 reference objects, and then apply \tc 's test step to the spectrum of that remaining object. If we repeat this procedure $N_\rfn$ times, 
 we have a first powerful test of how the result of this parameter transfer compares to the (known) labels for the reference objects.
  Here we only consider three labels $(\teff , \logg , \feh)$, and the results are shown in \figurename~ref{fig:takeonestarout}.
