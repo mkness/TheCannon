@@ -206,18 +206,18 @@ In principle, \tc\ , as described below, is applicable to any large, homogeneous
 meeting these criteria.
 Here, we use the \apogee\ data \citep{Ahn2014} to illustrate and showcase \tc.
 Because all of the exposition of the method underlying \tc\ involves specificities of the data,
-we begin by explaining the \apogee\ data and our adjustments to it.
+we spell out the characteristics of the \apogee\ data and our adjustments to it in +\sectionname~\ref{sec:Apogee_as_worked_Example}.
 
 \subsection{Choosing reference objects for the training step}
 \label{sec:ReferenceObjects}
 
 For the training step in \tc\ we must choose a set of reference (or training) objects for which we have spectra from the survey under consideration and \emph{also} high-fidelity labels (that is, stellar parameters and element abundances that are deemed both accurate and precise).
-The set of reference objects is critical, as the label transfer to the survey objects can only be as good as the quality of the reference labels. 
+The set of reference objects is critical, as the label transfer to the survey objects can only be as good as the quality of the reference label set. 
 Also, as \tc\ may have to interpolate and extrapolate to new parts of label space as
 it encounters new kinds of spectra among the survey objects, the quality
 of the label transfer depends on the extent to which the reference objects
-cover label space (\teff, \logg, \feh, \xfe, and so on) and the density with which they cover it.
-The performance of a data-driven model like \tc\ can depend strongly on the size and quality of its training set of reference objects, much more strongly than the square-root of the number!
+cover label space and the density with which they cover it.
+The performance of a data-driven model like \tc\ will depend strongly on the size and quality of its training set of reference objects, much more strongly than the square-root of the number!
 
 In practice, for the \apogee\ data,
 a good set of reference objects can be built from 
