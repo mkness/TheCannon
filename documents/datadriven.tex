@@ -394,14 +394,12 @@ f_{n\lambda} &=&
 \set{\theta}_\lambda^T \cdot \starlabelvec_n + \mbox{noise}
 \label{eq:linearmodel}\quad ,
 \end{eqnarray}
-where $\set{\theta}_\lambda$ is the set of spectral parameters at each $\lambda$.  Each element of $\starlabelvec_n$ can be some (possibly complicated) function of the full set of $K$ labels, $\starlabelvec_n$, which
+where $\set{\theta}_\lambda$ is the set of spectral model coefficients at each $\lambda$. Each element of $\starlabelvec_n$ can be some (possibly complicated) function of the full set of $K$ labels, $\starlabelvec_n$, which
 results in the flexibility of this model. The noise is an \textit{rms} combination of the associated uncertainty variance
 $\sigma_{n\lambda}^2$ of each of the pixels of the flux from finite photon counts and instrumental effects and the intrinsic variance or scatter of the model at each wavelength of the fit, $s_\lambda^2$.
-This model assumes that the noise is Gaussian, zero mean,
-and independent for every measurement.
-That is, the noise model is
+This model assumes that the noise model is
 $\mbox{noise} = [s_\lambda^2+ \sigma_{n\lambda}^2]\,\xi_{n\lambda}$,
-where $\xi_{n\lambda}$ is a Gaussian random number with zero mean and unit
+where each $\xi_{n\lambda}$ is a Gaussian random number with zero mean and unit
 variance.
 
 The simplest spectral model is that in which the label vector $\starlabelvec_n$ is
@@ -428,22 +426,12 @@ This model leads to the single-pixel log-likelihood function
 The vector $\set{f}_\lambda$ is the set of spectral flux values for
 all $N$ objects at the one wavelength $\lambda$.
 We can set the coefficients $[\set{\theta}_\lambda,s_\lambda^2]$ either by
-optimizing the likelihood (\ref{eq:like}) or by applying priors and
+optimizing the likelihood (\ref{eq:like}) over all reference objects or by applying priors and
 performing some form of probabilistic inference (with, say, Markov
 Chain Monte Carlo techniques).
-Here we will optimize for now.
-
-For the \tc 's training step, we are treating the spectral model coefficients
-$\set{\theta}_\lambda$ and the scatter $s_\lambda^2$ as free parameters, and the
-labels in the label vector $\starlabelvec_n$, $\starlabel_{nk}$ as fixed.
-The likelihood function (\ref{eq:like}) is presented as being a
-function of these free parameters.
-In the next Section, the tables will turn, and we will treat the
-spectral model parameter vectors $\set{\theta}_\lambda$ and the scatter $s_{\lambda}^2$ as known and will solve for the
-labels $\starlabel_{nk}$ in the label vector, $\starlabelvec_n$.
-The difference is that here we are treating the data of the reference objects as
-having perfectly known labels, and later we will be inferring labels for
-new spectra.
+Here we will optimize for now, which can be done separately for each pixel $\lambda$, where
+we are treating the spectral model coefficients $\set{\theta}_\lambda$ and the scatter $s_\lambda^2$ as free parameters, and the
+labels in the label vector $\starlabelvec_n$, $\starlabel_{nk}$ as fixed:
 
 Then, in the training step of \tc\ we exploit the fact that we know the $f_{n\lambda}$
 and the $\starlabelvec_n$, which permits to solve for the coefficients and the scatter of the spectral model:
@@ -478,14 +466,13 @@ vector $\starlabelvec_n$ is quadratic in the labels: so this label vector is des
 \end{array}
 \label{eq:quadinlabels}
 \end{eqnarray}
-where the leading ``1'' permits an offset, and the quadratic terms
-contain all possible products exactly once.
+where the quadratic terms contain all possible products exactly once.
 
 For the training step of \tc , this quadratic-in-labels form of the spectral model (\ref{eq:quadinlabels}) is similar to a the linear-in-labels form (\ref{eq:linear}) in a number
 of ways.
 It is still the case that optimization of the model, at fixed scatter
 $s_\lambda^2$ is a pure linear-algebra operation (weighted least
-squares), expect that $\starlabelvec_n$ has become longer for a given number of labels. 
+squares), except that $\starlabelvec_n$ has become longer for a given number of labels. 
 However, test step on the survey (described in the next Section) the quadratic-in-labels form
  will no longer be simple; it will require non-linear
 optimization to estimate the labels.
@@ -503,35 +490,29 @@ labels $k$ and $k'$.
 \label{sec:paramestimate}
 
 In the previous Section, we trained or fit the parameters of
-a data-driven probabilistic generative model model for stellar spectra from the reference objects (training data).
+a data-driven probabilistic generative model for stellar spectra from the reference objects
+serving training data.
 This model has the property that, given labels (and noise variance estimates), it produces a
 pdf for the continuum-normalized flux, that includes both observational and intrinsic
 scatter.
-In this \sectionname, we are going to solve the inverse problem; we
-are going to presume that we have spectra, but we don't have labels.
-In this case, we will use inference to obtain labels for the untagged
-spectra.
-These untagged spectra---the survey objects---will be referred to as the ``test data'' sometimes in
-what follows.
+In this \sectionname, we are going to solve the inverse problem:
+we have spectra, but we don't have labels for them.
+In this case, we will use inference and the just determined spectral model
+to obtain labels for the untagged survey
+spectra, which we also refer to as the ``test data'' in what follows. 
 
 In the test data there will be $M$ spectra $m$, each of which---as in
 the training data---has a continuum-normalized flux measurement
 $f_{m\lambda}$ at each wavelength $\lambda$, and an
 associated observational uncertainty variance $\sigma_{m\lambda}^2$.
-Again, if there are missing flux values in the test data, these can be
-handled by setting variances to something very large.
-The difference between the training data and the test data are that the
-test data do not (yet) have known labels $x_{mk}$; we are going to infer
-these.
+Just as in the training step, we consider the same likelihood function given in
+equation~(\ref{eq:like}). But now we view it as a function of the \emph{labels},
+instead of the function parameters $\set{\theta}_\lambda$ and
+scatter $s_\lambda^2$.
 
-Just as in the previous \sectionname, our model leads to the same likelihood function given in
-equation~(\ref{eq:like}), but this time seen as
-being functions not of the function parameters $\set{\theta}_\lambda$ and
-scatter $s_\lambda^2$ but instead as functions of the \emph{labels}.
-
-Then, in the test step of \tc\ , we use the known coefficients and scatter of the spectral model
-($\set{\theta}_\lambda,\ s_\lambda^2$),
-take the entire $N_\pix$ spectrum of survey star $m$, $f_{m\lambda}$ and optimize for the labels of that star:
+In the test step of \tc\ we use the spectral model coefficients and scatter,
+($\set{\theta}_\lambda,\ s_\lambda^2$), to be exactly those that were determined in the training step.
+We then take the entire $N_\pix$ spectrum of survey star $m$, $f_{m\lambda}$ and optimize for the labels of that star:
 \begin{eqnarray}
 \left\{\starlabel_{mk}\right\} \leftarrow \substack{\mbox{argmax}\\{\left\{\starlabel_{mk}\right\}}}
 \sum_{\lambda=1}^{N_\pix}
@@ -541,7 +522,11 @@ take the entire $N_\pix$ spectrum of survey star $m$, $f_{m\lambda}$ and optimiz
 The labels $\starlabel_{mk}$ for each survey star $m$ can be obtained either by maximizing
 the likelihood function, or else by applying priors
 and performing probabilistic inference.
-Here we will optimize for now. Our optimisation is not convex in general, but in practice it is insensitive to initialisation. 
+Again, we will optimize here. Our optimisation is not convex in general, but in practice it is insensitive to initialisation.
+The right-hand sides of the training step (\ref{eq:trainingstep}) and test step (\ref{eq:teststep}) look formally quite analogous.
+But in the test step we optimize over the labels, considering all pixels of one survey object at a time. In contrast,
+in the training step, we optimized over the spectral model coefficients and scatter, considering all reference objects
+at one pixel at a time.
 
 When we use the simple linear-in-labels form (\ref{eq:linear}) for the
 mean model, the optimization to obtain maximum-likelihood labels
