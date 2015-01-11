@@ -865,24 +865,40 @@ These \figurenames\ illustrate that our approach to continuum normalization work
 
 \section{Discussion}
 
-[DWH SAY: THIS PARAGRAPH IS WRONG - MKN SAYS: I changed it] We have demonstrated with \tc,  that using a data-driven model, labels can be transferred from training to test data, simply and efficiently. 
-In using a data-driven model which spans the label range of the test data, we do not rely on explicit models in the wavelength region of analysis of the survey. 
-We can therefore fully capitalise on large surveys and the information in the data itself, circumvent problems with simplified stellar models , uncertainties in linelists in poorly studied wavelength regions and understand where models are wrong.  
+% HOGG: here is my proposed outline for the discussion
+% 1. first say what we accomplished and why it ROCKS
+% 2. then go through all of our deep assumptions, one at a time,
+%    and discuss what it would cost and what it would benefit to make weaker assumptions.
+%    This is a framework for discussing future directions without over-promising.
 
-From our implementation of \tc\ on \apogee\ data, we were motivated to examine the calibration space of the labels given the unphysically narrow giant branch returned for DR10 data at low \logg. 
-We found by adopting a very naive calibration that shifts the stars to the nearest position on the isochrone from the \aspcap\ value described in \sectionname~\ref{MKN REF}, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical label-space of stars. 
-This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. 
-This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
+We have demonstrated with \tc\ that it is possible to label stellar
+spectra with stellar parameters and metallicities (collectively
+``stellar labels'') using not stellar models but rather a
+\emph{training set} of reference objects.
+Our requirement is that the reference objects have good labels, and
+also spectral data that are similar in resolution, line-spread function, and
+wavelength coverage (though not signal-to-noise) to the data on the survey objects that
+require labeling.
+Except for the fact that the reference objects must have been given
+labels themselves somehow, we do not rely on explicit physical models
+for the spectra.
+Given that the reference objects might have obtained labels from data
+in other wavelength regions, the method don't require---even
+implicitly---the existence of explicit physical models at all for the
+wavelength domain of the spectra used by \tc.
+In our first test of \tc, on the \apogee\ DR10 data, we show that we can reproduce the
+\apogee\ DR10 stellar labels delivered by the
+\apogee\ \aspcap\ pipeline at a precision comparable to the stated
+uncertainties of the pipeline.
 
-For our first implementation of \tc\ presented here, it is trivial to run the 55,000 star sample (that is, the size of DR10 from \apogee) through \tc\ on a single laptop, as it takes $<$ 1/10$^{th}$ of a second (on a 2.6 GHz intel core i7) to determine three labels for each star, without any attempt at speed or method optimisation. 
-We reproduce the \apogee\ labels, as provided for DR10 in Table 1, without adding any significant uncertainty because we use every pixel in the spectra and have a generative model. 
-Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better. 
-
-By returning coefficients, we have a tool which \textit{describes the flux in a quantitative way as a function of stellar labels}, thus removing degeneracies and improving the prospects for determining stellar parameters, by modelling covariance rather than attempting to minimise it. Regions that have dependencies on only one of the labels can also be easily identified. 
-
-We have demonstrated that we can work at much lower SNR at least for the three primary stellar parameters with this approach. 
-We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (for example, alpha, light elements, neutron capture) of covariant spaces \citep[e.g.,][]{Ting2012}. In this way we exploit more pixels in the spectra and can operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. 
-This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
+Although the primary objective of \tc\ was to free stellar parameter
+determination and chemical abundance tagging from physical stellar
+models, it is also the case that \tc\ is very fast, computationally.
+\tc\ trains fast and then delivers labels for the entire 
+data set of 55,000 stars (that is, the \apogee\ DR10 samle)
+in reasonable time on a single laptop, as it takes $<0.1$~s on a 2.6-GHz
+intel core i7 to determine three labels for each star, without any
+attempt at code optimization.
 
 In using all of the pixels in the spectrum to obtain the
 stellar labels, \tc\ is not dissimilar from the MATrix Inversion for
@@ -896,6 +912,28 @@ spectrum to determine stellar labels by calculating an optimal
 combined synthetic spectrum describing the stellar flux.
 Conversely, we use a data-driven model and do not project onto any
 subspace or combined theoretical spectrum.
+
+% HOGG: this sentence needs to go in some part of the discussion about the advantages we will get when we go beyond max-like to a probabilistic generative model
+% Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better.
+
+% syntactical reference point
+
+From our implementation of \tc\ on \apogee\ data, we were motivated to examine the calibration space of the labels given the unphysically narrow giant branch returned for DR10 data at low \logg. 
+We found by adopting a very naive calibration that shifts the stars to the nearest position on the isochrone from the \aspcap\ value described in \sectionname~\ref{MKN REF}, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical label-space of stars. 
+This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. 
+This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
+
+By returning coefficients, we have a tool which \textit{describes the flux in a quantitative way as a function of stellar labels}, thus removing degeneracies and improving the prospects for determining stellar parameters, by modelling covariance rather than attempting to minimise it. Regions that have dependencies on only one of the labels can also be easily identified. 
+
+We have demonstrated that we can work at much lower SNR at least for the three primary stellar parameters with this approach. 
+We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (for example, alpha, light elements, neutron capture) of covariant spaces \citep[e.g.,][]{Ting2012}. In this way we exploit more pixels in the spectra and can operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. 
+This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
+
+% HOGG: the following needs to move to a ``we use the whole spectrum'' paragraph?
+% \tc\ is therefore a tool for capitalizing on large surveys and the
+% (enormous) information content in the data itself, circumventing
+% problems with simplified stellar models or uncertainties in line lists
+% in poorly studied wavelength regions.
 
  \tc\ is readily expandable to a more general model, a larger training dataset and many more labels which include errors and/or partial characterisation of labels. Furthermore we do not need to use all of the pixels in the spectra for our model and \tc\ can be generalised to use a linelist to select for particular regions or features.
  As it is, our second-order model is hard-coded and extremely restrictive. 
