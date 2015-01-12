@@ -84,7 +84,7 @@ We take \teff, \logg\ and \feh\ as the labels, and 543 stars in 19
 clusters as the reference objects. 
 \tc\ is very accurate; its stellar labels compare well to the 37,500
 stars for which \apogee\ pipeline (\aspcap) labels are provided; we
-obtain \texit{rms} differences of $\delta\teff< 100$~K, $\delta\logg< 0.2$~dex
+obtain \textit{rms} differences of $\delta\teff< 100$~K, $\delta\logg< 0.2$~dex
 and $\delta\feh< 0.1$~dex.
 Aside from the modeling of the training-set stars (which could happen
 in another dataset or at another wavelength), \tc\ makes no use of
@@ -232,7 +232,8 @@ calibration of their abundance pipeline \citep{Meszaros2013}. In their stellar l
 Exactly which stellar labels we adopt for these reference objects is critical to the subsequent output, and hence 
 we discuss it in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
 
-% MKN:  SHOULD THIS BE IN THE MAIN TEXT?  note there are 20 in their list but 1 gc has only 1 star and the abundance looks incorrect to me. DWH: No I don't think we should call this out explicitly in the paper it's more pointing out what I think is an error than adding anything useful. 
+% MKN:  SHOULD THIS BE IN THE MAIN TEXT?  note there are 20 in their list but 1 gc has only 1 star and the abundance looks incorrect to me. DWH: No I don't think we should call this out explicitly in the paper it's more pointing out what I think is an error than adding anything useful.  In fact there are multiple errors in that list as confirmed by people at the APOGEE meeting - they know about them. 
+
 Another reason why cluster members make for good reference objects is because we can expect their stellar parameters to fall onto a single isochrone and to have near-identical abundances (at least for open clusters). This provides additional constraints on the labels.
 We exploit that expectation in the case of \apogee\ and define ``Isochrone-corrected labels'', where we use Padova isochrones at the literature age and \feh\ of each cluster (cf. Figs. \ref{fig:trainingaspcap} \& \ref{fig:trainingisochrone}, and \sectionname~\ref{sec:ApogeeRefLabels}).
 
@@ -545,11 +546,11 @@ For the quadratic model we then show this applied to the DR10 data, including at
 \section{\tc\ in Action: Results with APOGEE Data}
 \label{sec:results}
 
-MKN: ONCE AGAIN THIS SECTION NAME MAKES NO SENSE: THIS IS THE TITLE OF THE WHOLE PAPER! DWH: Is it better now with the removal of the word ``Illustrative''? This is a subtle but important difference. I am not entirely sure how to make it clear APOGEE is an example but satisfy that you think it makes sense. On that note, is it a little confusing having a title "specifics of the APOGEE dataset" in section 2.3, as a lot of the info outside of that is also specific to the APOGEE dataset"?
+\textbf{DWH: Does this now make sense? }
 
-MKN: THIS PARAGRAPH (below) ISN'T THE WAY TO START -- THIS DESCRIBES THE CROSS-VALIDATION, WHICH IS TWO SUBSECTIONS DOWN.  CAN YOU MOVE THIS THERE AND OPEN THIS SECTION BY SAYING THAT WE ARE GOING TO TRAIN THE QUADRATIC MODEL ON THE THREE LABELS WE HAVE CHOSEN USING THE TRAINING SET DESCRIBED ABOVE AND APPLY IT TO EVERYTHING? Yes have started doing this you probably still object to how much info is there I am not done with editing. 
+We now illustrate how \tc\ works in practice, using \apogee\ DR10 data. This comprises 47,000 stars observed in survey mode observed in the H-band, across a wavelength range of $\approx$ 15200 - 16900 \AA, observed at a resolution of 22,500 \citep{Majewski2012}. The DR10 \apogee\ spectra is released in a number of data formats including \apstar\ and \aspcapstar\ fits files: The \apstar\ fits files include combined as well as single visit spectra that are reduced, resampled and shifted back to the rest frame. The \aspcapstar\ files include the combined spectra, resampled, reduced, shifted back to the rest frame and pseudo continuum normalised. \aspcap\ corrected results are available for \approx\ 38,000 of these stars. 
 
-We now illustrate how \tc\ works in practice, using \apogee\ DR10 data. We first train the quadratic model in Equation~\ref{eq:quadinlabels} using the reference data and three labels chosen as described in Section~\ref{sec:ApogeeRefLabels}. We then apply this model to all of the DR10 continuum normalised data, using continuum normalised \aspcapstar\ spectra described in Section~ \ref{sec:ApogeeContinuum}. We use a leave-one-out cross-validation test to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
+We first train the quadratic model in Equation~\ref{eq:quadinlabels} using the reference data and three labels chosen as described in Section~\ref{sec:ApogeeRefLabels}. We then apply this model to all of the DR10 continuum normalised data, using continuum normalised \aspcapstar\ spectra described in Section~ \ref{sec:ApogeeContinuum}. We use a leave-one-out cross-validation test to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
 
 
 %We start by considering all but one of the 543 cluster stars as the reference set for the training step, and then consider the one remaining cluster star as the survey star in the test step. We use such leave-one-out cross-validation to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
