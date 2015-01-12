@@ -488,7 +488,7 @@ labels $k$ and $k'$.
 
 In the previous Section, we trained or fit the parameters of
 a data-driven probabilistic generative model for stellar spectra from the reference objects
-serving training data.
+serving as training data.
 This model has the property that, given labels (and noise variance estimates), it produces a
 pdf for the continuum-normalized flux, that includes both observational and intrinsic
 scatter.
@@ -620,10 +620,10 @@ The temperature of the dwarfs is offset low at increasing temperature, compared 
 There is a flattening at the low metallicity end of the model in \feh\ in the output labels at \feh\ $<$ -2.2, however this value of \feh\ = --2.2 also corresponds to the literature value of this cluster, M5 \citep{Meszaros2013}. 
 The lower metallicity of the \aspcap\ label may represent internal scatter in the \aspcap\ results.
 The fact that \figurename~\ref{fig:takeonestarout} shows only very small systematic offsets and such tight scatter leads us to conclude that for the
-current context the quadratic-in-labels spectral model is sufficient in the label tranfer. 
+current context the quadratic-in-labels spectral model is sufficient in the label transfer. 
 
 Interestingly, an analogous take-one-cluster-out test significantly increases the scatter in the label transfer, 
-increasing the rms differences to $<$ 150 K in \teff, $<$ 0.4 dex in \logg\ and $<$ 0.12 dex in \feh.
+increasing the \textit{rms} differences to $<$ 150 K in \teff, $<$ 0.4 dex in \logg\ and $<$ 0.12 dex in \feh.
 This indicates that our training set is sufficiently small that each cluster matters for a good label transfer. 
 One particular case in the \apogee\ context is the Pleiades cluster: it is the \textit{only} cluster for which dwarf stars have been observed and hence we can draw reference labels for main sequence stars. 
  
