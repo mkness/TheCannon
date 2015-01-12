@@ -84,7 +84,7 @@ We take \teff, \logg\ and \feh\ as the labels, and 543 stars in 19
 clusters as the reference objects. 
 \tc\ is very accurate; its stellar labels compare well to the 37,500
 stars for which \apogee\ pipeline (\aspcap) labels are provided; we
-obtain rms differences of $\delta\teff< 100$~K, $\delta\logg< 0.2$~dex
+obtain \texit{rms} differences of $\delta\teff< 100$~K, $\delta\logg< 0.2$~dex
 and $\delta\feh< 0.1$~dex.
 Aside from the modeling of the training-set stars (which could happen
 in another dataset or at another wavelength), \tc\ makes no use of
@@ -220,7 +220,7 @@ The performance of a data-driven model like \tc\ will depend strongly on the siz
 
 In practice, also for the \apogee\ data,
 a good set of reference objects can be built from 
-members of well studied open and globular clusters that have been observed in the context of the survey.
+members of well studied open and globular clusters that have been observed in the context of the survey \citep{Zaso2013}.
 There is a variety of reasons why the stellar labels for cluster stars may be particularly accurate and robust.
 For one, they could have their labels derived from independent, high resolution spectral analysis of these
 stars, e.g. from observations in a well understood portion of the optical wavelength region. The
@@ -297,9 +297,9 @@ For a clearer view of individual absorption line features, we use narrower regio
 \subsection{Specifics of the APOGEE Data Set}
 \label{sec:Apogee_as_worked_Example}
 
-In the application of \tc\ to  \apogee, we start with the \aspcapstar\ and \textit{apstar} files of DR10,
+In the application of \tc\ to  \apogee, we start with the \aspcapstar\ and \apstar\ files of DR10,
 which are reduced and resampled. 
-The \textit{apstar}  data are not pseudo-continuum normalised by \apogee\,
+The \apstar\  data are not pseudo-continuum normalised by \apogee\,
 which will enable us to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files. 
 
 The pixel-by-pixel inverse variances are critical for all steps of the \tc\ : continuum normalization, training step and test step.
@@ -308,7 +308,7 @@ inverse variance and weighing of that pixel becomes $\sim$ 0.
 
 The resampled, reduced and combined spectra are available for 49,200 stars in 150 of the 170 DR10 fields in the \aspcapstar\ files. There are a further 4800 stars in 20 fields taken in commissioning only in DR10 which are available in the radial velocity combined but not continuum normalised data format in the \apstar\ files and a further 3100 stars taken during commissioning across different fields. 
 The commissioning data, for which the \aspcap-corrected labels are not all provided in the DR10 release, is only available in the radial velocity combined but not continuum normalised data format in the \apstar\ files. 
-We use the \apogee -provided bad pixel masks for the \textit{apStar} files run through \tc .
+We use the \apogee -provided bad pixel masks for the \apstar\ files run through \tc .
 
 We did attempt to apply the \tc\ to the commissioning data, but could not evaluate the fidelity of these results as the line spread function of the commissioning data are different from the main survey and consequently the reference dataset of stars in the training step. 
 Therefore, although we similarly process the \apstar\ spectra, returning the labels for these stars in our online table of DR10 parameters, the reliability of these is uncertain and they are subsequently flagged as commissioning data (see Table 1).
