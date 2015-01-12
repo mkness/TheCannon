@@ -913,8 +913,13 @@ combined synthetic spectrum describing the stellar flux.
 Conversely, we use a data-driven model and do not project onto any
 subspace or combined theoretical spectrum.
 
-% HOGG: this sentence needs to go in some part of the discussion about the advantages we will get when we go beyond max-like to a probabilistic generative model
-% Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better.
+The method underlying \tc, and in particular this first implementation of \tc,
+makes many assumptions and approximations.
+We discuss some of these now, and the costs and benefits of relaxing
+these assumptions and approximations.
+\tc\ as presented here is just the tip of a large iceberg of potential
+methods for transferring labels from a set of reference objects to a
+set of unlabeled survey objects.
 
 % syntactical reference point
 
@@ -922,6 +927,13 @@ From our implementation of \tc\ on \apogee\ data, we were motivated to examine t
 We found by adopting a very naive calibration that shifts the stars to the nearest position on the isochrone from the \aspcap\ value described in \sectionname~\ref{MKN REF}, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical label-space of stars. 
 This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. 
 This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
+
+...more generally what to do if we don't believe the labels?
+
+...a generative model of spectra \emph{and} labels!
+
+% HOGG: this sentence needs to go in some part of the discussion about the advantages we will get when we go beyond max-like to a probabilistic generative model
+% Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better.
 
 By returning coefficients, we have a tool which \textit{describes the flux in a quantitative way as a function of stellar labels}, thus removing degeneracies and improving the prospects for determining stellar parameters, by modelling covariance rather than attempting to minimise it. Regions that have dependencies on only one of the labels can also be easily identified. 
 
