@@ -552,8 +552,6 @@ We now illustrate how \tc\ works in practice using \apogee\ DR10 data. This data
 To apply \tc\ to \apogee\ data, we first train the quadratic model in Equation~\ref{eq:quadinlabels} using the reference data and three labels chosen as described in Section~\ref{sec:ApogeeRefLabels}. We then apply this model to all of the DR10 continuum normalised data, using continuum normalised \aspcapstar\ spectra described in Section~ \ref{sec:ApogeeContinuum}. We use a leave-one-out cross-validation test to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
 
 
-%We start by considering all but one of the 543 cluster stars as the reference set for the training step, and then consider the one remaining cluster star as the survey star in the test step. We use such leave-one-out cross-validation to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
-
 
 \subsection{The Choice of the Spectral Model Complexity}
 \label{sec:ModelComplexity} 
@@ -561,13 +559,11 @@ To apply \tc\ to \apogee\ data, we first train the quadratic model in Equation~\
 To evaluate the \tc 's label-transfer we have to settle on a suitable functional form for the spectral model (\ref{eq:specmodel}).
 To start, one could consider picking the simplest -- namely linear-in-label -- spectral model, comprised of only four coefficients at every pixel (\ref{eq:linear}).
 However, through take-one-out tests on the set of reference objects (see \sectionname~\ref{sec:take-one-out}), we found that this simple linear model was too inflexible to describe the spectral flux dependence on the labels.
-As a consequence, the lables that emerged from the test step applied to the reference objects showed large and systematic deviations compared to ``known" input label values,
+As a consequence, the labels that emerged from the test step applied to the reference objects showed large and systematic deviations compared to ``known" input label values,
 especially at the extremes of the labels' ranges. 
 
 This is perhaps not surprising, as absorption features, particularly strong lines, are known to vary non-linearly as a function of stellar labels. If one were to insist on a label transfer with a first-order, spectral model, the systematic discrepancies could presumably be reduced by selecting only weak-line regions, but at the severe price of leaving much of the spectral range unexploited. Therefore, we have not pursued the linear-in-labels \textit{Ansatz} for the spectral model.
 
-An exception where this basic implementation would prove extremely useful is for any front-end to other methodologies of label-determination and this very simple version of the regression analysis is extremely fast for determining baseline stellar labels. 
-% I am putting this in because at present a lot of surveys use some "fast" method first to get a first pass estimate to input to their pipelines - this might get their attention as this is *a lot* faster than what they are currently doing I believe. Someone commented this out I am putting it back. 
 
 The next simplest spectral model, the quadratic-in-labels case,
  presumes that the continuum normalized flux is a general second-order polynomial of the stellar labels, $f_{n\lambda} =
@@ -610,23 +606,14 @@ The Pleiades cluster, which has only spectra for main sequence stars, shows the 
 The \textit{rms} is comparable to the estimated \apogee\ errors. The \logg\ label has the largest relative \textit{rms} in the ASPCAP--\tc\ comparison, larger than the \apogee\ uncertainty, suggesting an internal uncertainty of $<$ 0.1 dex in \logg\ determined by \tc.
 If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \logg 's (cf. \sectionname~\ref{sec:ApogeeRefLabels}), the \textit{rms} improves by 10\% in \teff\ and \logg .
 
-
-%Removing this cluster improves the rms in the \teff\ and \logg\ labels by $>$ 10\%
-
 % made with takeonestarout_all_stars_diag_6panel.py in code/
 \begin{figure}[h!]
 \centering
-%  \includegraphics[scale=0.3]{./plots/takeoneout_diag_test18_222.pdf}
     \includegraphics[scale=0.45]{./plots/takeout_histc.png}
 \caption{The take-one-star-out cross-validation of the 543 stars in the training dataset using the quadratic model in equation~(\ref{eq:quadinthreelabels}) and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
 \label{fig:takeonestarout}
 \end{figure}
-%\begin{figure}[h!]
-%\centering
-%  \includegraphics[scale=0.45]{./plots/mkn_labels.pdf}
-%\caption{Take-one-star-out cross-validation of the 530 stars in the training dataset with own-labels}
-%\label{fig:takeonestarout_own}
-%\end{figure}
+
 
 The outlying stars in \figurename~\ref{fig:takeonestarout} may be due to an anomalous scale of the input labels of these stars compared to the other training data, or it may be a consequence of the model being too inflexible to properly model how flux changes with labels across the parameter space of the training dataset. 
 The temperature of the dwarfs is offset low at increasing temperature, compared to the input labels, so the model may be limited in describing the difference between dwarf and giant spectra. 
@@ -703,7 +690,7 @@ and apply the test step with this model to all DR10 spectra.
 Remarkably, we are able to reproduce well the \aspcap\ labels for DR10 spectra. We have run \tc\ through all 47,000 stars in 150 fields in DR10 contained in the available \textit{aspcapstar} files as well as an additional 4800 stars in 20 commissioning fields for which no \aspcap\ parameters were provided in DR10, 
 made available in the (non pseudo-continuum normalised) \textit{apStar} files. 
 We also have run \tc\ through the additional commissioning stars available in the \apstar\ files across the fields and in total this
- comprises 55,000 DR10 stars in 170 fields. %These 170 fields comprise a total of $\sim$ 51,600 \apogee\ DR10 stars. 
+ comprises 55,000 DR10 stars in 170 fields. 
 
 These results of \tc\ for all DR10 stars for which we return parameters are provided online in \tablename~\ref{tab:online}. 
 For the 30,500 stars with parameters provided by DR10, we find we reproduce the \apogee\ labels as follows: 
@@ -720,7 +707,6 @@ The typical internal precision on the measured parameters from \tc\ is $\delta$(
 star ID & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{ROT WARN}\\
 {2MASS} &  K &  dex  & dex & K & dex & dex & & \\    
 \hline
-%21353892+4229507 & 4131.7 &  1.51 & 0.04 & 3.25 & 0.0116 &  0.0042 & 11.06 &  0.0\\
 21354474+4250256 & 5028.5 & 4.53 & 0.13 & 9.14 & 0.01 & 0.006 & 3.14 & 0\\
 21354775+4233120 & 4730.9 & 2.8 & 0.06 & 12.02 & 0.04 & 0.011 & 1.34 & 0\\
 21355458+4222326 & 4780.1 & 2.42 & --0.36 & 8.34 & 0.03 & 0.007 & 2.41 & 0\\
@@ -783,12 +769,10 @@ The labels for the main sequence stars are presumably much more poorly determine
 Remarkably, though, only a handful of stars at low \feh\ and low \logg\ do not lie near conceivable isochrones. 
 
 At metallicities \feh\ $<$ --0.25 the red clump is offset too high in the \logg\ label. This is noted in \citet{bovy2014} who estimate that this offset shifts the red clump and red giant branches 0.2 dex closer together. 
-Our \logg\ labels in \figurename~\ref{fig:iso} are essentially identical to \apogee\ ASPCAP labels (offset -0.04 dex in \logg\ for DR10) and the left panels show that the red clump stars which should be seen as a density maxima of stars around \logg\ $\sim$ 2.5, \teff\ $\sim$ 4800K \citep[e.g.,][]{Zhao2001} 
+Our \logg\ labels in \figurename~\ref{fig:iso} are essentially identical to \apogee\ ASPCAP labels (offset -0.04 dex in \logg\ for DR10) and the left panels show that the red clump stars which should be seen as a density maxima of stars around \logg\ $\sim$ 2.5, \teff\ $\sim$ %  \includegraphics[scale=0.3]{./plots/takeoneout_diag_test18_222.pdf}K \citep[e.g.,][]{Zhao2001} 
 are offset to higher \logg\ than the red clump branch of the Padova isochrone, for stars \feh\ $<$ --0.25. 
 This offset is on the order of 0.2 dex at \feh\ = -0.5 and is present for both \aspcap-corrected labels and isochrone-corrected labels. 
 This may indicate that the \aspcap\ temperature scale is offset too cool in DR10 (but as a function of \feh).
-
-%\textbf{have written -find it odd this is not discussed in Jo Bovy's paper: note to MKN: Discuss that red clump is not where it should be for stars $<$ --0.25, Jo Bovy didn't show this in the paper but does mention there is a systematic offset - it's pretty bad though - instead shows apocask stars on the padova isochorne fit. This plot/discussion never appears in apogee papers - is it just as one wants to project the positive aspects and not all aspects of the results that this has been omitted or am i just missing a of it elsewhere?}.
 
 % made with makeonisochrone_v18_bw.py
 \begin{figure}[!h]
@@ -804,8 +788,7 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 
 \begin{figure}[!h]
 \centering
-
-      \includegraphics[scale=0.25]{./plots/iso2.png}
+ \includegraphics[scale=0.25]{./plots/iso2.png}
   \hspace{-20pt}
     \includegraphics[scale=0.25]{./plots/iso2a.png}
 %    \includegraphics[scale=0.33]{./plots/isochrone_mkn20b2.pdf}
@@ -817,11 +800,11 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 \subsection{Failures: Types of Spectra not Represented among the Reference Objects}
 \label{sec:AnomalousSpectra}
 
- %run -i makeplot_scatter_test18_coeffs_dwarfs_RevB.py
-  \begin{figure}[!h]
-   \centering
- \includegraphics[width=\hsize]{./plots/2dwarfs.png}
-  \caption{Examples of hot rotating dwarfs in the \apogee\ DR10 data across regions A and B, comparable to \figurename~\ref{fig:coeffs}. These types of stars are \textit{not} included in our set of reference objects. Therefore, the label transfer by \tc\ leads to grossly unphysical label estimates.}
+%run -i makeplot_scatter_test18_coeffs_dwarfs_RevB.py
+\begin{figure}[!h]
+\centering
+\includegraphics[width=\hsize]{./plots/2dwarfs.png}
+\caption{Examples of hot rotating dwarfs in the \apogee\ DR10 data across regions A and B, comparable to \figurename~\ref{fig:coeffs}. These types of stars are \textit{not} included in our set of reference objects. Therefore, the label transfer by \tc\ leads to grossly unphysical label estimates.}
 \label{fig:dwarfs}
 \end{figure}
 
@@ -834,8 +817,6 @@ Three examples of stars with broad line features that are in the test data but n
 
 It is possible to differentiate these stars with \tc\ because they are output in non-physical space in \teff-\logg, and present as a group of very metal poor, \feh\ $\sim$ --2.0, low \logg\ stars $\sim$ 0, with cool temperatures $\sim$ 4000 K. The metal poor solution determined by \tc\ reflects the dearth of lines in the spectra for these hot stars, given the training model. This group of stars is flagged in \aspcap\ with a \rotwarn\ flag set. We therefore are able to exclude these stars from our analysis using this condition. 
  
-
-
 
  \subsection{Performance at modest SNR}
  \label{sec:lowSNR}
@@ -853,9 +834,9 @@ These \figurenames\ illustrate that our approach to continuum normalization work
 \end{figure}
 
 %makeplot_fits_SNRtest.py in /play but changed to makeplot_fits_SNRtest_bw.py
- \begin{figure}[!h]
- \centering
- \includegraphics[scale=0.25]{./plots/SNR100to200.png}
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.25]{./plots/SNR100to200.png}
 \includegraphics[scale=0.25]{./plots/SNR50to100.png}\\
 \includegraphics[scale=0.25]{./plots/SNR30to50.png}
 \includegraphics[scale=0.25]{./plots/SNR20to30.png}
