@@ -885,6 +885,12 @@ We have demonstrated that we can work at much lower SNR at least for the three p
 We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (for example, alpha, light elements, neutron capture) of covariant spaces \citep[e.g.,][]{Ting2012}. In this way we exploit more pixels in the spectra and can operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. 
 This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
 
+% syntactical reference point
+
+HOGG: PART OF THE REASON FOR THIS IS: generative model!
+PART OF THE REASON IS:  Good continuum estimation!
+PART OF THE REASON IS:  Use all of the pixels.
+
 In using all of the pixels in the spectrum to obtain the
 stellar labels, \tc\ is not dissimilar from the MATrix Inversion for
 Spectral SythEsis (\matisse) procedure for derivation of stellar
@@ -920,7 +926,7 @@ That is, the model currently only generates spectra; it provides a pdf
 over spectral pixel intensities given a set of labels.
 Symbolically we could write that \tc\ in it's current implementation
 learns or provides a conditional pdf
-$p(\mbox{spectrum}\given\starlabelvec,\set{theta})$, where $\starlabelvec$ is
+$p(\mbox{spectrum}\given\starlabelvec,\set{\theta})$, where $\starlabelvec$ is
 the set of stellar labels and $\set{\theta}$ is the (huge) set of parameters
 that sets the spectral intensity expectation and scatter as a function
 of the labels (all of the $\set{\theta}_\lambda$ and all of the $s_\lambda^2$).
