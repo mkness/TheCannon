@@ -114,19 +114,19 @@ techniques: spectroscopic
 
 \section{Introduction}\label{sec:Intro}
 
-The vast spectroscopic stellar surveys of recent years (e.g., \segue\ \citep{Beers2006}, \rave\ \citep{Steinmetz2006}, \lamost\ \citep{Newberg2012}, \apogee\ \citep{Majewski2012}, \gaiaeso\ \citep{Gilmore2012}, \galah\ \citep{Freeman2012}) hold tremendous astrophysical promise, but at the same time present formidable data analysis and modeling challenges. 
+The vast spectroscopic stellar surveys of recent years (e.g., \segue\ \citep{Beers2006}, \rave\ \citep{Steinmetz2006}, \lamost\ \citep{Newberg2012}, \apogee\ \citep{Majewski2012}, \gaiaeso\ \citep{Gilmore2012}, \galah\ \citep{Freeman2012}) hold tremendous astrophysical promise, but at the same time present formidable data analysis and modelling challenges. 
 One of these challenges lies in consistently and accurately determining what we call ``stellar labels'', that is, stellar parameters and element abundances, from survey spectra. 
 These labels are usually determined from comparison of the data with synthetic model spectra, with approaches often 
 customised specifically to the particular wavelength region of a given survey \citep[e.g.,][]{ Lee2006, Boeche2011, Liu2014, Meszaros2013, Sm2014}. 
 
 The stellar photosphere models that are relied upon for stellar label determination have physical ingredients that are incomplete and simplified. 
 For computational feasibility, almost always 1D stellar photosphere models are adopted for large surveys, often assumed to be in local thermal equilibrium; these approximations are both severe. 
-In many cases, the model spectra do not account for all relevant  molecular opacities, for convection, stellar winds, and the chromosphere. 
+In many cases, the model spectra do not account for all relevant molecular opacities, for convection, stellar winds, and the chromosphere. 
 As a consequence, it happens that different research groups obtain discrepant results for same stars, resulting from analysis across different wavelength regions and different input assumptions and methods used \citep[e.g.,][]{Hinkel2014, Jofre2014, AP1999}. Even when the input assumptions are held fixed, differences in the employed analysis methods lead to substantial differences in assigned labels \citep[e.g.][]{Sm2014}.
 
 Stellar labels are commonly determined by fitting a grid of model spectra (with known labels) to the data using some minimisation technique, often restricted to a masked portion of the spectrum that is focussed on the absorption line (regions) deemed to be most reliable or relevant. 
 Stated minimal signal-to-noise requirement to obtain robust labels in this way are $SNR\sim 100$ per resolution element, especially if the labels are to include individual element abundances. 
-Often, a post-calibration procedure is applied to bring the stellar labels derived by such a fitting pipeline in accord with external information of higher fidelity: for example with stellar labels from benchmark stars studied at high resolution or well characterised open and globular cluster stars \citep[e.g.,][]{Meszaros2013, Freeman2013}
+Often, a post-calibration procedure is applied to bring the stellar labels derived by such a fitting pipeline in accord with external information of higher fidelity: for example with stellar labels from benchmark stars studied at high resolution or well characterised open and globular cluster stars \citep[e.g.,][]{Meszaros2013, Kord2013}
 In practice, different surveys or different pipelines end up delivering labels with different calibrations:
 Either their stellar parameter or their abundances are on slightly different scales; this complicates
 inter-survey comparisons and constitutes major challenge of the era of such large datasets. 
@@ -142,17 +142,16 @@ To achieve this, \tc\ relies on the existence of a subset of objects within a su
 In this context, the term ``\emph{labels}'' refers to the pieces of information
 that characterize and determine a stellar spectrum; these labels are commonly and sensibly split into \emph{stellar parameters} and \emph{element abundances}, although in the context of \tc\ it makes sense to treat them on a par. 
 In most cases, it suffices to think of the labels as \teff , \logg, and the element abundances \xfe, athough stellar rotation, microturbulence, age, and so forth can also be thought of as labels.
-It is central to the approach we lay out here that stars with the same labels have (nearly) identical spectra and that spectra vary smoothly with label changes. 
+It is central to the approach we lay out here that objects with the same labels have (nearly) identical spectra and that spectra vary smoothly with label changes. 
 This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are (for example) only \teff, \logg\ and \feh\ then this is an approximation.
 
 There are fundamentally two steps in \tc. 
-The first step, or \textit{training step} in \tc\ is to create from the spectra of the \textit{reference objects} a very flexible generative model (with $\sim 80,000$ parameters) that describes a probability density function (pdf) for
- the flux at every pixel in the continuum-normalized spectrum as a function of stellar labels.
+The first step, or \textit{training step} in \tc\ is to create from the spectra of the \textit{reference objects} a very flexible generative model (with $\sim 80,000$ parameters) that describes a probability density function (pdf) for the flux at every pixel in the continuum-normalized spectrum as a function of the labels.
 The second step, or \textit{test step}, assumes that this same generative model holds for all the other objects in the survey (dubbed \textit{survey objects}). 
 Then, the spectra of the \textit{survey objects} and the generative model from the \textit{reference objects}
 allow us to solve for---or infer---the labels of the \textit{survey objects}. 
 Taken together the \textit{training step} and the \textit{test step} effect a \textit{label transfer},
-transfering the known labels in the reference objects to the survey objects.
+transferring the known labels in the reference objects to the survey objects.
 
 To make such an approach straightforward, we must assume that the \textit{reference objects} and the \textit{survey objects} were observed with the identical instrumental set-up, a condition well satisfied with the large surveys listed above. 
 We take the generative model for the continuum normalized flux at each of $N_\pix$ pixels to be a polynomial function of all the labels, and hence the model is defined by its $N_\pix$ sets of polynomial coefficients. In practice, there may be different circumstances that make stars suitable reference objects. 
@@ -548,7 +547,7 @@ For the quadratic model we then show this applied to the DR10 data, including at
 
 \textbf{DWH: Does this now make sense? }
 
-We now illustrate how \tc\ works in practice, using \apogee\ DR10 data. This comprises 47,000 stars observed in survey mode observed in the H-band, across a wavelength range of $\approx$ 15200 - 16900 $\AA$, observed at a resolution of 22,500 \citep{Majewski2012}. The DR10 \apogee\ spectra is released in a number of data formats including \apstar\ and \aspcapstar\ fits files: The \apstar\ fits files include combined as well as single visit spectra that are reduced, resampled and shifted back to the rest frame. The \aspcapstar\ files include the combined spectra, resampled, reduced, shifted back to the rest frame and pseudo continuum normalised. The \aspcap\ corrected stellar parameter labels, derived as described in \citet{Meszaros2013} and Garcia Perez et al., 2015 (in prep) are available for $\approx$ 38,000 of these stars. 
+We now illustrate how \tc\ works in practice using \apogee\ DR10 data. This data release comprises 47,000 stars observed in survey mode observed in the H-band, across a wavelength range of $\approx$ 15200 - 16900 $\AA$, observed at a resolution of 22,500 \citep{Majewski2012}. The DR10 \apogee\ spectra is released in a number of data formats including \apstar\ and \aspcapstar\ fits files: The \apstar\ fits files include combined as well as single visit spectra that are reduced, resampled and shifted back to the rest frame. The \aspcapstar\ files include the combined spectra, resampled, reduced, shifted back to the rest frame and pseudo continuum normalised. The \aspcap\ corrected stellar parameter labels, derived as described in \citet{Meszaros2013} and Garcia Perez et al., 2015 (in prep) are available for $\approx$ 38,000 of these stars. 
 
 To apply \tc\ to \apogee\ data, we first train the quadratic model in Equation~\ref{eq:quadinlabels} using the reference data and three labels chosen as described in Section~\ref{sec:ApogeeRefLabels}. We then apply this model to all of the DR10 continuum normalised data, using continuum normalised \aspcapstar\ spectra described in Section~ \ref{sec:ApogeeContinuum}. We use a leave-one-out cross-validation test to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
 
