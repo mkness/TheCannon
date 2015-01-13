@@ -227,7 +227,7 @@ labels for the reference objects only have to be accurate and trustworthy; but t
 star, and hence do not have to arise from the survey data at hand. They may have been derived from different data.
 
 For the case of \apogee, we will use as reference objects 543 members of 19 globular and open clusters data observed for the
-calibration of their abundance pipeline \citep{Meszaros2013}. In their stellar labels they span the range of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
+calibration of their abundance pipeline \citep{Meszaros2013}. Some objects were removed from the full list available in \citep{Meszaros2013} as their cluster memberships were incorrect. In their stellar labels they span the range of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
 Exactly which stellar labels we adopt for these reference objects is critical to the subsequent output, and hence 
 we discuss it in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
 
@@ -300,11 +300,7 @@ inverse variance and weighing of that pixel becomes $\sim$ 0. We find that adopt
 The resampled, reduced and combined spectra are available for 49,200 stars in 150 of the 170 DR10 fields in the \aspcapstar\ files. There are a further 4800 stars in 20 fields taken in commissioning only in DR10 which are available in the radial velocity combined but not continuum normalised data format in the \apstar\ files and a further 3100 stars taken during commissioning across different fields. 
 The commissioning data, for which the \aspcap-corrected labels are not all provided in the DR10 release, is only available in the radial velocity combined but not continuum normalised data format in the \apstar\ files. 
 
-We are now in a position to determine the continuum by least-squares fitting a low-order Chebyshev polynomial, but only to these just determined continuum pixels.
-For \apogee\ we treat each of the three chips separately, and find a 2nd-order Chebyshev polynomial to be sufficient to apply to the pseudo-continuum normalised data provided by \apogee. We apply this normalisation to both \aspcapstar\ and \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. Fitting a polynomial has the disadvantage that they are poorly constrained at the edges of the data. An alternative implementation could use a more sophisticated sine or cosine function in place of a polynomial fit. 
-
-
-For the continuum normalisation of \apogee\ spectra we implement a least-squares fitting to a low-order Chebyshev polynomial, but fitting only to the determined continuum pixels outlined in Section \ref{sec:ApogeeContinuum}. We treat each of the three chips separately, and find a 2nd-order Chebyshev polynomial to be sufficient to apply to the pseudo-continuum normalised data provided by \apogee.. We apply this normalisation to both \aspcapstar\ and \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. Fitting a polynomial has the disadvantage that they are poorly constrained at the edges of the data. An alternative implementation could use a more sophisticated sine or cosine function in place of a polynomial fit. 
+For the continuum normalisation of \apogee\ spectra we implement a least-squares fitting to a low-order Chebyshev polynomial, but fitting only to the determined continuum pixels outlined in Section \ref{sec:ApogeeContinuum}. We treat each of the three chips separately, and find a 2nd-order Chebyshev polynomial to be sufficient to apply to the data provided by \apogee. We apply this normalisation to both \aspcapstar\ and \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. Fitting a polynomial has the disadvantage that they are poorly constrained at the edges of the data. An alternative implementation could use a more sophisticated sine or cosine function in place of a polynomial fit. 
 
 We did attempt to apply the \tc\ to the commissioning data, but could not evaluate the fidelity of these results as the line spread function of the commissioning data are different from the main survey and consequently the reference dataset of stars in the training step. 
 Therefore, although we similarly process the \apstar\ spectra, returning the labels for these stars in our online table of DR10 parameters, the reliability of these is uncertain and they are subsequently flagged as commissioning data (see Table 1).
@@ -326,7 +322,7 @@ The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for s
 The analysis in \citet{Meszaros2013} is restricted not only to giants but also stars with SNR $>$ 70, determined to be the minimum SNR for reliable stellar parameters by \apogee.
 
 These corrections implemented by \apogee\ in \teff, \logg\ and  \feh\ place the giants in the cluster stars on or near the iscohrones (see \figurenames~7 and 8 in Meszaros et al., (2013)).  
-As there are no \aspcap\ corrections implemented for the 64 main sequence stars among the reference objects that we use, 
+As there are no \aspcap\ corrections implemented for the 65 main sequence stars among the reference objects that we use, 
 we instead determine temperatures for these dwarfs, which are all in the Pleiades, directly using same correction method 
 as in \citet{Meszaros2013}. 
 We determine the infrared flux temperature for the stars from \citet{gonzalez2009} and apply a correction to 
@@ -336,12 +332,12 @@ the \aspcap\ output based on the offset in the temperature scales. For the dwarf
 We do not attempt an individual metallicity correction for each dwarf star in the Pleaides but rather set all \feh\ of the dwarf spectra to \feh\ = 0.03 \citep{barrado2001}.
 Tests on the input labels to \tc\ demonstrate that there is only a small degradation of the results caused by adopting a single \feh\ for every cluster star for the literature value of the cluster, instead of individual \feh\ values for the stars (that is, from the \aspcap\ corrected values). 
 To determine the \logg\ for these Pleiades main sequence stars, we shift the stars vertically to their nearest positions on an appropriate age-metallicity Padova isochrone of 150~Myr at $\feh = 0.03$ \citep{girardi2000}. 
-Due to the high differential reddening to the Pleiades, and the subsequent large temperature errors using the IR flux method that result from this, we only selected the 64 from a total of 72 Pleiades dwarfs, eliminating those with high extinction of SFD (corrected) E(J-K) $>$ 0.30 \citep{Schlafly2011}.
+Due to the high differential reddening to the Pleiades, and the subsequent large temperature errors using the IR flux method that result from this, we only selected the 65 from a total of 72 Pleiades dwarfs, eliminating those with high extinction of SFD (corrected) E(J-K) $>$ 0.30 \citep{Schlafly2011}.
 
 Adopting the input labels from the \aspcap-corrected parameters determined from calibrations to literature cluster values also transfers the errors from the \aspcap\ pipeline: of $<$ 150K in \teff,  $<$ 0.2 dex in \logg\ and $<$ 0.1 dex in \feh.   
 The uncertainties on the input labels will be included as an input parameter of the labels in a future development stage of \tc. Inclusion of uncertainties may be particularly relevant when introducing multiple labels of individual elements. 
 
-For a comparative analysis to the ``\aspcap\ corrected'' labels (\figurename\ref{fig:trainingisochrone}), we adopt a \logg\ label for all of the training stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed).
+For a comparative analysis to the ``\aspcap\ corrected'' labels (Figure \ref{fig:trainingisochrone}), we adopt a \logg\ label for all of the training stars not from the Kepler scale, but rather from the best vertical fits to the isochrone for the ages and metallicities for the clusters from the literature (with the temperatures fixed).
 We call these the ``Isochrone-corrected labels'', where we use Padova isochrones at the age and \feh\ of each cluster. 
 
 \section{The Generative Model of \tc}
@@ -541,9 +537,8 @@ For the quadratic model we then show this applied to the DR10 data, including at
 \section{\tc\ in Action: Results with APOGEE Data}
 \label{sec:results}
 
-\textbf{DWH: Does this now make sense? }
 
-We now illustrate how \tc\ works in practice using \apogee\ DR10 data.  The \aspcap\ corrected stellar parameter labels, derived as described in \citet{Meszaros2013} and Garcia Perez et al., 2015 (in prep) are available for $\approx$ 38,000 of these stars. 
+We now illustrate how \tc\ works in practice using \apogee\ DR10 data.  %The \aspcap\ corrected stellar parameter labels, derived as described in \citet{Meszaros2013} and Garcia Perez et al., 2015 (in prep) are available for $\approx$ 38,000 of these stars. 
 
 To apply \tc\ to \apogee\ data, we first train the quadratic model in Equation~\ref{eq:quadinlabels} using the reference data and three labels chosen as described in Section~\ref{sec:ApogeeRefLabels}. We then apply this model to all of the DR10 continuum normalised data, using continuum normalised \aspcapstar\ spectra described in Section~ \ref{sec:ApogeeContinuum}. We use a leave-one-out cross-validation test to explore which complexity the spectral model must have and how comprehensive the set of reference objects should be. We then proceed with the same set of reference objects in the label transfer to the entire DR10 in the test step. In particular, we also apply the test step to spectra from individual APOGEE visits that have far shorter exposure times, and hence lower SNR than the co-added spectra in DR10, in order to explore and illustrate how well \tc\ does at modest SNR (with appropriate continuum fitting).
 
