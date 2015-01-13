@@ -204,7 +204,7 @@ In principle, \tc\ , as described below, is applicable to any large, homogeneous
 meeting these criteria.
 Here, we use the \apogee\ data \citep{Ahn2014} to illustrate and showcase \tc.
 Because all of the exposition of the method underlying \tc\ involves specificities of the data,
-we spell out the characteristics of the \apogee\ data and our adjustments to it in +\sectionname~\ref{sec:Apogee_as_worked_Example}.
+we spell out the characteristics of the \apogee\ data and our adjustments to it in \sectionname~\ref{sec:Apogee_as_worked_Example}.
 
 \subsection{Choosing reference objects for the training step}
 \label{sec:ReferenceObjects}
@@ -266,24 +266,17 @@ we base the continuum estimation on a pre-tabulated set of wavelength locations 
 
 To initialize the continuum-pixel determination,
 we define a preliminary pseudo-continuum normalisation by 
-using polynomial fit to an upper quantile (for example, 80 or 90~percent) of the spectra
- in the \apogee\ pipeline \citep{Meszaros2013}, determined, for example, from a running median.
-  This is effective, but SNR dependent.
+using polynomial fit to an upper quantile (for example, 80 or 90~percent) of the spectra, determined, for example, from a running median.
+This is effective, but SNR dependent.
   
 After a training step with spectra of reference objects that have been  normalized  by this pseudo-continuum,
 the \tc\ can provide an improved identification of continuum regions in the spectrum: 
 we take those pixels to be continuum that show nearly unity flux in the spectral model's baseline spectrum (see \sectionname~\ref{sec:spectralmodel}), and at the same time show almost no dependence in their normalized flux on the stellar labels.
-That is, we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in \sectionname~\ref{sec:results}. This constitutes a data-driven method for finding continuum pixels, and we find it to have only a very small systematic dependence of the spectra on SNR (see \sectionname~\ref{sec:ApogeeContinuum}).
+That is, for the \apogee\ data, we can determine with the \tc\ the `true' continuum, using the model derived from the pseudo-continuum normalised spectra for the reference objects provided by \apogee, as described in \sectionname~\ref{sec:results}. This constitutes a data-driven method for finding continuum pixels, and we find it to have only a very small systematic dependence of the spectra on SNR (see \sectionname~\ref{sec:ApogeeContinuum}).
 
-We are now in a position to determine the continuum by least-squares fitting a low-order Chebyshev polynomial, but only to these just determined continuum pixels.
-For \apogee\ we treat each of the three chips separately, and find a 2nd-order Chebyshev polynomial to be sufficient to apply to the pseudo-continuum normalised data provided by \apogee\ . We apply this normalisation to both \aspcapstar\ and \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. Fitting a polynomial has the disadvantage that they are poorly constrained at the edges of the data. An alternative implementation could use a more sophisticated sine or cosine function in place of a polynomial fit. 
-
-
-\figurename~\ref{fig:norm} shows an example of this normalisation applied to survey spectra with different labels.
-To illustrate the result, \figurename\ shows typical \apogee\ spectra and demonstrates how the spectra 
+\figurename~\ref{fig:norm} shows an example of our normalisation which is described further in Section~\ref{sec:Apogee_as_worked_Example} applied to survey spectra with different labels. To illustrate the result, \figurename\ shows typical \apogee\ spectra and demonstrates how the spectra 
 vary as a function of metallicity at a given temperature , and as a function of temperature at a given metallicity. 
 For a clearer view of individual absorption line features, we use narrower regions marked in this \figurename, (A) and (B), for all subsequent examination of the spectral data. 
-
 
 %. The continuum pixels used for the Chebyshev polynomial fit are shown in the black points.
 
@@ -297,16 +290,21 @@ For a clearer view of individual absorption line features, we use narrower regio
 \subsection{Specifics of the APOGEE Data Set}
 \label{sec:Apogee_as_worked_Example}
 
-In the application of \tc\ to  \apogee, we start with the \aspcapstar\ and \apstar\ files of DR10. This data release comprises 47,000 stars observed in survey mode observed in the H-band, across a wavelength range of $\approx$ 15200 - 16900 $\AA$, observed at a resolution of 22,500 \citep{Majewski2012}. The DR10 \apogee\ spectra is released in a number of data formats including \apstar\ and \aspcapstar\ fits files: The \apstar\ fits files include combined as well as single visit spectra that are reduced, resampled and shifted back to the rest frame. The \aspcapstar\ files include the combined spectra, resampled, reduced, shifted back to the rest frame and pseudo continuum normalised. The \apstar\  data, which are not pseudo-continuum normalised by \apogee\,  enables us to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files. 
+In the application of \tc\ to  \apogee, we start with the \aspcapstar\ and \apstar\ files of DR10. This data release comprises 47,000 stars observed in survey mode observed in the H-band, across a wavelength range of $\approx$ 15200 - 16900 $\AA$, observed at a resolution of 22,500 \citep{Majewski2012}. The data is divided between three individual chips and separated spectral regions ($\approx$ 15150-15800 $\AA$, 15890 - 16430 $\AA$ and 16490 - 16900 $\AA$). The DR10 \apogee\ spectra is released in a number of data formats including \apstar\ and \aspcapstar\ fits files: The \apstar\ fits files include combined as well as single visit spectra that are reduced, resampled and shifted back to the rest frame. The \aspcapstar\ files include the combined spectra, resampled, reduced, shifted back to the rest frame and pseudo continuum normalised. The \apstar\  data, which are not pseudo-continuum normalised by \apogee\,  enables us to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files. 
 
-The pixel-by-pixel inverse variances are critical for all steps of the \tc\ : continuum normalization, training step and test step. The error arrays, giving the uncertainty at each pixel for the spectra are provided by \apogee\ in their fits files. We adopt these vectors directly and additionally set any anomalous values in the spectra, with 0 flux or very high error values to an upper large constant limit error value, for computational stability. 
+The pixel-by-pixel inverse variances are critical for all steps of the \tc\ : continuum normalization, training step and test step. The error arrays of the uncertainty at each pixel in the spectra are provided by \apogee\ in their fits files. We adopt these vectors directly and additionally set any anomalous values in the spectra, with 0 flux or very high error values to an upper large constant limit error value, for computational stability.  
 
-Aside from photon noise, a number of other factors can contribute to the errors of any pixel in \apogee\ specta: poor sky subtraction, cosmic rays, reduction induced errors, high persistence and other noise sources. In addition to the variance arrays, one must also use any bad pixel masks, where the
-inverse variance and weighing of that pixel becomes $\sim$ 0. 
+Aside from photon noise, a number of other factors can contribute to the errors of any pixel in \apogee\ specta: poor sky subtraction, cosmic rays, reduction induced errors, high persistence and other noise sources. In addition to the variance arrays, one can also use any bad pixel masks, where the
+inverse variance and weighing of that pixel becomes $\sim$ 0. We find that adopting additional masking from the bad pixel masks degrades our results when using the combined \aspcapstar\ spectra. However, our results are improved for individual visit spectra in the \apstar\ files when pixels flagged in the bad pixel mask array provided by \apogee\ are rejected, by assigning the large weighing in the error on those pixels, for the individual visit spectra. We therefore only implement the bad pixel masks from apogee for our tests on single visit spectra. 
 
 The resampled, reduced and combined spectra are available for 49,200 stars in 150 of the 170 DR10 fields in the \aspcapstar\ files. There are a further 4800 stars in 20 fields taken in commissioning only in DR10 which are available in the radial velocity combined but not continuum normalised data format in the \apstar\ files and a further 3100 stars taken during commissioning across different fields. 
 The commissioning data, for which the \aspcap-corrected labels are not all provided in the DR10 release, is only available in the radial velocity combined but not continuum normalised data format in the \apstar\ files. 
-We use the \apogee -provided bad pixel masks for the \apstar\ files run through \tc .
+
+We are now in a position to determine the continuum by least-squares fitting a low-order Chebyshev polynomial, but only to these just determined continuum pixels.
+For \apogee\ we treat each of the three chips separately, and find a 2nd-order Chebyshev polynomial to be sufficient to apply to the pseudo-continuum normalised data provided by \apogee. We apply this normalisation to both \aspcapstar\ and \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. Fitting a polynomial has the disadvantage that they are poorly constrained at the edges of the data. An alternative implementation could use a more sophisticated sine or cosine function in place of a polynomial fit. 
+
+
+For the continuum normalisation of \apogee\ spectra we implement a least-squares fitting to a low-order Chebyshev polynomial, but fitting only to the determined continuum pixels outlined in Section \ref{sec:ApogeeContinuum}. We treat each of the three chips separately, and find a 2nd-order Chebyshev polynomial to be sufficient to apply to the pseudo-continuum normalised data provided by \apogee.. We apply this normalisation to both \aspcapstar\ and \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. Fitting a polynomial has the disadvantage that they are poorly constrained at the edges of the data. An alternative implementation could use a more sophisticated sine or cosine function in place of a polynomial fit. 
 
 We did attempt to apply the \tc\ to the commissioning data, but could not evaluate the fidelity of these results as the line spread function of the commissioning data are different from the main survey and consequently the reference dataset of stars in the training step. 
 Therefore, although we similarly process the \apstar\ spectra, returning the labels for these stars in our online table of DR10 parameters, the reliability of these is uncertain and they are subsequently flagged as commissioning data (see Table 1).
@@ -669,6 +667,12 @@ consistent continuum normalisation for all spectra, both of the reference and of
 
 \subsection{Identification of \apogee\ Continuum Pixels}
 \label{sec:ApogeeContinuum}
+
+
+We are now in a position to determine the continuum by least-squares fitting a low-order Chebyshev polynomial, but only to these just determined continuum pixels.
+For \apogee\ we treat each of the three chips separately, and find a 2nd-order Chebyshev polynomial to be sufficient to apply to the pseudo-continuum normalised data provided by \apogee.. We apply this normalisation to both \aspcapstar\ and \apstar\ files. Treating the three chips separately, we fit the polynomials over the wavelength regions of (i) 15150-15800 $\AA$, (ii) 15890 - 16430 $\AA$ and (iii) 16490 - 16950 $\AA$. Fitting a polynomial has the disadvantage that they are poorly constrained at the edges of the data. An alternative implementation could use a more sophisticated sine or cosine function in place of a polynomial fit. 
+
+
 
 The continuum pixels, which are shown in \figurename~\ref{fig:coeffs} for wavelength regions A and B, 
 have been determined from the quadratic model using a combination of the flux level and the coefficients returned
