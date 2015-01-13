@@ -844,6 +844,7 @@ These \figurenames\ illustrate that our approach to continuum normalization work
 \label{fig:SNR}
 \end{figure}
 
+\clearpage
 \section{Discussion}
 
 % HOGG: here is my proposed outline for the discussion
@@ -858,13 +859,13 @@ spectra with stellar parameters and metallicities (collectively
 \emph{training set} of reference objects.
 Our requirement is that the reference objects have good labels, and
 also spectral data that are similar in resolution, line-spread function, and
-wavelength coverage (though not signal-to-noise) to the data on the survey objects that
+wavelength coverage (though not necessarily signal-to-noise) to the data on the survey objects that
 require labeling.
 Except for the fact that the reference objects must have been given
 labels themselves somehow, we do not rely on explicit physical models
 for the spectra.
 Given that the reference objects might have obtained labels from data
-in other wavelength regions, the method don't require---even
+in other wavelength regions, the method doesn't require---even
 implicitly---the existence of explicit physical models at all for the
 wavelength domain of the spectra used by \tc.
 In our first test of \tc, on the \apogee\ DR10 data, we show that we can reproduce the
@@ -896,7 +897,7 @@ This pdf is convolved (trivially) with the Gaussian uncertainty
 assigned to each pixel measurement in the data when the comparison is
 made between the observed data in the survey object spectra with the
 generative model.
-That is, \tc\ properly treats observational uncertainty, and is
+That is, \tc\ properly treats observational uncertainty (and missing data), and is
 perfectly comfortable with arbitrarily different and arbitrarily
 heteroscedastic uncertainties from spectrum to spectrum.
 In addition to the proper treatment of observational uncertainty,
@@ -1024,7 +1025,7 @@ dimensional label space imagined for the final outputs of surveys like
 \apogee\ and \galah; \tc\ is only for establishing the ``first-order'' labels of
 greatest importance in setting spectral properties.
 
-In this implementation, we used a quadratic form for the
+In this implementation, another severe assumption or decision is that we used a quadratic form for the
 relationship between the expected flux and the labels.
 This is a choice and can be generalized.
 Indeed, the polynomial family is probably not the best family of
@@ -1037,12 +1038,43 @@ parameters and the functional form could become very complex where the
 training data warrant it.
 This would be a natural extension of what has been implemented here.
 
-[DWH: MAXIMIZING LIKELIHOOD INSTEAD OF BAYES]
+Yet another severe assumption in this implementation is that every
+spectral pixel can be treated independently.
+This approximation was made to make the system fast; training
+(learning) can take place at all wavelengths independently and (in
+principle) in parallel.
+However, it is not a good approximation for many reasons.
+One of these is that the finite resolution of the spectrograph
+correlates nearby pixels; the generative spectral model cannot vary
+substantially over wavelength differences that are far smaller than
+the spectrograph resolution.
+This point of prior information is not used at all in the model.
+Another reason the independent-pixel assumption is bad is that there
+are multiple lines from the same element and same ionization state.
+These are expected to be covariant in any sensible model.
+We do not make any use of such information; indeed no line list enters
+\tc\ at any stage.
+These decisions were made for good, pragmatic computational reasons.
+A better model would permit itself to know about the spectrograph
+resolution and either know about or discover sets of lines that vary
+together.
+However, any such generalization will come at substantial computational cost.
 
-[DWH: SOMETHING ABOUT TREATING EVERY PIXEL INDEPENDENTLY AND SPECTRAL REPRESENTATION]
- Furthermore, we currently treat every pixel as independent which is incorrect and therefore builds a physically incomplete model.  As we lack dwarfs, we can not return parameters in this space to the same precision as giants (\logg\ $\le$ 3.5).  
-
- We also are missing any dwarfs with rotation in our model and consequently these are returned in an unphysical \teff-\logg\ label-space in the label-transfer. 
+Finally, the biggest single problem with \tc\ as presented here is that
+in our demonstration with the \apogee\ DR10 data, we simply do not have
+a training set that is large enough to span the space of stellar labels:
+We do not have dwarfs in more than one cluster, which means we do not
+have dwarf stars represented in any range of metallicity; we do not
+have stars with rotation, and we don't have rotation as a label or
+parameter, and even for the giants, we do not span the (presumably
+huge) space of chemical tags and age.
+Indeed---related to this---stars with high rotation are not correctly labeled in this demonstration of \tc.
+The more stars for which we can obtain labels by modeling, and which
+we can confidently add to the reference set, the better, for
+data-driven models going forward.
+In particular, the current demonstration would be improved
+dramatically with even a small number of additional dwarf stars added
+to the reference sample.
 
 Although we use \apogee\ as an example, \tc\ can be applied to
 any stellar survey.
@@ -1071,12 +1103,14 @@ used to ensure that all of the surveys are delivering stellar
 parameters on the same system.
 \tc\ will not make the data coming from any survey more
 \emph{accurate}, but it might serve to make the whole industry of
-stellar parameter estimation and chemical taggin more \emph{precise}.
+stellar parameter estimation and chemical tagging more \emph{precise}.
 
 \acknowledgements
 
+RIX: CHECK AFFILIATIONS FOR THE BELOW
+
 We would like to thank Daniel Foreman-Mackey (NYU), 
-Morgan Fouesneau, Jon Holtzman,  Keivan Stassun and Jennifer Johnson
+Morgan Fouesneau (MPIA), Jon Holtzman (NMSU),  Keivan Stassun (Vanderbilt) and Jennifer Johnson (OSU)
 for valuable discussions.
 DWH was partially supported by
 the NSF (grant IIS-1124794), NASA (grant NNX08AJ48G), and the
@@ -1086,9 +1120,7 @@ Union's Seventh Framework Programme (FP 7) ERC Grant Agreement n.
 [321035].
 
 Funding for SDSS-III has been provided by the Alfred P. Sloan Foundation, the Participating Institutions, 
-the National Science Foundation, and the U.S. Department of Energy Office of Science. The SDSS-III web site is $http://www.sdss3.org/.$\\
-
-Funding for SDSS-III has been provided by the Alfred P. Sloan Foundation, the Participating Institutions, the National Science Foundation, and the U.S. Department of Energy Office of Science. The SDSS-III web site is $http://www.sdss3.org/.$\\
+the National Science Foundation, and the U.S. Department of Energy Office of Science. The SDSS-III web site is \url{http://www.sdss3.org/}.
 
 SDSS-III is managed by the Astrophysical Research Consortium for the Participating Institutions of the SDSS-III Collaboration
  including the University of Arizona, the Brazilian Participation Group, Brookhaven National Laboratory, Carnegie Mellon University, 
