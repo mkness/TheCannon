@@ -872,24 +872,38 @@ In our first test of \tc, on the \apogee\ DR10 data, we show that we can reprodu
 \apogee\ \aspcap\ pipeline at a precision comparable to the stated
 uncertainties of the pipeline.
 
-Although the primary objective of \tc\ was to free stellar parameter
-determination and chemical abundance tagging from physical stellar
-models, it is also the case that \tc\ is very fast, computationally.
+Although the primary objective of \tc\ was to remove physical stellar models
+from the process of labeling stars with stellar parameter values
+chemical-abundance tags,
+it is also the case that \tc\ is very fast, computationally.
 \tc\ trains fast and then delivers labels for the entire 
 data set of 55,000 stars (that is, the \apogee\ DR10 samle)
 in reasonable time on a single laptop, as it takes $<0.1$~s on a 2.6-GHz
 intel core i7 to determine three labels for each star, without any
 attempt at code optimization.
 
+% MKN: SNR or S/N?
+
 We have demonstrated that we can work at much lower SNR at least for the three primary stellar parameters with this approach. 
 We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (for example, alpha, light elements, neutron capture) of covariant spaces \citep[e.g.,][]{Ting2012}. In this way we exploit more pixels in the spectra and can operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. 
 This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
 
-% syntactical reference point
-
-HOGG: PART OF THE REASON FOR THIS IS: generative model!
-PART OF THE REASON IS:  Good continuum estimation!
-PART OF THE REASON IS:  Use all of the pixels.
+Part of the reason for this good behavior at low SNR is that
+\tc\ contains a generative model of the intensity or flux density.
+Given labels, the model provides a pdf (a Gaussian, with a mean and a
+variance) for the flux density at every wavelength.
+This pdf is convolved (trivially) with the Gaussian uncertainty
+assigned to each pixel measurement in the data when the comparison is
+made between the observed data in the survey object spectra with the
+generative model.
+That is, \tc\ properly treats observational uncertainty, and is
+perfectly comfortable with arbitrarily different and arbitrarily
+heteroscedastic uncertainties from spectrum to spectrum.
+In addition to the proper treatment of observational uncertainty,
+\tc\ works well at low SNR in part because it employs a continuum
+normalization method that is not strongly biased at low SNR, and in
+part because it uses all the spectral pixels, not just the strengths
+of particular lines or pixels in limited wavelength ranges.
 
 In using all of the pixels in the spectrum to obtain the
 stellar labels, \tc\ is not dissimilar from the MATrix Inversion for
@@ -962,15 +976,23 @@ That said, these joint optimizations of parameters and labels would be
 expensive and multi-modal, so it might not be computationally
 tractable.
 
-Related to all this, one approximation we made in this implementation
-is that the model is just a maximum-likelihood estimator.
-It is built on a generative model, but we only optimize this model, we
+One thing that introducing a prior on the labels would permit is
+inclusion of our physical knowledge about the label space:
+Label triplets $(\teff, \logg, \feh)$ cannot take on arbitrary values
+in the three-dimensional label space; only physically realizable stars can exist.
+Including this constraint or prior might improve not just \tc, but also \aspcap\ and other pipelines.
+
+Related to all this, one harsh decision we made in this implementation
+is that the model is used only to produce a set of maximum-likelihood estimators:
+We get the model parameters from the reference objects
+by likelihood maximization, and we label the survey objects by likelihood maximization.
+\tc\ is built on a generative model, but we only optimize this model, we
 don't do full probabilistic inference.
 The full inference would be expensive, especially at test time
 (labeling the survey objects); the test-time model is non-linear and
 inference would require sampling or harsh approximations.
 
-% syntactical reference point
+MKN: THE NEXT PARAGRAPH MIGHT NEED ADJUSTING
 
 Although in an official sense we believe our reference object stellar
 labels absolutely, in fact we did \emph{not} believe them; we adjusted
@@ -980,35 +1002,8 @@ We found by adopting a very naive calibration that shifts the stars to the neare
 This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. 
 This suggests that there is some problem with the input labels in the \logg\ dimension adjusted from Kepler results in DR10. 
 
-% HOGG: this sentence needs to go in some part of the discussion about the advantages we will get when we go beyond max-like to a probabilistic generative model
-% Our model is comprised of data which represents the probability space of the labels given the physical noise model,  where we let the noise model determine the weighting of the luminosity function, yet we can only do better.
-
- \tc\ is readily expandable to a more general model, a larger training dataset and many more labels which include errors and/or partial characterisation of labels. Furthermore we do not need to use all of the pixels in the spectra for our model and \tc\ can be generalised to use a linelist to select for particular regions or features.
- As it is, our second-order model is hard-coded and extremely restrictive. 
- We currently believe our input labels fully, given they are input without uncertainties, and assume no prior information. 
- We therefore do not take advantage of any physical knowledge that is defined about the phase space the labels can reside in.  
- Furthermore, we currently treat every pixel as independent which is incorrect and therefore builds a physically incomplete model.  As we lack dwarfs, we can not return parameters in this space to the same precision as giants (\logg\ $\le$ 3.5).  
- We also are missing any dwarfs with rotation in our model and consequently these are returned in an unphysical \teff-\logg\ label-space in the label-transfer. 
-
  %We have barely scratched the surface with what is possible with this methodology given our restricted training dataset, model and labels. 
  %Our training dataset itself is clearly too small, comprising only 545 stars including a set of dwarfs at a single metallicity (+0.03 dex). 
-
- 
-Although we use \apogee\ as an example, \tc\ can be applied to
-any stellar survey.
-Details of how the spectra are continuum-normalized might have to be
-customized for different surveys, which will have different
-line-spread functions and different absorption-line densities, and
-therefore different statistics.
-In all other respects, however, \apogee\ could be replaced by any spectroscopic
-survey that meets the following criteria:
-It must contain a set of reference stars with known labels to serve as
-a training set.
-It must deliver a set of spectra represented on a common rest-frame
-wavelength basis.
-It must deliver noise variance estimates at every spectral pixel.
-
-
 
 The basic implementation of \tc\ presented here considers only three
 labels (\teff, \feh, and \logg).
@@ -1029,8 +1024,7 @@ dimensional label space imagined for the final outputs of surveys like
 \apogee\ and \galah; \tc\ is only for establishing the ``first-order'' labels of
 greatest importance in setting spectral properties.
 
-
-In the above, we used a quadratic form for the
+In this implementation, we used a quadratic form for the
 relationship between the expected flux and the labels.
 This is a choice and can be generalized.
 Indeed, the polynomial family is probably not the best family of
@@ -1045,40 +1039,41 @@ This would be a natural extension of what has been implemented here.
 
 [DWH: MAXIMIZING LIKELIHOOD INSTEAD OF BAYES]
 
-[DWH: SOMETHING ABOUT SPECTRAL REPRESENTATION]
+[DWH: SOMETHING ABOUT TREATING EVERY PIXEL INDEPENDENTLY AND SPECTRAL REPRESENTATION]
+ Furthermore, we currently treat every pixel as independent which is incorrect and therefore builds a physically incomplete model.  As we lack dwarfs, we can not return parameters in this space to the same precision as giants (\logg\ $\le$ 3.5).  
 
+ We also are missing any dwarfs with rotation in our model and consequently these are returned in an unphysical \teff-\logg\ label-space in the label-transfer. 
 
-%
-%Despite all of this, we have shown using the \apogee\ data that even the simplest model with naive assumptions and an incomplete physical description, works. 
-%This method is directly transferrable as is, to all other surveys and we expect we would be similarly successful applying this to e.g. \textit{GALAH}, \gaiaeso and 4MOST. 
-%The success of \tc\ argues for defined stellar standards to effectively transfer labels of benchmark stars, studied at high resolution, to stars in surveys across any wavelength region. 
-%This would enable all stellar surveys to be unified. 
- 
- It is also possible and likely desirable in some cases to implement exactly the same procedure we describe using a synthetic grid instead of data, to train the model. 
- This will remove many of these limitations in the model that are derived from the label-space of the training data labels. However, this also eliminates many of the advantages in a full characterisation of the noise in the data and the true behaviour of labels with flux.
- 
-Given common benchmark stars observed between different surveys, these surveys can be unified on to a common scale with \tc. This approach can therefore optimally utilise the data that will be in hand in the coming years. 
- 
- %,  we argue for adopting a wider set of benchmark stars from data in surveys, given labels determined at high resolution, in order to mitigate the issues with limited training datasets. 
- 
-%There are a number of immediate new opportunities with this approach. 
-%The primary and obvious opportunity is to unify all stellar parameter systems and a key necessity of this is that all common benchmark stars be observed in all surveys. 
-%The data-driven model approach enables an analysis and characterisation of how and where stellar templates diverge from data, but the ultimate consequence of this methodology is that by using the coefficients of the labels returned in this method for example in our quadratic implementation, we can directly identify and learn \textit{where} the information in a stellar spectrum resides. 
-%This can be used to make quantitative assessments of the flux dependence on the labels, at the detail of the individual line profiles and, for example, determine continuum pixels as we have done to obtain a robust continuum normalisation across SNR. 
-%The information in the spectra  is a direct output from the model, which is immensely more informative than the reverse assumption of assessing regions of interest as informed by linelists.  
-%\tc\ is therefore extremely relevant for chemical tagging and we take an approach of a data-driven differential analysis of spectra, by characterising the behaviour of flux and labels, as a way to fingerprint stars with a common formation history.
+Although we use \apogee\ as an example, \tc\ can be applied to
+any stellar survey.
+Details of how the spectra are continuum-normalized might have to be
+customized for different surveys, which will have different
+line-spread functions and different absorption-line densities, and
+therefore different statistics.
+In all other respects, however, \apogee\ could be replaced by any spectroscopic
+survey that meets the following criteria:
+It must contain a set of reference stars with known labels to serve as
+a training set.
+It must deliver a set of spectra represented on a common rest-frame
+wavelength basis.
+It must deliver noise variance estimates at every spectral pixel.
 
-%A direct first additional upgrade for \tc\ aligned with directing this method toward chemical tagging, which large surveys like \galah\ and \apogee\ have been constructed around,  is  to add more labels.
-% An obvious initial choice is $\alpha$-enhancement and a subset of key individual abundances \xfe.
-% It is even possible to test what, if any, information in the spectra are correlated with an age label. 
-% If such information is present in the spectra across a large set of stars in a survey, this method \textit{will} determine exactly which pixels are responsible for carrying this information. In addition, we will gain significantly by moving to a more flexible model like a Gaussian process and allowing our model to be informed by priors in these new directions for this work. 
+Perhaps the most exciting application of \tc\ will be in bringing
+qualitatively different stellar surveys---surveys that use different
+instruments, working in different wavelength regions at different
+resolutions and SNRs---onto a consistent stellar parameter and
+chemical abundance scale.
+So long as different surveys can agree on benchmark stars and best
+values for the stellar labels, and so long as those training sets are
+large enough and span enough of the label space, \tc\ (or a future
+upgrade that implements some of the ideas in this \sectionname) can be
+used to ensure that all of the surveys are delivering stellar
+parameters on the same system.
+\tc\ will not make the data coming from any survey more
+\emph{accurate}, but it might serve to make the whole industry of
+stellar parameter estimation and chemical taggin more \emph{precise}.
 
-[MKN - removed/commented out some of the repetition DWH SAY:  THE DISCUSSION (above) IS A BIT REPETITIVE; WE CAN PROBABLY COMBINE AND SHORTEN PARAGRAPHS ABOUT GENERALIZATIONS.]
-
-\textbf{DWH can you expand on generative models: data-driven model that represents the noise -  very successful as it respects the noise model. generative - synth, L.F. - permits discovery, interpretation.}
-
-
-\section*{ Acknowledgements}
+\acknowledgements
 
 We would like to thank Daniel Foreman-Mackey (NYU), 
 Morgan Fouesneau, Jon Holtzman,  Keivan Stassun and Jennifer Johnson
