@@ -696,6 +696,7 @@ The typical internal precision on the measured parameters from \tc\ is $\delta$(
 \centering
 \caption{Excerpt from full online version of table of parameters for the 56,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with \texttt{ROTATION WARN} = 1 flag set have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. Labels are provided for stars with both \aspcap\ corrected labels and ``isochrone corrected'' labels, with the results from the ``isochrone corrected'' labels (Figure 9) shown in the excerpt below. The velocity scatter from the \aspcap\ results as well as the \texttt{APOGEE TARGET2} flag are provided in these tables.} 
 
+% this table is: /Users/ness/Downloads/Apogee_raw/RevB/play3/mkn_TCA_v1_table1.txt
 \begin{tabular}{| c | c | c |  c | c | c |  c | c | c | c | c | c | } %51,500
 \hline
 star ID & \tiny{COMMIS} & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{VSCATTER} & \tiny{ROTATION} & \tiny{TARG2} \\
@@ -826,7 +827,7 @@ These \figurenames\ illustrate that our approach to continuum normalization work
  
 %run -i makecontin_data1_revc.py
  \begin{figure}[!h]
-  \includegraphics[width=\hsize]{./plots/SNR_continuum5.png}
+  \includegraphics[width=\hsize]{./plots/SNR_continuum6.png}
   \caption{Comparison of the continuum normalisation of the same star at high and modest SNR. The \apogee\ \apstar\ combined visit spectra is shown in the top panel (SNR = 120) and the \apstar\ spectra for the 4th visit (SNR = 25) is shown in the second panel. The bottom panel is the ratio of the continuum normalised spectra of the high and medium signal to noise spectra and the blue dashed line is a running median of this ratio over 20 $\AA$, showing a small bias. The histogram of the ratio is given in at the right of the bottom panel.}
 \label{fig:lowsnr}
 \end{figure}
