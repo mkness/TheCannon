@@ -25,6 +25,7 @@
 \newcommand{\rave}{\textsl{RAVE}} 
 \newcommand{\matisse}{\textsl{MATISSE}} 
 \newcommand{\rotwarn}{\texttt{ROTATION WARNING}} 
+\newcommand{\badstar}{\texttt{STAR BAD}} 
 \newcommand{\sdss}{\textsl{SDSS-III}} 
 \newcommand{\lamost}{\textsl{LAMOST}} 
 \newcommand{\aspcapstar}{\textsl{aspcapStar}} 
@@ -232,7 +233,7 @@ Exactly which stellar labels we adopt for these reference objects is critical to
 we discuss it in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
 
 Another reason why cluster members make for good reference objects is because we can expect their stellar parameters to fall onto a single isochrone and to have near-identical abundances (at least for open clusters). This provides additional constraints on the labels.
-We exploit that expectation in the case of \apogee\ and define ``Isochrone-corrected labels'', where we use Padova isochrones at the literature age and \feh\ of each cluster (cf. Figs. \ref{fig:trainingaspcap} \& \ref{fig:trainingisochrone}, and \sectionname~\ref{sec:ApogeeRefLabels}).
+We exploit that expectation in the case of \apogee\ and define ``Isochrone-corrected labels'', where we use Padova isochrones at the literature age and \feh\ of each cluster (see Figs. \ref{fig:trainingaspcap} \& \ref{fig:trainingisochrone}, and \sectionname~\ref{sec:ApogeeRefLabels}).
 
 A spectral survey may also contain other sub-sets of objects with labels of particularly high fidelity that can serve as reference objects, such as the stars with \logg\ from Kepler's astroseismology in \apogee . Or, one could simply choose as reference objects the subset of stars in a survey with the highest signal-to-noise spectra, if one can reasonably assume that the labels derived for those objects from physics-based spectral modelling are accurate. So, there are various sensible ways to choose the set of reference objects.
 
@@ -275,8 +276,6 @@ That is, for the \apogee\ data, we can determine with the \tc\ the `true' contin
 \figurename~\ref{fig:norm} shows an example of our normalisation which is described further in Section~\ref{sec:Apogee_as_worked_Example} applied to survey spectra with different labels. To illustrate the result, \figurename\ shows typical \apogee\ spectra and demonstrates how the spectra 
 vary as a function of metallicity at a given temperature , and as a function of temperature at a given metallicity. 
 For a clearer view of individual absorption line features, we use narrower regions marked in this \figurename, (A) and (B), for all subsequent examination of the spectral data. 
-
-%. The continuum pixels used for the Chebyshev polynomial fit are shown in the black points.
 
 %made with makecontin_data2.py
 \begin{figure}[h!]
@@ -593,7 +592,7 @@ There are a few outliers in \figurename~\ref{fig:takeonestarout}, cluster member
 
 The Pleiades cluster, which has only spectra for main sequence stars, shows the poorest determination in the \feh\ label. We assigned all its members a single \feh ~as reference labels, unlike the other reference objects, where we used their \aspcap -corrected labels from DR10.
 The \textit{rms} is comparable to the estimated \apogee\ errors. The \logg\ label has the largest relative \textit{rms} in the ASPCAP--\tc\ comparison, larger than the \apogee\ uncertainty, suggesting an internal uncertainty of $<$ 0.1 dex in \logg\ determined by \tc.
-If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \logg 's (cf. \sectionname~\ref{sec:ApogeeRefLabels}), the \textit{rms} improves by 10\% in \teff\ and \logg .
+If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \logg 's (see \sectionname~\ref{sec:ApogeeRefLabels}), the \textit{rms} improves by 10\% in \teff\ and \logg.
 
 % made with takeonestarout_all_stars_diag_6panel.py in code/
 \begin{figure}[h!]
@@ -664,7 +663,7 @@ consistent continuum normalisation for all spectra, both of the reference and of
 
 The continuum pixels, which are shown in \figurename~\ref{fig:coeffs} for wavelength regions A and B, 
 have been determined from the quadratic model using a combination of the flux level and the coefficients returned
-(cf. \sectionname~\ref{sec:ContNorm}). Specifically, we found that 35\% of the pixels in the baseline spectrum of the model (the vector $\theta^0_\lambda$) have flux levels within 1\% of unity. However, not all these pixels are suitable continuum pixels, as many of them have significant dependencies (that is, $\theta^{1,2,3}_\lambda$)
+(\sectionname~\ref{sec:ContNorm}). Specifically, we found that 35\% of the pixels in the baseline spectrum of the model (the vector $\theta^0_\lambda$) have flux levels within 1\% of unity. However, not all these pixels are suitable continuum pixels, as many of them have significant dependencies (that is, $\theta^{1,2,3}_\lambda$)
 on the three labels. In practice, a good set of continuum pixels can be identified from the APOGEE spectra using a cut in the baseline spectra of the model, the $\theta^0_\lambda$ coefficient, and also a selection of coefficients with small label dependencies. Taking the smallest 20 - 30 percentile of the first order coefficients, $\theta^{1,2,3}_\lambda$,  and a flux cut of 1 $\pm$ 0.15 (0.985-1.015) returns between 5-9\% of pixels which can be used as robust continuum pixels for spectra within the label range of the reference objects. Empirically, we found that to best match the \aspcap\ label scale, we make a continuum selection by taking a flux selection of 1 $\pm$ 0.015 and first order label terms with maximum values of ($\theta^{1}_\lambda$,$\theta^{2}_\lambda$,$\theta^{3}_\lambda$) $<$ (1e$^{-5}$, 0.0045, 0.0085). This criteria returns around 6.5\% of pixels, which we adopt as true continuum pixels for data that span the label range of the training set. We use the inverse variance weighting of these pixels for the corresponding 2nd order Chebyshev polynomial fit, adding an additional error term that is set to 0 for continuum pixels and a large error value for all other pixels so that the new error term $\sigma^{'}_\lambda$ for each pixel becomes:
 $\sigma^{'}_\lambda$ = $\sigma_\lambda$ + $\sigma_{0|LARGE}$. 
 
@@ -692,12 +691,12 @@ The typical internal precision on the measured parameters from \tc\ is $\delta$(
 \begin{table*}[!h]
 \tiny{
 \centering
-\caption{Excerpt from full online version of table of parameters for the 56,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with \texttt{ROTATION WARN} = 1 flag set have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. Labels are provided for stars with both \aspcap\ corrected labels. The velocity scatter from the \aspcap\ results as well as the \texttt{APOGEE TARGET2} flag are provided in these tables.} 
+\caption{Excerpt from full online version of table of parameters for the 56,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with \badstar\ flag set may have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. Labels are provided for stars with both \aspcap\ corrected labels. The velocity scatter from the \aspcap\ results as well as the \texttt{APOGEE TARGET2} flag are provided in these tables.} 
 
 % this table is: /Users/ness/Downloads/Apogee_raw/RevB/play3/mkn_TCA_v1_table1.txt
 \begin{tabular}{| c | c | c |  c | c | c |  c | c | c | c | c | c | } %51,500
 \hline
-star ID  & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{VSCATTER} & \tiny{ROTATION} & \tiny{TARG2}& \tiny{COMMIS} \\
+star ID  & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{VSCATTER} & \tiny{STAR BAD} & \tiny{TARG2}& \tiny{COMMIS} \\
 {2MASS} &  & K &  dex  & dex & K & dex & dex & & kms$^{-1}$&  \tiny{WARN} & \tiny{ FLAG}  \\    
 \hline
 \tiny{21354474+4250256}  &  4858.24 &  4.44 &  0.31 &  7.1  & 0.01 &  0.007  & 1.6  & 0.1 &  0 &  0 &  0\\
@@ -717,7 +716,7 @@ The comparison of \tc\ with ASPCAP, showing the bias, rms and formal precision f
 They are not concentrated to the extreme ends of the range, which have a higher weighting in evaluating the test data with cross validation. 
  \tc 's label transfer also returns values for those $\approx$ 15\% of stars in DR10 are that must be main-sequence dwarf stars. 
 These are not shown in \figurename~\ref{fig:cal}, as \apogee\ does not report ASCAP corrected dwarf parameters for DR10. 
-We exclude the rapid rotators using the \aspcap\ \rotwarn\ flag as we can not return parameters for spectral types not included in our training set (see \sectionname~\ref{sec:AnomalousSpectra}). 
+We exclude the stars flagged as bad overall  using the \badstar\ flag from \aspcap\ (this includes stars flagged by \aspcap\ as having bad \teff\, bad \logg\, high $\chi^2$, an effective temperature more than 1000K from photometric temperature for dereddened color, rotation, SNR low ($<$ 50) t or if the parameter is near the \aspcap\ grid edge).  Note we can not return parameters for spectral types not included in our training set (see \sectionname~\ref{sec:AnomalousSpectra}). 
 
 In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ for the 1400 stars from the six sample fields as a function of \aspcap\ \teff, \logg\ and \feh. There are weak trends; at low \teff\ $\sim$ 3700 K, we find temperatures about 100 K cooler than \apogee\ and at low \logg\ we find $\sim$ 0.15 dex larger \logg\ than \apogee. At the lowest metallicities \feh\ $<$ --2.0, we typically report higher metallicities on the order of 0.05 to 0.3 dex.
 
@@ -754,7 +753,7 @@ In short, for all stars with good \aspcap\ labels, we find excellent agreement b
 In addition, we are able to derive plausible parameters for dwarf stars in DR10. However, the \teff-\logg\ plane for these stars shows a deviation from the giant branch of the isochrone at low \logg\ (see the right panel of \figurename~\ref{fig:iso}). This is a consequence of the input labels of the training spectra. 
 
 If instead we use the isochrone-corrected \logg\ labels to fix \tc 's spectral model
-(cf. \sectionname~\ref{sec:ReferenceObjects}), the results of the label transfer deviate slightly from the \aspcap\ scale in each of the parameters. 
+(\sectionname~\ref{sec:ReferenceObjects}), the results of the label transfer deviate slightly from the \aspcap\ scale in each of the parameters. 
 However, with these new \logg\ labels, we find a broad giant branch width that is consistent with expectations in \teff-\logg\ space 
 given the metallicity of these stars (see the right hand panel of \figurename~\ref{fig:iso2}). 
 
@@ -766,7 +765,7 @@ The labels for the main sequence stars are presumably much more poorly determine
 Remarkably, though, only a handful of stars at low \feh\ and low \logg\ do not lie near conceivable isochrones. 
 
 At metallicities \feh\ $<$ --0.25 the red clump is offset too high in the \logg\ label. This is noted in \citet{bovy2014} who estimate that this offset shifts the red clump and red giant branches 0.2 dex closer together. 
-Our \logg\ labels in \figurename~\ref{fig:iso} are essentially identical to \apogee\ ASPCAP labels (offset -0.04 dex in \logg\ for DR10) and the left panels show that the red clump stars which should be seen as a density maxima of stars around \logg\ $\sim$ 2.5, \teff\ $\sim$ %  \includegraphics[scale=0.3]{./plots/takeoneout_diag_test18_222.pdf}K \citep[e.g.,][]{Zhao2001} 
+Our \logg\ labels in \figurename~\ref{fig:iso} are essentially identical to \apogee\ ASPCAP labels (offset -0.04 dex in \logg\ for DR10) and the left panels show that the red clump stars which should be seen as a density maxima of stars around \logg\ $\sim$ 2.5, \teff\ $\sim$ 
 are offset to higher \logg\ than the red clump branch of the Padova isochrone, for stars \feh\ $<$ --0.25. 
 This offset is on the order of 0.2 dex at \feh\ = -0.5 and is present for both \aspcap-corrected labels and isochrone-corrected labels. 
 This may indicate that the \aspcap\ temperature scale is offset too cool in DR10 (but as a function of \feh).
@@ -844,199 +843,148 @@ These \figurenames\ illustrate that our approach to continuum normalization work
 \clearpage
 \section{Discussion}
 
-% HOGG: here is my proposed outline for the discussion
-% 1. first say what we accomplished and why it ROCKS
-% 2. then go through all of our deep assumptions, one at a time,
-%    and discuss what it would cost and what it would benefit to make weaker assumptions.
-%    This is a framework for discussing future directions without over-promising.
-
 We have demonstrated with \tc\ that it is possible to label stellar
-spectra with stellar parameters and metallicities (collectively
-``stellar labels'') using not stellar models but rather a
-\emph{training set} of reference objects.
-Our requirement is that the reference objects have good labels, and
-also spectral data that are similar in resolution, line-spread function, and
-wavelength coverage (though not necessarily signal-to-noise) to the data on the survey objects that
-require labeling.
-Except for the fact that the reference objects must have been given
-labels themselves somehow, we do not rely on explicit physical models
-for the spectra.
-Given that the reference objects might have obtained labels from data
-in other wavelength regions, the method doesn't require---even
-implicitly---the existence of explicit physical models at all for the
-wavelength domain of the spectra used by \tc.
-In our first test of \tc, on the \apogee\ DR10 data, we show that we can reproduce the
-\apogee\ DR10 stellar labels delivered by the
-\apogee\ \aspcap\ pipeline at a precision comparable to the stated
-uncertainties of the pipeline.
+spectra from extensive homogeneous surveys with stellar parameters 
+and abundances (collectively ``stellar labels''), using not physical stellar models but rather a
+\emph{training set} of reference objects. These reference objects must have trustworthy
+labels and spectra with the same resolution, line-spread function, and
+wavelength coverage (though not necessarily signal-to-noise) as the data on the 
+survey objects that require labeling.
+Except for the fact that the reference objects must have been assigned
+labels themselves somehow, presumably on the basis of physical models for stellar 
+structure and photospheres, we do not rely on explicit stellar photosphere models
+for the spectra. \tc\  is based on the premise that (continuum-normalized) spectra of stars with the same labels
+look the same, and that spectra vary smoothly with changing labels. 
+This makes it possible to propose a simple mathematical model for the spectrum as a function of the
+lables, and fix this model in the \textit{training step}, operating on the spectra of the reference objects.
+In the subsequent \textit{test step} that same model can assign labels (and their uncertainties) to all
+other objects in the survey.
 
-Although the primary objective of \tc\ was to remove physical stellar models
-from the process of labeling stars with stellar parameter values
-chemical-abundance tags,
-it is also the case that \tc\ is very fast, computationally.
-\tc\ trains fast and then delivers labels for the entire 
-data set of 56,000 stars (that is, the \apogee\ DR10 sample)
-in reasonable time on a single laptop, as it takes $<0.1$~s on a 2.6-GHz
-intel core i7 to determine three labels for each star, without any
-attempt at code optimization.
+In a first application of \tc, on the \apogee\ DR10 data, we focussed on the three most important labels, \teff, \logg, \feh , and 
+derived them for essentially all of the 52,000 DR10 survey stars, based on a training step that involved only 543 reference objects, i.e. 1\% of the survey.  Remarkably, \tc ~'s label transfer results in stellar parameter and metallicites that are as precise and accurate as those derived from
+\apogee 's pipeline ASPCAP. In addition, \tc\ appears to produce -- at least in this present circumstance -- plausible labels for 6000 main sequence stars in \apogee, even though only $\sim 60$ main sequence stars were used in the training step (all of which are members of the Hyades cluster). 
+It is also remarkable that  the \logg - \teff\  diagram of Fig.~\ref{fig:iso2}~ shows basically no stars outside
+the physically plausible regime, although \tc\ knows nothing here about stellar evolution save the training step.
 
-% MKN: SNR or S/N?
+Our application to \apogee\  illustrated a number of further strengths and practical advantages of such an approach. First, \tc\ is computationally very fast. It  trains fast and then delivers labels the 52,000 stars of the
+ \apogee\ DR10 sample in reasonable time on a single laptop: it takes $<0.1$~s on a 2.6-GHz
+intel core i7 to determine three labels for each survey star, without any
+attempt at code optimization. This is because \tc\  only involves linear algebra and in the test step the well-behaved optimization of a few parameters with an analytic model for the spectrum. 
 
-We have demonstrated that we can work at much lower SNR at least for the three primary stellar parameters with this approach. 
-We expect to not gain the same advantage for individual elements with the SNR, but it may be possible to combine elements into subgroups (for example, alpha, light elements, neutron capture) of covariant spaces \citep[e.g.,][]{Ting2012}. In this way we exploit more pixels in the spectra and can operate at significantly lower signal to noise without being penalised in dimensionality of the returned parameter and abundance space. 
-This suggests the possibility to dramatically either reduce the cost of survey, or multiply the number of stars observed by a factor of $\ge$ 2 for the same scientific gain. 
-
-Part of the reason for this good behavior at low SNR is that
+Second, we have explicitly demonstrated that \tc\ can deliver labels, at least these three labels, 
+with nearly the same precision at much lower signal-to-noise than commonly deemed necessary. 
+The \textit{rms} difference between  ASPCAP labels from spectra with $SNR\ge150$ and \tc\ labels
+for the same stars from $SNR\sim 50$ survey spectra is only 30\% larger than the ASPCAP error bars. 
+\tc\  exploits the information at all pixels and certainly the labels \teff, \logg, \feh\  affect many different parts of each spectrum. How this SNR behaviour scales to label sets of higher dimension, encompassing e.g. individual abundances, remains to be seen. Part of the reason for this good behavior at low SNR is presumably that
 \tc\ contains a generative model of the intensity or flux density.
-Given labels, the model provides a pdf (a Gaussian, with a mean and a
-variance) for the flux density at every wavelength.
-This pdf is convolved (trivially) with the Gaussian uncertainty
+Given labels, the model provides a Gaussian \textit{pdf} for the flux density at every wavelength.
+This \textit{pdf} is convolved (trivially) with the Gaussian uncertainty
 assigned to each pixel measurement in the data when the comparison is
 made between the observed data in the survey object spectra with the
-generative model.
-That is, \tc\ properly treats observational uncertainty (and missing data), and is
-perfectly comfortable with arbitrarily different and arbitrarily
+generative model, straightforwardly accomodating
 heteroscedastic uncertainties from spectrum to spectrum.
-In addition to the proper treatment of observational uncertainty,
-\tc\ works well at low SNR in part because it employs a continuum
-normalization method that is not strongly biased at low SNR, and in
-part because it uses all the spectral pixels, not just the strengths
-of particular lines or pixels in limited wavelength ranges.
 
-In using all of the pixels in the spectrum to obtain the
-stellar labels, \tc\ is not dissimilar from the MATrix Inversion for
-Spectral SythEsis (\matisse) procedure for derivation of stellar
-parameters \citep{RB2006}.
-That is, \matisse\ does well at low signal-to-noise for the same
-reason as \tc:  They both use the full spectral range.
-However, \matisse\ employs a large grid of synthetic spectra and
-characterises a set of basis vectors which project onto each observed
-spectrum to determine stellar labels by calculating an optimal
-combined synthetic spectrum describing the stellar flux.
-Conversely, we use a data-driven model and do not project onto any
-subspace or combined theoretical spectrum.
+Third, \tc\ requires and provides a continuum estimate that remains robust 
+and unbiased among spectra of different SNR. The training step of \tc\ itself identifies the 
+pixels that have near-unity flux in preliminarily normalized spectra, {\it and} that show little flux variation with 
+label changes. Those pixels are, conceptually and practically, good approximations to pixels to which to fit a smooth continuum. Our initial application to \apogee spectra had indicated that biased continuum fits spectra would be the main source of poor label estimates from lower SNR spectra using \tc , and may well also be for label estimates based on physical models. 
 
-The method underlying \tc, and in particular this first implementation of \tc,
-makes many assumptions and approximations.
-We discuss some of these now, and the costs and benefits of relaxing
-these assumptions and approximations.
-\tc\ as presented here is just the tip of a large iceberg of potential
-methods for transferring labels from a set of reference objects to a
-set of unlabeled survey objects.
+Our initial application of \tc\ to \apogee\  DR10 data, however, also brought to the fore and illustrated a number of important approximations and limitations.
+We discuss some of these now, along with the benefits and costs of relaxing
+these assumptions and approximations. Some of them are attributable to the 
+particular implementation of \tc , which is just the tip of a large iceberg of potential
+methods for transfering labels from a set of reference objects to a
+set of unlabeled survey objects. But some limitations are inherent to the overall approach. 
+These approximations mainly revolve around the (reference) labels on the one hand, and the choice 
+of the spectral model on the other hand. 
 
-Perhaps the biggest assumption of \tc\ is that we believe completely
-the labels on the reference objects (the training set) and presume we
-have no infomation whatsoever about the labels on the survey objects
-(the test set).
-Both of these assumptions are wrong:
-We know that the reference objects have labels that are both noisy and
-biased, and we know \emph{something} about the unlabeled stars (from,
-for example, photometry, and also stellar model isochrones).
-The general solution to these problems is to expand the scope of the model.
+Three important issues arise around labels. 1) The labels are so far assumed to be perfectly known, 
+but in reality are both noisy and potentially biased. In turn, we presume that we
+have simply no infomation on the labels of the survey objects. Yet,
+we know \emph{something} about the unlabeled stars (for example, from
+photometry, and stellar evolution models)
+2) No set of reference objects will cover the label
+space comprehensively, especially if one considers high-dimensional label spaces (\apogee 's DR12
+published 16 labels per star!). 3) Any choice for the dimensionality of the label space, 3D in our sample application, will be incomplete in an astrophysical sense. Clearly, stars with identical \teff, \logg, \feh may have different spectra, e.g.
+because they differ in $[\alpha/Fe]$ or $v_{rot}$.
 
-That is, the model currently only generates spectra; it provides a pdf
+The general approach to first but also third issue is to expand the scope of the model. The model currently only generates spectra by providing a \textit{pdf}
 over spectral pixel intensities given a set of labels.
-Symbolically we could write that \tc\ in it's current implementation
-learns or provides a conditional pdf
-$p(\mbox{spectrum}\given\starlabelvec,\set{\theta})$, where $\starlabelvec$ is
-the set of stellar labels and $\set{\theta}$ is the (huge) set of parameters
-that sets the spectral intensity expectation and scatter as a function
-of the labels (all of the $\set{\theta}_\lambda$ and all of the $s_\lambda^2$).
-If we augmented \tc\ with a prior on the label space
-$p(\starlabelvec)$ then \tc\ would become a generative model of both
+Symbolically we could write that \tc\ in its current implementation
+learns or provides a conditional \textit{pdf}
+$p(f_\lambda\given\starlabelvec,\set{\theta}_\lambda, s_\lambda^2)$ (see Eq.\ref{eq:like}).
+Given a prior on the label space
+$p(\starlabelvec)$, the \tc\ could straightforwardly become a generative model of both
 the spectral pixel intensities \emph{and} the labels.
-It would then be possible to learn the parameters $\set{\theta}$ from both
-the training and the test data simultaneously.
-The training data would be used as it has been in this \documentname;
-for each training object $n$, we effectively assume that $p(\starlabelvec_n)$
-is a delta-function at the known labels, and optimize the $\set{\theta}$
-under those assumptions.
-But the test data could \emph{also} be used; each survey object would be
-constrained to be labeled by something that could be generated by
-$p(\starlabelvec)$, and we would jointly optimize the parameters
-$\set{\theta}$ and all the labels $\starlabelvec$ of all the survey objects.
 
-A joint model that could generate both the spectrum and the labels
-would also make it possible to learn the parameters $\set{\theta}$ from
-training data with noisy labels:
-For each training object $n$ with a set of noisy labels, instead of
-setting the label pdf $p(\starlabelvec_n)$ to be a delta-function,
-$p(\starlabelvec_n)$ would be set to something wider than a delta function
-but narrower than the general prior $p(\starlabelvec)$; it would be the
-function that represents our beliefs about the noisy labels.
-Learning the parameters $\set{\theta}$ in this case would involve jointly
-optimizing the parameters $\set{\theta}$ and all the training-data
-labels \emph{and} also all the test-data labels.
-That is, a generative model of both the spectra \emph{and} the labels
+This would also make it possible to learn the parameters $\set{\theta}$ from
+reference objects with noisy labels: at the moment, we effectively 
+assume for the reference objects that $p(\starlabelvec_n)$ is a delta-function 
+at the known labels. For noisy labels of the reference objects 
+we would set $p(\starlabelvec_n)$ instead to reflect the label uncertainties. 
+One would then, however, have to optimize simultaneously
+$\set{\theta}_\lambda$ for \textit{all} $\lambda$ pixels and the labels $\starlabelvec_n$
+for \textit{all} $n$ reference objects. Missing labels among some of the reference
+objects could then be treated pragmatically as simply having very large uncertainties.
+
+Thinking of \tc\ as a model for both the spectral intensities and the labels
+also shows how any (much more limited) external information on the labels of the survey
+objects could be incorporated. One learns from the reference and survey objects
+simultaneously (effectively, lifting the separation of training and test step),
+by optimizing $\set{\theta}_\lambda$ and $\starlabelvec_n$, where the index $n$ now 
+encorporates the entire survey sample. The difference between reference and survey objects
+now simply consists in how tighly constrained their $p(\starlabelvec_n)$. 
+For survey objects, $p(\starlabelvec_n)$ will likely be broad, e.g. constraining label-combinations
+to physically plausible isochrones. This would combine aspects of \tc\ with the approach
+taken by \cite{SB2014}.
+
+A generative model of both the spectra \emph{and} the labels
 would in principle be much more powerful than the current generative
 model of spectra alone.
 That said, these joint optimizations of parameters and labels would be
 expensive and multi-modal, so it might not be computationally
-tractable.
+tractable.{\bf HWR's random thought: Gibbs sampling, separating $\theta$'s and l's???}
 
-One thing that introducing a prior on the labels would permit is
-inclusion of our physical knowledge about the label space:
-Label triplets $(\teff, \logg, \feh)$ cannot take on arbitrary values
-in the three-dimensional label space; only physically realizable stars can exist.
-Including this constraint or prior might improve not just \tc, but also \aspcap\ and other pipelines.
-
-Related to all this, one harsh decision we made in this implementation
-is that the model is used only to produce a set of maximum-likelihood estimators:
-We get the model parameters from the reference objects
-by likelihood maximization, and we label the survey objects by likelihood maximization.
-\tc\ is built on a generative model, but we only optimize this model, we
-don't do full probabilistic inference.
-The full inference would be expensive, especially at test time
-(labeling the survey objects); the test-time model is non-linear and
+In this initial implementation of \tc\ we restricted ourselves to producing only the maximum-likelihood estimates for both the $\set{\theta}_\lambda$ in the training step, and the $\starlabelvec_n$
+in the test step, with label errors only coming from the inverse covariance matric at that point.
+But a full inference would be expensive, especially in the test step
+(labeling the survey objects); the test step model is non-linear and
 inference would require sampling or harsh approximations.
 
-Although in an official sense we believe our reference object stellar
-labels absolutely, in fact we did \emph{not} believe them; we (in one case) adjusted
-them (and therefore made choices about adjusting them).
-From our implementation of \tc\ on \apogee\ data, we were motivated to examine the calibration space of the labels given the unphysically narrow giant branch returned for DR10 data at low \logg. 
-We found by adopting a very naive calibration that shifts the stars to the nearest position on the isochrone from the \aspcap\ value described in \sectionname~\ref{sec:ReferenceObjects}, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical label-space of stars. 
-This small \logg\ adjustment is naive, but works well, causing small offsets in the \logg\ scale at low temperatures and \logg\ values compared to the \apogee\ \logg\ input labels, which moves the stars onto the branches or the isochrones. 
-This suggests that there is some problem with the input labels in either the \teff\ or the \logg\ dimension adjusted from Kepler results in DR10. 
+Note that in the application of \tc\ to \apogee\ we did deal with systematic errors in the reference
+labels, but did so by adjusting them,  given the unphysically narrow giant branch returned for DR10 data at low \logg.  We empirically found by adopting a very naive calibration that shifts the stars to the nearest position on the isochrone from the \aspcap\ value described in \sectionname~\ref{sec:ReferenceObjects}, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical label-space of stars. This suggests that there is some problem with the input labels in either the \teff\ or the \logg\ dimension adjusted from Kepler results in DR10. 
 
- %We have barely scratched the surface with what is possible with this methodology given our restricted training dataset, model and labels. 
- %Our training dataset itself is clearly too small, comprising only 545 stars including a set of dwarfs at a single metallicity (+0.03 dex). 
-
-The basic implementation of \tc\ presented here considers only three
-labels (\teff, \feh, and \logg).
-There is nothing fundamental abous this choice; in principle
-\tc\ could be extended to consider more labels, or a larger
-label space.
+The other two issues raised above, on the dimensionality and on the coverage of label space by the reference objects, are linked: 
+the basic implementation of \tc\ presented here considers only three
+labels (\teff, \feh, and \logg), and we know that the label-space has many more dimensions.
+Conceptually, it is trivial to extend \tc\ to even much larger numbers of labels per star. 
 For example, a next generation could include \alphafe\ or \xfe\
 labels for elements X.
 The only limitation---and it is a \emph{substantial} limitation---is
-that as the label-space grows, the training set must grow to fill it;
-\tc\ is only as good as its training set.
-In general, the training set needs may scale as badly as exponentially
-with the dimensionality of the label space, and (as noted above), we
-are confident that we don't have enough training stars even now with
-a three-dimensional label space.
-For this reason, we don't imagine operating \tc\ in the full 30-ish
-dimensional label space imagined for the final outputs of surveys like
-\apogee\ and \galah; \tc\ is only for establishing the ``first-order'' labels of
-greatest importance in setting spectral properties.
+that as the label-space grows, we presume that the training set must grow to fill it.
+After all, \tc\ can only be as good as its training set.
+In general, the training set needs may scale up as badly as exponentially
+with the dimensionality of the label space. Therefore, it is at this point an open issue, to 
+how many label-dimensions \tc\ continues to be useful and practicable. 
 
-In this implementation, another severe assumption or decision is that we used a quadratic form for the
-relationship between the expected flux and the labels.
-This is a choice and can be generalized.
+But there are also important, limiting assumptions about the spectral model itself. With the pixel-by-pixel polynomial \textit{Ansatz} for the spectral model $\set{\theta}_\lambda$
+we engender two important consequences: first, we need to pick a functional form for the spectral model
+(eq. \ref{eq:specmodel}), which we took empirically to be a quadratic-in-labels form of Eq. \ref{eq:linearmodel};
+but we arrived at that choice by empirical experimentation with this particular data set; but this choice can be generalized.
 Indeed, the polynomial family is probably not the best family of
 functions to be exploring, since they extrapolate badly (edge effects)
 and require explicit, qualitative choices about order and cross-terms.
-It is probably better to move to a non-parametric form for the functions,
+It is probably better to eventually move to a non-parametric form for the functions,
 such as Gaussian Processes or similar.
 In this case, model complexity would be controlled by continuous
-parameters and the functional form could become very complex where the
-training data warrant it.
+parameters and the functional form could become very complex at the pixels where the data in the
+training step warrant it.
 This would be a natural extension of what has been implemented here.
 
-Yet another severe assumption in this implementation is that every
-spectral pixel can be treated independently.
+Second, our current \textit{Ansatz} treats all
+spectral pixel independently, which they plausibly are only in their noise properties.
 This approximation was made to make the system fast; training
-(learning) can take place at all wavelengths independently and (in
+(learning) can take place at each wavelength independently and (in
 principle) in parallel.
 However, it is not a good approximation for many reasons.
 One of these is that the finite resolution of the spectrograph
@@ -1044,7 +992,9 @@ correlates nearby pixels; the generative spectral model cannot vary
 substantially over wavelength differences that are far smaller than
 the spectrograph resolution.
 This point of prior information is not used at all in the model.
-Another reason the independent-pixel assumption is bad is that there
+
+A much more complex reason that the independent-pixel assumption is 
+imperfect is that there
 are multiple lines from the same element and same ionization state.
 These are expected to be covariant in any sensible model.
 We do not make any use of such information; indeed no line list enters
@@ -1055,37 +1005,14 @@ resolution and either know about or discover sets of lines that vary
 together.
 However, any such generalization will come at substantial computational cost.
 
-Finally, the biggest single problem with \tc\ as presented here is that
-in our demonstration with the \apogee\ DR10 data, we simply do not have
-a training set that is large enough to span the space of stellar labels:
-We do not have dwarfs in more than one cluster, which means we do not
-have dwarf stars represented in any range of metallicity; we do not
-have stars with rotation, and we don't have rotation as a label or
-parameter, and even for the giants, we do not span the (presumably
-huge) space of chemical tags and age.
-Indeed---related to this---stars with high rotation are not correctly labeled in this demonstration of \tc.
-The more stars for which we can obtain labels by modeling, and which
-we can confidently add to the reference set, the better, for
-data-driven models going forward.
-In particular, the current demonstration would be improved
-dramatically with even a small number of additional dwarf stars added
-to the reference sample.
+Both the application to \apogee\ data and the possibilities to apply \tc\ in a broader context, bring the question of suitable sets of reference objects into focus. Indeed, in the long run the biggest practical problem in applyting \tc\ may not linked to the mathematics of the method \textit{per se}, but to the actual availability of sufficiently many and sufficiently diverse reference objects in the survey to cover label space in the training step. In the \apogee\ DR10 case at hand the most glaring issue, even with only three labels per star, is 
+that fact that all main sequence stars in the reference set of objects come from only one cluster, without any range in metallicity. With e.g. the DR12 of \apogee\ training sets of much higher dimensionality are becoming available (especially [X/H] of individual elements). While this prospect is exciting, it well exacerbate both the question of how to make labels space coverage sufficient for the training step, and how to assert the accuracy of the training labels in the first place. 
 
-Although we use \apogee\ as an example, \tc\ can be applied to
-any stellar survey.
-Details of how the spectra are continuum-normalized might have to be
-customized for different surveys, which will have different
-line-spread functions and different absorption-line densities, and
-therefore different statistics.
-In all other respects, however, \apogee\ could be replaced by any spectroscopic
-survey that meets the following criteria:
-It must contain a set of reference stars with known labels to serve as
-a training set.
-It must deliver a set of spectra represented on a common rest-frame
-wavelength basis.
-It must deliver noise variance estimates at every spectral pixel.
+As mentioned before, reference objects in general (just) need to satisfy three conditions: they must have trustworthy labels; they must cover label space; and we must have the same type of spectra for them as for the survey objects. This actually leaves quote a number of options in picking reference objects. One could pick a subset of survey objects (sensibly covering label space) where the spectra have exceptionally high SNR, 
+lending particular credence to the labels derived from physics-based models. On these, one would train the spectral model and then transfer labels to the remaining survey objects, effectively deriving most of the survey labels from the observations og highest SNR.
+Alternatively, as we did here, one can choose reference objects where special circumstance (cluster membership, astroseismological information) lend particular credence to their labels. 
 
-Perhaps the most exciting application of \tc\ will be in bringing
+But, very importantly, the reference labels -- being a property of the star not of the data set at hand -- could come from completely independent sources of information. Even if we understood absolutely nothing about near-IR spectra, but had labels for the 543 reference objects from optical spectroscopy, we could have derived the DR10 labels for \apogee\ as well as ASPCAP. This leads to perheps the most exciting long-term prospect of \tc : bringing
 qualitatively different stellar surveys---surveys that use different
 instruments, working in different wavelength regions at different
 resolutions and SNRs---onto a consistent stellar parameter and
@@ -1098,14 +1025,14 @@ used to ensure that all of the surveys are delivering stellar
 parameters on the same system.
 \tc\ will not make the data coming from any survey more
 \emph{accurate}, but it might serve to make the whole industry of
-stellar parameter estimation and chemical tagging more \emph{precise}.
+stellar parameter estimation and element abundance tagging more \emph{precise} and consistent.
+
+This prospect of survey self-labelling (e.g. from high SNR to low SNR) and the prospect of cross-survey calibration brings even more urgency to assuring that sufficient calibration observations are in place and that the different major spectroscopic surveys have sufficient sample overlap.
 
 \acknowledgements
 
-RIX: CHECK AFFILIATIONS FOR THE BELOW
-
 We would like to thank Daniel Foreman-Mackey (NYU), 
-Morgan Fouesneau (MPIA), Jon Holtzman (NMSU),  Keivan Stassun (Vanderbilt) and Jennifer Johnson (OSU)
+Morgan Fouesneau (MPIA), Jon Holtzman (NMSU),  Keivan Stassun (Vanderbilt University) and Jennifer Johnson (OSU)
 for valuable discussions.
 DWH was partially supported by
 the NSF (grant IIS-1124794), NASA (grant NNX08AJ48G), and the
