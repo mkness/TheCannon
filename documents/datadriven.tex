@@ -260,14 +260,14 @@ A spectral survey may also contain other sub-sets of objects with labels of part
 %makeonisochrone_training_4panel_revb.py
 \begin{figure}[h!]
 \centering
-    \includegraphics[scale=0.33]{./plots/training_aspcap2.pdf}
+    \includegraphics[scale=0.35]{./plots/training_aspcap2.pdf}
 \caption{\aspcap-corrected DR10 labels  for the training step in \teff-\logg\ plane for 543 stars in the 19 clusters for which parameters are provided by \apogee\ \citep{Meszaros2013}. The age and \feh\ of the isochrones (in parentheses) is shown in each sub-panel. All labels adopted from the \aspcap\ corrected values of DR10 except for the Pleiades. }
 \label{fig:trainingaspcap}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[h]
 \centering
-  \includegraphics[scale=0.33]{./plots/training_mkn2.pdf}
+  \includegraphics[scale=0.35]{./plots/training_mkn2.pdf}
 \caption{Stellar labels for all reference objects as is \figurename~\ref{fig:trainingaspcap}, except that the \logg\ values have been adjusted from the \aspcap-corrected value to exactly match the isochrone, we refer to this set of labels as  ``isochrone-corrected'' labels to differentiate them from the correction in \figurename~\ref{fig:trainingaspcap}.  }
 \label{fig:trainingisochrone}
 \end{figure}
@@ -652,9 +652,6 @@ consistent continuum normalisation for all spectra, both of the reference and of
 \label{fig:coeffs}
 \end{figure}
 
-
-\textbf{DWH: caveat about our cross-validation and signal to noise}. 
-
 \subsection{Identification of \apogee\ Continuum Pixels}
 \label{sec:ApogeeContinuum}
 
@@ -689,11 +686,10 @@ The typical internal precision on the measured parameters from \tc\ is $\delta$(
 \begin{table*}[!h]
 \tiny{
 \centering
-\caption{Excerpt from full online version of table of parameters for the 56,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with \badstar\ flag set may have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. Labels are provided for stars with both \aspcap\ corrected labels. The velocity scatter from the \aspcap\ results as well as the \texttt{APOGEE TARGET2} flag are provided in these tables.} 
-
+\caption{Excerpt from full online version of table of parameters for the 56,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with \badstar\ flag set may have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. Labels are provided for stars with both \aspcap\ corrected labels. The velocity scatter ($\sigma_v$ from the \aspcap\ results as well as the \texttt{APOGEE TARGET2} flag are provided in these tables.} 
 \begin{tabular}{| c | c | c |  c | c | c |  c | c | c | c | c | c | } %51,500
 \hline
-star ID  & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{VSCATTER} & \tiny{STAR BAD} & \tiny{TARG2}& \tiny{COMMIS} \\
+star ID  & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{$\sigma_{v}$} & \tiny{STAR BAD} & \tiny{TARG2}& \tiny{COMMIS} \\
 {2MASS} &  & K &  dex  & dex & K & dex & dex & & kms$^{-1}$&  \tiny{WARN} & \tiny{ FLAG}  \\    
 \hline
 \tiny{21354474+4250256} & 4832.4  & 4.44  & 0.16  & 8.6  & 0.011  & 0.005  & 2.78 0 & .1  & 0.0  & 2298.0 &0 \\
