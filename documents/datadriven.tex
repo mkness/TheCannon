@@ -74,22 +74,21 @@ objects for which the stellar labels are known with high(er)
 fidelity. We take advantage of this fact with \tc , a new data-driven
 two-step approach for determining
 stellar labels from spectroscopic data.
-First, \tc\ learns from the 'known' labels of reference stars 
+First, \tc\ learns from the `known' labels of reference stars 
 how the continuum-normalized spectra depend on these labels
 by fitting a flexible model at each wavelength;
 then,  \tc\ can use this same model to derive labels for the remaining stars in the survey.
-We illustrate \tc\ by training the model on only 543 stars in 19 clusters
-as reference objects, with \teff, \logg\ and \feh\ as the labels,
+We illustrate \tc\ with spectra from the APOGEE survey, by training the model 
+ on only 543 stars in 19 clusters as reference objects, with \teff, \logg\ and \feh\ as the labels,
 and then applying it to the spectra of 56,000 stars from
 \apogee\ DR10.
 \tc\ is very accurate. Its stellar labels compare well to the 31,000
-stars for which \apogee\ pipeline (\aspcap) labels are provided, with 
-\textit{rms} differences that are basically identical to the stated \aspcap uncertainties:
+stars for which \apogee\ pipeline (\aspcap) labels are provided in DR10, with 
+\textit{rms} differences that are basically identical to the stated \aspcap\ uncertainties:
 we obtain \textit{rms} differences of $\delta\teff< 100$~K, $\delta\logg< 0.2$~dex
 and $\delta\feh< 0.1$~dex.
 Aside from taking the labels of reference objects, \tc\ makes no use of
-stellar models nor any line-list; but it
-requires that the set of reference objects spans the label-space.
+stellar models nor any line-list, but it requires that the set of reference objects span the label-space.
 \tc\  performs well at lower signal-to-noise, as it delivers comparably 
 good labels even at one ninth the \apogee\ observing time.
 We discuss the limitations of \tc\ and its future potential, in particular
