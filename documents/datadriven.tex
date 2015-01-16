@@ -63,37 +63,30 @@ G.~Zasowski\altaffilmark{4,5}}
 \email{ness@mpia.de}
 
 \begin{abstract}%
-New spectroscopic surveys offer the promise of consistent stellar
+New spectroscopic surveys offer the promise of stellar
 parameters and abundances (`stellar labels') for hundreds of thousands
-of stars in the Milky Way.
-These labels are usually derived by comparisons with physics-based
-model spectra, which are technically challenging, and often use only a
-modest fraction of the spectral pixels.
-In many cases, however, there is a sub-set of \emph{reference}
+of stars: this poses a formidable spectral modeling challenge. In many cases, there is a sub-set of \emph{reference}
 objects for which the stellar labels are known with high(er)
-fidelity. We take advantage of this fact with \tc , a new data-driven
-two-step approach for determining
-stellar labels from spectroscopic data.
-First, \tc\ learns from the `known' labels of reference stars 
+fidelity. We take advantage of this with \tc , a new data-driven
+approach for determining stellar labels from spectroscopic data.
+\tc\ learns from the `known' labels of reference stars 
 how the continuum-normalized spectra depend on these labels
 by fitting a flexible model at each wavelength;
-then,  \tc\ can use this same model to derive labels for the remaining stars in the survey.
-We illustrate \tc\ with spectra from the APOGEE survey, by training the model 
+then,  \tc\ uses this model to derive labels for the remaining survey stars.
+We illustrate \tc\ by training the model 
  on only 543 stars in 19 clusters as reference objects, with \teff, \logg\ and \feh\ as the labels,
 and then applying it to the spectra of 56,000 stars from
 \apogee\ DR10.
-\tc\ is very accurate. Its stellar labels compare well to the 31,000
+\tc\ is very accurate. Its stellar labels compare well to the
 stars for which \apogee\ pipeline (\aspcap) labels are provided in DR10, with 
-\textit{rms} differences that are basically identical to the stated \aspcap\ uncertainties:
-we obtain \textit{rms} differences of $\delta\teff< 100$~K, $\delta\logg< 0.2$~dex
-and $\delta\feh< 0.1$~dex.
-Aside from taking the labels of reference objects, \tc\ makes no use of
-stellar models nor any line-list, but it requires that the set of reference objects span the label-space.
+\textit{rms} differences that are basically identical to the stated \aspcap\ uncertainties.
+Beyond the reference labels, \tc\ makes no use of
+stellar models nor any line-list, but needs a set of reference objects span label-space.
 \tc\  performs well at lower signal-to-noise, as it delivers comparably 
 good labels even at one ninth the \apogee\ observing time.
-We discuss the limitations of \tc\ and its future potential, in particular
+We discuss the limitations of \tc\ and its future potential, particularly, 
 to bring different spectroscopic surveys onto a consistent
-scale of stellar labels if they have sufficient objects in common.
+scale of stellar labels.
 \end{abstract}
 
 \keywords{%
@@ -696,7 +689,7 @@ The comparison of \tc\ with \aspcap\, showing the bias, rms and formal precision
 They are not concentrated to the extreme ends of the range, which have a higher weighting in evaluating the test data with cross validation. 
  \tc 's label transfer also returns values for those $\approx$ 15\% of stars in DR10 are that must be main-sequence dwarf stars. 
 These are not shown in \figurename~\ref{fig:cal}, as \apogee\ does not report \aspcap\ corrected dwarf parameters for DR10. 
-We exclude the stars flagged as bad overall  using the \badstar\ flag from \aspcap\ (this includes stars flagged by \aspcap\ as having bad \teff\, bad \logg\, high $\chi^2$, an effective temperature more than 1000K from photometric temperature for dereddened color, rotation, SNR low ($<$ 50) or if the parameter is near the \aspcap\ grid edge).  Note we can not return parameters for spectral types not included in our training set (see \sectionname~\ref{sec:AnomalousSpectra}). 
+We exclude the stars flagged as bad overall  using the \badstar\ flag from \aspcap\ (this includes stars flagged by \aspcap\ as having bad \teff\, bad \logg, high $\chi^2$, an effective temperature more than 1000K from photometric temperature for dereddened color, rotation, SNR low ($<$ 50) or if the parameter is near the \aspcap\ grid edge).  Note we can not return parameters for spectral types not included in our training set (see \sectionname~\ref{sec:AnomalousSpectra}). 
 
 In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ for the 1400 stars from the six sample fields as a function of \aspcap\ \teff, \logg\ and \feh. There are weak trends; at low \teff\ $\sim$ 3700 K, we find temperatures about 100 K cooler than \apogee\ and at low \logg\ we find $\sim$ 0.15 dex larger \logg\ than \apogee. At the lowest metallicities \feh\ $<$ --2.0, we typically report higher metallicities on the order of 0.05 to 0.3 dex.
 
@@ -724,7 +717,7 @@ In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ 
 
 
 We show \tc 's resulting label distribution in the \teff-\logg\ plane from \tc\ for the stars in DR10 in \figurename~\ref{fig:iso}. 
-This \figurename\ shows the result when \aspcap -corrected labels are used for the reference objects in the training step; \figurename~\ref{fig:iso2} shows the analogous results but for isochrone-corrected reference labels. There are 35,000 stars in these \figurenames\ that remain after excluding stars with the \bad\ flag set, with velocity scatter $>$ 10 \kms\ and telluric calibration target set. These \figurenames\ also show the labels for the 15\% stars with \logg $>$ 4 dex that must be main sequence stars. 
+This \figurename\ shows the result when \aspcap -corrected labels are used for the reference objects in the training step; \figurename~\ref{fig:iso2} shows the analogous results but for isochrone-corrected reference labels. There are 35,000 stars in these \figurenames\ that remain after excluding stars with the \badstar\ flag set, with velocity scatter $>$ 10 \kms\ and telluric calibration target set. These \figurenames\ also show the labels for the 15\% stars with \logg $>$ 4 dex that must be main sequence stars. 
  Were we to force label transfer with \tc , we find that the labels lie an unphysical space at very low \feh\ and \logg\ and high \teff.
 
 In short, for all stars with good \aspcap\ labels, we find excellent agreement between \tc\ and \aspcap\ by adopting ASCPAP corrected labels in the training step.
