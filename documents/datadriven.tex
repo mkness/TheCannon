@@ -71,7 +71,8 @@ model spectra, which are technically challenging, and often use only a
 modest fraction of the spectral pixels. 
 In many cases, however, there is a sub-set of \emph{reference}
 objects for which the stellar labels are known with high(er)
-fidelity; this is the case for \tc.
+fidelity. We take advantage of this fact with The Cannon, a new data-driven method for determining 
+stellar labels from spectroscopic data. 
 From the reference stars, \tc\ learns by fitting a very flexible
 model how the flux in each pixel of a continuum-normalized spectrum
 depends on the `known' stellar labels; \tc\ then exploits this same
@@ -80,7 +81,7 @@ We illustrate \tc\ by applying it to the spectra of 56,000 stars from
 \apogee\ DR10. 
 We take \teff, \logg\ and \feh\ as the labels, and 543 stars in 19
 clusters as the reference objects. 
-\tc\ is very accurate; its stellar labels compare well to the 37,500
+\tc\ is very accurate; its stellar labels compare well to the 31,000
 stars for which \apogee\ pipeline (\aspcap) labels are provided; we
 obtain \textit{rms} differences of $\delta\teff< 100$~K, $\delta\logg< 0.2$~dex
 and $\delta\feh< 0.1$~dex.
@@ -207,7 +208,9 @@ we spell out the characteristics of the \apogee\ data and our adjustments to it 
 \subsection{Specifics of the \apogee\ Data Set}
 \label{sec:Apogee_as_worked_Example}
 
-In the application of \tc\ to  \apogee\ data, we start with the \aspcapstar\ and \apstar\ files of the DR10 data release. This comprises 56,000 stars observed in the H-band, across a wavelength range of $\approx$ 15200 - 16900 \AA, observed at a resolution of 22,500 \citep{Majewski2012}. The data is divided between three individual chips and separated spectral regions ($\approx$ 15150-15800 \AA, 15890 - 16430~ \AA~ and 16490 - 16900 \AA). The DR10 \apogee\ spectra is released in a number of data formats including \apstar\ and \aspcapstar\ fits files. The \apstar\ fits files which include combined as well as single visit spectra that are reduced, resampled and shifted back to the rest frame. The \aspcapstar\ files include the combined spectra, resampled, reduced, shifted back to the rest frame and pseudo continuum normalised. The \apstar\  data, which are not continuum normalised by \apogee\,  enables us to evaluate the performance of \tc\ at lower SNR, by testing using the individual visit spectra provided in these files. The \apogee\ \aspcap\ pipeline provides the \apogee\ stellar parameters for stars observed in survey mode and made available in the \aspcapstar\ files. Stellar labels of \teff, \logg\ and \feh\ are provided for these stars as well as numerous flags which indicate either problems with the spectra itself or problems with the label determination of the spectra for that star (or both). This pipeline is based on $\chi^2$ fitting of the data to 1D LTE models for five labels (\teff, \logg, \feh, [$\alpha$/Fe], microturbulence) (Garia Perez et al., 2015 (in prep). 
+The data set used for this functional demonstration of The Cannon is that of the \apogee\ survey (Majewski et al. 2012, 2015 in prep).  \apogee, part of the SDSS-III\footnote{\url{www.sdss.org}} (Eisenstein et al. 2011), is a high resolution (R $\sim$ 22,500), high signal to noise (SNR $\sim$ 100), H-band (15200-16900 \AA\footnote{Due to gaps between the instrument's three detectors, the spectra are divided into three pieces: $\sim$151500-15800~\AA, 15890-16430~\AA, and 16490-16900~\AA.}) spectroscopic survey of primarily red giant stars spanning the bulge, disk, and halo of the Milky Way \citep{GZ2013}.  \apogee 's \aspcap\ pipeline provides the stellar labels for these stars, which include stellar parameters and multiple elemental abundances, in addition to numerous flags that warn of problems with the spectra or problems with the label determination for the spectra (or both).  This pipeline is based on $\chi^2$ fitting of the data to 1D LTE models for seven labels (\teff, \logg, \feh, [$\alpha$/Fe], [C/M], [N/M], and microturbulence; Garia Perez et al., 2015, in prep). 
+
+We use here spectra from the set of 56,000 stars that were released as part of the SDSS Data Release 10 (DR10) \citep{Ahn2014}), focusing on data from the \apstar\ and  \aspcapstar\ FITS files.  The \apstar\ files include single-visit and combined spectra for a given star that are fully reduced, resampled, and shifted to the stellar rest frame.  The \aspcapstar\ files contain the combined spectrum for a given star that has also been pseudo-continuum normalized by the ASPCAP pipeline, along with the best-fitting synthetic spectrum and stellar labels.  The \apstar\ data, which are not pseudo continuum normalized by APOGEE, enables us to evaluate the performance of The Cannon at lower SNR, by testing it on the individual visit spectra provided in these files.
 
 The pixel-by-pixel inverse variances are critical for all steps of \tc: continuum normalization, training step and test step. The error arrays of the uncertainty at each pixel in the spectra are provided by \apogee\ in their fits files. We adopt these vectors directly and additionally set any anomalous values in the spectra, with 0 flux or very high error values to a very large error value, for computational stability.  
 
@@ -569,7 +572,7 @@ As a first illustration of how well \tc\ works in practice, we perform a take-on
 For the take-one-star out test we train the spectral model iteratively on the spectra of all but one of the $N_\rfn$ (=543) 
 reference objects, and then apply \tc 's test step to the spectrum of that remaining object. If we repeat this procedure $N_\rfn$ times, 
 we have a first powerful test of how the result of this parameter transfer compares to the (known) labels for the reference objects.
- Here we only consider three labels $(\teff , \logg , \feh)$, and the results are shown in \figurename~ref{fig:takeonestarout}.
+ Here we only consider three labels $(\teff , \logg , \feh)$, and the results are shown in \figurename~\ref{fig:takeonestarout}.
 
 This \figurename\ immediately shows how well \tc\ works, at least in the circumstance at hand.
 \tc 's purely mathematical approach of label transfer estimates the stellar labels (at least) as well as the astrophysical \aspcap\ pipeline,
@@ -591,7 +594,7 @@ If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \
 % made with takeonestarout_all_stars_diag_6panel.py in code/
 \begin{figure}[h!]
 \centering
-    \includegraphics[scale=0.45]{./plots/takeout_histc.png}
+    \includegraphics[scale=0.45]{./plots/takeout_histc.pdf}
 \caption{The take-one-star-out cross-validation of the 543 stars in the training dataset using the quadratic model in equation~(\ref{eq:quadinthreelabels}) and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
 \label{fig:takeonestarout}
 \end{figure}
@@ -641,7 +644,7 @@ consistent continuum normalisation for all spectra, both of the reference and of
  %made with run -i makeplot_scatter_test18_step_revc.py
 \begin{figure}[h!]
 \centering
-    \includegraphics[width=\hsize]{./plots/R1_continuum5.png}
+    \includegraphics[width=\hsize]{./plots/R1_continuum5.pdf}
   \caption{The first-order coefficients and scatter across the sample regions of the spectra from \figurename~\ref{fig:norm}, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \log, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see \sectionname~\ref{sec:ApogeeContinuum}).}
 \label{fig:coeffs}
 \end{figure}
@@ -680,18 +683,18 @@ The typical internal precision on the measured parameters from \tc\ is $\delta$(
 \begin{table*}[!h]
 \tiny{
 \centering
-\caption{Excerpt from full online version of table of parameters for the 56,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with \badstar\ flag set may have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. Labels are provided for stars with both \aspcap\ corrected labels. The velocity scatter ($\sigma_v$ from the \aspcap\ results as well as the \texttt{APOGEE TARGET2} flag are provided in these tables.} 
+\caption{Excerpt from the online table of stellar labels (\teff, \logg\ and \feh) for the 56,000 stars released in 170 fields from \apogee\'s data release DR10. Stars with \badstar\ flag set may have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. Labels are provided for stars with both \aspcap\ corrected labels. The velocity scatter ($\sigma_v$) from the \aspcap\ results as well as the \texttt{APOGEE TARGET2} flag (TARG2) are provided in these tables.} 
 \begin{tabular}{| c | c | c |  c | c | c |  c | c | c | c | c | c | } %51,500
 \hline
 star ID  & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{$\sigma_{v}$} & \tiny{STAR BAD} & \tiny{TARG2}& \tiny{COMMIS} \\
-{2MASS} &  & K &  dex  & dex & K & dex & dex & & kms$^{-1}$&  \tiny{WARN} & \tiny{ FLAG}  \\    
+{2MASS} &  & K &  dex  & dex & K & dex & dex & kms$^{-1}$ & &  \tiny{WARN} & \tiny{ FLAG}  \\    
 \hline
-\tiny{21354474+4250256} & 4832.4  & 4.44  & 0.16  & 8.6  & 0.011  & 0.005  & 2.78 0 & .1  & 0.0  & 2298.0 &0 \\
-\tiny{21354775+4233120} & 4702.3  & 2.52  & 0.04  & 9.2  & 0.021  & 0.011  & 1.34 0 & .0  & 0.0  & 142608608.0 & 0 \\
-\tiny{21355458+4222326} & 4855.0  & 2.58  & -0.34 &  6.9 &  0.015 &  0.007 &  2.35  & 0.0 &  0.0 &  96.0 &  0 \\
-\tiny{21360285+4231145} & 4591.1  & 2.03  & -0.42 &  9.1 &  0.021 &  0.011 &  1.43  & 0.0 &  0.0 &  142608608.0 &  0 \\
-\tiny{21360822+4225525} & 4802.4  & 2.75  & -0.02 &  7.0 &  0.015 &  0.008 &  2.59  & 0.0 &  0.0 &  2272.0 &  0 \\
-\tiny{21360941+4212409} & 4840.2  & 2.6 - & 0.48  & 12.6 &  0.027 &  0.013 &  1.23  & 0.0 &  0.0 &  142608608.0 &  0 \\
+\tiny{21354474+4250256} & 4832.4  & 4.44  & 0.16  & 8.6  & 0.011  & 0.005  & 2.78  & 0.1  & 0.0  & 2298 &0 \\
+\tiny{21354775+4233120} & 4702.3  & 2.52  & 0.04  & 9.2  & 0.021  & 0.011  & 1.34  & 0.0  & 0.0  & 142608608 & 0 \\
+\tiny{21355458+4222326} & 4855.0  & 2.58  & -0.34 &  6.9 &  0.015 &  0.007 &  2.35  & 0.0 &  0.0 &  96 &  0 \\
+\tiny{21360285+4231145} & 4591.1  & 2.03  & -0.42 &  9.1 &  0.021 &  0.011 &  1.43  & 0.0 &  0.0 &  142608608 &  0 \\
+\tiny{21360822+4225525} & 4802.4  & 2.75  & -0.02 &  7.0 &  0.015 &  0.008 &  2.59  & 0.0 &  0.0 &  2272 &  0 \\
+\tiny{21360941+4212409} & 4840.2  & 2.6 - & 0.48  & 12.6 &  0.027 &  0.013 &  1.23  & 0.0 &  0.0 &  142608608 &  0 \\
  \hline
 \end{tabular}
 \label{tab:online} }
@@ -709,12 +712,12 @@ In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ 
 %makeplot_fits_v19_bw.py
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.23]{./plots/4431_v19.png}
-    \includegraphics[scale=0.23]{./plots/4383_v19.png} \\
-      \includegraphics[scale=0.23]{./plots/4399_v19.png}
-        \includegraphics[scale=0.23]{./plots/4309_v19.png} \\
-              \includegraphics[scale=0.23]{./plots/4311_v19.png}
-        \includegraphics[scale=0.23]{./plots/4255_v19.png} 
+  \includegraphics[scale=0.23]{./plots/4431_v19.pdf}
+    \includegraphics[scale=0.23]{./plots/4383_v19.pdf} \\
+      \includegraphics[scale=0.23]{./plots/4399_v19.pdf}
+        \includegraphics[scale=0.23]{./plots/4309_v19.pdf} \\
+              \includegraphics[scale=0.23]{./plots/4311_v19.pdf}
+        \includegraphics[scale=0.23]{./plots/4255_v19.pdf} 
 \caption{\small{\aspcap\ DR10 versus \tc\ for six different fields including in the disk, bulge and halo. The number of stars is, for each subfigure is 211 (4431), 207 (4384), 217 (4399), 210 (4309), 198 (4311) 319 (4255) }}
 \label{fig:cal}
 \end{figure}
@@ -722,7 +725,7 @@ In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ 
 %run -i makeplot_fits_v19_3by3c.py with plotfits_v19('listin.txt')
 \begin{figure}[!h]
 \centering
-        \includegraphics[scale=0.35]{./plots/cplot2.png} 
+        \includegraphics[scale=0.35]{./plots/cplot2.pdf} 
 \caption{Difference between the labels (\teff, \logg, and \feh) derived through \tc\ in the test step and their \aspcap\ DR10 values for all the 1400 stars shown in \figurename~\ref{fig:cal}. The error bars are dominated by those quoted by \aspcap. There are systematic offsets at the coolest temperatures.}
 \label{fig:cplot}
 \end{figure}
@@ -758,9 +761,9 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 % made with makeonisochrone_v18_bw.py
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.25]{./plots/iso1_2.png}
+  \includegraphics[scale=0.25]{./plots/iso1_2.pdf}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/iso1a_2.png}
+    \includegraphics[scale=0.25]{./plots/iso1a_2.pdf}
 \caption{Labels for the $\sim$ 35,000 stars from DR10 derived by \tc\ based on \aspcap-corrected labels for the set of reference objects. The set of panels on the left shows \teff-\logg\ in four metallicity bins. There are $\sim$ 19,000, 13,000, 1600, and 1000 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.  The panel on the right shows all stars coloured in \feh\ on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. }
 \label{fig:iso}
 \end{figure}
@@ -768,9 +771,9 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 
 \begin{figure}[!h]
 \centering
- \includegraphics[scale=0.25]{./plots/iso2_2.png}
+ \includegraphics[scale=0.25]{./plots/iso2_2.pdf}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/iso2a_2.png}
+    \includegraphics[scale=0.25]{./plots/iso2a_2.pdf}
 \caption{Same as \figurename~\ref{fig:iso} but based on the ``isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (Equation \ref{eq:specmodel}) that forces resulting labels to lie in physically plausible location in label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects.}
 \label{fig:iso2}
 \end{figure}
@@ -782,7 +785,7 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 %run -i makeplot_scatter_test18_coeffs_dwarfs_RevB.py
 \begin{figure}[!h]
 \centering
-\includegraphics[width=\hsize]{./plots/2dwarfs.png}
+\includegraphics[width=\hsize]{./plots/2dwarfs.pdf}
 \caption{Examples of hot rotating dwarfs in the \apogee\ DR10 data across regions A and B, comparable to \figurename~\ref{fig:coeffs}. These types of stars are \textit{not} included in our set of reference objects. Therefore, the label transfer by \tc\ leads to grossly unphysical label estimates.}
 \label{fig:dwarfs}
 \end{figure}
@@ -807,7 +810,7 @@ These \figurenames\ illustrate that our approach to continuum normalization work
  
 %run -i makecontin_data1_revc.py
  \begin{figure}[!h]
-  \includegraphics[width=\hsize]{./plots/SNR_continuum6.png}
+  \includegraphics[width=\hsize]{./plots/SNR_continuum6.pdf}
   \caption{Comparison of the continuum normalisation of the same star at high and modest SNR. The \apogee\ \apstar\ combined visit spectra is shown in the top panel (SNR = 120) and the \apstar\ spectra for the 4th visit (SNR = 25) is shown in the second panel. The bottom panel is the ratio of the continuum normalised spectra of the high and medium SNR spectra and the blue dashed line is a running median of this ratio over 20 $\AA$, showing a small bias. The histogram of the ratio is given in at the right of the bottom panel.}
 \label{fig:lowsnr}
 \end{figure}
@@ -815,10 +818,10 @@ These \figurenames\ illustrate that our approach to continuum normalization work
 %makeplot_fits_SNRtest_bw_6panel.py
 \begin{figure}[!h]
 \centering
-\includegraphics[scale=0.25]{./plots/SNR100to200.png}
-\includegraphics[scale=0.25]{./plots/SNR50to100.png}\\
-\includegraphics[scale=0.25]{./plots/SNR30to50.png}
-\includegraphics[scale=0.25]{./plots/SNR20to30.png}
+\includegraphics[scale=0.25]{./plots/SNR100to200.pdf}
+\includegraphics[scale=0.25]{./plots/SNR50to100.pdf}\\
+\includegraphics[scale=0.25]{./plots/SNR30to50.pdf}
+\includegraphics[scale=0.25]{./plots/SNR20to30.pdf}
     \caption{Illustration of \tc's ability to estimate labels for spectra of modest SNR. Shown is the comparison of \tc\ labels derived for some single visit spectra, compared to the \aspcap\ label values derived from the co-added high SNR spectra. The single vista spectra are grouped in four different regimes of SNR. There are 60 stars in the 300 $<$  SNR $<$ 30 bin, 1200 stars in the 30 $<$ SNR $<$ 50 bin, 1100 stars in the 50 $<$ SNR $<$ 100 bin and 670 stars in the 100 $<$  SNR $<$ 200 bin. Note that the rms difference between those two label estimates increases more slowly than expected from the SNR of the single visit spectra: label transfer with \tc\  therefore enables label estimates at modest SNR. Each SNR regime shows the corresponding histograms of \tc\ - \aspcap\ for each label, at right.}
 \label{fig:SNR}
 \end{figure}
@@ -1033,8 +1036,217 @@ SDSS-III is managed by the Astrophysical Research Consortium for the Participati
  Ohio State University, Pennsylvania State University, University of Portsmouth, Princeton University, the Spanish Participation Group, 
  University of Tokyo, University of Utah, Vanderbilt University, University of Virginia, University of Washington, and Yale University
 
+\begin{thebibliography}{23}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
-\bibliography{tc3.bib}
+\bibitem[{{Ahn} {et~al.}(2014){Ahn}, {Alexandroff}, {Allende Prieto}, {Anders},
+  {Anderson}, {Anderton}, {Andrews}, {Aubourg}, {Bailey}, {Bastien}, \&
+  et~al.}]{Ahn2014}
+{Ahn}, C.~P., {Alexandroff}, R., {Allende Prieto}, C., {Anders}, F.,
+  {Anderson}, S.~F., {Anderton}, T., {Andrews}, B.~H., {Aubourg}, {\'E}.,
+  {Bailey}, S., {Bastien}, F.~A., \& et~al. 2014, \apjs, 211, 17
+
+\bibitem[{{Allende Prieto} {et~al.}(1999){Allende Prieto}, {Garc{\'{\i}}a
+  L{\'o}pez}, {Lambert}, \& {Gustafsson}}]{AP1999}
+{Allende Prieto}, C., {Garc{\'{\i}}a L{\'o}pez}, R.~J., {Lambert}, D.~L., \&
+  {Gustafsson}, B. 1999, \apj, 527, 879
+
+\bibitem[{{Barrado y Navascu{\'e}s} {et~al.}(2001){Barrado y Navascu{\'e}s},
+  {Deliyannis}, \& {Stauffer}}]{barrado2001}
+{Barrado y Navascu{\'e}s}, D., {Deliyannis}, C.~P., \& {Stauffer}, J.~R. 2001,
+  \apj, 549, 452
+
+\bibitem[{{Beers} {et~al.}(2006){Beers}, {Lee}, {Sivarani}, {Allende Prieto},
+  {Wilhelm}, {Fiorentin}, {Bailer-Jones}, {Norris}, \& {SEGUE Calibration
+  Team}}]{Beers2006}
+{Beers}, T.~C., {Lee}, Y., {Sivarani}, T., {Allende Prieto}, C., {Wilhelm}, R.,
+  {Fiorentin}, P.~R., {Bailer-Jones}, C., {Norris}, J.~E., \& {SEGUE
+  Calibration Team}. 2006, \memsai, 77, 1171
+
+\bibitem[{{Boeche} {et~al.}(2011){Boeche}, {Siebert}, {Williams}, {de Jong},
+  {Steinmetz}, {Fulbright}, {Ruchti}, {Bienaym{\'e}}, {Bland-Hawthorn},
+  {Campbell}, {Freeman}, {Gibson}, {Gilmore}, {Grebel}, {Helmi}, {Munari},
+  {Navarro}, {Parker}, {Reid}, {Seabroke}, {Siviero}, {Watson}, {Wyse}, \&
+  {Zwitter}}]{Boeche2011}
+{Boeche}, C., {Siebert}, A., {Williams}, M., {de Jong}, R.~S., {Steinmetz}, M.,
+  {Fulbright}, J.~P., {Ruchti}, G.~R., {Bienaym{\'e}}, O., {Bland-Hawthorn},
+  J., {Campbell}, R., {Freeman}, K.~C., {Gibson}, B.~K., {Gilmore}, G.,
+  {Grebel}, E.~K., {Helmi}, A., {Munari}, U., {Navarro}, J.~F., {Parker},
+  Q.~A., {Reid}, W., {Seabroke}, G.~M., {Siviero}, A., {Watson}, F.~G., {Wyse},
+  R.~F.~G., \& {Zwitter}, T. 2011, \aj, 142, 193
+
+\bibitem[{{Bovy} {et~al.}(2014){Bovy}, {Nidever}, {Rix}, {Girardi}, {Zasowski},
+  {Chojnowski}, \& {Holtzman}}]{bovy2014}
+{Bovy}, J., {Nidever}, D.~L., {Rix}, H.-W., {Girardi}, L., {Zasowski}, G.,
+  {Chojnowski}, S.~D., \& {Holtzman}, J. e.~a. 2014, \apj, 790, 127
+
+\bibitem[{{Freeman}(2012)}]{Freeman2012}
+{Freeman}, K.~C. 2012, in Astronomical Society of the Pacific Conference
+  Series, Vol. 458, Galactic Archaeology: Near-Field Cosmology and the
+  Formation of the Milky Way, ed. W.~{Aoki}, M.~{Ishigaki}, T.~{Suda},
+  T.~{Tsujimoto}, \& N.~{Arimoto}, 393
+
+\bibitem[{{Gilmore} {et~al.}(2012){Gilmore}, {Randich}, {Asplund}, {Binney},
+  {Bonifacio}, {Drew}, {Feltzing}, {Ferguson}, {Jeffries}, {Micela},
+  {Negueruela}, {Prusti}, {Rix}, {Vallenari}, {Alfaro}, {Allende-Prieto},
+  {Babusiaux}, {Bensby}, {Blomme}, {Bragaglia}, {Flaccomio}, {Fran{\c c}ois},
+  {Irwin}, {Koposov}, {Korn}, {Lanzafame}, {Pancino}, {Paunzen},
+  {Recio-Blanco}, {Sacco}, {Smiljanic}, {Van Eck}, \& {Walton}}]{Gilmore2012}
+{Gilmore}, G., {Randich}, S., {Asplund}, M., {Binney}, J., {Bonifacio}, P.,
+  {Drew}, J., {Feltzing}, S., {Ferguson}, A., {Jeffries}, R., {Micela}, G.,
+  {Negueruela}, I., {Prusti}, T., {Rix}, H.-W., {Vallenari}, A., {Alfaro}, E.,
+  {Allende-Prieto}, C., {Babusiaux}, C., {Bensby}, T., {Blomme}, R.,
+  {Bragaglia}, A., {Flaccomio}, E., {Fran{\c c}ois}, P., {Irwin}, M.,
+  {Koposov}, S., {Korn}, A., {Lanzafame}, A., {Pancino}, E., {Paunzen}, E.,
+  {Recio-Blanco}, A., {Sacco}, G., {Smiljanic}, R., {Van Eck}, S., \& {Walton},
+  N. 2012, The Messenger, 147, 25
+
+\bibitem[{{Girardi} {et~al.}(2000){Girardi}, {Bressan}, {Bertelli}, \&
+  {Chiosi}}]{girardi2000}
+{Girardi}, L., {Bressan}, A., {Bertelli}, G., \& {Chiosi}, C. 2000, \aaps, 141,
+  371
+
+\bibitem[{{Gonzalez} {et~al.}(2009){Gonzalez}, {Zoccali}, {Monaco}, {Hill},
+  {Cassisi}, {Minniti}, {Renzini}, {Barbuy}, {Ortolani}, \&
+  {Gomez}}]{gonzalez2009}
+{Gonzalez}, O.~A., {Zoccali}, M., {Monaco}, L., {Hill}, V., {Cassisi}, S.,
+  {Minniti}, D., {Renzini}, A., {Barbuy}, B., {Ortolani}, S., \& {Gomez}, A.
+  2009, \aap, 508, 289
+
+\bibitem[{{Hinkel} {et~al.}(2014){Hinkel}, {Timmes}, {Young}, {Pagano}, \&
+  {Turnbull}}]{Hinkel2014}
+{Hinkel}, N.~R., {Timmes}, F.~X., {Young}, P.~A., {Pagano}, M.~D., \&
+  {Turnbull}, M.~C. 2014, \aj, 148, 54
+
+\bibitem[{{Jofr{\'e}} {et~al.}(2014){Jofr{\'e}}, {Heiter}, {Soubiran},
+  {Blanco-Cuaresma}, {Worley}, {Pancino}, \& {Cantat-Gaudin}}]{Jofre2014}
+{Jofr{\'e}}, P., {Heiter}, U., {Soubiran}, C., {Blanco-Cuaresma}, S., {Worley},
+  C.~C., {Pancino}, E., \& {Cantat-Gaudin}, e.~a. 2014, \aap, 564, A133
+
+\bibitem[{{Kordopatis} {et~al.}(2013){Kordopatis}, {Gilmore}, {Steinmetz},
+  {Boeche}, {Seabroke}, {Siebert}, {Zwitter}, {Binney}, {de Laverny},
+  {Recio-Blanco}, {Williams}, {Piffl}, {Enke}, {Roeser}, {Bijaoui}, {Wyse},
+  {Freeman}, {Munari}, {Carrillo}, {Anguiano}, {Burton}, {Campbell}, {Cass},
+  {Fiegert}, {Hartley}, {Parker}, {Reid}, {Ritter}, {Russell}, {Stupar},
+  {Watson}, {Bienaym{\'e}}, {Bland-Hawthorn}, {Gerhard}, {Gibson}, {Grebel},
+  {Helmi}, {Navarro}, {Conrad}, {Famaey}, {Faure}, {Just}, {Kos}, {Matijevi{\v
+  c}}, {McMillan}, {Minchev}, {Scholz}, {Sharma}, {Siviero}, {de Boer}, \& {{\v
+  Z}erjal}}]{Kord2013}
+{Kordopatis}, G., {Gilmore}, G., {Steinmetz}, M., {Boeche}, C., {Seabroke},
+  G.~M., {Siebert}, A., {Zwitter}, T., {Binney}, J., {de Laverny}, P.,
+  {Recio-Blanco}, A., {Williams}, M.~E.~K., {Piffl}, T., {Enke}, H., {Roeser},
+  S., {Bijaoui}, A., {Wyse}, R.~F.~G., {Freeman}, K., {Munari}, U., {Carrillo},
+  I., {Anguiano}, B., {Burton}, D., {Campbell}, R., {Cass}, C.~J.~P.,
+  {Fiegert}, K., {Hartley}, M., {Parker}, Q.~A., {Reid}, W., {Ritter}, A.,
+  {Russell}, K.~S., {Stupar}, M., {Watson}, F.~G., {Bienaym{\'e}}, O.,
+  {Bland-Hawthorn}, J., {Gerhard}, O., {Gibson}, B.~K., {Grebel}, E.~K.,
+  {Helmi}, A., {Navarro}, J.~F., {Conrad}, C., {Famaey}, B., {Faure}, C.,
+  {Just}, A., {Kos}, J., {Matijevi{\v c}}, G., {McMillan}, P.~J., {Minchev},
+  I., {Scholz}, R., {Sharma}, S., {Siviero}, A., {de Boer}, E.~W., \& {{\v
+  Z}erjal}, M. 2013, \aj, 146, 134
+
+\bibitem[{{Lee} {et~al.}(2006){Lee}, {Beers}, {Sivarani}, {Wilhelm}, {Allende
+  Prieto}, {Norris}, {Fiorentin}, {Bailer-Jones}, \& {SEGUE Calibration
+  Team}}]{Lee2006}
+{Lee}, Y.~S., {Beers}, T.~C., {Sivarani}, T., {Wilhelm}, R., {Allende Prieto},
+  C., {Norris}, J.~E., {Fiorentin}, P.~R., {Bailer-Jones}, C.~A., \& {SEGUE
+  Calibration Team}. 2006, in Bulletin of the American Astronomical Society,
+  Vol.~38, American Astronomical Society Meeting Abstracts, 168.15
+
+\bibitem[{{Liu} {et~al.}(2014){Liu}, {Deng}, {Carlin}, {Smith}, {Li},
+  {Newberg}, {Gao}, {Yang}, {Xue}, {Xu}, {Zhang}, {Xin}, {Wu}, \&
+  {Jin}}]{Liu2014}
+{Liu}, C., {Deng}, L.-C., {Carlin}, J.~L., {Smith}, M.~C., {Li}, J., {Newberg},
+  H.~J., {Gao}, S., {Yang}, F., {Xue}, X.-X., {Xu}, Y., {Zhang}, Y.-Y., {Xin},
+  Y., {Wu}, Y., \& {Jin}, G. 2014, \apj, 790, 110
+
+\bibitem[{{Majewski}(2012)}]{Majewski2012}
+{Majewski}, S.~R. 2012, in American Astronomical Society Meeting Abstracts,
+  Vol. 219, American Astronomical Society Meeting Abstracts 219, 205.06
+
+\bibitem[{{M{\'e}sz{\'a}ros} {et~al.}(2013){M{\'e}sz{\'a}ros}, {Holtzman},
+  {Garc{\'{\i}}a P{\'e}rez}, {Allende Prieto}, {Schiavon}, {Basu}, {Bizyaev},
+  {Chaplin}, {Chojnowski}, {Cunha}, {Elsworth}, {Epstein}, {Frinchaboy},
+  {Garc{\'{\i}}a}, {Hearty}, {Hekker}, {Johnson}, {Kallinger}, {Koesterke},
+  {Majewski}, {Martell}, {Nidever}, {Pinsonneault}, {O'Connell}, {Shetrone},
+  {Smith}, {Wilson}, \& {Zasowski}}]{Meszaros2013}
+{M{\'e}sz{\'a}ros}, S., {Holtzman}, J., {Garc{\'{\i}}a P{\'e}rez}, A.~E.,
+  {Allende Prieto}, C., {Schiavon}, R.~P., {Basu}, S., {Bizyaev}, D.,
+  {Chaplin}, W.~J., {Chojnowski}, S.~D., {Cunha}, K., {Elsworth}, Y.,
+  {Epstein}, C., {Frinchaboy}, P.~M., {Garc{\'{\i}}a}, R.~A., {Hearty}, F.~R.,
+  {Hekker}, S., {Johnson}, J.~A., {Kallinger}, T., {Koesterke}, L., {Majewski},
+  S.~R., {Martell}, S.~L., {Nidever}, D., {Pinsonneault}, M.~H., {O'Connell},
+  J., {Shetrone}, M., {Smith}, V.~V., {Wilson}, J.~C., \& {Zasowski}, G. 2013,
+  \aj, 146, 133
+
+\bibitem[{{Newberg} {et~al.}(2012){Newberg}, {Carlin}, {Chen}, {Deng},
+  {L{\'e}pine}, {Liu}, {Yang}, {Yuan}, {Zhang}, {Zhang}, {Legue Working Group},
+  \& {Lamost-Plus Partnership}}]{Newberg2012}
+{Newberg}, H.~J., {Carlin}, J.~L., {Chen}, L., {Deng}, L., {L{\'e}pine}, S.,
+  {Liu}, X., {Yang}, F., {Yuan}, H.-B., {Zhang}, H., {Zhang}, Y., {Legue
+  Working Group}, \& {Lamost-Plus Partnership}. 2012, in Astronomical Society
+  of the Pacific Conference Series, Vol. 458, Galactic Archaeology: Near-Field
+  Cosmology and the Formation of the Milky Way, ed. W.~{Aoki}, M.~{Ishigaki},
+  T.~{Suda}, T.~{Tsujimoto}, \& N.~{Arimoto}, 405
+
+\bibitem[{{Recio-Blanco} {et~al.}(2006){Recio-Blanco}, {Bijaoui}, \& {de
+  Laverny}}]{RB2006}
+{Recio-Blanco}, A., {Bijaoui}, A., \& {de Laverny}, P. 2006, \mnras, 370, 141
+
+\bibitem[{{Schlafly} \& {Finkbeiner}(2011)}]{Schlafly2011}
+{Schlafly}, E.~F. \& {Finkbeiner}, D.~P. 2011, \apj, 737, 103
+
+\bibitem[{{Sch{\"o}nrich} \& {Bergemann}(2014)}]{Sm2014}
+{Sch{\"o}nrich}, R. \& {Bergemann}, M. 2014, \mnras, 443, 698
+
+\bibitem[{{Steinmetz} {et~al.}(2006){Steinmetz}, {Zwitter}, {Siebert},
+  {Watson}, {Freeman}, {Munari}, {Campbell}, {Williams}, {Seabroke}, {Wyse},
+  {Parker}, {Bienaym{\'e}}, {Roeser}, {Gibson}, {Gilmore}, {Grebel}, {Helmi},
+  {Navarro}, {Burton}, {Cass}, {Dawe}, {Fiegert}, {Hartley}, {Russell},
+  {Saunders}, {Enke}, {Bailin}, {Binney}, {Bland-Hawthorn}, {Boeche}, {Dehnen},
+  {Eisenstein}, {Evans}, {Fiorucci}, {Fulbright}, {Gerhard}, {Jauregi}, {Kelz},
+  {Mijovi{\'c}}, {Minchev}, {Parmentier}, {Pe{\~n}arrubia}, {Quillen}, {Read},
+  {Ruchti}, {Scholz}, {Siviero}, {Smith}, {Sordo}, {Veltz}, {Vidrih}, {von
+  Berlepsch}, {Boyle}, \& {Schilbach}}]{Steinmetz2006}
+{Steinmetz}, M., {Zwitter}, T., {Siebert}, A., {Watson}, F.~G., {Freeman},
+  K.~C., {Munari}, U., {Campbell}, R., {Williams}, M., {Seabroke}, G.~M.,
+  {Wyse}, R.~F.~G., {Parker}, Q.~A., {Bienaym{\'e}}, O., {Roeser}, S.,
+  {Gibson}, B.~K., {Gilmore}, G., {Grebel}, E.~K., {Helmi}, A., {Navarro},
+  J.~F., {Burton}, D., {Cass}, C.~J.~P., {Dawe}, J.~A., {Fiegert}, K.,
+  {Hartley}, M., {Russell}, K.~S., {Saunders}, W., {Enke}, H., {Bailin}, J.,
+  {Binney}, J., {Bland-Hawthorn}, J., {Boeche}, C., {Dehnen}, W., {Eisenstein},
+  D.~J., {Evans}, N.~W., {Fiorucci}, M., {Fulbright}, J.~P., {Gerhard}, O.,
+  {Jauregi}, U., {Kelz}, A., {Mijovi{\'c}}, L., {Minchev}, I., {Parmentier},
+  G., {Pe{\~n}arrubia}, J., {Quillen}, A.~C., {Read}, M.~A., {Ruchti}, G.,
+  {Scholz}, R.-D., {Siviero}, A., {Smith}, M.~C., {Sordo}, R., {Veltz}, L.,
+  {Vidrih}, S., {von Berlepsch}, R., {Boyle}, B.~J., \& {Schilbach}, E. 2006,
+  \aj, 132, 1645
+
+\bibitem[{{Zasowski} {et~al.}(2013){Zasowski}, {Johnson}, {Frinchaboy},
+  {Majewski}, {Nidever}, {Rocha Pinto}, {Girardi}, {Andrews}, {Chojnowski},
+  {Cudworth}, {Jackson}, {Munn}, {Skrutskie}, {Beaton}, {Blake}, {Covey},
+  {Deshpande}, {Epstein}, {Fabbian}, {Fleming}, {Garcia Hernandez}, {Herrero},
+  {Mahadevan}, {M{\'e}sz{\'a}ros}, {Schultheis}, {Sellgren}, {Terrien}, {van
+  Saders}, {Allende Prieto}, {Bizyaev}, {Burton}, {Cunha}, {da Costa},
+  {Hasselquist}, {Hearty}, {Holtzman}, {Garc{\'{\i}}a P{\'e}rez}, {Maia},
+  {O'Connell}, {O'Donnell}, {Pinsonneault}, {Santiago}, {Schiavon}, {Shetrone},
+  {Smith}, \& {Wilson}}]{Zaso2013}
+{Zasowski}, G., {Johnson}, J.~A., {Frinchaboy}, P.~M., {Majewski}, S.~R.,
+  {Nidever}, D.~L., {Rocha Pinto}, H.~J., {Girardi}, L., {Andrews}, B.,
+  {Chojnowski}, S.~D., {Cudworth}, K.~M., {Jackson}, K., {Munn}, J.,
+  {Skrutskie}, M.~F., {Beaton}, R.~L., {Blake}, C.~H., {Covey}, K.,
+  {Deshpande}, R., {Epstein}, C., {Fabbian}, D., {Fleming}, S.~W., {Garcia
+  Hernandez}, D.~A., {Herrero}, A., {Mahadevan}, S., {M{\'e}sz{\'a}ros}, S.,
+  {Schultheis}, M., {Sellgren}, K., {Terrien}, R., {van Saders}, J., {Allende
+  Prieto}, C., {Bizyaev}, D., {Burton}, A., {Cunha}, K., {da Costa}, L.~N.,
+  {Hasselquist}, S., {Hearty}, F., {Holtzman}, J., {Garc{\'{\i}}a P{\'e}rez},
+  A.~E., {Maia}, M.~A.~G., {O'Connell}, R.~W., {O'Donnell}, C., {Pinsonneault},
+  M., {Santiago}, B.~X., {Schiavon}, R.~P., {Shetrone}, M., {Smith}, V., \&
+  {Wilson}, J.~C. 2013, \aj, 146, 81
+
+\end{thebibliography}
+
+%\bibliography{tc3.bib}
 
 
 \end{document}
