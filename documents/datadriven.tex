@@ -260,7 +260,7 @@ A spectral survey may also contain other sub-sets of objects with labels of part
 %makeonisochrone_training_4panel_revb.py
 \begin{figure}[h!]
 \centering
-    \includegraphics[scale=0.33]{./plots/training_aspcap.pdf}
+    \includegraphics[scale=0.33]{./plots/training_aspcap2.pdf}
 \caption{\aspcap-corrected DR10 labels  for the training step in \teff-\logg\ plane for 543 stars in the 19 clusters for which parameters are provided by \apogee\ \citep{Meszaros2013}. The age and \feh\ of the isochrones (in parentheses) is shown in each sub-panel. All labels adopted from the \aspcap\ corrected values of DR10 except for the Pleiades. }
 \label{fig:trainingaspcap}
 \end{figure}
@@ -901,7 +901,7 @@ space comprehensively, especially if one considers high-dimensional label spaces
 published 16 labels per star!). Third, any choice for the dimensionality of the label space, 3D in our sample application, will be incomplete in an astrophysical sense. Clearly, stars with identical \teff, \logg, \feh\ may have different spectra, e.g.
 because they differ in [$\alpha$/Fe] or $v_{rot}$.
 
-The general approach to the first but also the third issue is to expand the scope of the model. The model currently only generates spectra by providing a \textit{pdf}
+The general approach to the first and third issues is to expand the scope of the model. The model currently only generates spectra by providing a \textit{pdf}
 over spectral pixel intensities given a set of labels.
 Symbolically we could write that \tc\ in its current implementation
 learns or provides a conditional \textit{pdf}
