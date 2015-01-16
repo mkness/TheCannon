@@ -594,7 +594,7 @@ If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \
 % made with takeonestarout_all_stars_diag_6panel.py in code/
 \begin{figure}[h!]
 \centering
-    \includegraphics[scale=0.45]{./plots/takeout_histc.pdf}
+    \includegraphics[scale=0.45]{./plots/takeout_histc.png}
 \caption{The take-one-star-out cross-validation of the 543 stars in the training dataset using the quadratic model in Equation~(\ref{eq:quadinthreelabels}) and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
 \label{fig:takeonestarout}
 \end{figure}
@@ -644,7 +644,7 @@ consistent continuum-normalization for all spectra, both of the reference and of
  %made with run -i makeplot_scatter_test18_step_revc.py
 \begin{figure}[h!]
 \centering
-    \includegraphics[width=\hsize]{./plots/R1_continuum5.pdf}
+    \includegraphics[width=\hsize]{./plots/R1_continuum5.png}
   \caption{The first-order coefficients and scatter across the sample regions of the spectra from \figurename~\ref{fig:norm}, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \log, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see \sectionname~\ref{sec:ApogeeContinuum}).}
 \label{fig:coeffs}
 \end{figure}
@@ -710,12 +710,12 @@ In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ 
 %makeplot_fits_v19_bw.py
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.23]{./plots/4431_v19.pdf}
-    \includegraphics[scale=0.23]{./plots/4383_v19.pdf} \\
-      \includegraphics[scale=0.23]{./plots/4399_v19.pdf}
-        \includegraphics[scale=0.23]{./plots/4309_v19.pdf} \\
-              \includegraphics[scale=0.23]{./plots/4311_v19.pdf}
-        \includegraphics[scale=0.23]{./plots/4255_v19.pdf} 
+  \includegraphics[scale=0.23]{./plots/4431_v19.png}
+    \includegraphics[scale=0.23]{./plots/4383_v19.png} \\
+      \includegraphics[scale=0.23]{./plots/4399_v19.png}
+        \includegraphics[scale=0.23]{./plots/4309_v19.png} \\
+              \includegraphics[scale=0.23]{./plots/4311_v19.png}
+        \includegraphics[scale=0.23]{./plots/4255_v19.png} 
 \caption{\small{\aspcap\ DR10 versus \tc\ for six different fields including in the disk, bulge and halo. The number of stars is, for each subfigure is 211 (4431), 207 (4384), 217 (4399), 210 (4309), 198 (4311) 319 (4255) }}
 \label{fig:cal}
 \end{figure}
@@ -723,7 +723,7 @@ In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ 
 %run -i makeplot_fits_v19_3by3c.py with plotfits_v19('listin.txt')
 \begin{figure}[!h]
 \centering
-        \includegraphics[scale=0.35]{./plots/cplot2.pdf} 
+        \includegraphics[scale=0.35]{./plots/cplot2.png} 
 \caption{Difference between the labels (\teff, \logg, and \feh) derived through \tc\ in the test step and their \aspcap\ DR10 values for all the 1400 stars shown in \figurename~\ref{fig:cal}. The error bars are dominated by those quoted by \aspcap. There are systematic offsets at the coolest temperatures.}
 \label{fig:cplot}
 \end{figure}
@@ -759,9 +759,9 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 % made with makeonisochrone_v18_bw.py
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.25]{./plots/iso1_2.pdf}
+  \includegraphics[scale=0.25]{./plots/iso1_2.png}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/iso1a_2.pdf}
+    \includegraphics[scale=0.25]{./plots/iso1a_2.png}
 \caption{Labels for the $\sim$ 35,000 stars from DR10 derived by \tc\ based on \aspcap-corrected labels for the set of reference objects. The set of panels on the left shows \teff-\logg\ in four metallicity bins. There are $\sim$ 19,000, 13,000, 1600, and 1000 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.  The panel on the right shows all stars coloured in \feh\ on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. }
 \label{fig:iso}
 \end{figure}
@@ -769,9 +769,9 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 
 \begin{figure}[!h]
 \centering
- \includegraphics[scale=0.25]{./plots/iso2_2.pdf}
+ \includegraphics[scale=0.25]{./plots/iso2_2.png}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/iso2a_2.pdf}
+    \includegraphics[scale=0.25]{./plots/iso2a_2.png}
 \caption{Same as \figurename~\ref{fig:iso} but based on the ``isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (Equation \ref{eq:specmodel}) that forces resulting labels to lie in physically plausible location in label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects.}
 \label{fig:iso2}
 \end{figure}
@@ -783,7 +783,7 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 %run -i makeplot_scatter_test18_coeffs_dwarfs_RevB.py
 \begin{figure}[!h]
 \centering
-\includegraphics[width=\hsize]{./plots/2dwarfs.pdf}
+\includegraphics[width=\hsize]{./plots/2dwarfs.png}
 \caption{Examples of hot rotating dwarfs in the \apogee\ DR10 data across regions A and B, comparable to \figurename~\ref{fig:coeffs}. These types of stars are \textit{not} included in our set of reference objects. Therefore, the label transfer by \tc\ leads to grossly unphysical label estimates.}
 \label{fig:dwarfs}
 \end{figure}
@@ -808,7 +808,7 @@ These \figurenames\ illustrate that our approach to continuum normalization work
  
 %run -i makecontin_data1_revc.py
  \begin{figure}[!h]
-  \includegraphics[width=\hsize]{./plots/SNR_continuum6.pdf}
+  \includegraphics[width=\hsize]{./plots/SNR_continuum6.png}
   \caption{Comparison of the continuum-normalization of the same star at high and modest SNR. The \apogee\ \apstar\ combined visit spectra is shown in the top panel (SNR = 120) and the \apstar\ spectra for the 4th visit (SNR = 25) is shown in the second panel. The bottom panel is the ratio of the continuum-normalized spectra of the high and medium SNR spectra and the blue dashed line is a running median of this ratio over 20 $\AA$, showing a small bias. The histogram of the ratio is given in at the right of the bottom panel.}
 \label{fig:lowsnr}
 \end{figure}
@@ -816,10 +816,10 @@ These \figurenames\ illustrate that our approach to continuum normalization work
 %makeplot_fits_SNRtest_bw_6panel.py
 \begin{figure}[!h]
 \centering
-\includegraphics[scale=0.25]{./plots/SNR100to200.pdf}
-\includegraphics[scale=0.25]{./plots/SNR50to100.pdf}\\
-\includegraphics[scale=0.25]{./plots/SNR30to50.pdf}
-\includegraphics[scale=0.25]{./plots/SNR20to30.pdf}
+\includegraphics[scale=0.25]{./plots/SNR100to200.png}
+\includegraphics[scale=0.25]{./plots/SNR50to100.png}\\
+\includegraphics[scale=0.25]{./plots/SNR30to50.png}
+\includegraphics[scale=0.25]{./plots/SNR20to30.png}
     \caption{Illustration of \tc's ability to estimate labels for spectra of modest SNR. Shown is the comparison of \tc\ labels derived for some single visit spectra, compared to the \aspcap\ label values derived from the co-added high SNR spectra. The single vista spectra are grouped in four different regimes of SNR. There are 60 stars in the 300 $<$  SNR $<$ 30 bin, 1200 stars in the 30 $<$ SNR $<$ 50 bin, 1100 stars in the 50 $<$ SNR $<$ 100 bin and 670 stars in the 100 $<$  SNR $<$ 200 bin. Note that the rms difference between those two label estimates increases more slowly than expected from the SNR of the single visit spectra: label transfer with \tc\  therefore enables label estimates at modest SNR. Each SNR regime shows the corresponding histograms of \tc\ - \aspcap\ for each label, at right.}
 \label{fig:SNR}
 \end{figure}
