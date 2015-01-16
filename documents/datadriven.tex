@@ -155,8 +155,7 @@ transferring the known labels in the reference objects to the survey objects.
 To make such an approach straightforward, we must assume that the reference objects and the survey objects were observed with an identical instrumental set-up, a condition well-satisfied with the large surveys listed above. 
 We take the generative model for the continuum-normalized flux at each of $N_\pix$ pixels to be a polynomial function of all the labels, and hence the model is defined by its $N_\pix$ sets of polynomial coefficients. In practice, there may be different circumstances that make stars suitable reference objects. 
 They may be members of star clusters: there, external data and the fact that clusters are in good approximation single stellar populations (which have to fall onto an isochrone) lend credibility to their stellar labels. 
-Alternatively, reference objects could be stars for which labels have been derived separately from spectra of particularly high SNR, or at other ``easier'' or more extensive wavelength regimes (for example, in the optical as opposed to the infrared). 
-Finally, they may be subsets of stars for which other approaches to get stellar parameters (for example, astroseismology) provide accurate stellar parameters.
+Alternatively, reference objects could be stars for which labels have been derived separately from spectra of particularly high SNR, or at other ``easier'' or more extensive wavelength regimes (for example, in the optical as opposed to the infrared).  Finally, they may be subsets of stars for which other approaches to get stellar parameters (for example, astroseismology) provide accurate stellar labels.
 
 With this two-step procedure of training on spectra of reference objects and then transferring the label information to the survey objects, \tc\ falls into the class of \emph{supervised methods} in machine learning. 
 However, what we implement is very different in a crucial way from standard supervised methods for regression, such as support vector machines, random forests, and deep learning.
@@ -166,7 +165,7 @@ The important difference, however, is that \tc\ is a \emph{generative model} of 
 that is, it constructs, as a function of labels, a probability density function (pdf) for the observed
 flux as a function of wavelength. 
 This makes \tc\ a bespoke method, not cleanly falling into any established machine-learning methodology.
-However, it gives us the enormous advantage that we can account for the uncertainties in the spectral data,
+However, it gives us the enormous advantage in that we can account for the uncertainties in the spectral data,
 including all the issues of heteroscedasticity and missing data.
 It also makes the method agnostic about SNR.
 This point is technical, but important: in many real cases the training data will be much higher in SNR than the test data
@@ -174,7 +173,7 @@ This point is technical, but important: in many real cases the training data wil
 A method that does not properly account for the observational uncertainties will not transfer labels from high SNR reference objects to lower SNR survey objects with high fidelity.
 In what follows, we show that \tc\ behaves very well as the SNR (or observing time) is decreased.
 
-In this paper we use \apogee\ as the sole example. 
+In this paper we use the \apogee\ survey as the sole example. 
 However, \tc\ can be applied to any stellar survey.  
 
 Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (for example, \alphafe, \xfe) and also more comprehensive models (for example, Gaussian processes). 
@@ -185,12 +184,12 @@ for derivation of stellar parameters \citep{RB2006} in that it uses the full spe
 (and not just a line list) for label determination.
 However, \matisse\ employs a large grid of synthetic spectra
 and is thus limited in all the ways that physics-based methods are limited.
-That said, a big part of why \tc\ is successful at lower SNR
+A big part of why \tc\ is successful at lower SNR
 is that it uses all of the pixels in the data.
 
 We have adopted a bottom-up approach for \tc, starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  
 In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (543 stars) and survey objects ($\sim$ 56,000 stars from DR10). 
-We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and so we extended our model to quadratic form, which satisfactorily describes the label-space of the training data.
+We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and extended our model to quadratic form, which satisfactorily describes the label-space of the training data.
 The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
 
 \section{Data}\label{sec:Data}
@@ -198,9 +197,9 @@ The success of this model is demonstrated by running \tc\ through the DR10 data 
 all spectra---for reference and survey objects---to be continuum-normalized in a consistent way,
 and sampled on a consistent rest-frame wavelength grid, with the same line-spread function.
 It also assumes that the flux variance, from photon noise and other sources, is known at each spectral pixel of each spectrum.
-In principle, \tc\ , as described below, is applicable to any large, homogeneous spectroscopic data set
+In principle, \tc, as described below, is applicable to any large, homogeneous spectroscopic data set
 meeting these criteria.
-Here, we use the \apogee\ DR10 data \citep{Ahn2014} to illustrate and showcase \tc.
+Here, we use the \apogee\ DR10 data (Majewski et al., 2015 (in prep)) to illustrate and showcase \tc.
 Because all of the exposition of the method underlying \tc\ involves specificities of the data,
 we spell out the characteristics of the \apogee\ data and our adjustments to it in \sectionname~\ref{sec:Apogee_as_worked_Example}. However, we stress that the approach is more widely applicable. 
 
@@ -235,15 +234,14 @@ The performance of a data-driven model like \tc\ will depend strongly on the siz
 
 In practice, also for the \apogee\ data, one (but not only) good option
 for a set of reference objects can be built from 
-members of well-studied open and globular clusters that have been observed in the context of the survey \citep{Zaso2013}.
+members of well-studied open and globular clusters that have been observed in the context of the survey \citep{Zaso2013, Meszaros2013}.
 There is a variety of reasons why the stellar labels for cluster stars may be particularly accurate and robust.
 For one, they could have their labels derived from independent, high resolution spectral analysis of these
 stars, e.g. from observations in a well understood portion of the optical wavelength region. The
 labels are of course a property of the
 star, and hence do not have to arise from the survey data at hand. They may have been derived from different data.
 
-For the case of \apogee, we will use as reference objects 543 members of 19 globular and open clusters data observed for the
-calibration of their abundance pipeline \citep{Meszaros2013}. Some objects were removed from the full list available in \citep{Meszaros2013} as their cluster memberships were incorrect. In their stellar labels they span the range of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
+For the case of \apogee, we will use as reference objects 543 members of 19 globular and open clusters \citep{Meszaros2013}. Some objects were removed from the full list available as their cluster memberships were incorrect. In their stellar labels they span the range of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
 Exactly which stellar labels we adopt for these reference objects is critical to the subsequent output, and hence 
 we discuss it in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
 
@@ -306,17 +304,17 @@ For a clearer view of individual absorption line features, we use narrower regio
 
 Which values to adopt for the labels of the reference objects used in \tc 's training step is a critical issue
 in any survey. We discuss two options here for \apogee . 
-First, we adopt the DR10 \textit{``\aspcap-corrected''} stellar parameters \citep{Meszaros2013} that are available for each of the reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale (\figurename~\ref{fig:trainingaspcap}). ``\aspcap-corrected'' labels were not available for the cluster comprised of main sequence stars, the Pleaides cluster and for this cluster we made our own corrections in \teff\ and \logg\ and assumed a single literature value for the \feh\ label, as described below. 
+First, we adopt the DR10 \textit{``\aspcap-corrected''} stellar parameters \citep{Meszaros2013} that are available for each of the reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale (\figurename~\ref{fig:trainingaspcap}). ``\aspcap-corrected'' labels were not available for the cluster comprised of main sequence stars, the Pleiades cluster and for this cluster we made our own corrections in \teff\ and \logg\ and assumed a single literature value for the \feh\ label, as described below. 
 The reference set of stars we use is the very same stars used by \apogee\ to post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}.
 Adopting the \aspcap-corrected labels provided and documented by \apogee\ has the important advantage 
 that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer from only 543 stars.
 
-The corrections to the labels made by \apogee\ based on the cluster data are applied to the immediate output of the \aspcap\ pipeline that arose from comparisons to a library of stellar models.
-Temperature corrections are determined by comparing the infrared flux temperatures of the stars \citep{gonzalez2009}, \logg\ corrections are from the offset between \aspcap\ results and Kepler results for common stars and \feh\ corrections are from the difference between the \aspcap\ and  the literature value of each cluster.  
+The corrections to the labels made by \apogee\ described in \citet{Meszaros2013} are based on the cluster data and applied to the immediate output of the \aspcap\ pipeline that arose from comparisons to a library of stellar models.
+Temperature corrections are determined by comparing the infrared flux temperatures of the stars \citep{gonzalez2009}, \logg\ corrections are from the offset between \aspcap\ results and Kepler astroseismic results for stars in common and \feh\ corrections are from the difference between the \aspcap\ and  the literature value of each cluster.  
 The \apogee\ corrections determined in \citet{Meszaros2013} are valid only for stars with \logg\ $<$ 3.5 and are not implemented for the dwarfs.  We adopt the \aspcap-corrected \mh\ values for these clusters and these are corrected to the \feh\ of the clusters and so we adopt this label as an \feh\ (that is, this label from \apogee\ therefore, does not explicitly use \feh\ lines, but is derived from an \feh\ correction). 
 The analysis in \citet{Meszaros2013} is restricted not only to giants but also stars with SNR $>$ 70, determined to be the minimum SNR for reliable stellar parameters by \apogee.
 
-These corrections implemented by \apogee\ in \teff, \logg\ and  \feh\ place the giants in the cluster stars on or near the iscohrones (see Figures 7 and 8 in Meszaros et al., (2013)).  
+These corrections implemented by \apogee\ in \teff, \logg\ and  \feh\ place the giants in the cluster stars on or near the iscohrones (see Figures 7 and 8 in Meszaros et al., 2013).  
 As there are no \aspcap\ corrections implemented for the 65 main sequence stars among the reference objects that we use, 
 we instead determine temperatures for these dwarfs, which are all in the Pleiades, using the same correction method 
 as in \citet{Meszaros2013}. 
@@ -324,8 +322,8 @@ We determine the infrared flux temperature for the stars from \citet{gonzalez200
 the \aspcap\ output based on the offset in the temperature scales. For the dwarf stars in the Pleiades, we find the following relation:
  $T_{\mbox{corrected}}$= 0.855*T$_{\mbox{\textit{\aspcap}}}$ + 1206.7.
 
-We do not attempt an individual metallicity correction for each dwarf star in the Pleaides but rather set all \feh\ of the dwarf spectra to \feh\ = 0.03 \citep{barrado2001}.
-Tests on the input labels to \tc\ demonstrate that there is only a small degradation of the results caused by adopting a single \feh\ for every cluster star for the literature value of the cluster, instead of individual \feh\ values for the stars (that is, from the \aspcap-corrected values). 
+We do not attempt an individual metallicity correction for each dwarf star in the Pleiades but rather set all \feh\ of the dwarf spectra to \feh\ = 0.03 \citep{barrado2001}.
+Tests on the input labels to \tc\ demonstrate that there is only a small degradation of the results caused by adopting a single \feh\ for every cluster star for the literature value of the cluster, instead of individual \aspcap-corrected \feh\ values for the stars.
 To determine the \logg\ for these Pleiades main sequence stars, we shift the stars vertically to their nearest positions on an appropriate age-metallicity Padova isochrone of 150~Myr at $\feh = 0.03$ \citep{girardi2000}. 
 Due to the high differential reddening to the Pleiades, and the subsequent large temperature errors using the IR flux method that result from this, we only selected the 65 from a total of 72 Pleiades dwarfs, eliminating those with high extinction of SFD (corrected) E(J-K) $>$ 0.30 \citep{Schlafly2011}.
 
@@ -360,7 +358,7 @@ We then presume that for any star, $n$ at any pixel, $\lambda$  the flux $f_{n\l
 ($\teff,\logg,\feh,\cdots$).
 The observations $f_{n\lambda}$ will differ from such a model by the observational noise (form all relevant sources), $\noise$. But even for perfect measurements we presume that there will be
 deviations from the above approximate model for the true flux, characterized by a scatter $\scatter$,
-which is a property of any particular pixel; we will subsume $\scatter$ as a contributor to the noise.
+which is a property of any particular pixel; we will subsume $\scatter$ under the noise.
 
 Generally, we take a spectral model to be characterized by a coefficient vector $\set{\theta}_\lambda$
 that allows to predict the flux at every pixel $f_{n\lambda}$ for a given label vector 
@@ -572,7 +570,7 @@ reference objects, and then apply \tc 's test step to the spectrum of that remai
 we have a first powerful test of how the result of this parameter transfer compares to the (known) labels for the reference objects.
  Here we only consider three labels $(\teff , \logg , \feh)$, and the results are shown in \figurename~\ref{fig:takeonestarout}.
 
-This \figurename\ immediately shows how well \tc\ works, at least in the circumstance at hand.
+This \figurename\ clearly shows how well \tc\ works, at least in the circumstance at hand.
 \tc 's purely mathematical approach of label transfer estimates the stellar labels (at least) as well as the astrophysical \aspcap\ pipeline,
 over the full label range of our the reference data. The \textit{rms} of the difference between the \aspcap\ and \tc\ values for the three labels are
 95~K in $\teff$, 0.24 in in $logg$, 0.08 in $\feh$, with biases $\Delta$ that are 3-7 times smaller.  
@@ -586,7 +584,7 @@ except that they have the same experimental set-up and are likely drawn from a p
 There are a few outliers in \figurename~\ref{fig:takeonestarout}, cluster members of M3 in particular, that are offset in \teff\ and \logg\ space. 
 The Pleiades cluster, which has only spectra for main sequence stars, shows the poorest determination in the \feh\ label. We assigned all its members a single \feh ~as reference labels, unlike the other reference objects, where we used their \aspcap -corrected labels from DR10.
 The \textit{rms} is comparable to the estimated \apogee\ errors. The \logg\ label has the largest relative \textit{rms} in the \aspcap\--\tc\ comparison, larger than the \apogee\ uncertainty, suggesting an internal uncertainty of $<$ 0.1 dex in \logg\ determined by \tc.
-If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \logg 's (see \sectionname~\ref{sec:ApogeeRefLabels}), the \textit{rms} improves by 10\% in \teff\ and \logg.
+If we adopt instead of \aspcap -corrected \logg\ labels the isochrone-corrected \logg 's (see \sectionname~\ref{sec:ApogeeRefLabels}), the \textit{rms} improves by 10\% in \teff\ and \logg.
 
 % made with takeonestarout_all_stars_diag_6panel.py in code/
 \begin{figure}[h!]
@@ -597,7 +595,7 @@ If we adopt instead of \aspcap -corrected \logg labels the isochrone-corrected \
 \end{figure}
 
 
-The outlying stars in \figurename~\ref{fig:takeonestarout} may be due to an anomalous scale of the input labels of these stars compared to the other training data, or it may be a consequence of the model being too inflexible to properly model how flux changes with labels across the parameter space of the training dataset. 
+The outlying stars in \figurename~\ref{fig:takeonestarout} may be due to an anomalous scale of the input labels of these stars compared to the other training data, or it may be a consequence of the model being too inflexible to properly describe how flux changes with labels across the parameter space of the training dataset. 
 The temperature of the dwarfs is offset low at increasing temperature, compared to the input labels, so the model may be limited in describing the difference between dwarf and giant spectra. 
 There is a flattening at the low metallicity end of the model in \feh\ in the output labels at \feh\ $<$ -2.2, however this value of \feh\ = --2.2 also corresponds to the literature value of this cluster, M5 \citep{Meszaros2013}. 
 The lower metallicity of the \aspcap\ label may represent internal scatter in the \aspcap\ results.
@@ -610,10 +608,10 @@ This indicates that our training set is sufficiently small that each cluster mat
 One particular case in the \apogee\ context is the Pleiades cluster: it is the \textit{only} cluster for which dwarf stars have been observed and hence we can draw reference labels for main sequence stars. 
  
 We now turn to illustrating where the information that led to the accurate label transfer (\figurename~\ref{fig:takeonestarout}) came from in the spectra.
-\figurename~\ref{fig:coeffs} shows -- across the narrow regions (A) and (B) of the spectra, marked in \figurename~\ref{fig:norm} -- the first coefficient vectors $\theta_{0,1,2,3}$ of the spectral model (those linear in the three labels), which were fit in the training step for the quadratic-in-labels model in Equation~(\ref{eq:quadinlabels}). 
+\figurename~\ref{fig:coeffs} shows -- across the narrow regions (A) and (B) of the spectra, marked in \figurename~\ref{fig:norm} -- the first coefficient vectors $\theta_{0,1,2,3}$ of the spectral model (those linear in the three labels), which were fit for in the training step for the quadratic-in-labels model in Equation~(\ref{eq:quadinlabels}). 
 
 
-The top panel shows the zeroth order-coefficient vector $\theta_0$, or the baseline spectrum, of the model. 
+The top panel of \figurename~\ref{fig:coeffs} shows the zeroth order-coefficient vector $\theta_0$, or the baseline spectrum, of the model. 
 The mid panel shows the coefficients that are simply linear in \teff, \logg\ and \feh.
 In the top panel of \figurename~\ref{fig:coeffs}, the red, blue and green shaded wavelength regions with the 5\% 
 highest coefficient values $|\theta_{1,2,3}|$ in the \feh, \teff\ and \logg\ labels respectively. 
