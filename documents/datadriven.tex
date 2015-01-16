@@ -116,12 +116,12 @@ techniques: spectroscopic
 The vast spectroscopic stellar surveys of recent years (e.g., \segue\ \citep{Beers2006}, \rave\ \citep{Steinmetz2006}, \lamost\ \citep{Newberg2012}, \apogee\ \citep{Majewski2012}, \gaiaeso\ \citep{Gilmore2012}, \galah\ \citep{Freeman2012}) hold tremendous astrophysical promise, but at the same time present formidable data analysis and modeling challenges. 
 One of these challenges lies in consistently and accurately determining what we call ``stellar labels'', that is, stellar parameters and element abundances, from survey spectra. 
 These labels are usually determined from comparison of the data with synthetic model spectra, with approaches often 
-customized specifically to the particular wavelength region of a given survey \citep[e.g.,][]{ Lee2006, Boeche2011, Liu2014, Meszaros2013, Sm2014}. 
+customized specifically to the particular wavelength region of a given survey \citep[e.g.,][]{ Lee2006, Boeche2011, Liu2014, Meszaros2013, SM2014}. 
 
 The stellar photosphere models that are relied upon for stellar label determination have physical ingredients that are incomplete and simplified. 
 For computational feasibility, almost always 1D stellar photosphere models are adopted for large surveys, often assumed to be in local thermal equilibrium; these approximations are both severe. 
 In many cases, the model spectra do not account for all relevant molecular opacities, for convection, stellar winds, and the chromosphere. 
-As a consequence, it happens that different research groups obtain discrepant results for same stars, resulting from analysis across different wavelength regions and different input assumptions and methods used \citep[e.g.,][]{Hinkel2014, Jofre2014, AP1999}. Even when the input assumptions are held fixed, differences in the employed analysis methods lead to substantial differences in assigned labels \citep[e.g.][]{Sm2014}.
+As a consequence, it happens that different research groups obtain discrepant results for same stars, resulting from analysis across different wavelength regions and different input assumptions and methods used \citep[e.g.,][]{Hinkel2014, Jofre2014, AP1999}. Even when the input assumptions are held fixed, differences in the employed analysis methods lead to substantial differences in assigned labels \citep[e.g.][]{SM2014}.
 
 Stellar labels are commonly determined by fitting a grid of model spectra (with known labels) to the data using some minimisation technique, often restricted to a masked portion of the spectrum that is focused on the absorption line (regions) deemed to be most reliable or relevant. 
 Stated minimal signal-to-noise (hereafter SNR) requirement to obtain robust labels in this way are $SNR\sim 100$ per resolution element, especially if the labels are to include individual element abundances. 
@@ -208,7 +208,7 @@ we spell out the characteristics of the \apogee\ data and our adjustments to it 
 \subsection{Specifics of the \apogee\ Data Set}
 \label{sec:Apogee_as_worked_Example}
 
-The data set used for this functional demonstration of The Cannon is that of the \apogee\ survey (Majewski et al. 2012, 2015 in prep).  \apogee, part of the SDSS-III\footnote{\url{www.sdss.org}} (Eisenstein et al. 2011), is a high resolution (R $\sim$ 22,500), high signal to noise (SNR $\sim$ 100), H-band (15200-16900 \AA\footnote{Due to gaps between the instrument's three detectors, the spectra are divided into three pieces: $\sim$151500-15800~\AA, 15890-16430~\AA, and 16490-16900~\AA.}) spectroscopic survey of primarily red giant stars spanning the bulge, disk, and halo of the Milky Way \citep{GZ2013}.  \apogee 's \aspcap\ pipeline provides the stellar labels for these stars, which include stellar parameters and multiple elemental abundances, in addition to numerous flags that warn of problems with the spectra or problems with the label determination for the spectra (or both).  This pipeline is based on $\chi^2$ fitting of the data to 1D LTE models for seven labels (\teff, \logg, \feh, [$\alpha$/Fe], [C/M], [N/M], and micro-turbulence; Garia Perez et al., 2015, in prep). 
+The data set used for this functional demonstration of The Cannon is that of the \apogee\ survey (Majewski et al. 2012, 2015 in prep).  \apogee, part of the SDSS-III\footnote{\url{www.sdss.org}} (Eisenstein et al. 2011), is a high resolution (R $\sim$ 22,500), high signal to noise (SNR $\sim$ 100), H-band (15200-16900 \AA\footnote{Due to gaps between the instrument's three detectors, the spectra are divided into three pieces: $\sim$151500-15800~\AA, 15890-16430~\AA, and 16490-16900~\AA.}) spectroscopic survey of primarily red giant stars spanning the bulge, disk, and halo of the Milky Way \citep{Zaso2013}.  \apogee 's \aspcap\ pipeline provides the stellar labels for these stars, which include stellar parameters and multiple elemental abundances, in addition to numerous flags that warn of problems with the spectra or problems with the label determination for the spectra (or both).  This pipeline is based on $\chi^2$ fitting of the data to 1D LTE models for seven labels (\teff, \logg, \feh, [$\alpha$/Fe], [C/M], [N/M], and micro-turbulence; Garia Perez et al., 2015, in prep). 
 
 We use here spectra from the set of 56,000 stars that were released as part of the SDSS Data Release 10 (DR10) \citep{Ahn2014}), focusing on data from the \apstar\ and  \aspcapstar\ FITS files.  The \apstar\ files include single-visit and combined spectra for a given star that are fully reduced, resampled, and shifted to the stellar rest frame.  The \aspcapstar\ files contain the combined spectrum for a given star that has also been pseudo-continuum-normalized by the ASPCAP pipeline, along with the best-fitting synthetic spectrum and stellar labels.  The \apstar\ data, which are not pseudo continuum-normalized by APOGEE, enables us to evaluate the performance of The Cannon at lower SNR, by testing it on the individual visit spectra provided in these files.
 
@@ -1034,7 +1034,7 @@ SDSS-III is managed by the Astrophysical Research Consortium for the Participati
  Ohio State University, Pennsylvania State University, University of Portsmouth, Princeton University, the Spanish Participation Group, 
  University of Tokyo, University of Utah, Vanderbilt University, University of Virginia, University of Washington, and Yale University
 
-\begin{thebibliography}{23}
+\begin{thebibliography}{24}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{{Ahn} {et~al.}(2014){Ahn}, {Alexandroff}, {Allende Prieto}, {Anders},
@@ -1194,8 +1194,15 @@ SDSS-III is managed by the Astrophysical Research Consortium for the Participati
 \bibitem[{{Schlafly} \& {Finkbeiner}(2011)}]{Schlafly2011}
 {Schlafly}, E.~F. \& {Finkbeiner}, D.~P. 2011, \apj, 737, 103
 
-\bibitem[{{Sch{\"o}nrich} \& {Bergemann}(2014)}]{Sm2014}
+\bibitem[{{Sch{\"o}nrich} \& {Bergemann}(2014)}]{SB2014}
 {Sch{\"o}nrich}, R. \& {Bergemann}, M. 2014, \mnras, 443, 698
+
+\bibitem[{{Smiljanic} {et~al.}(2014){Smiljanic}, {Korn}, {Bergemann}, {Frasca},
+  {Magrini}, {Masseron}, {Pancino}, {Ruchti}, \& {San Roman}}]{SM2014}
+{Smiljanic}, R., {Korn}, A.~J., {Bergemann}, M., {Frasca}, A., {Magrini}, L.,
+  {Masseron}, T., {Pancino}, E., {Ruchti}, G., \& {San Roman}, e.~a. 2014,
+  \aap, 570, A122
+
 
 \bibitem[{{Steinmetz} {et~al.}(2006){Steinmetz}, {Zwitter}, {Siebert},
   {Watson}, {Freeman}, {Munari}, {Campbell}, {Williams}, {Seabroke}, {Wyse},
