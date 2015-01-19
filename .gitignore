@@ -13,3 +13,7 @@ vc.tex
 code/deprecated/*
 *.eps
 *.png
+*.nav
+*.out
+*.snm
+*.toc
