@@ -19,7 +19,8 @@
 
 \begin{frame}
   \titlepage
-  \texttt{\giturl~\githash~(\gitdate)}
+  \texttt{\giturl~\githash~(\gitdate)} \\
+  in collaboration with \emph{Melissa Ness} (MPIA) and Hans-Walter Rix
 \end{frame}
 
 \begin{frame}
@@ -45,43 +46,73 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Machine learning}
+  \frametitle{machine learning}
   \begin{itemize}
   \item the most extreme of data-driven models
   \item ``the data \emph{is} the model''
+    \begin{itemize}
+    \item none of your knowledge is relevant
+    \end{itemize}
   \item learn (fit) an exceedingly flexible model
     \begin{itemize}
     \item explain or cluster the data
     \item transformation from data to ``labels''
     \end{itemize}
   \item concept of non-parametrics
+  \item concept of train, validate, and test
+  \item many packages and implementations to choose from
+    \begin{itemize}
+    \item (and outrageous successes)
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{data-driven models}
   \begin{itemize}
-  \item \emph{(my personal usage)}
-  \item use general things you know well
+  \item \textit{(my personal usage)}
+  \item make use of things you \emph{strongly believe}
     \begin{itemize}
     \item noise model \& instrument resolution
     \item causal structure (shared parameters)
-    \item (subtract off best physical model?)
     \end{itemize}
   \item capitalize on huge amounts of data
+  \item exceedingly flexible model
+  \item concept of train, validate, and test
+  \item every situation will be \emph{bespoke}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Why stellar parameters?}
+  \frametitle{when does machine learning help you?}
   \begin{itemize}
-  \item foo
-  \item foo
+  \item train \& test situation
+  \item training data are statistically identical to the test data
     \begin{itemize}
-    \item bar
-    \item bar
+    \item same noise amplitude
+    \item same distance or redshift distribution
+    \item same luminosity distributionn
+    \item \emph{never true!}
     \end{itemize}
-  \item foo
+  \item (training data have accurate and precise labels)
+  \item we \emph{can't use vanilla machine learning!}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why stellar parameters and chemical abundances?}
+  \begin{itemize}
+  \item top priority for many new projects
+    \begin{itemize}
+    \item \gaia
+    \item \project{HERMES} \& \project{GALAH}
+    \item \sdssiii\ \apogee
+    \end{itemize}
+  \item extended distribution functions
+  \item chemical tagging
+    \begin{itemize}
+    \item the dynamics and formation of the Milky Way
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -98,8 +129,73 @@
   \end{itemize}
 \end{frame}
 
+\newcommand{\credits}{{\footnotesize (Ness, Hogg, Rix, \etal)}}
+\newcommand{\teff}{T_{\mathrm{eff}}}
+\newcommand{\logg}{\log g}
+\newcommand{\feh}{[\mathrm{Fe / H}]}
+
 \begin{frame}
-  \frametitle{training set}
+  \frametitle{\tc\ \credits: training set}
+  \begin{itemize}
+  \item 543 stars (too few) from 19 clusters (too few)
+  \item $\teff, \logg, \feh$ labels from \apogee
+    \begin{itemize}
+    \item calling parameters and abundances ``labels''
+    \item slight adjustments to labels to get them onto possible isochrones
+    \end{itemize}
+  \item \emph{terrible} coverage of the main sequence
+    \begin{itemize}
+    \item only the Pleiades
+    \item home-made Pleiades labels (by Ness)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc\ \credits: training set}
+  \includegraphics[height=0.9\textheight]{../documents/plots/training_aspcap2.pdf}
+\end{frame}
+
+\newcommand{\flux}{f}
+\newcommand{\fluxes}{\boldsymbol{\flux}}
+\newcommand{\labels}{\boldsymbol{\ell}}
+\newcommand{\pars}{\boldsymbol{\theta}}
+
+\begin{frame}
+  \frametitle{\tc\ \credits: model}
+  \begin{itemize}
+  \item a \emph{generative model} of the \apogee\ spectra
+    \begin{itemize}
+    \item given label vector $\labels$, predict flux vector $\fluxes$
+    \item probabilistic prediction $p(\fluxes\given\labels,\pars)$
+    \end{itemize}
+  \item use every spectral pixel's uncertainty variance $\sigma^2_{\lambda n}$ responsibly
+  \item details:
+    \begin{itemize}
+    \item spectral expectation is quadratic in the labels
+    \item every wavelength $\lambda$ treated independently
+    \item an intrinsic Gaussian scatter $s^2_\lambda$ at every wavelength $\lambda$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc\ \credits: model}
+  \begin{eqnarray}
+    \ln p(\fluxes_n\given\labels_n,\pars) &=& \sum_\lambda \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda) \\
+    \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda) &=& -\frac{1}{2}\,\frac{[\transpose{\pars_\lambda}\cdot\labels_n]^2}{\sigma^2_{\lambda n} + s^2_\lambda} \\
+    \labels_n &\equiv& \left[1, \teff, \logg, \feh, \teff^2, \teff\,\logg, \cdots, \feh^2\right] \\
+  \end{eqnarray}
+  \begin{itemize}
+  \item \emph{training step}: optimize parameters $\pars$ at fixed labels
+    $\labels$ using training-set data
+  \item \emph{test step}: optimize labels $\labels$ at fixed
+    parameters $\pars$ using test-set (survey) data
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc\ \credits: results}
   \begin{itemize}
   \item foo
   \item foo
@@ -112,33 +208,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{model}
-  \begin{itemize}
-  \item foo
-  \item foo
-    \begin{itemize}
-    \item bar
-    \item bar
-    \end{itemize}
-  \item foo
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{results}
-  \begin{itemize}
-  \item foo
-  \item foo
-    \begin{itemize}
-    \item bar
-    \item bar
-    \end{itemize}
-  \item foo
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{choices and shortcuts}
+  \frametitle{\tc\ \credits: shortcuts and choices}
   \begin{itemize}
   \item foo
   \item foo
