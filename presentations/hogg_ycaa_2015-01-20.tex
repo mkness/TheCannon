@@ -1,14 +1,15 @@
 \documentclass[pdftex]{beamer}
 \input{hogg_presentation} % hogg standard colors
 \input{vc}
-\setlength{\paperheight}{3.5in}
 % 1.77778 is the ratio of 16 to 9
+\setlength{\paperheight}{3.5in}
 \setlength{\paperwidth}{1.77778\paperheight}
 % 1.33333 is the ratio of 4 to 3
-% \setlength{\paperwidth}{1.33333\paperheight}
+%\setlength{\paperheight}{4.0in}
+%\setlength{\paperwidth}{1.33333\paperheight}
 \setlength{\textwidth}{0.85\paperwidth}
 
-\newcommand{\credits}{{\footnotesize (Ness, Hogg, Rix, \etal)}}
+\newcommand{\credits}{{\footnotesize (Ness, Hogg, \etal)}}
 \newcommand{\teff}{T_{\mathrm{eff}}}
 \newcommand{\logg}{\log g}
 \newcommand{\feh}{[\mathrm{Fe / H}]}
@@ -16,7 +17,10 @@
 \title{Data-driven models of stars}
 \author[David W. Hogg (NYU)]{David W. Hogg \\
   \textsl{\small Center for Cosmology and Particle Physics,
-                 New York University}}
+                 New York University} \\
+  \textsl{\small Center for Data Science,
+                 New York University} \\
+  \textsl{\small Max-Planck-Insitut f\"ur Astronomie, Heidelberg}}
 \date{2015 January 20}
 
 \newcommand{\conclusions}{%
@@ -33,10 +37,10 @@
   \item There is hope for a consistent system of stellar parameters and chemical abundances across all future surveys.
     \begin{itemize}
     \item \gaia
-    \item \sdss\ \project{SEGUE} \& \apogee
+    \item \sdssiii\ \project{SEGUE} \& \apogee; \sdssiv\ \project{APOGEE-2}
     \item \project{HERMES} / \project{GALAH}
     \end{itemize}
-  \item \texttt{\giturl~~(\githash~\gitdate)}
+  \item \texttt{\giturl}
   \end{itemize}
 \end{frame}}
 
@@ -44,7 +48,9 @@
 
 \begin{frame}
   \titlepage
-  in collaboration with \emph{Melissa Ness} (MPIA) and Hans-Walter Rix
+  in collaboration with:\\
+  \emph{Melissa~Ness}~(MPIA), Hans-Walter~Rix~(MPIA), \\
+  Anna~Ho~(MPIA), and Gail~Zasowski~(JHU)
 \end{frame}
 
 \conclusions
@@ -77,7 +83,7 @@
     \item $\chi^2 \gg \nu$
     \item ``The $\chi^2$ statistic is a measure of the size of your data!''
     \end{itemize}
-  \item<2-> approximations, computation, \emph{gastrophysics}
+  \item<2-> missing physics, approximation, computation, \emph{gastrophysics}
   \end{itemize}
 \end{frame}
 
@@ -182,18 +188,23 @@
 \begin{frame}
   \frametitle{\sdssiii\ \apogee}
   \begin{itemize}
-  \item foo
-  \item foo
-    \begin{itemize}
-    \item bar
-    \item bar
-    \end{itemize}
-  \item home-built and special continuum normalization (ask me!)
+  \item Galactic archaeology
+  \item \apogee\ DR10: 56,000 stars
+  \item $R=22,500$ spectra in $1.5<\lambda<1.7\,\mu\mathrm{m}$
+  \item precise RVs and stellar parameters
+  \item plan for a dozen abundances for every star
+  \item (our own home-built and special continuum normalization; ask me!)
+  \item \apogee\ DR12 just happened: 156,000 stars now available
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{\tc\ \credits: training set}
+  \frametitle{\sdssiii\ \apogee}
+  \includegraphics[height=\figureheight]{../documents/plots/four_examples3.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: training set}
   \begin{itemize}
   \item 543 stars (too few) from 19 clusters (too few)
   \item $\teff, \logg, \feh$ labels from \apogee
@@ -205,13 +216,15 @@
     \begin{itemize}
     \item only the Pleiades
     \item home-made Pleiades labels (by Ness)
+    \item no $\feh$ spread at high $\logg$.
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{\tc\ \credits: training set}
-  \includegraphics[height=0.9\textheight]{../documents/plots/training_aspcap2.pdf}
+  \frametitle{\tc: training set}
+  \includegraphics<1>[height=\figureheight]{../documents/plots/training_aspcap2.pdf}
+  \includegraphics<2>[height=\figureheight]{../documents/plots/training_mkn2.pdf}
 \end{frame}
 
 \newcommand{\flux}{f}
@@ -220,7 +233,7 @@
 \newcommand{\pars}{\boldsymbol{\theta}}
 
 \begin{frame}
-  \frametitle{\tc\ \credits: model}
+  \frametitle{\tc: model}
   \begin{itemize}
   \item a \emph{generative model} of the \apogee\ spectra
     \begin{itemize}
@@ -233,16 +246,17 @@
     \item spectral expectation is quadratic in the labels
     \item every wavelength $\lambda$ treated independently
     \item an intrinsic Gaussian scatter $s^2_\lambda$ at every wavelength $\lambda$
+    \item 80,000 free parameters!
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{\tc\ \credits: model}
+  \frametitle{\tc: model}
   \begin{eqnarray}
     \ln p(\fluxes_n\given\labels_n,\pars) &=& \sum_{\lambda=1}^L \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda,s^2_\lambda)
     \nonumber \\
-    \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda,s^2_\lambda) &=& -\frac{1}{2}\,\frac{[\transpose{\pars_\lambda}\cdot\labels_n]^2}{\sigma^2_{\lambda n} + s^2_\lambda}
+    \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda,s^2_\lambda) &=& -\frac{1}{2}\,\frac{[f_{\lambda n} - \transpose{\pars_\lambda}\cdot\labels_n]^2}{\sigma^2_{\lambda n} + s^2_\lambda} + \ln (\sigma^2_{\lambda n} + s^2_\lambda)
     \nonumber \\
     \transpose{\labels} &\equiv& \left\{1, \teff, \logg, \feh, \teff^2, \teff\,\logg, \cdots, \feh^2\right\}
     \nonumber \\
@@ -264,25 +278,61 @@
   \end{itemize}
 \end{frame}
 
-% HOGG FIGURE SHOWING SOMETHING
-
 \begin{frame}
-  \frametitle{\tc\ \credits: results}
-  \begin{itemize}
-  \item foo
-  \item foo
-    \begin{itemize}
-    \item bar
-    \item bar
-    \end{itemize}
-  \item foo
-  \end{itemize}
+  \frametitle{\tc: model training}
+  \includegraphics<1>[height=\figureheight]{../documents/plots/R1_continuum5.png}
 \end{frame}
 
-% HOGG MANY FIGURES
+\begin{frame}
+  \frametitle{\tc: model training cross-validation}
+  \includegraphics<1>[height=\figureheight]{../documents/plots/takeout_histc.png}
+\end{frame}
+
+\newcommand{\results}{%
+\begin{frame}
+  \frametitle{\tc: results}
+  \begin{itemize}
+  \item \tc\ is far faster than physical modeling
+    \begin{itemize}
+    \item model trains in seconds (thousands of least-square fits)
+    \item \tc\ labels all 56,000 stars in \apogee\ DR10 in two hours
+    \end{itemize}
+  \item labels appear sensible
+    \begin{itemize}
+    \item \tc\ labels lie on isochrones
+    \item scatter against \apogee\ labels consistent with \apogee precision
+    \end{itemize}
+  \item successfully puts labels on dwarfs
+  \end{itemize}
+\end{frame}}
+
+\results
 
 \begin{frame}
-  \frametitle{\tc\ \credits: shortcuts and choices}
+  \frametitle{\tc: test time}
+  \includegraphics<1>[height=\figureheight]{../documents/plots/4431_v19.png}
+  \includegraphics<2>[height=\figureheight]{../documents/plots/4383_v19.png}
+  \includegraphics<3>[height=\figureheight]{../documents/plots/4399_v19.png}
+  \includegraphics<4>[height=\figureheight]{../documents/plots/4309_v19.png}
+  \includegraphics<5>[height=\figureheight]{../documents/plots/4311_v19.png}
+  \includegraphics<6>[height=\figureheight]{../documents/plots/4255_v19.png} 
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: comparison with \apogee\ labels}
+  \includegraphics[height=\figureheight]{../documents/plots/cplot2.png} 
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: label veracity}
+  \includegraphics<1>[height=\figureheight]{../documents/plots/iso2_2.png}
+  \includegraphics<2>[height=\figureheight]{../documents/plots/iso2a_2.png}
+\end{frame}
+
+\results
+
+\begin{frame}
+  \frametitle{\tc: shortcuts and choices}
   \begin{itemize}
   \item no Bayes; no partial or noisy labels
   \item quadratic order
