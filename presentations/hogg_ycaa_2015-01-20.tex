@@ -7,7 +7,11 @@
 % 1.33333 is the ratio of 4 to 3
 % \setlength{\paperwidth}{1.33333\paperheight}
 \setlength{\textwidth}{0.85\paperwidth}
-\usepackage{amssymb,amsmath,mathrsfs}
+
+\newcommand{\credits}{{\footnotesize (Ness, Hogg, Rix, \etal)}}
+\newcommand{\teff}{T_{\mathrm{eff}}}
+\newcommand{\logg}{\log g}
+\newcommand{\feh}{[\mathrm{Fe / H}]}
 
 \title{Data-driven models of stars}
 \author[David W. Hogg (NYU)]{David W. Hogg \\
@@ -15,25 +19,64 @@
                  New York University}}
 \date{2015 January 20}
 
+\newcommand{\conclusions}{%
+\begin{frame}
+  \frametitle{conclusions}
+  \begin{itemize}
+  \item A data-driven label transfer system provides \apogee\ stars with labels comparable in quality to the \apogee\ physics-driven pipeline.
+    \begin{itemize}
+    \item \tc\ (Ness \etal, \textit{ApJ} submitted)
+    \item ``labels'' $\equiv (\teff,\logg,\feh)$
+    \end{itemize}
+  \item The method and the training set are both immature zeroth steps.
+  \item There is hope for a consistent system of stellar parameters and chemical abundances across all future surveys.
+    \begin{itemize}
+    \item \gaia
+    \item \sdss\ \project{SEGUE} \& \apogee
+    \item \project{HERMES} / \project{GALAH}
+    \end{itemize}
+  \end{itemize}
+\end{frame}}
+
 \begin{document}
 
 \begin{frame}
   \titlepage
-  \texttt{\giturl~\githash~(\gitdate)} \\
+  \texttt{\giturl~~(\githash~\gitdate)} \\
   in collaboration with \emph{Melissa Ness} (MPIA) and Hans-Walter Rix
+\end{frame}
+
+\conclusions
+
+\begin{frame}
+  \frametitle{Annie Jump Cannon}
+  \begin{itemize}
+  \item understood the temperature sequence of stars without the benefit of physical models
+    \begin{itemize}
+    \item data-driven non-linear dimensionality reduction
+    \item ``manifold learning''
+    \item (using a huge amount of prior knowledge)
+    \end{itemize}
+  \item namesake of \tc
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{The paradox of precision astrophysics}
   \begin{itemize}
-  \item models are incredibly explanatory
-  \item models are wrong (ruled out) in detail
+  \item models are incredibly \emph{explanatory}
     \begin{itemize}
     \item $\Lambda$CDM
     \item stellar spectroscopy
     \item helioseismology
     \end{itemize}
-  \item approximations, computation, gastrophysics
+  \item and yet...
+  \item<2-> models are \emph{wrong} (ruled out) in detail
+    \begin{itemize}
+    \item $\chi^2 \gg \nu$
+    \item ``The $\chi^2$ statistic is a measure of the size of your data!''
+    \end{itemize}
+  \item<2-> approximations, computation, \emph{gastrophysics}
   \end{itemize}
 \end{frame}
 
@@ -100,7 +143,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Why stellar parameters and chemical abundances?}
+  \frametitle{why stellar parameters and chemical abundances?}
   \begin{itemize}
   \item top priority for many new projects
     \begin{itemize}
@@ -117,6 +160,16 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{why label transfer for stars}
+  \begin{itemize}
+  \item don't have good models at your wavelengths?
+  \item want two surveys to be on the same ``system''?
+  \item have some stars at high SNR, some at low SNR?
+  \item spent human time on some stars but can't on all?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
   \frametitle{\sdssiii\ \apogee}
   \begin{itemize}
   \item foo
@@ -129,10 +182,7 @@
   \end{itemize}
 \end{frame}
 
-\newcommand{\credits}{{\footnotesize (Ness, Hogg, Rix, \etal)}}
-\newcommand{\teff}{T_{\mathrm{eff}}}
-\newcommand{\logg}{\log g}
-\newcommand{\feh}{[\mathrm{Fe / H}]}
+% HOGG: SLIDE ABOUT CONTINUUM NORMALIZATION?
 
 \begin{frame}
   \frametitle{\tc\ \credits: training set}
@@ -182,17 +232,31 @@
 \begin{frame}
   \frametitle{\tc\ \credits: model}
   \begin{eqnarray}
-    \ln p(\fluxes_n\given\labels_n,\pars) &=& \sum_\lambda \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda) \\
-    \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda) &=& -\frac{1}{2}\,\frac{[\transpose{\pars_\lambda}\cdot\labels_n]^2}{\sigma^2_{\lambda n} + s^2_\lambda} \\
-    \labels_n &\equiv& \left[1, \teff, \logg, \feh, \teff^2, \teff\,\logg, \cdots, \feh^2\right] \\
+    \ln p(\fluxes_n\given\labels_n,\pars) &=& \sum_{\lambda=1}^L \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda,s^2_\lambda)
+    \nonumber \\
+    \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda,s^2_\lambda) &=& -\frac{1}{2}\,\frac{[\transpose{\pars_\lambda}\cdot\labels_n]^2}{\sigma^2_{\lambda n} + s^2_\lambda}
+    \nonumber \\
+    \transpose{\labels} &\equiv& \left\{1, \teff, \logg, \feh, \teff^2, \teff\,\logg, \cdots, \feh^2\right\}
+    \nonumber \\
+    \transpose{\pars} &\equiv& \left\{\pars_\lambda, s^2_\lambda\right\}_{\lambda=1}^L
+    \nonumber
   \end{eqnarray}
   \begin{itemize}
   \item \emph{training step}: optimize parameters $\pars$ at fixed labels
     $\labels$ using training-set data
+    \begin{itemize}
+    \item linear least squares
+    \item every wavelength $\lambda$ treated independently
+    \end{itemize}
   \item \emph{test step}: optimize labels $\labels$ at fixed
     parameters $\pars$ using test-set (survey) data
+    \begin{itemize}
+    \item non-linear optimization
+    \end{itemize}
   \end{itemize}
 \end{frame}
+
+% HOGG FIGURE SHOWING SOMETHING
 
 \begin{frame}
   \frametitle{\tc\ \credits: results}
@@ -207,43 +271,39 @@
   \end{itemize}
 \end{frame}
 
+% HOGG MANY FIGURES
+
 \begin{frame}
   \frametitle{\tc\ \credits: shortcuts and choices}
   \begin{itemize}
-  \item foo
-  \item foo
-    \begin{itemize}
-    \item bar
-    \item bar
-    \end{itemize}
-  \item foo
+  \item no Bayes; no partial or noisy labels
+  \item quadratic order
+  \item spectral representation
+  \item too-small training set
+  \item only three labels
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{other applications for data-driven models}
   \begin{itemize}
-  \item foo
-  \item foo
-    \begin{itemize}
-    \item bar
-    \item bar
-    \end{itemize}
-  \item foo
+  \item building a consistent stellar parameter system for \gaia
+  \item \kepler\ lightcurves
+  \item CMB foregrounds
   \end{itemize}
 \end{frame}
+
+% HOGG PUT IN FIGURE HERE FROM DUN's WORK
 
 \begin{frame}
   \frametitle{conservatism requires huge numbers of parameters}
   \begin{itemize}
-  \item foo
-  \item foo
-    \begin{itemize}
-    \item bar
-    \item bar
-    \end{itemize}
-  \item foo
+  \item without enormous freedom, the model won't be data-driven
+  \item abandon hope that the number of parameters will be less than the number of data points
+  \item marginalization of nuisances
   \end{itemize}
 \end{frame}
+
+\conclusions
 
 \end{document}
