@@ -1,0 +1,24 @@
+changes since submission: 
+
+1) Line 670:  removed after submitted: `` Labels are provided for stars with both \aspcap-corrected labels''. Also fixed some small errors in the table formatting: Two columns were around the wrong way, for the TARG2 and ASPCAPFLAG and also there was a "K" in units under the log g. - see (3) 
+ 
+ 2 Title: change "for" to "to"
+ 
+ 3) Line 676: {2MASS} &  & K &  dex  & K & dex & dex & dex & kms$^{-1}$ & &  \tiny{WARN} & \tiny{ FLAG}  \\    
+ 
+ 4) Line 122 full stop after references. 
+ 
+ To do: 
+ 
+ Need to have a look at the x-over stars that are observed in commissioning mode and also deal with this in star count (1700 stars). 
+ 
+ Also, was thinking - maybe it is better to not do the flag cut on STAR BAD flag as this is a catch all flag coming from ASPCAP- maybe a more 'appropriate' flags cut is the following:
+ 1. 2**25  in aspcapflag with is colour spectroscopic far away from colour photometric warning
+ 2. 2**26 in aspcapflag which is rotation bad (or 2**10 which is rotation warning)
+ 3. 2**9 in target2 flag which is telluric
+ 4. vscatter < 10 km/s
+ which gives 38,000 stars in these figures. 
+ 
+ This has more stars at high log g in the aspcap-corrected results but the isochrone-corrected results looks the same and there are 38,000 stars compared to 35,000 in the current figures. 
+ 
+ 
