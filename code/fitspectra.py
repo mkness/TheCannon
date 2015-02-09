@@ -874,7 +874,7 @@ def infer_labels_nonlinear(fn_pickle,testdata, ids, fout_pickle, weak_lower,weak
       MCM_rotate_all[jj,:,:] = MCM_rotate 
       covs_all[jj,:,:] = covs
     filein = fout_pickle.split('_tags') [0] 
-    if filein == 'self': 
+    if filein == 'self_2nd_order': 
       file_in = open(fout_pickle, 'w')  
       #pickle.dump((Params_all, covs_all),  file_in)
       file_normed = normed_training_data.split('.pickle')[0]
