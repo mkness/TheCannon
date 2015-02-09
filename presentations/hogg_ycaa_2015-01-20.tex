@@ -2,11 +2,11 @@
 \input{hogg_presentation} % hogg standard colors
 %\input{vc}
 % 1.77778 is the ratio of 16 to 9
-\setlength{\paperheight}{3.5in}
-\setlength{\paperwidth}{1.77778\paperheight}
+%\setlength{\paperheight}{3.5in}
+%\setlength{\paperwidth}{1.77778\paperheight}
 % 1.33333 is the ratio of 4 to 3
-%\setlength{\paperheight}{4.0in}
-%\setlength{\paperwidth}{1.33333\paperheight}
+\setlength{\paperheight}{4.0in}
+\setlength{\paperwidth}{1.33333\paperheight}
 \setlength{\textwidth}{0.85\paperwidth}
 
 \newcommand{\credits}{{\footnotesize (Ness, Hogg, \etal)}}small surveys of a handful of stars: 
@@ -39,7 +39,7 @@ Billions of stars (Gaia)
   \item The method and the training set are both immature zeroth steps.
   \item There is hope for a consistent system of stellar parameters and chemical abundances across all future surveys.
     \begin{itemize}
-    \item \gaia
+    \item \gaia\ \& \project{Gaia-ESO}
     \item \sdssiii\ \project{SEGUE} \& \apogee; \sdssiv\ \project{APOGEE-2}
     \item \project{HERMES} / \project{GALAH}
     \end{itemize}
@@ -72,7 +72,7 @@ Billions of stars (Gaia)
 \end{frame}
 
 \begin{frame}
-  \frametitle{The paradox of precision astrophysics}
+  \frametitle{the paradox of precision astrophysics}
   \begin{itemize}
   \item models are incredibly \emph{explanatory}
     \begin{itemize}
@@ -165,7 +165,7 @@ Billions of stars (Gaia)
   \begin{itemize}
   \item top priority for many new projects
     \begin{itemize}
-    \item \gaia
+    \item \gaia\ \& \project{Gaia-ESO}
     \item \project{HERMES} \& \project{GALAH}
     \item \sdssiii\ \apogee
     \end{itemize}
@@ -179,12 +179,17 @@ Billions of stars (Gaia)
 \end{frame}
 
 \begin{frame}
-  \frametitle{why label transfer for stars}
+  \frametitle{label transfer for stars}
   \begin{itemize}
-  \item don't have good models at your wavelengths?
-  \item want two surveys to be on the same ``system''?
-  \item have some stars at high SNR, some at low SNR?
-  \item spent human time on some stars but can't on all?
+  \item a few of your stars have good labels (from somewhere)
+  \item can you use this to label the other stars?
+  \item why would you want to do this?
+    \begin{itemize}
+    \item<2> you don't have good models at your wavelengths?
+    \item<2> you want two surveys to be on the same ``system''?
+    \item<2> you have some stars at high SNR, some at low SNR?
+    \item<2> you spent human time on some stars but can't on all?
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -203,7 +208,17 @@ Billions of stars (Gaia)
 
 \begin{frame}
   \frametitle{\sdssiii\ \apogee}
-  \includegraphics[height=\figureheight]{../documents/plots/four_examples3.pdf}
+  ~\hfill\includegraphics[height=\figureheight]{../documents/plots/four_examples3.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{train, validate, and test}
+  \begin{itemize}
+  \item split the data into three disjoint subsets
+  \item in the \emph{training step} you set the parameters of your model using the training set
+  \item the validation set is used to set hyperparameters or model complexity
+  \item in the \emph{test step} you apply the model to the test set---new data---to make predictions or deliver results
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -226,8 +241,8 @@ Billions of stars (Gaia)
 
 \begin{frame}
   \frametitle{\tc: training set}
-  \includegraphics<1>[height=\figureheight]{../documents/plots/training_aspcap2.pdf}
-  \includegraphics<2>[height=\figureheight]{../documents/plots/training_mkn2.pdf}
+  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/plots/training_aspcap2.pdf}
+         \includegraphics<2>[height=\figureheight]{../documents/plots/training_mkn2.pdf}
 \end{frame}
 
 \newcommand{\flux}{f}
@@ -249,7 +264,7 @@ Billions of stars (Gaia)
     \item spectral expectation is quadratic in the labels
     \item every wavelength $\lambda$ treated independently
     \item an intrinsic Gaussian scatter $s^2_\lambda$ at every wavelength $\lambda$
-    \item 80,000 free parameters!
+    \item 80,000 free parameters in $\pars$!
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -283,12 +298,12 @@ Billions of stars (Gaia)
 
 \begin{frame}
   \frametitle{\tc: model training}
-  \includegraphics<1>[height=\figureheight]{../documents/plots/R1_continuum5.png}
+  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/plots/R1_continuum5.png}
 \end{frame}
 
 \begin{frame}
   \frametitle{\tc: model training cross-validation}
-  \includegraphics<1>[height=\figureheight]{../documents/plots/takeout_histc.png}
+  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/plots/takeout_histc.png}
 \end{frame}
 
 \newcommand{\results}{%
@@ -302,8 +317,8 @@ Billions of stars (Gaia)
     \end{itemize}
   \item labels appear sensible
     \begin{itemize}
-    \item \tc\ labels lie on isochrones
-    \item scatter against \apogee\ labels consistent with \apogee precision
+    \item \tc\ labels lie near sensible isochrones
+    \item scatter against \apogee\ labels consistent with \apogee\ precision
     \end{itemize}
   \item successfully puts labels on dwarfs
   \end{itemize}
@@ -313,23 +328,23 @@ Billions of stars (Gaia)
 
 \begin{frame}
   \frametitle{\tc: test time}
-  \includegraphics<1>[height=\figureheight]{../documents/plots/4431_v19.png}
-  \includegraphics<2>[height=\figureheight]{../documents/plots/4383_v19.png}
-  \includegraphics<3>[height=\figureheight]{../documents/plots/4399_v19.png}
-  \includegraphics<4>[height=\figureheight]{../documents/plots/4309_v19.png}
-  \includegraphics<5>[height=\figureheight]{../documents/plots/4311_v19.png}
-  \includegraphics<6>[height=\figureheight]{../documents/plots/4255_v19.png} 
+  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/plots/4431_v19.png}
+         \includegraphics<2>[height=\figureheight]{../documents/plots/4383_v19.png}
+         \includegraphics<3>[height=\figureheight]{../documents/plots/4399_v19.png}
+         \includegraphics<4>[height=\figureheight]{../documents/plots/4309_v19.png}
+         \includegraphics<5>[height=\figureheight]{../documents/plots/4311_v19.png}
+         \includegraphics<6>[height=\figureheight]{../documents/plots/4255_v19.png} 
 \end{frame}
 
 \begin{frame}
   \frametitle{\tc: comparison with \apogee\ labels}
-  \includegraphics[height=\figureheight]{../documents/plots/cplot2.png} 
+  ~\hfill\includegraphics[height=\figureheight]{../documents/plots/cplot2.png} 
 \end{frame}
 
 \begin{frame}
   \frametitle{\tc: label veracity}
-  \includegraphics<1>[height=\figureheight]{../documents/plots/iso2_2.png}
-  \includegraphics<2>[height=\figureheight]{../documents/plots/iso2a_2.png}
+  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/plots/iso2_2.png}
+         \includegraphics<2>[height=\figureheight]{../documents/plots/iso2a_2.png}
 \end{frame}
 
 \results
@@ -354,7 +369,11 @@ Billions of stars (Gaia)
   \end{itemize}
 \end{frame}
 
-% HOGG PUT IN FIGURE HERE FROM DUN's WORK
+\begin{frame}
+  \frametitle{Data-driven self-calibration of \kepler\ \small{(Wang \etal)}}
+  ~\hfill\includegraphics<1>[height=\figureheight]{./kic_03544595_05_pixels.png}
+         \includegraphics<2>[height=\figureheight]{./lightCurve_5088536_1_90_q5_reg1e+05_pdc_outlier.png}
+\end{frame}
 
 \begin{frame}
   \frametitle{conservatism requires huge numbers of parameters}
