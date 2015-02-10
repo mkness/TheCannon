@@ -1,5 +1,4 @@
 \documentclass[pdftex]{beamer}
-\input{hogg_presentation} % hogg standard colors
 %\input{vc}
 % 1.77778 is the ratio of 16 to 9
 %\setlength{\paperheight}{3.5in}
@@ -8,6 +7,8 @@
 \setlength{\paperheight}{4.0in}
 \setlength{\paperwidth}{1.33333\paperheight}
 \setlength{\textwidth}{0.85\paperwidth}
+% import the next thing *after* the papersize
+\input{hogg_presentation} % hogg standard colors
 
 \newcommand{\credits}{{\footnotesize (Ness, Hogg, \etal)}}
 \newcommand{\teff}{T_{\mathrm{eff}}}
@@ -346,6 +347,8 @@
 
 \begin{frame}
   \frametitle{\tc: works at low signal-to-noise}
+  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/plots/SNR100to200.png}
+         \includegraphics<3>[height=\figureheight]{../documents/plots/SNR20to30.png}
 \end{frame}
 
 \begin{frame}
@@ -370,26 +373,13 @@
   \frametitle{other applications for data-driven models}
   \begin{itemize}
   \item building a consistent stellar parameter system for \gaia
-  \item \kepler\ lightcurves
+  \item \kepler\ and \project{K2} lightcurves
   \item CMB foregrounds
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Data-driven self-calibration of \kepler\ \small{(Wang \etal)}}
-  ~\hfill\includegraphics<1>[height=\figureheight]{./kic_03544595_05_pixels.png}
-         \includegraphics<2>[height=\figureheight]{./lightCurve_5088536_1_90_q5_reg1e+05_pdc_outlier.png}
+  \textsl{[ask me about \emph{20 new extra-solar planets} in \project{K2}]}
 \end{frame}
-
-\begin{frame}
-  \frametitle{conservatism requires huge numbers of parameters}
-  \begin{itemize}
-  \item without enormous freedom, the model won't be data-driven
-  \item abandon hope that the number of parameters will be less than the number of data points
-  \item marginalization of nuisances
-  \end{itemize}
-\end{frame}
-
-%\conclusions
 
 \end{document}
