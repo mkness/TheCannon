@@ -59,13 +59,55 @@
 \begin{frame}
   \frametitle{Annie Jump Cannon}
   \begin{itemize}
-  \item understood the temperature sequence of stars without the benefit of physical models
+  \item O B A F G K M
+    \begin{itemize}
+    \item temperature sequence!
+    \item alphabetical order (A B F G K M O) is hydrogen-line-strength order
+    \end{itemize}
+  \item Cannon understood the temperature sequence of stars without the benefit of physical models
     \begin{itemize}
     \item data-driven non-linear dimensionality reduction
     \item ``manifold learning''
     \item (using a huge amount of prior knowledge)
     \end{itemize}
   \item namesake of \tc
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{chemodynamics}
+  \begin{itemize}
+  \item stars populate orbits in the Milky Way
+    \begin{itemize}
+    \item conserved ``actions''
+    \item (or chaotic equivalents)
+    \end{itemize}
+  \item stars are formed from particular gas clouds
+    \begin{itemize}
+    \item each cloud has its own history of supernovae
+    \item stars have conserved surface abundances
+    \item detailed chemical fingerprint
+    \item stars that formed together should share a chemical fingerprint
+    \end{itemize}
+  \item the combined action-chemical space will be far more
+    informative than either taken independently
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{chemodynamics}
+  \begin{itemize}
+  \item top priority for many new projects
+    \begin{itemize}
+    \item \gaia\ \& \project{Gaia-ESO}
+    \item \project{HERMES} \& \project{GALAH}
+    \item \sdssiii\ \apogee
+    \end{itemize}
+  \item terrifying inconsistencies in current approaches
+    \begin{itemize}
+    \item models of stars are \emph{amazingly good}\ldots
+    \item \ldots but chemical signatures are \emph{incredibly tiny}
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -97,7 +139,7 @@
     \end{itemize}
   \item make approximations to make things computable
     \begin{itemize}
-    \item subgrid models, mixing length, etc
+    \item ``sub-grid'' models, mixing length, etc
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -159,24 +201,6 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{why stellar parameters and chemical abundances?}
-  \begin{itemize}
-  \item top priority for many new projects
-    \begin{itemize}
-    \item \gaia\ \& \project{Gaia-ESO}
-    \item \project{HERMES} \& \project{GALAH}
-    \item \sdssiii\ \apogee
-    \end{itemize}
-  \item extended distribution functions
-  \item chemical tagging
-    \begin{itemize}
-    \item the dynamics and formation of the Milky Way
-    \end{itemize}
-  \item terrifying inconsistencies in current approaches
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
   \frametitle{label transfer for stars}
   \begin{itemize}
   \item a few of your stars have good labels (from somewhere)
@@ -189,6 +213,31 @@
     \item<2> you spent human time on some stars but can't on all?
     \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{stellar spectra}
+  \begin{itemize}
+  \item<1-> stars are very close to black-bodies
+  \item<1-> to first order, a stellar spectrum depends on \emph{effective temperature} $\teff$ and \emph{surface gravity} $\logg$
+  \item<2-> to second order, \emph{metallicity} $\feh$ and rotation
+  \item<3> to third order, tens of chemical abundances
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{stellar spectra}
+  \begin{itemize}
+  \item all chemical information is in \emph{absorption lines} corresponding to atomic and molecular transitions
+  \item some 30 elements are visible in the best stars
+  \item spectroscopy at $$R\equiv\frac{\lambda}{\Delta\lambda}>20,000$$ is the primary tool
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{stellar astrophysics}
+  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/plots/four_examples3.pdf}
+         \includegraphics<2>[height=\figureheight]{../documents/plots/iso2_2.png}
 \end{frame}
 
 \begin{frame}
@@ -348,7 +397,7 @@
 \begin{frame}
   \frametitle{\tc: works at low signal-to-noise}
   ~\hfill\includegraphics<1>[height=\figureheight]{../documents/plots/SNR100to200.png}
-         \includegraphics<3>[height=\figureheight]{../documents/plots/SNR20to30.png}
+         \includegraphics<2>[height=\figureheight]{../documents/plots/SNR20to30.png}
 \end{frame}
 
 \begin{frame}
