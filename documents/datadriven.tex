@@ -53,7 +53,7 @@
 \author{M.~Ness\altaffilmark{1},  
 David~W.~Hogg\altaffilmark{1,2,3}, 
 H.-W.~Rix\altaffilmark{1}, 
-A.~Ho\altaffilmark{1}, 
+A.~Y.~Ho\altaffilmark{1}, 
 G.~Zasowski\altaffilmark{4,5}}
 \altaffiltext{1}{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg, Germany}
 \altaffiltext{2}{Center for Cosmology and Particle Physics, Department of Phyics,
@@ -77,7 +77,7 @@ by fitting a flexible model at each wavelength;
 then,  \tc\ uses this model to derive labels for the remaining survey stars.
 We illustrate \tc\ by training the model 
  on only 543 stars in 19 clusters as reference objects, with \teff, \logg\ and \feh\ as the labels,
-and then applying it to the spectra of 56,000 stars from
+and then applying it to the spectra of 55,000 stars from
 \apogee\ DR10.
 \tc\ is very accurate. Its stellar labels compare well to the
 stars for which \apogee\ pipeline (\aspcap) labels are provided in DR10, with 
@@ -110,7 +110,7 @@ techniques: spectroscopic
 The vast spectroscopic stellar surveys of recent years (e.g., \segue\ \citep{Beers2006}, \rave\ \citep{Steinmetz2006}, \lamost\ \citep{Newberg2012}, \apogee\ \citep{Majewski2012}, \gaiaeso\ \citep{Gilmore2012}, \galah\ \citep{Freeman2012}) hold tremendous astrophysical promise, but at the same time present formidable data analysis and modeling challenges. 
 One of these challenges lies in consistently and accurately determining what we call ``stellar labels'', that is, stellar parameters and element abundances, from survey spectra. 
 These labels are usually determined from comparison of the data with synthetic model spectra, with approaches often 
-customized specifically to the particular wavelength region of a given survey \citep[e.g.,][]{ Lee2006, Boeche2011, Liu2014, Meszaros2013, SM2014}. 
+customized specifically to the particular wavelength region of a given survey \citep[e.g.,][]{ Lee2006, Boeche2011, Liu2014, Meszaros2013, SM2014, BJ2013}. 
 
 The stellar photosphere models that are relied upon for stellar label determination have physical ingredients that are incomplete and simplified. 
 For computational feasibility, almost always 1D stellar photosphere models are adopted for large surveys, often assumed to be in local thermal equilibrium; these approximations are both severe. 
@@ -182,7 +182,7 @@ A big part of why \tc\ is successful at lower SNR
 is that it uses all of the pixels in the data.
 
 We have adopted a bottom-up approach for \tc, starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  
-In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (543 stars) and survey objects ($\sim$ 56,000 stars from DR10). 
+In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (543 stars) and survey objects ($\sim$ 55,000 stars from DR10). 
 We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and extended our model to quadratic form, which satisfactorily describes the label-space of the training data.
 The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
 
@@ -202,7 +202,7 @@ we spell out the characteristics of the \apogee\ data and our adjustments to it 
 
 The data set used for this functional demonstration of \tc\ is that of the \apogee\ survey (Majewski et al. 2012, 2015 in prep). \apogee, part of the SDSS-III\footnote{\url{www.sdss.org}} (Eisenstein et al. 2011), is a high resolution (R $\sim$ 22,500), high signal to noise (SNR $\sim$ 100), H-band (15200-16900 \AA\footnote{Due to gaps between the instrument's three detectors, the spectra are divided into three pieces: $\sim$151500-15800~\AA, 15890-16430~\AA, and 16490-16900~\AA.}) spectroscopic survey of primarily red giant stars spanning the bulge, disk, and halo of the Milky Way \citep{Zaso2013}.  \apogee 's \aspcap\ pipeline provides the stellar labels for these stars, which include stellar parameters and multiple elemental abundances, in addition to numerous flags that warn of problems with the spectra or problems with the label determination for the spectra (or both).  This pipeline is based on $\chi^2$ fitting of the data to 1D LTE models for seven labels (\teff, \logg, \feh, [$\alpha$/Fe], [C/M], [N/M], and micro-turbulence; Garcia Perez et al., 2015, in prep).
 
-We use here spectra from the set of 56,000 stars that were released as part of the SDSS Data Release 10 (DR10) \citep{Ahn2014}), focusing on data from the \apstar\ and  \aspcapstar\ FITS files. The \apstar\ files include single-visit and combined spectra for a given star that are fully reduced, resampled, and shifted to the stellar rest frame.  The \aspcapstar\ files contain the combined spectrum for a given star that has also been pseudo-continuum normalized by the ASPCAP pipeline, along with the best-fitting synthetic spectrum and stellar labels.  The \apstar\ data, which are not pseudo-continuum-normalized by \apogee, enables us to evaluate the performance of \tc\ at lower SNR, by testing it on the individual visit spectra provided in these files. 
+We use here spectra from the set of 55,000 stars that were released as part of the SDSS Data Release 10 (DR10) \citep{Ahn2014}), focusing on data from the \apstar\ and  \aspcapstar\ FITS files. The \apstar\ files include single-visit and combined spectra for a given star that are fully reduced, resampled, and shifted to the stellar rest frame.  The \aspcapstar\ files contain the combined spectrum for a given star that has also been pseudo-continuum normalized by the ASPCAP pipeline, along with the best-fitting synthetic spectrum and stellar labels.  The \apstar\ data, which are not pseudo-continuum-normalized by \apogee, enables us to evaluate the performance of \tc\ at lower SNR, by testing it on the individual visit spectra provided in these files. 
 
 The pixel-by-pixel inverse variances are critical for all steps of \tc: continuum normalization, training step and test step. The error arrays of the uncertainty at each pixel in the spectra are provided by \apogee\ in their fits files. We adopt these vectors directly and additionally set any anomalous values in the spectra, with 0 flux or very high error values to a very large error value, for computational stability.  
 
@@ -658,7 +658,7 @@ and apply the test step with this model to all DR10 spectra.
 Remarkably, we are able to reproduce well the \aspcap\ labels for DR10 spectra. We have run \tc\ through all 47,000 stars in 150 fields in DR10 contained in the available \textit{aspcapstar} files as well as an additional 4800 stars in 20 commissioning fields for which no \aspcap\ parameters were provided in DR10, 
 made available in the (non pseudo-continuum-normalized) \textit{apStar} files. 
 We also have run \tc\ through the additional commissioning stars available in the \apstar\ files across the fields and in total this
- comprises 56,000 DR10 stars in 170 fields. 
+ comprises 55,000 DR10 stars in 170 fields. 
 
 These results of \tc\ for all DR10 stars for which we return parameters are provided online in \tablename~\ref{tab:online}. 
 For the 30,500 stars with parameters provided by DR10, we find we reproduce the \apogee\ labels as follows: 
@@ -670,7 +670,7 @@ The typical internal precision on the measured parameters from \tc\ is $\delta$(
 \begin{table*}[!h]
 \tiny{
 \centering
-\caption{Excerpt from the online table of stellar labels (\teff, \logg\ and \feh) for the 56,000 stars released in 170 fields from \apogee 's data release DR10. Stars with \badstar\ flag set (in \aspcapflag) may have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. The velocity scatter ($\sigma_v$) from the \aspcap\ results as well as the \texttt{APOGEE TARGET2} flag (TARG2) are provided in these tables.} 
+\caption{Excerpt from the online table of stellar labels (\teff, \logg\ and \feh) for the 55,000 stars released in 170 fields from \apogee 's data release DR10. Stars with \badstar\ flag set (in \aspcapflag) may have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. The velocity scatter ($\sigma_v$) from the \aspcap\ results as well as the \texttt{APOGEE TARGET2} flag (TARG2) are provided in these tables.} 
 \begin{tabular}{| c | c | c |  c | c | c |  c | c | c | c | c | c | } %51,500
 \hline
 star ID  & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{$\sigma_{v}$} & \tiny{TARG2} & \tiny{ASPCAPFLAG}& \tiny{COMMIS} \\
@@ -746,9 +746,9 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 % made with makeonisochrone_v18_bw.py
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.25]{./plots/iso1_2.png}
+  \includegraphics[scale=0.26]{./plots/aftersubmit/fig8a.png}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/iso1a_2.png}
+    \includegraphics[scale=0.26]{./plots/aftersubmit/fig8b.png}
 \caption{Labels for the $\sim$ 35,000 stars from DR10 derived by \tc\ based on \aspcap-corrected labels for the set of reference objects. The set of panels on the left shows \teff-\logg\ in four metallicity bins. There are $\sim$ 19,000, 13,000, 1600, and 1000 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.  The panel on the right shows all stars coloured in \feh\ on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. }
 \label{fig:iso}
 \end{figure}
@@ -756,10 +756,10 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 
 \begin{figure}[!h]
 \centering
- \includegraphics[scale=0.25]{./plots/iso2_2.png}
+ \includegraphics[scale=0.26]{./plots/aftersubmit/fig9a.png}
   \hspace{-20pt}
-    \includegraphics[scale=0.25]{./plots/iso2a_2.png}
-\caption{Same as \figurename~\ref{fig:iso} but based on the ``isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (Equation \ref{eq:specmodel}) that forces resulting labels to lie in physically plausible locations in label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects.}
+    \includegraphics[scale=0.26]{./plots/aftersubmit/fig9b.png}
+\caption{Same as \figurename~\ref{fig:iso} but based on the ``isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (Equation \ref{eq:specmodel}) that forces resulting labels to lie in physically plausible locations in label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects: reference objects are shown in open circles.}
 \label{fig:iso2}
 \end{figure}
 
@@ -832,12 +832,12 @@ In the subsequent \textit{test step} that same model can assign labels (and thei
 other objects in the survey.
 
 In a first application of \tc, on the \apogee\ DR10 data, we focused on the three most important labels, \teff, \logg, \feh , and 
-derived them for essentially all of the 56,000 DR10 survey stars, based on a training step that involved only 543 reference objects, i.e. 1\% of the survey.  Remarkably, \tc 's label transfer results in stellar parameters and metallicites that are as precise and accurate as those derived from
+derived them for essentially all of the 55,000 DR10 survey stars, based on a training step that involved only 543 reference objects, i.e. 1\% of the survey.  Remarkably, \tc 's label transfer results in stellar parameters and metallicites that are as precise and accurate as those derived from
 \apogee 's pipeline \aspcap. In addition, \tc\ appears to produce -- at least in this present implementation -- plausible labels for 6000 main sequence stars in \apogee, even though only $\sim 60$ main sequence stars were used in the training step (all of which are members of the Hyades cluster). 
 It is also remarkable that  the \logg - \teff\  diagram of Fig.~\ref{fig:iso2}~ shows basically no stars outside
 the physically plausible regime, although \tc\ knows nothing here about stellar evolution save the training step.
 
-Our application to \apogee\  illustrates a number of strengths and practical advantages of such an approach. First, \tc\ is computationally very fast. It  trains fast and then delivers the labels for 56,000 stars of the
+Our application to \apogee\  illustrates a number of strengths and practical advantages of such an approach. First, \tc\ is computationally very fast. It  trains fast and then delivers the labels for 55,000 stars of the
  \apogee\ DR10 sample in reasonable time on a single laptop: it takes $<0.1$~s on a 2.6-GHz
 intel core i7 to determine three labels for each survey star, without any
 attempt at code optimization. This is because \tc\  only involves linear algebra and (in the test step) the well-behaved optimization of a few parameters with an analytic model for the spectrum. 
