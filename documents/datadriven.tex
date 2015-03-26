@@ -119,7 +119,7 @@ As a consequence, it happens that different research groups obtain discrepant re
 
 Stellar labels are commonly determined by fitting a grid of model spectra (with known labels) to the data using some minimisation technique, often restricted to a masked portion of the spectrum that is focused on the absorption line (regions) deemed to be most reliable or relevant. 
 Stated minimal signal-to-noise (hereafter SNR) requirements to obtain robust labels in this way are $SNR\sim 100$ per resolution element, especially if the labels are to include individual element abundances. 
-Often, a post-calibration procedure is applied to bring the stellar labels derived by such a fitting pipeline in accord with external information of higher fidelity: for example with stellar labels from benchmark stars studied at high resolution or well characterised open and globular cluster stars \citep[e.g.,][]{Meszaros2013, Kord2013}.
+Often, a post-calibration procedure is applied to bring the stellar labels derived by such a fitting pipeline in accord with external information of higher fidelity: for example with stellar labels from benchmark stars studied at high resolution or well characterised open and globular cluster stars \citep[e.g.,][]{Meszaros2013, Kord2013, Joffre2014}. \textcolor{blue}{These calibration stars are also used by surveys to provide a reasonable estimate of their label accuracy}. 
 In practice, different surveys or different pipelines end up delivering labels with different calibrations,
 causing their stellar parameters or their abundances to be on slightly different scales.
 This complicates inter-survey comparisons and constitutes major challenge of the era of such large datasets. 
@@ -173,8 +173,8 @@ However, \tc\ can be applied to any stellar survey.
 Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (for example, \alphafe, \xfe) and also more comprehensive models (for example, Gaussian processes). 
 Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower SNR than minimisation techniques.
 
-\tc\ is similar to the MATrix Inversion for Spectral SythEsis (\matisse) procedure
-for derivation of stellar parameters \citep{RB2006} in that it uses the full spectrum
+\textcolor{blue}{ \tc\ is similar to the MATrix Inversion for Spectral SythEsis (\matisse) and \textit{ULySS} procedure
+for derivation of stellar parameters \citep{RB2006} and \citep{Koleva2009}} in that it uses the full spectrum
 (and not just a line list) for label determination.
 However, \matisse\ employs a large grid of synthetic spectra
 and is thus limited in all the ways that physics-based methods are limited.
@@ -235,7 +235,7 @@ stars, e.g. from observations in a well understood portion of the optical wavele
 labels are of course a property of the
 star, and hence do not have to arise from the survey data at hand. They may have been derived from different data.
 
-For the case of \apogee, we will use as reference objects 543 members of 19 globular and open clusters \citep{Meszaros2013}. Some objects were removed from the full list available as their cluster memberships were incorrect. In their stellar labels they span the range of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
+For the case of \apogee, we will use as reference objects 543 members of 19 globular and open clusters \citep{Meszaros2013}. \textcolor{blue}{These are the very same objects as used by the \apogee\ survey for their own calibration of the DR10 data release and represent the documented reference objects that are available. }Some objects were removed from the full list available as their cluster memberships were incorrect. In their stellar labels they span the range of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
 Exactly which stellar labels we adopt for these reference objects is critical to the subsequent output, and hence 
 we discuss it in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
 
@@ -552,8 +552,9 @@ becomes
 [1, \teff, \logg, \feh, \teff^2, \teff\cdot\logg, \teff\cdot\feh, \logg^2, \logg\cdot\feh, \feh^2]
  \label{eq:quadinthreelabels}\quad.
 \end{eqnarray}
-We will use this quadratic-in-labels spectral model throughout the rest of the paper. 
-The exploration of higher-order polynomials for the spectral model at every pixel, or even a Gaussian process at every pixel, is beyond the scope of this paper. 
+
+
+We will use this quadratic-in-labels spectral model throughout the rest of the paper.  The exploration of higher-order polynomials for the spectral model at every pixel, or even a Gaussian process at every pixel, is beyond the scope of this paper. 
  
 \subsection{Validation on Take-One-Out Stars from the Reference Objects}
 \label{sec:take-one-out}
@@ -583,7 +584,7 @@ If we adopt instead of \aspcap -corrected \logg\ labels the isochrone-corrected 
 % made with takeonestarout_all_stars_diag_6panel.py in code/
 \begin{figure}[h!]
 \centering
-    \includegraphics[scale=0.45]{./plots/takeout_histc.png}
+    \includegraphics[scale=0.45]{./plots/aftersubmit/fig4.png}
 \caption{The take-one-star-out cross-validation of the 543 stars in the training dataset using the quadratic model in Equation~(\ref{eq:quadinthreelabels}) and corresponding histograms at right, showing \tc\ output -- \apogee\ input labels.}
 \label{fig:takeonestarout}
 \end{figure}
@@ -600,6 +601,19 @@ Interestingly, an analogous take-one-cluster-out test significantly increases th
 increasing the \textit{rms} differences to $<$ 150 K in \teff, $<$ 0.4 dex in \logg\ and $<$ 0.12 dex in \feh.
 This indicates that our training set is sufficiently small that each cluster matters for a good label transfer. 
 One particular case in the \apogee\ context is the Pleiades cluster: it is the \textit{only} cluster for which dwarf stars have been observed and hence we can draw reference labels for main sequence stars. 
+
+
+\textcolor{blue}{To demonstrate the fit of the model to the \apogee\ spectra at test time, using the continuum normalised test stars shown in Figure 3, we plot the best fit model and with the corresponding spectra for the regions A and B highlighted inFigure 3, which demonstrates the model is an excellent fit to the data. \textbf{DWH is there anything else you want to say here?} }
+
+
+\begin{figure}[!h]
+\centering
+ \includegraphics[scale=0.4]{./plots/aftersubmit/model_data.png}
+\caption{\textcolor{blue}{The four stars in Figure 3 across narrow wavelength intervals A and B, as described in section 2.3. The stars are plotted in black with the models in red, including the span of the scatter of the fit, generated by \tc. Spectral regions where the flux error is high ($>$ 5$\sigma$) are not shown.}}
+\label{fig:modeldata}
+\end{figure}
+
+
  
 We now turn to illustrating where the information that led to the accurate label transfer (\figurename~\ref{fig:takeonestarout}) came from in the spectra.
 \figurename~\ref{fig:coeffs} shows -- across the narrow regions (A) and (B) of the spectra, marked in \figurename~\ref{fig:norm} -- the first coefficient vectors $\theta_{0,1,2,3}$ of the spectral model (those linear in the three labels), which were fit for in the training step for the quadratic-in-labels model in Equation~(\ref{eq:quadinlabels}). 
@@ -627,14 +641,14 @@ This implies that either our quadratic-in-labels spectral model is still somewha
 (for example, lacking $[\alpha / Fe]$ as a label), or a combination of these effects. 
 From the coefficients of an initial fit of this spectral models (see, for example, the middle panel of \figurename~\ref{fig:coeffs}), 
 the continuum pixels have been determined following \sectionname~\ref{sec:ContNorm}. 
-These are marked in the black dots in the top panel of the \figurename, and are used for an iterated, 
+These are marked in the cyan dots in the top panel of the \figurename, and are used for an iterated, 
 consistent continuum-normalization for all spectra, both of the reference and of the survey objects.
 
  %made with run -i makeplot_scatter_test18_step_revc.py
 \begin{figure}[h!]
 \centering
-    \includegraphics[width=\hsize]{./plots/R1_continuum5.png}
-  \caption{The first-order coefficients and scatter across the sample regions of the spectra from \figurename~\ref{fig:norm}, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \logg, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see \sectionname~\ref{sec:ApogeeContinuum}).}
+    \includegraphics[width=\hsize]{./plots/aftersubmit/fig5.png}
+  \caption{The first-order coefficients and scatter across the sample regions of the spectra from \figurename~\ref{fig:norm}, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \logg, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  \textcolor{blue}{The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively}. \textcolor{blue}{The \teff coefficient has been multiplied by a fator of 1000 simply to show this coefficient on a similar scale to the other coefficients.} This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see \sectionname~\ref{sec:ApogeeContinuum}).}
 \label{fig:coeffs}
 \end{figure}
 
@@ -695,6 +709,8 @@ We exclude the stars flagged as bad overall  using the \badstar\ flag from \aspc
 
 In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ for the 1400 stars from the six sample fields as a function of \aspcap\ \teff, \logg\ and \feh. There are weak trends; at low \teff\ $\sim$ 3700 K, we find temperatures about 100 K cooler than \apogee\ and at low \logg\ we find $\sim$ 0.15 dex larger \logg\ than \apogee. At the lowest metallicities \feh\ $<$ --2.0, we typically report higher metallicities on the order of 0.05 to 0.3 dex.
 
+\textcolor{blue}{We tested a range of polynomial orders to investigate the systematic trends seen in Figure \ref{fig:cplot} to evaluate if the structure seen in these figures is derived from the proximity to the grid edge of the \apogee\ synthetic spectral grid or alternatively the rigidity of the model. By increasing the order of the polynomial, and particularly adding a cubed temperature coefficient, the structure seen at low temperatures can be removed. However, very small perturbations are introduced into the other labels with this higher-order model. Given the limited size of the training set and that the label-scale of \apogee\ in the \logg-\teff\ plane does not fall onto isochrones with the calibrated parameters (see Figures 9 and 10, indicating there may be some issue with the label-scale of the DR10 calibrated-labels), we do not try to optimise the model to obtain the best order to remove any of these trends in this case.  We highlight however,  that for the polynomial model, increasing to higher terms or additional cross terms can add flexibility to the model and an optimal polynomial order will be dependent on the wavelength region, resolution and label-space of the survey. The appropriate way to test this is at the take-one-out training validation stage. We see similar weak trends in this validation, in the \teff\ label at test time, as shown in Figure 4. However, the edges of the temperature sequence are populated only a few stars and two clusters, the metal-rich main sequence stars of the Pleaides at high temperatures and the most metal rich cluster, NGC6791 at low temperatures: we do not propose to optimise the polynomial order based on these trends given the limited number of reference objects at the edges of the label-space. These trends can be mitigated with higher order terms in the model, or removed by adjusting the input labels of the training set.}  \textbf{DWH can you add something here?}
+
 
 %makeplot_fits_v19_bw.py
 \begin{figure}[!h]
@@ -749,9 +765,11 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
   \includegraphics[scale=0.26]{./plots/aftersubmit/fig8a.png}
   \hspace{-20pt}
     \includegraphics[scale=0.26]{./plots/aftersubmit/fig8b.png}
-\caption{Labels for the $\sim$ 35,000 stars from DR10 derived by \tc\ based on \aspcap-corrected labels for the set of reference objects. The set of panels on the left shows \teff-\logg\ in four metallicity bins. There are $\sim$ 19,000, 13,000, 1600, and 1000 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.  The panel on the right shows all stars coloured in \feh\ on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. }
+\caption{Labels for the $\sim$ 35,000 stars from DR10 derived by \tc\ based on \aspcap-corrected labels for the set of reference objects. The set of panels on the left shows \teff-\logg\ in four metallicity bins. There are $\sim$ 19,000, 13,000, 1600, and 1000 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.  The panel on the right shows all stars coloured in \feh\ on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch:  \textcolor{blue}{ reference objects are shown in open circles.} }
 \label{fig:iso}
 \end{figure}
+
+
 
 
 \begin{figure}[!h]
@@ -759,7 +777,7 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
  \includegraphics[scale=0.26]{./plots/aftersubmit/fig9a.png}
   \hspace{-20pt}
     \includegraphics[scale=0.26]{./plots/aftersubmit/fig9b.png}
-\caption{Same as \figurename~\ref{fig:iso} but based on the ``isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (Equation \ref{eq:specmodel}) that forces resulting labels to lie in physically plausible locations in label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects: reference objects are shown in open circles.}
+\caption{Same as \figurename~\ref{fig:iso} but based on the ``isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (Equation \ref{eq:specmodel}) that forces resulting labels to lie in physically plausible locations in label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects: \textcolor{blue}{ reference objects are shown in open circles.}}
 \label{fig:iso2}
 \end{figure}
 
@@ -921,6 +939,9 @@ in the test step, with label errors only coming from the inverse covariance matr
 But a full inference would be expensive, especially in the test step
 (labeling the survey objects); the test step model is non-linear and
 inference would require sampling or harsh approximations.
+ \textcolor{blue}{The correct way to proceed in the full interference case would be in a fully Bayesian framework, where test and training happen at the same time, they are not separated out, as is the case now. 
+This is far more computationally expensive than the current approach. In this framework we could also include many additional labels as priors, for example photometry, isochrones, and many other variables relevant to the physical label-space of the data, depending on application.  \textbf{DWH please help here}}
+
 
 Note that in the application of \tc\ to \apogee\ we dealt with systematic errors in the reference
 labels by adjusting them,  given the unphysically narrow giant branch returned for DR10 data at low \logg.  We empirically found by adopting a very naive calibration that shifts the stars to the nearest position on the isochrone from the \aspcap\ value described in \sectionname~\ref{sec:ReferenceObjects}, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical label-space of stars. This suggests that there is some problem with the input labels in either the \teff\ or the \logg\ dimension adjusted from Kepler results in DR10. 
@@ -1034,6 +1055,28 @@ SDSS-III is managed by the Astrophysical Research Consortium for the Participati
   L{\'o}pez}, {Lambert}, \& {Gustafsson}}]{AP1999}
 {Allende Prieto}, C., {Garc{\'{\i}}a L{\'o}pez}, R.~J., {Lambert}, D.~L., \&
   {Gustafsson}, B. 1999, \apj, 527, 879
+  
+  \bibitem[{{Bailer-Jones} {et~al.}(2013){Bailer-Jones}, {Andrae}, {Arcay},
+  {Astraatmadja}, {Bellas-Velidis}, {Berihuete}, {Bijaoui}, {Carri{\'o}n},
+  {Dafonte}, {Damerdji}, {Dapergolas}, {de Laverny}, {Delchambre}, {Drazinos},
+  {Drimmel}, {Fr{\'e}mat}, {Fustes}, {Garc{\'{\i}}a-Torres}, {Gu{\'e}d{\'e}},
+  {Heiter}, {Janotto}, {Karampelas}, {Kim}, {Knude}, {Kolka}, {Kontizas},
+  {Kontizas}, {Korn}, {Lanzafame}, {Lebreton}, {Lindstr{\o}m}, {Liu},
+  {Livanou}, {Lobel}, {Manteiga}, {Martayan}, {Ordenovic}, {Pichon},
+  {Recio-Blanco}, {Rocca-Volmerange}, {Sarro}, {Smith}, {Sordo}, {Soubiran},
+  {Surdej}, {Th{\'e}venin}, {Tsalmantza}, {Vallenari}, \& {Zorec}}]{BJ2013}
+{Bailer-Jones}, C.~A.~L., {Andrae}, R., {Arcay}, B., {Astraatmadja}, T.,
+  {Bellas-Velidis}, I., {Berihuete}, A., {Bijaoui}, A., {Carri{\'o}n}, C.,
+  {Dafonte}, C., {Damerdji}, Y., {Dapergolas}, A., {de Laverny}, P.,
+  {Delchambre}, L., {Drazinos}, P., {Drimmel}, R., {Fr{\'e}mat}, Y., {Fustes},
+  D., {Garc{\'{\i}}a-Torres}, M., {Gu{\'e}d{\'e}}, C., {Heiter}, U., {Janotto},
+  A.-M., {Karampelas}, A., {Kim}, D.-W., {Knude}, J., {Kolka}, I., {Kontizas},
+  E., {Kontizas}, M., {Korn}, A.~J., {Lanzafame}, A.~C., {Lebreton}, Y.,
+  {Lindstr{\o}m}, H., {Liu}, C., {Livanou}, E., {Lobel}, A., {Manteiga}, M.,
+  {Martayan}, C., {Ordenovic}, C., {Pichon}, B., {Recio-Blanco}, A.,
+  {Rocca-Volmerange}, B., {Sarro}, L.~M., {Smith}, K., {Sordo}, R., {Soubiran},
+  C., {Surdej}, J., {Th{\'e}venin}, F., {Tsalmantza}, P., {Vallenari}, A., \&
+  {Zorec}, J. 2013, \aap, 559, A74
 
 \bibitem[{{Barrado y Navascu{\'e}s} {et~al.}(2001){Barrado y Navascu{\'e}s},
   {Deliyannis}, \& {Stauffer}}]{barrado2001}
@@ -1106,6 +1149,12 @@ SDSS-III is managed by the Astrophysical Research Consortium for the Participati
   {Blanco-Cuaresma}, {Worley}, {Pancino}, \& {Cantat-Gaudin}}]{Jofre2014}
 {Jofr{\'e}}, P., {Heiter}, U., {Soubiran}, C., {Blanco-Cuaresma}, S., {Worley},
   C.~C., {Pancino}, E., \& {Cantat-Gaudin}, e.~a. 2014, \aap, 564, A133
+  
+  
+\bibitem[{{Koleva} {et~al.}(2009){Koleva}, {Prugniel}, {Bouchard}, \&
+  {Wu}}]{Koleva2009}
+{Koleva}, M., {Prugniel}, P., {Bouchard}, A., \& {Wu}, Y. 2009, \aap, 501, 1269
+
 
 \bibitem[{{Kordopatis} {et~al.}(2013){Kordopatis}, {Gilmore}, {Steinmetz},
   {Boeche}, {Seabroke}, {Siebert}, {Zwitter}, {Binney}, {de Laverny},
