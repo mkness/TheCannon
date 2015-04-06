@@ -181,7 +181,8 @@ and is thus limited in all the ways that physics-based methods are limited.
 A big part of why \tc\ is successful at lower SNR
 is that it uses all of the pixels in the data.
 
-We have adopted a bottom-up approach for \tc, starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  
+We have adopted a bottom-up approach for \tc, starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  \textcolor{blue}{The aim of this paper is not to explore all possible models that may work for this approach, nor to converge on an optimal model, but use the simplest model that validates our methodology as successful. With additional complexity, for example partial labels on the reference objects and adding errors to the labels of these objects, it may be preferential to adopt a different form of model entirely, such as a Gaussian Process, considered in the Discussion Section. One key advantage of the simple model we adopt is in it's relative simplicity and this makes \tc\ computationally trivial to run to return stellar labels for large datasets.} 
+
 In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (543 stars) and survey objects ($\sim$ 55,000 stars from DR10). 
 We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and extended our model to quadratic form, which satisfactorily describes the label-space of the training data.
 The success of this model is demonstrated by running \tc\ through the DR10 data available through the SDSS-3 data server, the results for which we provide in an online machine-readable table. % for about 42,000 DR10 stars. 
@@ -211,9 +212,8 @@ inverse variance and weighting of that pixel becomes $\sim$ 0. We find that adop
 
 The resampled, reduced and combined spectra are available for about 47,000 survey stars in 150 DR10 fields in the \aspcapstar\ files. There are a further 9000 star observed in commissioning mode only, which are available in the radial velocity combined but not continuum-normalized data format in the \apstar\ files.
 
-We also apply \tc\ to the commissioning data and caution the reader about the fidelity of these results, as the line spread function of the commissioning data are different from the main survey and consequently different from the reference dataset of stars in the training step. Those objects are flagged as commissioning data (see Table 1).
-
-
+We also apply \tc\ to the commissioning data and caution the reader about the fidelity of these results, as the Line Spread Function (LSF) of the commissioning data are different from the main survey and consequently different from the reference dataset of stars in the training step. Those objects are flagged as commissioning data (see Table 1). 
+\textcolor{blue}{Typically, the line spread function for reference and all survey objects is the same, and as \tc\ is made-to-measure this is intrinsic to the reference objects and not a label to be fit for. This assumption breaks down if the survey stars are observed under a different instrumental setup to the reference objects, as is the case with commissioning data from \apogee.}  
 
 \subsection{Choosing Reference Objects for the Training Step}
 \label{sec:ReferenceObjects}
@@ -236,6 +236,7 @@ labels are of course a property of the
 star, and hence do not have to arise from the survey data at hand. They may have been derived from different data.
 
 For the case of \apogee, we will use as reference objects 543 members of 19 globular and open clusters \citep{Meszaros2013}. \textcolor{blue}{These are the very same objects as used by the \apogee\ survey for their own calibration of the DR10 data release and represent the documented reference objects that are available. }Some objects were removed from the full list available as their cluster memberships were incorrect. In their stellar labels they span the range of $3500<\teff<5300$~K, $0<\logg<5$ and $-2.5<\feh<0.45$. 
+
 Exactly which stellar labels we adopt for these reference objects is critical to the subsequent output, and hence 
 we discuss it in detail in \sectionname~\ref{sec:ApogeeRefLabels} .
 
@@ -301,7 +302,7 @@ in any survey. We discuss two options here for \apogee .
 First, we adopt the DR10 \textit{``\aspcap-corrected''} stellar parameters \citep{Meszaros2013} that are available for each of the reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale (\figurename~\ref{fig:trainingaspcap}). ``\aspcap-corrected'' labels were not available for the cluster comprised of main sequence stars, the Pleiades cluster and for this cluster we made our own corrections in \teff\ and \logg\ and assumed a single literature value for the \feh\ label, as described below. 
 The reference set of stars we use is the very same stars used by \apogee\ to post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}.
 Adopting the \aspcap-corrected labels provided and documented by \apogee\ has the important advantage 
-that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer from only 543 stars.
+that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer from only 543 stars. \textcolor{blue}{A limitation of this reference set of objects is that main sequence stars are not well sampled, which as we discuss in Section 5, limits our ability to determine labels for these stars at the test step. }
 
 The corrections to the labels made by \apogee\ described in \citet{Meszaros2013} are based on the cluster data and applied to the immediate output of the \aspcap\ pipeline that arose from comparisons to a library of stellar models.
 Temperature corrections are determined by comparing the infrared flux temperatures of the stars \citep{gonzalez2009}, \logg\ corrections are from the offset between \aspcap\ results and Kepler astroseismic results for stars in common and \feh\ corrections are from the difference between the \aspcap\ and  the literature value of each cluster.  
@@ -609,7 +610,7 @@ One particular case in the \apogee\ context is the Pleiades cluster: it is the \
 \begin{figure}[!h]
 \centering
  \includegraphics[scale=0.4]{./plots/aftersubmit/model_data.png}
-\caption{\textcolor{blue}{The four stars in Figure 3 across narrow wavelength intervals A and B, as described in section 2.3. The stars are plotted in black with the models in red, including the span of the scatter of the fit, generated by \tc. Spectral regions where the flux error is high ($>$ 5$\sigma$) are not shown.}}
+\caption{\textcolor{blue}{The four stars in Figure 3 across narrow wavelength intervals A and B, as described in Section 2.3. The stars are plotted in black with the models in red, including the span of the scatter of the fit, generated by \tc.}}
 \label{fig:modeldata}
 \end{figure}
 
@@ -648,7 +649,7 @@ consistent continuum-normalization for all spectra, both of the reference and of
 \begin{figure}[h!]
 \centering
     \includegraphics[width=\hsize]{./plots/aftersubmit/fig5.png}
-  \caption{The first-order coefficients and scatter across the sample regions of the spectra from \figurename~\ref{fig:norm}, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \logg, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  \textcolor{blue}{The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively}. \textcolor{blue}{The \teff coefficient has been multiplied by a fator of 1000 simply to show this coefficient on a similar scale to the other coefficients.} This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see \sectionname~\ref{sec:ApogeeContinuum}).}
+  \caption{The first-order coefficients and scatter across the sample regions of the spectra from \figurename~\ref{fig:norm}, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \logg, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  \textcolor{blue}{The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively}. \textcolor{blue}{The \teff\ coefficient has been multiplied by a factor of 1000 simply to show this coefficient on a similar scale to the other coefficients.} This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see \sectionname~\ref{sec:ApogeeContinuum}).}
 \label{fig:coeffs}
 \end{figure}
 
