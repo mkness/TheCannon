@@ -367,7 +367,7 @@
     \begin{itemize}
     \item model trains in \emph{seconds} (thousands of least-square fits)
     \item \tc\ labels all 56,000 stars in \apogee\ DR10 in two hours
-    \item (on a laptop)
+    \item (pure Python on a laptop)
     \end{itemize}
   \item labels appear sensible
     \begin{itemize}
@@ -449,10 +449,23 @@
     \item Bovy \etal, 2011 (ApJ 729 141), 2012 (ApJ 749 41)
     \end{itemize}
   \item CMB foregrounds
-  \item<2-> \emph{key idea}:
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{data-driven models}
+  \begin{itemize}
+  \item incredibly powerful tools
     \begin{itemize}
-    \item bespoke systems---build in your prior knowledge
-    \item (especially as regards noise)
+    \item clustering, \emph{label transfer}, prediction, de-noising
+    \end{itemize}
+  \item make use of things you strongly believe
+    \begin{itemize}
+    \item especially the noise model
+    \end{itemize}
+  \item every situation will be \emph{bespoke}
+    \begin{itemize}
+    \item expect to get dirty
     \end{itemize}
   \end{itemize}
 \end{frame}
