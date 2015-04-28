@@ -643,7 +643,7 @@ consistent continuum-normalization for all spectra, both of the reference and of
 \label{fig:coeffs}
 \end{figure}
 
-\textcolor{blue}{To demonstrate the fit of the model to the \apogee\ spectra at test time, using the continuum normalised test stars shown in Figure 3, we plot the best fit model and with the corresponding spectra for the regions A and B highlighted in Figure 3. This Figure demonstrates the model is an excellent fit to the data: the three labels used to  describe the flux  are sufficient. \textbf{DWH is there anything else you want to say here?} }
+\textcolor{blue}{To demonstrate the fit of the model to the \apogee\ spectra at test time, using the continuum normalised test stars shown in Figure 6, we plot the best fit model and with the corresponding spectra for the regions A and B highlighted in Figure 3. This Figure demonstrates the model is an excellent fit to the data: the three labels used to  describe the flux  are sufficient. \textbf{DWH is there anything else you want to say here?} }
 
 
 \begin{figure}[!h]
@@ -678,15 +678,16 @@ We also have run \tc\ through the additional commissioning stars available in th
  comprises 55,000 DR10 stars in 170 fields. 
 
 \textcolor{blue}{These results of \tc\ for all DR10 stars for which we return parameters are provided online in \tablename~\ref{tab:online}. 
-Stars with \badstar\ flag set (in \aspcapflag) may have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. The velocity scatter ($\sigma_v$) from the \aspcap\ results as well as the \texttt{APOGEE TARGET2} flag (TARG2) are provided in these tables. We provide two columns in this table that reflect the labels of the test object with respect to the training set. We provide an 'extrapolation flag' EFLAG', which indicates if the test star lies outside of the label-space of the reference objects. We also determine a distance measurement, defined as the distance between the test star and the nearest reference object, normalised to the maximum distance, so values lie between 0 and 1. }
+We include a number of  important \aspcap\ flags in the online table. Stars with \badstar\ flag set (in \aspcapflag) may have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. The velocity scatter ($\sigma_v$) from the \aspcap\ results as well as the \textit{APOGEE TARGET2} flag (TARG2) are provided in these tables. We provide two columns in this table that we have calculated which reflect the labels of the test object with respect to the training set. We provide an extrapolation flag, or EFLAG in the table, which indicates if the test star lies outside of the label-space of the reference objects (set to 1 if so). We also determine a distance measurement, defined as the distance between the test star (with labels 
+\teff$_{(test)}$,  \logg$_{(test)}$, \feh$_{(test)}$) and the nearest reference object (with labels \teff$_{(ref)}$,  \logg$_{(ref)}$, \feh$_{(ref)}$)), normalised to the maximum distance, so values lie between 0 and 1. }
 
 \begin{equation}
-\textcolor{blue}{dist = |min(\frac{(T_{test} - T_{ref})^2}{\sigma^2_{T_{ref}}} + \frac{(g_{test} - g_{ref})^2}{\sigma^2_{g_{ref}}} + \frac{([Fe/H]_{test} - [Fe/H]_{ref})^2}{\sigma^2_{[Fe/H]_{ref}}})|}
+\textcolor{blue}{dist = |min(\frac{(\teff_{(test)} - \teff_{(ref)})^2}{\sigma^2_{\teff_{(ref)}}} + \frac{(\logg_{(test)} - \logg_{(ref)})^2}{\sigma^2_{g_{(ref)}}} + \frac{([Fe/H]_{(test)} - [Fe/H]_{(ref)})^2}{\sigma^2_{[Fe/H]_{(ref)}}})|}
 \end{equation}
 
 
-For the 30,500 stars with parameters provided by DR10, we find we reproduce the \apogee\ labels as follows: 
-\teff\ = +12 K $\pm$ 87 K , \logg\ = --0.04 dex $\pm$ 0.18 dex and \feh\ = +0.01 $\pm$ 0.10 dex in \feh. 
+For the \textcolor{blue}{28,500} stars with parameters \textcolor{blue}{(unflagged as STAR BAD)} provided by DR10, we find we reproduce the \apogee\ labels as follows: 
+\textcolor{blue}{\teff\ = +12 K $\pm$ 84 K , \logg\ = --0.04 dex $\pm$ 0.18 dex and \feh\ = +0.01 $\pm$ 0.10 dex in \feh. }
 The rms errors are comparable to the error estimates for \apogee\ parameters in \citet{Meszaros2013} 
 of $\delta$(\teff) $<$ 150 K, $\delta$(\logg) $<$ 0.2 dex and $\delta$(\feh) $<$ 0.1 dex in. 
 The typical internal precision on the measured parameters from \tc\ is $\delta$(\teff) $<$ 5.6 K, $\delta$(\logg) $<$ 0.01 dex and $\delta$(\feh) $<$ 0.006 dex.
@@ -719,7 +720,7 @@ We exclude the stars flagged as bad overall  using the \badstar\ flag from \aspc
 
 In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ for the 1400 stars from the six sample fields as a function of \aspcap\ \teff, \logg\ and \feh. There are weak trends; at low \teff\ $\sim$ 3700 K, we find temperatures about 100 K cooler than \apogee\ and at low \logg\ we find $\sim$ 0.15 dex larger \logg\ than \apogee. At the lowest metallicities \feh\ $<$ --2.0, we typically report higher metallicities on the order of 0.05 to 0.3 dex.
 
-\textcolor{blue}{We tested a range of polynomial orders to investigate the systematic trends seen in Figure \ref{fig:cplot} to evaluate if the structure seen in these figures is derived from the proximity to the grid edge of the \apogee\ synthetic spectral grid or alternatively the rigidity of the model. By increasing the order of the polynomial, and particularly adding a cubed temperature coefficient, the structure seen at low temperatures can be removed. However, very small perturbations are introduced into the other labels with this higher-order model. Given the limited size of the training set and that the label-scale of \apogee\ in the \logg-\teff\ plane does not fall onto isochrones with the calibrated parameters (see Figures 9 and 10, indicating there may be some issue with the label-scale of the DR10 calibrated-labels), we do not try to optimise the model to obtain the best order to remove any of these trends in this case.  We highlight however,  that for the polynomial model, increasing to higher terms or additional cross terms can add flexibility to the model and an optimal polynomial order will be dependent on the wavelength region, resolution and label-space of the survey. The appropriate way to test this is at the take-one-out training validation stage. We see similar weak trends in this validation, in the \teff\ label at test time, as shown in Figure 4. However, the edges of the temperature sequence are populated only a few stars and two clusters, the metal-rich main sequence stars of the Pleaides at high temperatures and the most metal rich cluster, NGC6791 at low temperatures: we do not propose to optimise the polynomial order based on these trends given the limited number of reference objects at the edges of the label-space. These trends can be mitigated with higher order terms in the model, or removed by adjusting the input labels of the training set.}  \textbf{DWH can you add something here?}
+\textcolor{blue}{We tested a range of polynomial orders to investigate the systematic trends seen in Figure \ref{fig:cplot} to evaluate if the structure seen in these figures is derived from the proximity to the grid edge of the \apogee\ synthetic spectral grid or alternatively the rigidity of the model. By increasing the order of the polynomial, and particularly adding a cubed temperature coefficient, the structure seen at low temperatures can be removed. However, very small perturbations are introduced into the other labels with this higher-order model. Given the limited size of the training set and that the label-scale of \apogee\ in the \logg-\teff\ plane does not fall onto isochrones with the calibrated parameters (see Figures 9 and 10, indicating there may be some issue with the label-scale of the DR10 calibrated-labels), we do not try to optimise the model to obtain the best order to remove any of these trends in this case.  We also note that outside of the label-range of the reference objects, the \aspcap\ labels are similarly extrapolated in label-space.  We highlight however, that for the polynomial model, increasing to higher terms or additional cross terms can add flexibility to the model and an optimal polynomial order will be dependent on the wavelength region, resolution and label-space of the survey. The appropriate way to test this is at the take-one-out training validation stage. We see similar weak trends in this validation, in the \teff\ label at test time, as shown in Figure 4. However, the edges of the temperature sequence are populated only a few stars and two clusters, the metal-rich main sequence stars of the Pleaides at high temperatures and the most metal rich cluster, NGC6791 at low temperatures: we do not propose to optimise the polynomial order based on these trends given the limited number of reference objects at the edges of the label-space. These trends can be mitigated with higher order terms in the model, or removed by adjusting the input labels of the training set.}  \textbf{DWH should you add something here?}
 
 
 %makeplot_fits_v19_bw.py
@@ -791,11 +792,14 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 \label{fig:iso2}
 \end{figure}
 
-\textcolor{blue}{Although the labels lie in physically plausible locations in label-space, the fidelity of the labels in extrapolated space is uncertain. To examine the sensitivity to the labels that are retuned at the test step across the label-space of the test objects, we made a three dimensional grid in \teff, \logg\ and \feh of 100 K, 0.25 dex and 0.25 dex respectively and drew one star from within each bin. These stars were then used in the test step for a bootstrapping of the reference objects, performed 20 times and the dispersion in the output labels for these test objects is shown in Figure \ref{fig:sigma}. The location of the reference objects is indicated in the grey shaded regions. These figures show that in extrapolated regions, the scatter on the returned labels is higher, which is a figure of merit of their reliability. Via this test, it is possible to assign stars in every bin a given uncertainty in \teff, \logg\ and \feh\ due to the sparse sampling of the training set. In general, these values will be directly dependent on the survey for which labels are being returned, and highlights the regions of missing label space where stronger constraints on the labels are needed; that is reference objects. }
+\textcolor{blue}{Although the labels lie in physically plausible locations in label-space, the fidelity of the labels in extrapolated space is uncertain. To examine the sensitivity to the labels that are retuned at the test step across the label-space of the test objects, we made a three dimensional grid in \teff, \logg\ and \feh, of 100 K, 0.25 dex and 0.25 dex respectively and drew one star from within each bin. These stars were then used in the test step for a bootstrapping of the reference objects, performed 20 times and the dispersion in the output labels for these test objects is shown in Figure \ref{fig:sigma}. The location of the reference objects is indicated in the grey shaded regions. These figures show that in extrapolated regions, the scatter on the returned labels is higher, which is a figure of merit of their reliability. With this test, it is possible to assign stars in every bin a given uncertainty in \teff, \logg\ and \feh\ due to the sparse sampling of the training set. In general, these values will be directly dependent on the survey for which labels are being returned, and highlights the regions of missing label space where stronger constraints on the labels are needed; that is reference objects. }
+
+\textcolor{blue}{In the regions where the labels from \tc\ are uncertain, the labels from the \aspcap\ pipeline of \apogee\ are similarly uncertain. Outside of these reference objects, both surveys rely on extrapolation of labels, with \tc\ we use the extrapolation of the spectral model, with \aspcap\ the extrapolation occurs at the label-stage (see Meszaros et al., 2013). In Figure \ref{fig:sigma2} we demonstrate the difference in the stellar labels from \tc\ compared to \aspcap\ across the \teff-\logg\ plane of the survey. It is only in these extrapolated regions that the labels from \tc\ and \aspcap\ deviate beyond the estimated errors of the \aspcap\ pipeline. Again, in these regions, neither survey is calibrated to any ground truth. These figures also show that the deviations between \tc\ and \aspcap\ are systematic and not random. }
 
 \textbf{HWR please read this you may wish to add something here} 
 
 
+%run makeoniso+ on makeonisochrone_aftersubmit_fit_normed.py  in TheCannon/code 
 \begin{figure}[!h]
 \centering
   \includegraphics[scale=0.26]{plots/aftersubmit/stdtest_T_normed.png}
@@ -803,6 +807,18 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
     \includegraphics[scale=0.26]{./plots/aftersubmit/stdtest_feh_normed.png}
     \caption{\textcolor{blue}{The standard deviation in the labels returned in \teff, \logg\ and \feh, shown in the \teff$-$\logg\ plane, normalised by the optimisation error on each measurement, for 20 bootstrapping tests of the training set. The representative sample of $\sim$ 670 stars shown here has been drawn from an equal sampling of a grid spaced by 100 K in \teff, 0.25 dex in \logg\ and 0.25 dex in \feh. The location of the reference objects is shown in the grey shaded regions in the panel. Note the narrow region of reference objects also on the main sequence. The highest scatter in the labels is seen for regions where the labels are extrapolated. These figures are shown for the isochrone-corrected labels discussed in Section 2.4.}}
     \label{fig:sigma}.
+\end{figure}
+
+
+
+%run -i makeiso_rmsdiff.py in aftersumibt directory
+\begin{figure}[!h]
+\centering
+  \includegraphics[scale=0.26]{./plots/aftersubmit/t_diff.png}
+    \includegraphics[scale=0.26]{./plots/aftersubmit/g_diff.png}
+    \includegraphics[scale=0.26]{./plots/aftersubmit/feh_diff.png}
+    \caption{\textcolor{blue}{The difference in labels from \tc\ and \aspcap\, demonstrating the regions of extrapolation where the difference in the labels extends beyond the estimated errors of the methods, due to the limited sampling of the reference objects which does not fully cover the label-space of the survey.}}
+    \label{fig:sigma2}.
 \end{figure}
 
 
