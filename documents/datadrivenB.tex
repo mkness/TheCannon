@@ -53,7 +53,7 @@
 \author{M.~Ness\altaffilmark{1},  
 David~W.~Hogg\altaffilmark{1,2,3}, 
 H.-W.~Rix\altaffilmark{1}, 
-A.~Y.~Ho\altaffilmark{1}, 
+Anna.~Y.~Q.~Ho\altaffilmark{1}, 
 G.~Zasowski\altaffilmark{4,5}}
 \altaffiltext{1}{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg, Germany}
 \altaffiltext{2}{Center for Cosmology and Particle Physics, Department of Phyics,
@@ -67,8 +67,8 @@ G.~Zasowski\altaffilmark{4,5}}
 \begin{abstract}%
 New spectroscopic surveys offer the promise of stellar
 parameters and abundances (`stellar labels') for hundreds of thousands
-of stars: this poses a formidable spectral modeling challenge. In many cases, there is a sub-set of \emph{reference}
-objects for which the stellar labels are known with high(er)
+of stars; this poses a formidable spectral modeling challenge. In many cases, there is a sub-set of \emph{reference
+objects} for which the stellar labels are known with high(er)
 fidelity. We take advantage of this with \tc , a new data-driven
 approach for determining stellar labels from spectroscopic data.
 \tc\ learns from the `known' labels of reference stars 
@@ -120,10 +120,10 @@ As a consequence, it happens that different research groups obtain discrepant re
 
 Stellar labels are commonly determined by fitting a grid of model spectra (with known labels) to the data using some minimisation technique, often restricted to a masked portion of the spectrum that is focused on the absorption line (regions) deemed to be most reliable or relevant. 
 Stated minimal signal-to-noise (hereafter SNR) requirements to obtain robust labels in this way are $SNR\sim 100$ per resolution element, especially if the labels are to include individual element abundances. 
-Often, a post-calibration procedure is applied to bring the stellar labels derived by such a fitting pipeline in accord with external information of higher fidelity: for example with stellar labels from benchmark stars studied at high resolution or well characterised open and globular cluster stars \citep[e.g.,][]{Meszaros2013, Kord2013, Joffre2014}. \textcolor{blue}{These calibration stars are also used by surveys to provide a reasonable estimate of their label accuracy}. 
+Often, a post-calibration procedure is applied to bring the stellar labels derived by such a fitting pipeline in accord with external information of higher fidelity: for example with stellar labels from benchmark stars studied at high resolution or well characterised open and globular cluster stars \citep[e.g.,][]{Meszaros2013, Kord2013, Jofre2014}. \textcolor{blue}{These calibration stars are also used by surveys to provide a reasonable estimate of their label accuracy}. 
 In practice, different surveys or different pipelines end up delivering labels with different calibrations,
 causing their stellar parameters or their abundances to be on slightly different scales.
-This complicates inter-survey comparisons and constitutes major challenge of the era of such large datasets. 
+This complicates inter-survey comparisons and constitutes a major challenge of the era of such large datasets. 
 
 In this paper we propose and lay out a data-driven approach to deriving stellar labels from stellar spectra in the context of large spectroscopic surveys,
 which we dub ``\tc''\footnote{The name \tc\ is inspired by the astronomer Annie Jump Cannon,
@@ -137,7 +137,8 @@ In this context, the term ``\emph{labels}'' refers to the pieces of information
 that characterize and determine a stellar spectrum; these labels are commonly and sensibly split into \emph{stellar parameters} and \emph{element abundances}, although in the context of \tc\ it makes sense to treat them on a par. 
 In most cases, it suffices to think of the labels as \teff , \logg, and the element abundances \xfe, athough stellar rotation, micro-turbulence, age, and so forth can also be thought of as labels.
 It is central to the approach we lay out here that objects with the same labels have (nearly) identical spectra and that spectra vary smoothly with label changes. 
-This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are (for example) only \teff, \logg\ and \feh\ then this is an approximation. \textcolor{blue}{These three labels are typically described as stellar parameters as indeed for red giant stars these labels sufficiently describe the behaviour of the overall spectral flux and so describe the overall parameters of the star}. 
+This must be true, if the set of labels is comprehensive enough so that it fully specifies the star; but if the labels are (for example) only \teff, \logg\ and \feh\ then this is an approximation. 
+\textcolor{blue}{These three labels are typically described as stellar parameters and are by far the most important to describe the overall behaviour of the spectral flux of red giant stars.} 
 
 There are fundamentally two steps in \tc. 
 The first step, or \textit{training step}, is to create from the spectra of the reference objects a very flexible generative model (with $\sim 80,000$ parameters) that describes a probability density function (pdf) for the flux at every pixel in the continuum-normalized spectrum as a function of the labels.
@@ -152,21 +153,24 @@ We take the generative model for the continuum-normalized flux at each of $N_\pi
 They may be members of star clusters: there, external data and the fact that clusters are in good approximation single stellar populations (which have to fall onto an isochrone) lend credibility to their stellar labels. 
 Alternatively, reference objects could be stars for which labels have been derived separately from spectra of particularly high SNR, or at other ``easier'' or more extensive wavelength regimes (for example, in the optical as opposed to the infrared).  Finally, they may be subsets of stars for which other approaches to get stellar parameters (for example, astroseismology) provide accurate stellar labels.
 
-With this two-step procedure of training on spectra of reference objects and then transferring the label information to the survey objects, \tc\ falls into the class of \emph{supervised methods} in machine learning. 
-However, what we implement is very different in a crucial way from standard supervised methods for regression, such as support vector machines, random forests, and deep learning.
-These other methods also try to fit a very flexible model to the training data at training time
-and deploy that model on the test data at test time.
-The important difference, however, is that \tc\ is a \emph{generative model} of the observed spectra;
-that is, it constructs, as a function of labels, a probability density function (pdf) for the observed
-flux as a function of wavelength. 
-This makes \tc\ a bespoke method, not cleanly falling into any established machine-learning methodology.
-However, it gives us the enormous advantage in that we can account for the uncertainties in the spectral data,
-including all the issues of heteroscedasticity and missing data.
-It also makes the method agnostic about SNR.
-This point is technical, but important: in many real cases the training data will be much higher in SNR than the test data
-(standard stars tend to be bright and well observed).
-A method that does not properly account for the observational uncertainties will not transfer labels from high SNR reference objects to lower SNR survey objects with high fidelity.
-In what follows, we show that \tc\ behaves very well as the SNR (or observing time) is decreased.
+\tc\ is a \emph{generative model} of the observed spectra; that is, it constructs, as a function of labels, a probability density function (pdf) for the observed flux as a function of wavelength. 
+In many real cases the training data will be much higher in SNR than the test data (standard stars tend to be bright and well observed) and with \tc\ it is possible to transfer the labels from high SNR reference objects to lower SNR survey objects with high fidelity. In what follows, we show that \tc\ behaves very well as the SNR (or observing time) is decreased.
+
+%With this two-step procedure of training on spectra of reference objects and then transferring the label information to the survey objects, \tc\ falls into the class of \emph{supervised methods} in machine learning. 
+%However, what we implement is very different in a crucial way from standard supervised methods for regression, such as support vector machines, random forests, and deep learning.
+%These other methods also try to fit a very flexible model to the training data at training time
+%and deploy that model on the test data at test time.
+%The important difference, however, is that \tc\ is a \emph{generative model} of the observed spectra;
+%that is, it constructs, as a function of labels, a probability density function (pdf) for the observed
+%flux as a function of wavelength. 
+%This makes \tc\ a bespoke method, not cleanly falling into any established machine-learning methodology.
+%However, it gives us the enormous advantage in that we can account for the uncertainties in the spectral data,
+%including all the issues of heteroscedasticity and missing data.
+%It also makes the method agnostic about SNR.
+%This point is technical, but important: in many real cases the training data will be much higher in SNR than the test data
+%(standard stars tend to be bright and well observed).
+%A method that does not properly account for the observational uncertainties will not transfer labels from high SNR reference objects to lower SNR survey objects with high fidelity.
+%In what follows, we show that \tc\ behaves very well as the SNR (or observing time) is decreased.
 
 In this paper we use the \apogee\ survey as the sole example. 
 However, \tc\ can be applied to any stellar survey.  
@@ -174,15 +178,15 @@ However, \tc\ can be applied to any stellar survey.
 Our most basic implementation of \tc\ that we present includes only three labels, but this can easily be extended to additional labels  (for example, \alphafe, \xfe) and also more comprehensive models (for example, Gaussian processes). 
 Additionally, as we are using the information in every pixel, this methodology is effective at determining labels at lower SNR than minimisation techniques.
 
-\textcolor{blue}{ \tc\ is similar to the MATrix Inversion for Spectral SythEsis (\matisse) and  University of Lyon Spectroscopic analysis Software \textit{ULySS} procedure
-for derivation of stellar parameters \citep{RB2006} and \citep{Koleva2009}} in that it uses the full spectrum
+\textcolor{blue}{ \tc\ is similar to the MATrix Inversion for Spectral SythEsis (\matisse) and  University of Lyon Spectroscopic analysis Software (\textit{ULySS}) procedure
+for derivation of stellar parameters \citep{RB2006, Koleva2009}} in that it uses the full spectrum
 (and not just a line list) for label determination.
 However, \matisse\ and \textit{ULySS} employ a large grid of synthetic spectra
-and is thus limited in all the ways that physics-based methods are limited.
+and is thus limited in all the ways that physics-based methods are limited. \textcolor{blue}{ The method outlined in \citet{fio2007} proposes the possibility of using real data as a model but implements a different, principle component analysis technique to estimate stellar labels.}
 A big part of why \tc\ is successful at lower SNR
 is that it uses all of the pixels in the data.
 
-We have adopted a bottom-up approach for \tc, starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation which works.  \textcolor{blue}{The aim of this paper is not to explore all possible models that may work for this approach, nor to converge on an optimal model, but use the simplest model that validates our methodology as successful. With additional complexity, for example partial labels on the reference objects and adding errors to the labels of these objects, it may be preferential to adopt a different form of model entirely, such as a Gaussian Process, considered in the Discussion Section. One key advantage of the simple model we adopt is in it's relative simplicity and this makes \tc\ computationally trivial to run to return stellar labels for large datasets.} 
+We have adopted a bottom-up approach for \tc, starting with the most basic implementation and successively adding complexity to the generative model to determine the least complex implementation that works.  \textcolor{blue}{The aim of this paper is not to explore all possible models that may work for this approach, nor to converge on an optimal model, but to use the simplest model that validates the underlying methodology as successful. With additional complexity, for example partial labels on the reference objects and adding errors to the labels of these objects, it may be preferential to adopt a different form of model entirely, such as a Gaussian Process, considered in the Discussion Section. One key advantage of the simple model we adopt is in its relative simplicity, which makes \tc\ computationally trivial to run to return stellar labels for large datasets.} 
 
 In laying out the methodology of this approach we firstly describe the \apogee\ dataset and the way we process the data for both reference objects (542 stars) and survey objects ($\sim$ 55,000 stars from DR10). 
 We then describe perhaps the simplest implementation of label-transfer possible, using a first-order linear model. We found this first-order model to be insufficiently flexible to describe the labels of the stars and extended our model to quadratic form, which satisfactorily describes the label-space of the training data.
@@ -214,7 +218,7 @@ inverse variance and weighting of that pixel becomes $\sim$ 0. We find that adop
 The resampled, reduced and combined spectra are available for about 47,000 survey stars in 150 DR10 fields in the \aspcapstar\ files. There are a further 9000 star observed in commissioning mode only, which are available in the radial velocity combined but not continuum-normalized data format in the \apstar\ files.
 
 We also apply \tc\ to the commissioning data and caution the reader about the fidelity of these results, as the Line Spread Function (LSF) of the commissioning data are different from the main survey and consequently different from the reference dataset of stars in the training step. Those objects are flagged as commissioning data (see Table 1). 
-\textcolor{blue}{Typically, the LSF for reference and all survey objects is the same, and as \tc\ is made-to-measure this is intrinsic to the reference objects and not a label to be fit for. This assumption breaks down if the survey stars are observed under a different instrumental setup to the reference objects, as is the case with commissioning data from \apogee.}  
+\textcolor{blue}{Typically, the line spread function for reference and all survey objects is the same within a given survey. As \tc\ calculates a separate spectral model for each survey it is applied to, survey homogeneity is sufficient; we do not need to know the actual LSF. This assumption breaks down if the survey stars are observed under a different instrumental setup to the reference objects, as is the case with commissioning data from \apogee. In this case, the LSF would have to be adjusted in a separate step, not introduced as a separate label; labels in the current context are strictly properties of the stars, not the experimental set-up.}  
 
 \subsection{Choosing Reference Objects for the Training Step}
 \label{sec:ReferenceObjects}
@@ -232,7 +236,7 @@ for a set of reference objects can be built from
 members of well-studied open and globular clusters that have been observed in the context of the survey \citep{Zaso2013, Meszaros2013}.
 There is a variety of reasons why the stellar labels for cluster stars may be particularly accurate and robust.
 For one, they could have their labels derived from independent, high resolution spectral analysis of these
-stars, e.g. from observations in a well understood portion of the optical wavelength region. The
+stars, for example, from observations in a well understood portion of the optical wavelength region. The
 labels are of course a property of the
 star, and hence do not have to arise from the survey data at hand. They may have been derived from different data.
 
@@ -265,11 +269,11 @@ We exploit that expectation in the case of \apogee\ and define ``Isochrone-corre
 
 \tc\ operates on continuum-normalized spectra.
 Continuum-normalization that is based on quantiles of the data (medians or 90-th percentiles or the like)
-are very SNR dependent, e.g. because pixels that are clearly \emph{not} continuum in high SNR
+are very SNR dependent, for example, because pixels that are clearly \emph{not} continuum in high SNR
 spectra are completely consistent with being continuum at lower SNR.
 Therefore, to make \tc\ as independent of SNR as possible,
 we base the continuum estimation on a pre-tabulated set of wavelength locations that we know
-(iteratively, from running \tc\ itself) are not strongly affected by absorption lines.
+(iteratively, from running \tc\ itself, see Section~\ref{sec:ApogeeContinuum}) are not strongly affected by absorption lines.
 
 To initialize the continuum-pixel determination,
 we define a preliminary pseudo-continuum-normalization by 
@@ -303,7 +307,7 @@ in any survey. We discuss two options here for \apogee .
 First, we adopt the DR10 \textit{``\aspcap-corrected''} stellar parameters \citep{Meszaros2013} that are available for each of the reference objects as their labels, in order to place the output of \tc 's test step for the survey objects on the \apogee\ \aspcap\ scale (\figurename~\ref{fig:trainingaspcap}). ``\aspcap-corrected'' labels were not available for the cluster comprised of main sequence stars, the Pleiades cluster and for this cluster we made our own corrections in \teff\ and \logg\ and assumed a single literature value for the \feh\ label, as described below. 
 The reference set of stars we use is the very same stars used by \apogee\ to post-calibrate the output of \aspcap\ to a physical stellar parameter scale \citep{Meszaros2013}.
 Adopting the \aspcap-corrected labels provided and documented by \apogee\ has the important advantage 
-that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer from only 542 stars. \textcolor{blue}{A limitation of this reference set of objects is that main sequence stars are not well sampled, which as we discuss in Section 5, limits our ability to determine labels for these stars at the test step. }
+that we can test exactly how well we can reproduce the results from \apogee\ for the survey stars via label-transfer from only 542 stars. \textcolor{blue}{A limitation of this reference set of objects is that main sequence stars are not well sampled, which, as we discuss in Section 5, limits our ability to determine labels for these stars at the test step. }
 
 The corrections to the labels made by \apogee\ described in \citet{Meszaros2013} are based on the cluster data and applied to the immediate output of the \aspcap\ pipeline that arose from comparisons to a library of stellar models.
 Temperature corrections are determined by comparing the infrared flux temperatures of the stars \citep{gonzalez2009}, \logg\ corrections are from the offset between \aspcap\ results and Kepler astroseismic results for stars in common and \feh\ corrections are from the difference between the \aspcap\ and  the literature value of each cluster.  
@@ -337,7 +341,7 @@ from the spectra and stellar labels of the reference objects in the training ste
 Such a generative model is based on two basic notions: first, that the continuum-normalized spectra of
 stars with identical labels look near-identical at every pixel, save for the observational errors
 and some intrinsic scatter. This must be true if the set of labels is exhaustive. 
-In practice, that is an approximation, as e.g. the spectra of stars with identical \teff , \logg \ and \feh\ may differ, 
+In practice, that is an approximation, as for example, the spectra of stars with identical \teff , \logg \ and \feh\ may differ, 
 as these stars have different \alphafe , age or rotation. Second, we presume that the expected flux at every pixel changes continuously
 with changes in the labels.
 Importantly, the model is a probabilistic generative model that produces,
@@ -346,7 +350,7 @@ a pdf for the flux, with an expectation value (mean) and a variance.
 
 We presume there are $N_\rfn$ reference objects $n$, each of which has
 a continuum-normalized flux measurement $f_{n\lambda}$ at wavelength
-$\lambda$. Each of the training spectra $n$ has $K$ labels $\starlabel_{nk}$, each of which
+$\lambda$. Each of the training spectra (of index) $n$ has $K$ labels $\starlabel_{nk}$, each of which
 is (for now) presumed to have negligible uncertainty and contained (possibly with transformations; given below)
 within a label vector $\starlabelvec_n$.
 
@@ -401,7 +405,7 @@ This model leads to the single-pixel log-likelihood function
 \end{eqnarray}
 
 The vector $\set{f}_\lambda$ is the set of spectral flux values for
-all $N$ objects at the one wavelength $\lambda$.
+all $N$ objects at the one wavelength $\lambda$. \textcolor{blue}{This is a likelihood function for the labels and parameters:  It provides a probability density function evaluation at the data given settings of all the labels and parameters.}
 We can set the coefficients $[\set{\theta}_\lambda,s_\lambda^2]$ either by
 optimizing the likelihood (\ref{eq:like}) over all reference objects or by applying priors and
 performing some form of probabilistic inference (with, say, Markov
@@ -557,6 +561,7 @@ becomes
 
 
 We will use this quadratic-in-labels spectral model throughout the rest of the paper.  The exploration of higher-order polynomials for the spectral model at every pixel, or even a Gaussian process at every pixel, is beyond the scope of this paper. 
+\textcolor{blue}{For any other application the complexity of the spectral model (for example, is a quadratic model good enough?) should be examined.}
  
 \subsection{Validation on Take-One-Out Stars from the Reference Objects}
 \label{sec:take-one-out}
@@ -613,7 +618,7 @@ We now turn to illustrating where the information that led to the accurate label
 The top panel of \figurename~\ref{fig:coeffs} shows the zeroth order-coefficient vector $\theta_0$, or the baseline spectrum, of the model. 
 The mid panel shows the coefficients that are simply linear in \teff, \logg\ and \feh.
 In the top panel of \figurename~\ref{fig:coeffs}, the red, blue and green shaded wavelength regions with the 5\% 
-highest coefficient values $|\theta_{1,2,3}|$ in the \feh, \teff\ and \logg\ labels respectively. 
+highest coefficient values $|\theta_{1,2,3}|$ in the \feh, \logg\ and \teff\ labels respectively. 
 These regions indicate where the spectra's flux levels strongly vary with these labels.
 This also highlights that different parts of the spectrum depend differently on the labels. Note there are many regions where the \feh\ label dominates in contribution to the flux.
 For the first label vector for example in the middle panel of \figurename~\ref{fig:coeffs}, 
@@ -639,17 +644,17 @@ consistent continuum-normalization for all spectra, both of the reference and of
 \begin{figure}[h!]
 \centering
     \includegraphics[width=\hsize]{./plots/aftersubmit/fig5.png}
-  \caption{The first-order coefficients and scatter across the sample regions of the spectra from \figurename~\ref{fig:norm}, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \logg, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  \textcolor{blue}{The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \teff\ and \logg\ labels respectively}. \textcolor{blue}{The \teff\ coefficient has been multiplied by a factor of 1000 simply to show this coefficient on a similar scale to the other coefficients.} This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see \sectionname~\ref{sec:ApogeeContinuum}).}
+  \caption{The first-order coefficients and scatter across the sample regions of the spectra from \figurename~\ref{fig:norm}, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \logg, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale.  \textcolor{blue}{The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \logg\ and \teff\ labels respectively}. \textcolor{blue}{The \teff\ coefficient has been multiplied by a factor of 1000 simply to show this coefficient on a similar scale to the other coefficients.} This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note that the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels (see \sectionname~\ref{sec:ApogeeContinuum}).}
 \label{fig:coeffs}
 \end{figure}
 
-\textcolor{blue}{To demonstrate the fit of the model to the \apogee\ spectra at test time, using the continuum normalised test stars shown in Figure 6, we plot the best fit model and with the corresponding spectra for the regions A and B highlighted in Figure 3. This Figure demonstrates the model is an excellent fit to the data: the three labels used to  describe the flux  are sufficient. \textbf{DWH is there anything else you want to say here?} }
+\textcolor{blue}{To demonstrate the fit of the model to the \apogee\ spectra at test time, using the continuum normalised test stars shown in Figure 3, we plot the best fit model and the corresponding spectra for the regions A and B highlighted in this Figure. This is shown in Figure 6, which demonstrates that the model is an excellent fit to the data: the three labels used to describe the flux are sufficient. }
 
 
 \begin{figure}[!h]
 \centering
  \includegraphics[scale=0.4]{./plots/aftersubmit/data_model_cyan.png}
-\caption{\textcolor{blue}{The four stars in Figure 3 across narrow wavelength intervals A and B, as described in Section 2.3. The stars are plotted in black with the models in cyan, including the span of the scatter of the fit, generated by \tc.}}
+\caption{\textcolor{blue}{The four stars in Figure 3 across narrow wavelength intervals A and B, as described in Section 2.3. The spectra of the stars are plotted in black with the models in cyan, including the span of the scatter of the fit, generated by \tc.}}
 \label{fig:modeldata}
 \end{figure}
 
@@ -677,36 +682,42 @@ made available in the (non pseudo-continuum-normalized) \textit{apStar} files.
 We also have run \tc\ through the additional commissioning stars available in the \apstar\ files across the fields and in total this
  comprises 55,000 DR10 stars in 170 fields. 
 
-\textcolor{blue}{These results of \tc\ for all DR10 stars for which we return parameters are provided online in \tablename~\ref{tab:online}. 
-We include a number of  important \aspcap\ flags in the online table. Stars with \badstar\ flag set (in \aspcapflag) may have unphysical stellar parameters and commissioning stars are marked with ``C'', the fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. The velocity scatter ($\sigma_v$) from the \aspcap\ results as well as the \textit{APOGEE TARGET2} flag (TARG2) are provided in these tables. We provide two columns in this table that we have calculated which reflect the labels of the test object with respect to the training set. We provide an extrapolation flag, or EFLAG in the table, which indicates if the test star lies outside of the label-space of the reference objects (set to 1 if so). We also determine a distance measurement, defined as the distance between the test star (with labels 
-\teff$_{(test)}$,  \logg$_{(test)}$, \feh$_{(test)}$) and the nearest reference object (with labels \teff$_{(ref)}$,  \logg$_{(ref)}$, \feh$_{(ref)}$)), normalised to the maximum distance, so values lie between 0 and 1. }
+\textcolor{blue}{These results of using \tc\ to return labels for all DR10 stars is provided online in \tablename~\ref{tab:online}. 
+We provide two columns in this table which indicate the label-space returned for each test object, with respect to the reference objects in the training set. We provide an extrapolation flag, EFLAG, in the table, which indicates if the test star lies outside of the label-space of the reference objects (set to 1 if so). We also determine a distance measurement, $d_{{ref}}$ defined as the distance between the test star (with labels  \teff$_{(test)}$,  \logg$_{(test)}$, \feh$_{(test)}$) and the nearest reference object (with labels \teff$_{(ref)}$,  \logg$_{(ref)}$, \feh$_{(ref)}$), normalised to the maximum distance, so values lie between 0 and 1 (see Equation~\ref{eq:dist}).
+Additionally, in the online version of this table, we include a number of  important \aspcap\ flags in the online table. Stars with \badstar\ flag set (in \aspcapflag) may have unphysical stellar parameters and commissioning stars are marked with ``C''. The fidelity of the commissioning stars is uncertain given their different LSF from survey test and training data. The velocity scatter ($\sigma_v$) from the \aspcap\ results as well as the \textit{APOGEE TARGET2} flag (TARG2) are also included. }
 
+\textcolor{blue}{
 \begin{equation}
-\textcolor{blue}{dist = |min(\frac{(\teff_{(test)} - \teff_{(ref)})^2}{\sigma^2_{\teff_{(ref)}}} + \frac{(\logg_{(test)} - \logg_{(ref)})^2}{\sigma^2_{g_{(ref)}}} + \frac{([Fe/H]_{(test)} - [Fe/H]_{(ref)})^2}{\sigma^2_{[Fe/H]_{(ref)}}})|}
+d_{{ref}} =  \substack{\mbox{argmin}\\{\left\{{\mbox{over all n}}\right\}}}
+\sum_{1}^{k}
+\left( \frac{\Delta \ell_{kn}}{var_k}\right)^2
+ \label{eq:dist}
 \end{equation}
+}
+\textcolor{blue}{where $\Delta \ell_{k,n} $ for the three labels is = ($\teff_{(test)} - \teff_{(ref,n)}$), ($\logg_{(test)} - \logg_{(ref,n)}$), ($\feh_{(test)} - \feh_{(ref,n)}$), 
+and $var_k$ is the variance of the reference object ensemble distribution in label $l_k$.} \\
 
-
-For the \textcolor{blue}{28,500} stars with parameters \textcolor{blue}{(unflagged as STAR BAD)} provided by DR10, we find we reproduce the \apogee\ labels as follows: 
-\textcolor{blue}{\teff\ = +12 K $\pm$ 84 K , \logg\ = --0.04 dex $\pm$ 0.18 dex and \feh\ = +0.01 $\pm$ 0.10 dex in \feh. }
+For the \textcolor{blue}{28,700} stars with parameters \textcolor{blue}{(removing all stars flagged as \badstar)} provided in DR10, we find we reproduce the \apogee\ labels as follows: 
+\textcolor{blue}{\teff\ = +12 K $\pm$ 85 K , \logg\ = --0.04 dex $\pm$ 0.18 dex and \feh\ = +0.01 $\pm$ 0.10 dex in \feh. }
 The rms errors are comparable to the error estimates for \apogee\ parameters in \citet{Meszaros2013} 
 of $\delta$(\teff) $<$ 150 K, $\delta$(\logg) $<$ 0.2 dex and $\delta$(\feh) $<$ 0.1 dex in. 
 The typical internal precision on the measured parameters from \tc\ is $\delta$(\teff) $<$ 5.6 K, $\delta$(\logg) $<$ 0.01 dex and $\delta$(\feh) $<$ 0.006 dex.
 
 \begin{table*}[!h]
-\tiny{
+\small{
 \centering
-\caption{Partial Column Excerpt from the online table of stellar labels (\teff, \logg\ and \feh) for the 55,000 stars released in 170 fields from \apogee 's data release DR10. } 
+\caption{Partial column excerpt from the online table of stellar labels (\teff, \logg\ and \feh) for the 55,000 stars released in 170 fields from \apogee 's data release DR10. } 
 \begin{tabular}{| c | c | c |  c | c | c |  c | c | c | c | c | } %51,500
 \hline
-\tiny{star ID}  & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & \tiny{$\sigma_{v}$} & Dist & \tiny{E} \\
-\tiny{2MASS} &  & K &  dex  & K & dex & dex & dex & kms$^{-1}$  & &  \tiny{FLAG}  \\    
+\small{star ID}  & \teff\ & \logg\ & \feh\ & $\sigma$(\teff) & $\sigma$(\logg) & $\sigma$(\feh) & $\chi^2$ & {$d_{ref}$} & \tiny{EFLAG} \\
+\small{(2MASS)} & K & dex &  dex  & K & dex & dex &  & &   \\    
 \hline
-\tiny{21354474+4250256} & 4824.4 & 4.41  & 0.15  & 8.8  & 0.013  & 0.005  & 2.78  & 0.1 & 0.13 & 0 \\
-\tiny{21354775+4233120} & 4704.1  & 2.50  & 0.05  & 9.2  & 0.022  & 0.011  & 1.34  & 0.0  & 0.02 & 0\\
-\tiny{21355458+4222326} & 4837.2  & 2.52  & -0.33 &  6.8 &  0.015 &  0.007 &  2.35  & 0.0 &  0.05 & 0\\
-\tiny{21360285+4231145} & 4620.0  & 2.09  & -0.43 &  9.6 &  0.023 &  0.011 &  1.43  & 0.0 & 0.12 & 0 \\
-\tiny{21360822+4225525} & 4809.6  & 2.75  & -0.03 &  6.9 &  0.016 &  0.008 &  2.59  & 0.0 & 0.23 & 0\\
-\tiny{21360941+4212409} & 4839.9  & 2.53 & -0.46  & 12.0 &  0.028 &  0.013 &  1.23  & 0.0 &  0.04 & 0 \\
+\tiny{21353892+4229507} & 4160.4 & 1.62  & 0.05  & 3.24 & 0.008  & 0.004  & 2.59 & 0.03 & 0 \\
+\tiny{21354474+4250256} & 4824.4 & 4.41  & 0.15  & 8.8  & 0.013  & 0.005  & 0.83 & 0.13 & 0 \\
+\tiny{21354775+4233120} & 4704.1  & 2.50  & 0.05  & 9.2  & 0.022  & 0.011  & 0.83   & 0.03 & 0\\
+\tiny{21355458+4222326} & 4837.2  & 2.52  & -0.33 &  6.8 &  0.015 &  0.007 &  1.02   &  0.11 & 0\\
+\tiny{21360285+4231145} & 4620.0  & 2.09  & -0.43 &  9.6 &  0.023 &  0.011 &  0.94   & 0.15 & 0 \\
+\tiny{21360822+4225525} & 4809.6  & 2.75  & -0.03 &  6.9 &  0.016 &  0.008 &  1.15   & 0.017 & 0\\
  \hline
 \end{tabular}
 \label{tab:online} }
@@ -715,13 +726,11 @@ The typical internal precision on the measured parameters from \tc\ is $\delta$(
 The comparison of \tc\ with \aspcap\, showing the bias, rms and formal precision for the labels (\teff , \logg , \feh ) in six sample fields, with bulge, disk and halo targeting, is illustrated in \figurename~\ref{fig:cal}. As for all stars in the survey with \aspcap\ labels, these fields show that we reproduce the \aspcap-corrected stellar parameters with typical rms uncertainties of \teff\ $<$ 100 K, \logg\ $<$ 0.20 dex and $<$ \feh\ $<$ 0.10. These variances are slightly smaller than expected from our cross-validation leave-one-star-out test. This may be because the median of the stellar labels for the D10 survey object are near the median labels of the reference objects from the training step. 
 They are not concentrated to the extreme ends of the range, which have a higher weighting in evaluating the test data with cross validation. 
  \tc 's label transfer also returns values for those $\approx$ 15\% of stars in DR10 are that must be main-sequence dwarf stars. 
-These are not shown in \figurename~\ref{fig:cal}, as \apogee\ does not report \aspcap\ corrected dwarf parameters for DR10. 
+These are not shown in \figurename~\ref{fig:cal}, as \apogee\ does not report \aspcap-corrected dwarf parameters for DR10. 
 We exclude the stars flagged as bad overall  using the \badstar\ flag from \aspcap\ (this includes stars flagged by \aspcap\ as having bad \teff\, bad \logg, high $\chi^2$, an effective temperature more than 1000K from photometric temperature for dereddened color, rotation, SNR low ($<$ 50) or if the parameter is near the \aspcap\ grid edge).  Note we can not return parameters for spectral types not included in our training set (see \sectionname~\ref{sec:AnomalousSpectra}). 
 
-In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ for the 1400 stars from the six sample fields as a function of \aspcap\ \teff, \logg\ and \feh. There are weak trends; at low \teff\ $\sim$ 3700 K, we find temperatures about 100 K cooler than \apogee\ and at low \logg\ we find $\sim$ 0.15 dex larger \logg\ than \apogee. At the lowest metallicities \feh\ $<$ --2.0, we typically report higher metallicities on the order of 0.05 to 0.3 dex.
-
-\textcolor{blue}{We tested a range of polynomial orders to investigate the systematic trends seen in Figure \ref{fig:cplot} to evaluate if the structure seen in these figures is derived from the proximity to the grid edge of the \apogee\ synthetic spectral grid or alternatively the rigidity of the model. By increasing the order of the polynomial, and particularly adding a cubed temperature coefficient, the structure seen at low temperatures can be removed. However, very small perturbations are introduced into the other labels with this higher-order model. Given the limited size of the training set and that the label-scale of \apogee\ in the \logg-\teff\ plane does not fall onto isochrones with the calibrated parameters (see Figures 9 and 10, indicating there may be some issue with the label-scale of the DR10 calibrated-labels), we do not try to optimise the model to obtain the best order to remove any of these trends in this case.  We also note that outside of the label-range of the reference objects, the \aspcap\ labels are similarly extrapolated in label-space.  We highlight however, that for the polynomial model, increasing to higher terms or additional cross terms can add flexibility to the model and an optimal polynomial order will be dependent on the wavelength region, resolution and label-space of the survey. The appropriate way to test this is at the take-one-out training validation stage. We see similar weak trends in this validation, in the \teff\ label at test time, as shown in Figure 4. However, the edges of the temperature sequence are populated only a few stars and two clusters, the metal-rich main sequence stars of the Pleaides at high temperatures and the most metal rich cluster, NGC6791 at low temperatures: we do not propose to optimise the polynomial order based on these trends given the limited number of reference objects at the edges of the label-space. These trends can be mitigated with higher order terms in the model, or removed by adjusting the input labels of the training set.}  \textbf{DWH should you add something here?}
-
+In \figurename~\ref{fig:cal} we show the label differences of \tc\ $-$ \aspcap\ for the 1400 stars from the six sample fields as a function of \aspcap\ \teff, \logg\ and \feh. There are weak trends; at low \teff\ $\sim$ 3700 K, we find temperatures about 100 K cooler than \apogee\ and at low \logg\ we find $\sim$ 0.15 dex larger \logg\ than \apogee. At the lowest metallicities \feh\ $<$ --2.0, we typically report higher metallicities on the order of 0.05 to 0.3 dex. \textcolor{blue}{Figure \ref{fig:cplot} emphasizes (compared to
+ \figurename~\ref{fig:cal}) the slight systematic deviations at the lowest temperatures. These could be addressed by increasing the complexity of the spectral model; however, they occur beyond the temperature range covered by the reference sets, and hence are inherently less robust (and are flagged as such).}
 
 %makeplot_fits_v19_bw.py
 \begin{figure}[!h]
@@ -776,7 +785,7 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
   \includegraphics[scale=0.26]{./plots/aftersubmit/fig8a.png}
   \hspace{-20pt}
     \includegraphics[scale=0.26]{./plots/aftersubmit/fig8b2.png}
-\caption{Labels for the $\sim$ 35,000 stars from DR10 derived by \tc\ based on \aspcap-corrected labels for the set of reference objects. The set of panels on the left shows \teff-\logg\ in four metallicity bins. There are $\sim$ 19,000, 13,000, 1600, and 1000 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.  The panel on the right shows all stars coloured in \feh\ on the four isochrones. Note the \logg\ distribution at low \logg\ is narrow and offset from the giant branch:  \textcolor{blue}{ reference objects are shown in open circles.} }
+\caption{Labels for the $\sim$ 35,000 stars from DR10 derived by \tc\ based on \aspcap-corrected labels for the set of reference objects. The set of panels on the left shows \teff-\logg\ in four metallicity bins. There are $\sim$ 19,000, 13,000, 1600, and 1000 stars in the most metal-rich to metal-poor metallicity bins, respectively. The isochrones plotted are 10 Gyr Padova isochrones at the metallicities marked in the upper left hand corners of each sub-panel.  The panel on the right shows all stars coloured in \feh\ on the four isochrones. Note that the \logg\ distribution at low \logg\ is narrow and offset from the giant branch. \textcolor{blue}{ Reference objects are shown as open circles.} }
 \label{fig:iso}
 \end{figure}
 
@@ -788,15 +797,13 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
  \includegraphics[scale=0.26]{./plots/aftersubmit/fig9a2.png}
   \hspace{-20pt}
     \includegraphics[scale=0.26]{./plots/aftersubmit/fig9b2.png}
-\caption{Same as \figurename~\ref{fig:iso} but based on the ``isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (Equation \ref{eq:specmodel}) that forces resulting labels to lie in physically plausible locations in label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable as there are basically no main sequence stars among the reference objects: \textcolor{blue}{ reference objects are shown in open circles.}}
+\caption{Same as \figurename~\ref{fig:iso} but based on the ``isochrone-corrected'' labels for the reference objects. In this case, the labels follow the red giant branch on the isochrones. Note that there is nothing in the mathematics of \tc\ (Equation \ref{eq:specmodel}) that forces resulting labels to lie in physically plausible locations in label space. This is illustrated by the tiny fraction of objects that lie between the main sequence and the giant branch. That most labels lie in physically sensible portions of the \teff-\logg\ plane is a testament to both the quality of the label coverage in the set of reference objects and to the power of \tc\ approach. This is all the more remarkable given that there are basically no main sequence stars among the reference objects. \textcolor{blue}{ Reference objects are shown as open circles.}}
 \label{fig:iso2}
 \end{figure}
 
-\textcolor{blue}{Although the labels lie in physically plausible locations in label-space, the fidelity of the labels in extrapolated space is uncertain. To examine the sensitivity to the labels that are retuned at the test step across the label-space of the test objects, we made a three dimensional grid in \teff, \logg\ and \feh, of 100 K, 0.25 dex and 0.25 dex respectively and drew one star from within each bin. These stars were then used in the test step for a bootstrapping of the reference objects, performed 20 times and the dispersion in the output labels for these test objects is shown in Figure \ref{fig:sigma}. The location of the reference objects is indicated in the grey shaded regions. These figures show that in extrapolated regions, the scatter on the returned labels is higher, which is a figure of merit of their reliability. With this test, it is possible to assign stars in every bin a given uncertainty in \teff, \logg\ and \feh\ due to the sparse sampling of the training set. In general, these values will be directly dependent on the survey for which labels are being returned, and highlights the regions of missing label space where stronger constraints on the labels are needed; that is reference objects. }
+\textcolor{blue}{So far, we have not yet explored the (possibly systematic) uncertainties of the label estimates, arising from the incomplete, and in part sparse coverage of label-space by the reference objects. Though the labels in Figure~\ref{fig:iso2} lie mostly in physically plausible locations, the fidelity of the labels in particular in the extrapolated part of label space must be scrutinized. To do this, we created twenty different spectral models, by bootstrap-sampling from the set of reference objects and ran the training step on each of them. Using these twenty different spectral models, we derived twenty different label estimates for a sub-set of the survey objects;  we picked one survey object in each cell of a three dimensional grid in \teff, \logg\ and \feh, of 100 K, 0.25 dex and 0.25 dex respectively. We then took the dispersion among these label estimates as a diagnostic of the uncertainties arising from the sparseness of the training set; this is shown in Figure \ref{fig:sigma}, normalized by the formal error on each label. The location of the reference objects is indicated in the grey shaded regions. These Figures show that in the parts of label space well-covered by reference objects, these two uncertainties are comparable. In the extrapolated regions of label space (here, the main sequence turn-off and the metal-rich tip of the RGB), the dispersion among the bootstrap-returned labels is considerably higher than the formal uncertainties; here the incomplete coverage of label space by reference objects becomes the dominant uncertainty. }
 
-\textcolor{blue}{In the regions where the labels from \tc\ are uncertain, the labels from the \aspcap\ pipeline of \apogee\ are similarly uncertain. Outside of these reference objects, both surveys rely on extrapolation of labels, with \tc\ we use the extrapolation of the spectral model, with \aspcap\ the extrapolation occurs at the label-stage (see Meszaros et al., 2013). In Figure \ref{fig:sigma2} we demonstrate the difference in the stellar labels from \tc\ compared to \aspcap\ across the \teff-\logg\ plane of the survey. It is only in these extrapolated regions that the labels from \tc\ and \aspcap\ deviate beyond the estimated errors of the \aspcap\ pipeline. Again, in these regions, neither survey is calibrated to any ground truth. These figures also show that the deviations between \tc\ and \aspcap\ are systematic and not random. }
-
-\textbf{HWR please read this you may wish to add something here} 
+\textcolor{blue}{Both methods rely on extrapolation of labels, \tc\ uses the extrapolation of the spectral model,  \aspcap\ performs the extrapolation at the label-inference stage (see Meszaros et al., 2013). Figure \ref{fig:sigma2} compares the stellar labels from \tc\ to those from \aspcap. It is only in these extrapolated regions that the labels from \tc\ and \aspcap\ deviate beyond the estimated errors of the \aspcap\ pipeline. Again, in these regions, neither survey is calibrated to empirical ground truth. These figures also show that the deviations between \tc\ and \aspcap\ are systematic and not random. In general, these regions of extrapolation will be directly dependent on the survey and the sets of reference objects.  Figure  \ref{fig:sigma2} highlights the regions of missing label space where stronger constraints on the labels are needed; that is reference objects. In general however, this approach allows the propagation of the uncertainties from imperfect sets of reference objects to the resulting label estimates of the test objects. }
 
 
 %run makeoniso+ on makeonisochrone_aftersubmit_fit_normed.py  in TheCannon/code 
@@ -805,7 +812,7 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
   \includegraphics[scale=0.26]{plots/aftersubmit/stdtest_T_normed.png}
     \includegraphics[scale=0.26]{./plots/aftersubmit/stdtest_g_normed.png}
     \includegraphics[scale=0.26]{./plots/aftersubmit/stdtest_feh_normed.png}
-    \caption{\textcolor{blue}{The standard deviation in the labels returned in \teff, \logg\ and \feh, shown in the \teff$-$\logg\ plane, normalised by the optimisation error on each measurement, for 20 bootstrapping tests of the training set. The representative sample of $\sim$ 670 stars shown here has been drawn from an equal sampling of a grid spaced by 100 K in \teff, 0.25 dex in \logg\ and 0.25 dex in \feh. The location of the reference objects is shown in the grey shaded regions in the panel. Note the narrow region of reference objects also on the main sequence. The highest scatter in the labels is seen for regions where the labels are extrapolated. These figures are shown for the isochrone-corrected labels discussed in Section 2.4.}}
+    \caption{\textcolor{blue}{The standard deviation in the labels returned in \teff, \logg\ and \feh, shown in the \teff$-$\logg\ plane, normalised by the optimisation error on each measurement, for 20 bootstrapping tests of the training set. The representative sample of $\sim$ 670 stars shown here has been drawn from an equal sampling of a grid spaced by 100 K in \teff, 0.25 dex in \logg\ and 0.25 dex in \feh\ from the labels returned using the model trained on the isochrone-corrected reference objects. The location of the reference objects is shown in the grey shaded regions in the panel. Note the narrow region of reference objects also on the main sequence. The highest scatter in the labels is seen for regions where the labels are extrapolated. These figures are shown for the isochrone-corrected labels discussed in Section 2.4.}}
     \label{fig:sigma}.
 \end{figure}
 
@@ -814,10 +821,10 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 %run -i makeiso_rmsdiff.py in aftersumibt directory
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.26]{./plots/aftersubmit/t_diff.png}
-    \includegraphics[scale=0.26]{./plots/aftersubmit/g_diff.png}
-    \includegraphics[scale=0.26]{./plots/aftersubmit/feh_diff.png}
-    \caption{\textcolor{blue}{The difference in labels from \tc\ and \aspcap\, demonstrating the regions of extrapolation where the difference in the labels extends beyond the estimated errors of the methods, due to the limited sampling of the reference objects which does not fully cover the label-space of the survey.}}
+  \includegraphics[scale=0.26]{./plots/aftersubmit/t_diff2.png}
+    \includegraphics[scale=0.26]{./plots/aftersubmit/g_diff2.png}
+    \includegraphics[scale=0.26]{./plots/aftersubmit/feh_diff2.png}
+    \caption{\textcolor{blue}{The difference in labels between \tc\ and \aspcap\, indicating the regions of extrapolation where the difference in the labels extends beyond the estimated errors of the methods, due to the limited sampling of the reference objects which does not fully cover the label-space of the survey. The \aspcap-corrected training labels were used to generate the model applied at the test step on the DR10 data.}}
     \label{fig:sigma2}.
 \end{figure}
 
@@ -894,7 +901,7 @@ other objects in the survey.
 In a first application of \tc, on the \apogee\ DR10 data, we focused on the three most important labels, \teff, \logg, \feh , and 
 derived them for essentially all of the 55,000 DR10 survey stars, based on a training step that involved only 542 reference objects, i.e. 1\% of the survey.  Remarkably, \tc 's label transfer results in stellar parameters and metallicites that are as precise and accurate as those derived from
 \apogee 's pipeline \aspcap. In addition, \tc\ appears to produce -- at least in this present implementation -- plausible labels for 6000 main sequence stars in \apogee, even though only $\sim 60$ main sequence stars were used in the training step (all of which are members of the Hyades cluster). 
-It is also remarkable that  the \logg - \teff\  diagram of Fig.~\ref{fig:iso2}~ shows basically no stars outside
+It is also remarkable that  the \logg - \teff\  diagram of Figure.~\ref{fig:iso2}~ shows basically no stars outside
 the physically plausible regime, although \tc\ knows nothing here about stellar evolution save the training step.
 
 Our application to \apogee\  illustrates a number of strengths and practical advantages of such an approach. First, \tc\ is computationally very fast. It  trains fast and then delivers the labels for 55,000 stars of the
@@ -906,7 +913,7 @@ Second, we have explicitly demonstrated that \tc\ can deliver labels, at least t
 with nearly the same precision at much lower SNR than commonly deemed necessary. 
 The \textit{rms} difference between  \aspcap\ labels from spectra with SNR$\ge150$ and \tc\ labels
 for the same stars from SNR$ \sim 50$ survey spectra is only 30\% larger than the \aspcap\ error bars. 
-\tc\  exploits the information at all pixels and certainly the labels \teff, \logg, \feh\  effect many different parts of each spectrum. How this SNR behaviour scales to label sets of higher dimension, encompassing e.g. individual abundances, remains to be seen. Part of the reason for this good behavior at low SNR is presumably that
+\tc\  exploits the information at all pixels and certainly the labels \teff, \logg, \feh\  effect many different parts of each spectrum. How this SNR behaviour scales to label sets of higher dimension, encompassing, for example, individual abundances, remains to be seen. Part of the reason for this good behavior at low SNR is presumably that
 \tc\ contains a generative model of the intensity or flux density.
 Given labels, the model provides a Gaussian \textit{pdf} for the flux density at every wavelength.
 This \textit{pdf} is convolved (trivially) with the Gaussian uncertainty
@@ -933,7 +940,7 @@ Three important issues arise around labels. First, the reference labels are so f
 but in reality are both noisy and potentially biased. In turn, we presume that we
 have simply no additional information on the labels of the survey objects. Yet,
 we know \emph{something} about the unlabelled stars (for example, from
-photometry, and stellar evolution models). Second, any choice for the dimensionality of the label space, 3D in our sample application, will be incomplete in an astrophysical sense. Clearly, stars with identical \teff, \logg, \feh\ may have different spectra, e.g.
+photometry, and stellar evolution models). Second, any choice for the dimensionality of the label space, 3D in our sample application, will be incomplete in an astrophysical sense. Clearly, stars with identical \teff, \logg, \feh\ may have different spectra, for example,
 because they differ in [$\alpha$/Fe] or $v_{rot}$.
 Third, no set of reference objects will cover the label
 space comprehensively, especially if one considers high-dimensional label spaces (\apogee 's DR12
@@ -965,7 +972,7 @@ simultaneously (effectively, lifting the separation of training and test step),
 by optimizing $\set{\theta}_\lambda$ and $\starlabelvec_n$, where the index $n$ now 
 encompasses both the reference and survey sample. The difference between reference and survey objects
 now simply consists of how tightly constrained their $p(\starlabelvec_n)$ is. 
-For survey objects, $p(\starlabelvec_n)$ will likely be broad, e.g. constraining label-combinations
+For survey objects, $p(\starlabelvec_n)$ will likely be broad, for example, constraining label-combinations
 to physically plausible isochrones. This would combine aspects of \tc\ with the approach
 taken by \cite{SB2014}.
 
@@ -980,29 +987,30 @@ In this initial implementation of \tc\ we restricted ourselves to producing only
 in the test step, with label errors only coming from the inverse covariance matrix at that point.
 But a full inference would be expensive, especially in the test step
 (labeling the survey objects); the test step model is non-linear and
-inference would require sampling or harsh approximations.
- \textcolor{blue}{The correct way to proceed in the full interference case would be in a fully Bayesian framework, where test and training happen at the same time, they are not separated out, as is the case now. 
-This is far more computationally expensive than the current approach. Indeed, all straightforward implementations of a joint inference of parameters and labels given noisily labeled training data and unlabeled test data are computationally intractable at present.  There are promising approaches that involve either variational inference or Gibbs sampling, but developing either into a practical approach is a significant research project, not just in astrophysics but also in inference.}
+inference would require sampling or harsh approximations. \textcolor{blue}{The correct way to proceed in the full interference case would be in a fully Bayesian framework, where test and training happen at the same time and are not separated out, as is the case now.  This is far more computationally expensive than the current approach}. \textcolor{blue}{ Indeed, all straightforward implementations of a joint inference of parameters and labels given noisily labeled training data and unlabeled test data are computationally intractable at present.  There are promising approaches that involve either variational inference or Gibbs sampling, but developing either into a practical approach is a significant research project, not just in astrophysics but also in inference. }
 
-
-Note that in the application of \tc\ to \apogee\ we dealt with systematic errors in the reference
+In the application of \tc\ to \apogee\ we dealt with systematic errors in the reference
 labels by adjusting them,  given the unphysically narrow giant branch returned for DR10 data at low \logg.  We empirically found by adopting a very naive calibration that shifts the stars to the nearest position on the isochrone from the \aspcap\ value described in \sectionname~\ref{sec:ReferenceObjects}, the stars were returned in a \teff-\logg\ space, across metallicity, in line with expectations of the physical label-space of stars. This suggests that there is some problem with the input labels in either the \teff\ or the \logg\ dimension adjusted from Kepler results in DR10. 
 
-The other two issues raised above, on the dimensionality and on the coverage of label space by the reference objects, are linked: 
+The issues raised above on the dimensionality and on the coverage of label space by the reference objects, are linked: 
 the basic implementation of \tc\ presented here considers only three
 labels (\teff, \feh, and \logg), and we know that the label-space has many more dimensions.
 Conceptually, it is trivial to extend \tc\ to even much larger numbers of labels per star. 
 For example, a next generation could include \alphafe\ or \xfe\
-labels for elements X.
+labels for elements X; \textcolor{blue}{but also stellar rotation, or photospheric turbulence could be labels, provided suitable sets of reference values exist.}
 The only limitation---and it is a \emph{substantial} limitation---is
 that as the label-space grows, we presume that the training set must grow to fill it.
 After all, \tc\ can only be as good as its training set.
-We have shown that the set of 542 reference objects (1$\%$ of the survey) does well for three labels. However in general, the training set needs may scale up as badly as exponentially
-with the dimensionality of the label space. Therefore, it is at this point an open issue, to 
-how many label-dimensions \tc\ continues to be useful and practicable. 
+We have shown that the set of 542 reference objects (1$\%$ of the survey) does well for three labels. However in general, the training set needs may scale up as badly as exponentially with the dimensionality of the label space. Therefore, it is at this point an open issue, to 
+how many label-dimensions \tc\ continues to be useful and practicable. \textcolor{blue}{In expanding the list of labeled stars, one option is to identify critical targets for careful labelling, using new (possibly expensive) data and (definitely expensive) human time to obtain good labels, on the same abundance and stellar-parameter scale as the labels we already have in our limited training set.  Heuristically, we want new labeled targets to be in parts of the label space not covered (or poorly covered) by the existing training set.  More quantitatively, we could use ideas from experimental design or active learning \citep{active} to make optimized choices.  Good technology here could permit us to expand the dimensionality of the label space while growing the size of the training set as minimally and as objectively as possible.}
 
-The second important aspect of \tc\ as presented here, concerns the spectral model itself. With the pixel-by-pixel polynomial \textit{Ansatz} for the spectral model $\set{\theta}_\lambda$
-we engender two important consequences: first, we need to pick a functional form for the spectral model
+\textcolor{blue}{\tc\ is related in a number of ways to supervised methods within the domain of machine learning. On the one hand, \tc\ is a pure supervised classification method:  It is trained on data and labels from a population that is assumed to have perfect labels and it is applied to data for which labels are assumed to be unknown.  However, \tc\ is also very unlike standard machine-learning methods in a critical respect:  It makes no assumption that the test data and the training data are statistically similar, or drawn from the same noise distribution.  Indeed, the main reason that the method is written as a generative probabilistic model is precisely so that it can account for the changing noise model (changing noise variances) from object to object and pixel to pixel.  Standard supervised methods from the machine-learning literature (such as Random Forest \citep{RF}, Deep Learning \citep[e.g.,][]{DL2,DL3,DL}, and Kernel Support Vector Machines \citep{SVM}) do not have the property that they can account for variable noise models. These traditional machine-learning methods perform very badly as the training data become different from the test data (as they do in our SNR experiments in Section~\ref{sec:lowSNR}).}
+
+\textcolor{blue}{In this sense, \tc\ is less like a standard machine-learning method and more like one of the new methods being developed to account for differences between the training set and the test set.  In some sense, \tc\ is really a Transfer Learning method \citep[e.g.,][]{TL} because it learns on data with one noise model (or many noise models) and then is employed on data drawn from a new set of noise models.  In the future, as \tc\ is understood and developed further, we expect there to be enhancements that benefit from new developments in machine learning.  For example, the fact that the test set might (or does) span a different part of label space than the data might be accommodated by ideas from Concept Drift \citep[e.g.,][]{CD} or Model Adaptation \citep[e.g.,][]{MA}, both of which are being developed precisely to account for the problem that in many real-world applications of machine learning, the test data are drawn from a different distribution in label space than the test data.}
+
+
+An important aspect of \tc\ as presented here, concerns the spectral model itself. With the pixel-by-pixel polynomial \textit{Ansatz} for the spectral model $\set{\theta}_\lambda$
+we engender two important consequences. First, we need to pick a functional form for the spectral model
 (Equation \ref{eq:specmodel}), which we took empirically to be a quadratic-in-labels form of Equation \ref{eq:quadinlabels}. We arrived at that choice by empirical experimentation with this particular data set, but this choice can be generalized.
 Indeed, the polynomial family is probably not the best family of
 functions to be exploring, since they extrapolate badly (edge effects)
@@ -1037,7 +1045,7 @@ resolution and either know about or discover sets of lines that vary
 together.
 However, any such generalization will come at substantial computational cost.
 
-Both the application to \apogee\ data and the possibilities to apply \tc\ in a broader context, bring the question of suitable sets of reference objects into focus. Indeed, in the long run the biggest practical problem in applying \tc\ may not linked to the mathematics of the method \textit{per se}, but to the actual availability of sufficiently many and sufficiently diverse reference objects in the survey to cover label space in the training step. The most glaring issue in the \apogee\ DR10 case, even with only three labels per star, is that fact that all main sequence stars in the reference set of objects come from only one cluster, without any range in metallicity. With e.g. the DR12 of \apogee\ training sets of much higher dimensionality are becoming available (especially [X/H] of individual elements). While this prospect is exciting, it will exacerbate both the question of how to make labels space coverage sufficient for the training step, and how to assert the accuracy of the training labels in the first place. 
+Both the application to \apogee\ data and the possibilities to apply \tc\ in a broader context, bring the question of suitable sets of reference objects into focus. Indeed, in the long run the biggest practical problem in applying \tc\ may not linked to the mathematics of the method \textit{per se}, but to the actual availability of sufficiently many and sufficiently diverse reference objects in the survey to cover label space in the training step. The most glaring issue in the \apogee\ DR10 case, even with only three labels per star, is that fact that all main sequence stars in the reference set of objects come from only one cluster, without any range in metallicity. With for example, the DR12 of \apogee\ training sets of much higher dimensionality are becoming available (especially [X/H] of individual elements). While this prospect is exciting, it will exacerbate both the question of how to make labels space coverage sufficient for the training step, and how to assert the accuracy of the training labels in the first place. 
 
 Fortunately, there are in principle quite a number of options for picking reference objects. One could pick a subset of survey objects (sensibly covering label space) where the spectra have exceptionally high SNR, 
 lending particular credence to the labels derived from physics-based models. On these, one would train the spectral model and then transfer labels to the remaining survey objects, effectively deriving most of the survey labels from the observations of highest SNR.
@@ -1058,12 +1066,15 @@ parameters on the same system.
 \emph{accurate}, but it might serve to make the whole industry of
 stellar parameter estimation and element abundance tagging more \emph{precise} and consistent.
 
-This prospect of survey self-labeling (e.g. from high SNR to low SNR) and the prospect of cross-survey calibration brings even more urgency to assuring that sufficient calibration observations are in place and that the different major spectroscopic surveys have sufficient sample overlap.
+This prospect of survey self-labeling (for example, from high SNR to low SNR) and the prospect of cross-survey calibration brings even more urgency to assuring that sufficient calibration observations are in place and that the different major spectroscopic surveys have sufficient sample overlap.
+
+
+
 
 \acknowledgements
 
 We would like to thank Daniel Foreman-Mackey (NYU), 
-Morgan Fouesneau (MPIA), Jon Holtzman (NMSU),  Keivan Stassun (Vanderbilt University) and Jennifer Johnson (OSU) and David Sontag (NYU)
+Morgan Fouesneau (MPIA), Jon Holtzman (NMSU),  Keivan Stassun (Vanderbilt University), Jennifer Johnson (OSU) and David Sontag (NYU)
 for valuable discussions.
 DWH was partially supported by
 the NSF (grant IIS-1124794), NASA (grant NNX08AJ48G), and the
@@ -1083,259 +1094,259 @@ SDSS-III is managed by the Astrophysical Research Consortium for the Participati
  Ohio State University, Pennsylvania State University, University of Portsmouth, Princeton University, the Spanish Participation Group, 
  University of Tokyo, University of Utah, Vanderbilt University, University of Virginia, University of Washington, and Yale University
 
-\begin{thebibliography}{24}
-\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+%\begin{thebibliography}{24}
+%\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+%
+%\bibitem[{{Ahn} {et~al.}(2014){Ahn}, {Alexandroff}, {Allende Prieto}, {Anders},
+%  {Anderson}, {Anderton}, {Andrews}, {Aubourg}, {Bailey}, {Bastien}, \&
+%  et~al.}]{Ahn2014}
+%{Ahn}, C.~P., {Alexandroff}, R., {Allende Prieto}, C., {Anders}, F.,
+%  {Anderson}, S.~F., {Anderton}, T., {Andrews}, B.~H., {Aubourg}, {\'E}.,
+%  {Bailey}, S., {Bastien}, F.~A., \& et~al. 2014, \apjs, 211, 17
+%
+%\bibitem[{{Allende Prieto} {et~al.}(1999){Allende Prieto}, {Garc{\'{\i}}a
+%  L{\'o}pez}, {Lambert}, \& {Gustafsson}}]{AP1999}
+%{Allende Prieto}, C., {Garc{\'{\i}}a L{\'o}pez}, R.~J., {Lambert}, D.~L., \&
+%  {Gustafsson}, B. 1999, \apj, 527, 879
+%  
+%  \bibitem[{{Bailer-Jones} {et~al.}(2013){Bailer-Jones}, {Andrae}, {Arcay},
+%  {Astraatmadja}, {Bellas-Velidis}, {Berihuete}, {Bijaoui}, {Carri{\'o}n},
+%  {Dafonte}, {Damerdji}, {Dapergolas}, {de Laverny}, {Delchambre}, {Drazinos},
+%  {Drimmel}, {Fr{\'e}mat}, {Fustes}, {Garc{\'{\i}}a-Torres}, {Gu{\'e}d{\'e}},
+%  {Heiter}, {Janotto}, {Karampelas}, {Kim}, {Knude}, {Kolka}, {Kontizas},
+%  {Kontizas}, {Korn}, {Lanzafame}, {Lebreton}, {Lindstr{\o}m}, {Liu},
+%  {Livanou}, {Lobel}, {Manteiga}, {Martayan}, {Ordenovic}, {Pichon},
+%  {Recio-Blanco}, {Rocca-Volmerange}, {Sarro}, {Smith}, {Sordo}, {Soubiran},
+%  {Surdej}, {Th{\'e}venin}, {Tsalmantza}, {Vallenari}, \& {Zorec}}]{BJ2013}
+%{Bailer-Jones}, C.~A.~L., {Andrae}, R., {Arcay}, B., {Astraatmadja}, T.,
+%  {Bellas-Velidis}, I., {Berihuete}, A., {Bijaoui}, A., {Carri{\'o}n}, C.,
+%  {Dafonte}, C., {Damerdji}, Y., {Dapergolas}, A., {de Laverny}, P.,
+%  {Delchambre}, L., {Drazinos}, P., {Drimmel}, R., {Fr{\'e}mat}, Y., {Fustes},
+%  D., {Garc{\'{\i}}a-Torres}, M., {Gu{\'e}d{\'e}}, C., {Heiter}, U., {Janotto},
+%  A.-M., {Karampelas}, A., {Kim}, D.-W., {Knude}, J., {Kolka}, I., {Kontizas},
+%  E., {Kontizas}, M., {Korn}, A.~J., {Lanzafame}, A.~C., {Lebreton}, Y.,
+%  {Lindstr{\o}m}, H., {Liu}, C., {Livanou}, E., {Lobel}, A., {Manteiga}, M.,
+%  {Martayan}, C., {Ordenovic}, C., {Pichon}, B., {Recio-Blanco}, A.,
+%  {Rocca-Volmerange}, B., {Sarro}, L.~M., {Smith}, K., {Sordo}, R., {Soubiran},
+%  C., {Surdej}, J., {Th{\'e}venin}, F., {Tsalmantza}, P., {Vallenari}, A., \&
+%  {Zorec}, J. 2013, \aap, 559, A74
+%
+%\bibitem[{{Barrado y Navascu{\'e}s} {et~al.}(2001){Barrado y Navascu{\'e}s},
+%  {Deliyannis}, \& {Stauffer}}]{barrado2001}
+%{Barrado y Navascu{\'e}s}, D., {Deliyannis}, C.~P., \& {Stauffer}, J.~R. 2001,
+%  \apj, 549, 452
+%
+%\bibitem[{{Beers} {et~al.}(2006){Beers}, {Lee}, {Sivarani}, {Allende Prieto},
+%  {Wilhelm}, {Fiorentin}, {Bailer-Jones}, {Norris}, \& {SEGUE Calibration
+%  Team}}]{Beers2006}
+%{Beers}, T.~C., {Lee}, Y., {Sivarani}, T., {Allende Prieto}, C., {Wilhelm}, R.,
+%  {Fiorentin}, P.~R., {Bailer-Jones}, C., {Norris}, J.~E., \& {SEGUE
+%  Calibration Team}. 2006, \memsai, 77, 1171
+%
+%\bibitem[{{Boeche} {et~al.}(2011){Boeche}, {Siebert}, {Williams}, {de Jong},
+%  {Steinmetz}, {Fulbright}, {Ruchti}, {Bienaym{\'e}}, {Bland-Hawthorn},
+%  {Campbell}, {Freeman}, {Gibson}, {Gilmore}, {Grebel}, {Helmi}, {Munari},
+%  {Navarro}, {Parker}, {Reid}, {Seabroke}, {Siviero}, {Watson}, {Wyse}, \&
+%  {Zwitter}}]{Boeche2011}
+%{Boeche}, C., {Siebert}, A., {Williams}, M., {de Jong}, R.~S., {Steinmetz}, M.,
+%  {Fulbright}, J.~P., {Ruchti}, G.~R., {Bienaym{\'e}}, O., {Bland-Hawthorn},
+%  J., {Campbell}, R., {Freeman}, K.~C., {Gibson}, B.~K., {Gilmore}, G.,
+%  {Grebel}, E.~K., {Helmi}, A., {Munari}, U., {Navarro}, J.~F., {Parker},
+%  Q.~A., {Reid}, W., {Seabroke}, G.~M., {Siviero}, A., {Watson}, F.~G., {Wyse},
+%  R.~F.~G., \& {Zwitter}, T. 2011, \aj, 142, 193
+%
+%\bibitem[{{Bovy} {et~al.}(2014){Bovy}, {Nidever}, {Rix}, {Girardi}, {Zasowski},
+%  {Chojnowski}, \& {Holtzman}}]{bovy2014}
+%{Bovy}, J., {Nidever}, D.~L., {Rix}, H.-W., {Girardi}, L., {Zasowski}, G.,
+%  {Chojnowski}, S.~D., \& {Holtzman}, J. e.~a. 2014, \apj, 790, 127
+%  
+%%  @book{settles.book12,
+%%	Author = {B. Settles},
+%%	Publisher = {Morgan \& Claypool},
+%%	Series = {Synthesis Lectures on Artificial Intelligence and Machine Learning},
+%%	Title = {Active Learning},
+%%	Year = {2012}}
+%
+%\bibitem[{{Freeman}(2012)}]{Freeman2012}
+%{Freeman}, K.~C. 2012, in Astronomical Society of the Pacific Conference
+%  Series, Vol. 458, Galactic Archaeology: Near-Field Cosmology and the
+%  Formation of the Milky Way, ed. W.~{Aoki}, M.~{Ishigaki}, T.~{Suda},
+%  T.~{Tsujimoto}, \& N.~{Arimoto}, 393
+%
+%\bibitem[{{Gilmore} {et~al.}(2012){Gilmore}, {Randich}, {Asplund}, {Binney},
+%  {Bonifacio}, {Drew}, {Feltzing}, {Ferguson}, {Jeffries}, {Micela},
+%  {Negueruela}, {Prusti}, {Rix}, {Vallenari}, {Alfaro}, {Allende-Prieto},
+%  {Babusiaux}, {Bensby}, {Blomme}, {Bragaglia}, {Flaccomio}, {Fran{\c c}ois},
+%  {Irwin}, {Koposov}, {Korn}, {Lanzafame}, {Pancino}, {Paunzen},
+%  {Recio-Blanco}, {Sacco}, {Smiljanic}, {Van Eck}, \& {Walton}}]{Gilmore2012}
+%{Gilmore}, G., {Randich}, S., {Asplund}, M., {Binney}, J., {Bonifacio}, P.,
+%  {Drew}, J., {Feltzing}, S., {Ferguson}, A., {Jeffries}, R., {Micela}, G.,
+%  {Negueruela}, I., {Prusti}, T., {Rix}, H.-W., {Vallenari}, A., {Alfaro}, E.,
+%  {Allende-Prieto}, C., {Babusiaux}, C., {Bensby}, T., {Blomme}, R.,
+%  {Bragaglia}, A., {Flaccomio}, E., {Fran{\c c}ois}, P., {Irwin}, M.,
+%  {Koposov}, S., {Korn}, A., {Lanzafame}, A., {Pancino}, E., {Paunzen}, E.,
+%  {Recio-Blanco}, A., {Sacco}, G., {Smiljanic}, R., {Van Eck}, S., \& {Walton},
+%  N. 2012, The Messenger, 147, 25
+%
+%\bibitem[{{Girardi} {et~al.}(2000){Girardi}, {Bressan}, {Bertelli}, \&
+%  {Chiosi}}]{girardi2000}
+%{Girardi}, L., {Bressan}, A., {Bertelli}, G., \& {Chiosi}, C. 2000, \aaps, 141,
+%  371
+%
+%\bibitem[{{Gonzalez} {et~al.}(2009){Gonzalez}, {Zoccali}, {Monaco}, {Hill},
+%  {Cassisi}, {Minniti}, {Renzini}, {Barbuy}, {Ortolani}, \&
+%  {Gomez}}]{gonzalez2009}
+%{Gonzalez}, O.~A., {Zoccali}, M., {Monaco}, L., {Hill}, V., {Cassisi}, S.,
+%  {Minniti}, D., {Renzini}, A., {Barbuy}, B., {Ortolani}, S., \& {Gomez}, A.
+%  2009, \aap, 508, 289
+%
+%\bibitem[{{Hinkel} {et~al.}(2014){Hinkel}, {Timmes}, {Young}, {Pagano}, \&
+%  {Turnbull}}]{Hinkel2014}
+%{Hinkel}, N.~R., {Timmes}, F.~X., {Young}, P.~A., {Pagano}, M.~D., \&
+%  {Turnbull}, M.~C. 2014, \aj, 148, 54
+%
+%\bibitem[{{Jofr{\'e}} {et~al.}(2014){Jofr{\'e}}, {Heiter}, {Soubiran},
+%  {Blanco-Cuaresma}, {Worley}, {Pancino}, \& {Cantat-Gaudin}}]{Jofre2014}
+%{Jofr{\'e}}, P., {Heiter}, U., {Soubiran}, C., {Blanco-Cuaresma}, S., {Worley},
+%  C.~C., {Pancino}, E., \& {Cantat-Gaudin}, e.~a. 2014, \aap, 564, A133
+%  
+%  
+%\bibitem[{{Koleva} {et~al.}(2009){Koleva}, {Prugniel}, {Bouchard}, \&
+%  {Wu}}]{Koleva2009}
+%{Koleva}, M., {Prugniel}, P., {Bouchard}, A., \& {Wu}, Y. 2009, \aap, 501, 1269
+%
+%
+%\bibitem[{{Kordopatis} {et~al.}(2013){Kordopatis}, {Gilmore}, {Steinmetz},
+%  {Boeche}, {Seabroke}, {Siebert}, {Zwitter}, {Binney}, {de Laverny},
+%  {Recio-Blanco}, {Williams}, {Piffl}, {Enke}, {Roeser}, {Bijaoui}, {Wyse},
+%  {Freeman}, {Munari}, {Carrillo}, {Anguiano}, {Burton}, {Campbell}, {Cass},
+%  {Fiegert}, {Hartley}, {Parker}, {Reid}, {Ritter}, {Russell}, {Stupar},
+%  {Watson}, {Bienaym{\'e}}, {Bland-Hawthorn}, {Gerhard}, {Gibson}, {Grebel},
+%  {Helmi}, {Navarro}, {Conrad}, {Famaey}, {Faure}, {Just}, {Kos}, {Matijevi{\v
+%  c}}, {McMillan}, {Minchev}, {Scholz}, {Sharma}, {Siviero}, {de Boer}, \& {{\v
+%  Z}erjal}}]{Kord2013}
+%{Kordopatis}, G., {Gilmore}, G., {Steinmetz}, M., {Boeche}, C., {Seabroke},
+%  G.~M., {Siebert}, A., {Zwitter}, T., {Binney}, J., {de Laverny}, P.,
+%  {Recio-Blanco}, A., {Williams}, M.~E.~K., {Piffl}, T., {Enke}, H., {Roeser},
+%  S., {Bijaoui}, A., {Wyse}, R.~F.~G., {Freeman}, K., {Munari}, U., {Carrillo},
+%  I., {Anguiano}, B., {Burton}, D., {Campbell}, R., {Cass}, C.~J.~P.,
+%  {Fiegert}, K., {Hartley}, M., {Parker}, Q.~A., {Reid}, W., {Ritter}, A.,
+%  {Russell}, K.~S., {Stupar}, M., {Watson}, F.~G., {Bienaym{\'e}}, O.,
+%  {Bland-Hawthorn}, J., {Gerhard}, O., {Gibson}, B.~K., {Grebel}, E.~K.,
+%  {Helmi}, A., {Navarro}, J.~F., {Conrad}, C., {Famaey}, B., {Faure}, C.,
+%  {Just}, A., {Kos}, J., {Matijevi{\v c}}, G., {McMillan}, P.~J., {Minchev},
+%  I., {Scholz}, R., {Sharma}, S., {Siviero}, A., {de Boer}, E.~W., \& {{\v
+%  Z}erjal}, M. 2013, \aj, 146, 134
+%
+%\bibitem[{{Lee} {et~al.}(2006){Lee}, {Beers}, {Sivarani}, {Wilhelm}, {Allende
+%  Prieto}, {Norris}, {Fiorentin}, {Bailer-Jones}, \& {SEGUE Calibration
+%  Team}}]{Lee2006}
+%{Lee}, Y.~S., {Beers}, T.~C., {Sivarani}, T., {Wilhelm}, R., {Allende Prieto},
+%  C., {Norris}, J.~E., {Fiorentin}, P.~R., {Bailer-Jones}, C.~A., \& {SEGUE
+%  Calibration Team}. 2006, in Bulletin of the American Astronomical Society,
+%  Vol.~38, American Astronomical Society Meeting Abstracts, 168.15
+%
+%\bibitem[{{Liu} {et~al.}(2014){Liu}, {Deng}, {Carlin}, {Smith}, {Li},
+%  {Newberg}, {Gao}, {Yang}, {Xue}, {Xu}, {Zhang}, {Xin}, {Wu}, \&
+%  {Jin}}]{Liu2014}
+%{Liu}, C., {Deng}, L.-C., {Carlin}, J.~L., {Smith}, M.~C., {Li}, J., {Newberg},
+%  H.~J., {Gao}, S., {Yang}, F., {Xue}, X.-X., {Xu}, Y., {Zhang}, Y.-Y., {Xin},
+%  Y., {Wu}, Y., \& {Jin}, G. 2014, \apj, 790, 110
+%
+%\bibitem[{{Majewski}(2012)}]{Majewski2012}
+%{Majewski}, S.~R. 2012, in American Astronomical Society Meeting Abstracts,
+%  Vol. 219, American Astronomical Society Meeting Abstracts 219, 205.06
+%
+%\bibitem[{{M{\'e}sz{\'a}ros} {et~al.}(2013){M{\'e}sz{\'a}ros}, {Holtzman},
+%  {Garc{\'{\i}}a P{\'e}rez}, {Allende Prieto}, {Schiavon}, {Basu}, {Bizyaev},
+%  {Chaplin}, {Chojnowski}, {Cunha}, {Elsworth}, {Epstein}, {Frinchaboy},
+%  {Garc{\'{\i}}a}, {Hearty}, {Hekker}, {Johnson}, {Kallinger}, {Koesterke},
+%  {Majewski}, {Martell}, {Nidever}, {Pinsonneault}, {O'Connell}, {Shetrone},
+%  {Smith}, {Wilson}, \& {Zasowski}}]{Meszaros2013}
+%{M{\'e}sz{\'a}ros}, S., {Holtzman}, J., {Garc{\'{\i}}a P{\'e}rez}, A.~E.,
+%  {Allende Prieto}, C., {Schiavon}, R.~P., {Basu}, S., {Bizyaev}, D.,
+%  {Chaplin}, W.~J., {Chojnowski}, S.~D., {Cunha}, K., {Elsworth}, Y.,
+%  {Epstein}, C., {Frinchaboy}, P.~M., {Garc{\'{\i}}a}, R.~A., {Hearty}, F.~R.,
+%  {Hekker}, S., {Johnson}, J.~A., {Kallinger}, T., {Koesterke}, L., {Majewski},
+%  S.~R., {Martell}, S.~L., {Nidever}, D., {Pinsonneault}, M.~H., {O'Connell},
+%  J., {Shetrone}, M., {Smith}, V.~V., {Wilson}, J.~C., \& {Zasowski}, G. 2013,
+%  \aj, 146, 133
+%
+%\bibitem[{{Newberg} {et~al.}(2012){Newberg}, {Carlin}, {Chen}, {Deng},
+%  {L{\'e}pine}, {Liu}, {Yang}, {Yuan}, {Zhang}, {Zhang}, {Legue Working Group},
+%  \& {Lamost-Plus Partnership}}]{Newberg2012}
+%{Newberg}, H.~J., {Carlin}, J.~L., {Chen}, L., {Deng}, L., {L{\'e}pine}, S.,
+%  {Liu}, X., {Yang}, F., {Yuan}, H.-B., {Zhang}, H., {Zhang}, Y., {Legue
+%  Working Group}, \& {Lamost-Plus Partnership}. 2012, in Astronomical Society
+%  of the Pacific Conference Series, Vol. 458, Galactic Archaeology: Near-Field
+%  Cosmology and the Formation of the Milky Way, ed. W.~{Aoki}, M.~{Ishigaki},
+%  T.~{Suda}, T.~{Tsujimoto}, \& N.~{Arimoto}, 405
+%
+%\bibitem[{{Recio-Blanco} {et~al.}(2006){Recio-Blanco}, {Bijaoui}, \& {de
+%  Laverny}}]{RB2006}
+%{Recio-Blanco}, A., {Bijaoui}, A., \& {de Laverny}, P. 2006, \mnras, 370, 141
+%
+%\bibitem[{{Schlafly} \& {Finkbeiner}(2011)}]{Schlafly2011}
+%{Schlafly}, E.~F. \& {Finkbeiner}, D.~P. 2011, \apj, 737, 103
+%
+%\bibitem[{{Sch{\"o}nrich} \& {Bergemann}(2014)}]{SB2014}
+%{Sch{\"o}nrich}, R. \& {Bergemann}, M. 2014, \mnras, 443, 698
+%
+%\bibitem[{{Smiljanic} {et~al.}(2014){Smiljanic}, {Korn}, {Bergemann}, {Frasca},
+%  {Magrini}, {Masseron}, {Pancino}, {Ruchti}, \& {San Roman}}]{SM2014}
+%{Smiljanic}, R., {Korn}, A.~J., {Bergemann}, M., {Frasca}, A., {Magrini}, L.,
+%  {Masseron}, T., {Pancino}, E., {Ruchti}, G., \& {San Roman}, e.~a. 2014,
+%  \aap, 570, A122
+%
+%
+%\bibitem[{{Steinmetz} {et~al.}(2006){Steinmetz}, {Zwitter}, {Siebert},
+%  {Watson}, {Freeman}, {Munari}, {Campbell}, {Williams}, {Seabroke}, {Wyse},
+%  {Parker}, {Bienaym{\'e}}, {Roeser}, {Gibson}, {Gilmore}, {Grebel}, {Helmi},
+%  {Navarro}, {Burton}, {Cass}, {Dawe}, {Fiegert}, {Hartley}, {Russell},
+%  {Saunders}, {Enke}, {Bailin}, {Binney}, {Bland-Hawthorn}, {Boeche}, {Dehnen},
+%  {Eisenstein}, {Evans}, {Fiorucci}, {Fulbright}, {Gerhard}, {Jauregi}, {Kelz},
+%  {Mijovi{\'c}}, {Minchev}, {Parmentier}, {Pe{\~n}arrubia}, {Quillen}, {Read},
+%  {Ruchti}, {Scholz}, {Siviero}, {Smith}, {Sordo}, {Veltz}, {Vidrih}, {von
+%  Berlepsch}, {Boyle}, \& {Schilbach}}]{Steinmetz2006}
+%{Steinmetz}, M., {Zwitter}, T., {Siebert}, A., {Watson}, F.~G., {Freeman},
+%  K.~C., {Munari}, U., {Campbell}, R., {Williams}, M., {Seabroke}, G.~M.,
+%  {Wyse}, R.~F.~G., {Parker}, Q.~A., {Bienaym{\'e}}, O., {Roeser}, S.,
+%  {Gibson}, B.~K., {Gilmore}, G., {Grebel}, E.~K., {Helmi}, A., {Navarro},
+%  J.~F., {Burton}, D., {Cass}, C.~J.~P., {Dawe}, J.~A., {Fiegert}, K.,
+%  {Hartley}, M., {Russell}, K.~S., {Saunders}, W., {Enke}, H., {Bailin}, J.,
+%  {Binney}, J., {Bland-Hawthorn}, J., {Boeche}, C., {Dehnen}, W., {Eisenstein},
+%  D.~J., {Evans}, N.~W., {Fiorucci}, M., {Fulbright}, J.~P., {Gerhard}, O.,
+%  {Jauregi}, U., {Kelz}, A., {Mijovi{\'c}}, L., {Minchev}, I., {Parmentier},
+%  G., {Pe{\~n}arrubia}, J., {Quillen}, A.~C., {Read}, M.~A., {Ruchti}, G.,
+%  {Scholz}, R.-D., {Siviero}, A., {Smith}, M.~C., {Sordo}, R., {Veltz}, L.,
+%  {Vidrih}, S., {von Berlepsch}, R., {Boyle}, B.~J., \& {Schilbach}, E. 2006,
+%  \aj, 132, 1645
+%
+%\bibitem[{{Zasowski} {et~al.}(2013){Zasowski}, {Johnson}, {Frinchaboy},
+%  {Majewski}, {Nidever}, {Rocha Pinto}, {Girardi}, {Andrews}, {Chojnowski},
+%  {Cudworth}, {Jackson}, {Munn}, {Skrutskie}, {Beaton}, {Blake}, {Covey},
+%  {Deshpande}, {Epstein}, {Fabbian}, {Fleming}, {Garcia Hernandez}, {Herrero},
+%  {Mahadevan}, {M{\'e}sz{\'a}ros}, {Schultheis}, {Sellgren}, {Terrien}, {van
+%  Saders}, {Allende Prieto}, {Bizyaev}, {Burton}, {Cunha}, {da Costa},
+%  {Hasselquist}, {Hearty}, {Holtzman}, {Garc{\'{\i}}a P{\'e}rez}, {Maia},
+%  {O'Connell}, {O'Donnell}, {Pinsonneault}, {Santiago}, {Schiavon}, {Shetrone},
+%  {Smith}, \& {Wilson}}]{Zaso2013}
+%{Zasowski}, G., {Johnson}, J.~A., {Frinchaboy}, P.~M., {Majewski}, S.~R.,
+%  {Nidever}, D.~L., {Rocha Pinto}, H.~J., {Girardi}, L., {Andrews}, B.,
+%  {Chojnowski}, S.~D., {Cudworth}, K.~M., {Jackson}, K., {Munn}, J.,
+%  {Skrutskie}, M.~F., {Beaton}, R.~L., {Blake}, C.~H., {Covey}, K.,
+%  {Deshpande}, R., {Epstein}, C., {Fabbian}, D., {Fleming}, S.~W., {Garcia
+%  Hernandez}, D.~A., {Herrero}, A., {Mahadevan}, S., {M{\'e}sz{\'a}ros}, S.,
+%  {Schultheis}, M., {Sellgren}, K., {Terrien}, R., {van Saders}, J., {Allende
+%  Prieto}, C., {Bizyaev}, D., {Burton}, A., {Cunha}, K., {da Costa}, L.~N.,
+%  {Hasselquist}, S., {Hearty}, F., {Holtzman}, J., {Garc{\'{\i}}a P{\'e}rez},
+%  A.~E., {Maia}, M.~A.~G., {O'Connell}, R.~W., {O'Donnell}, C., {Pinsonneault},
+%  M., {Santiago}, B.~X., {Schiavon}, R.~P., {Shetrone}, M., {Smith}, V., \&
+%  {Wilson}, J.~C. 2013, \aj, 146, 81
+%
+%\end{thebibliography}
 
-\bibitem[{{Ahn} {et~al.}(2014){Ahn}, {Alexandroff}, {Allende Prieto}, {Anders},
-  {Anderson}, {Anderton}, {Andrews}, {Aubourg}, {Bailey}, {Bastien}, \&
-  et~al.}]{Ahn2014}
-{Ahn}, C.~P., {Alexandroff}, R., {Allende Prieto}, C., {Anders}, F.,
-  {Anderson}, S.~F., {Anderton}, T., {Andrews}, B.~H., {Aubourg}, {\'E}.,
-  {Bailey}, S., {Bastien}, F.~A., \& et~al. 2014, \apjs, 211, 17
-
-\bibitem[{{Allende Prieto} {et~al.}(1999){Allende Prieto}, {Garc{\'{\i}}a
-  L{\'o}pez}, {Lambert}, \& {Gustafsson}}]{AP1999}
-{Allende Prieto}, C., {Garc{\'{\i}}a L{\'o}pez}, R.~J., {Lambert}, D.~L., \&
-  {Gustafsson}, B. 1999, \apj, 527, 879
-  
-  \bibitem[{{Bailer-Jones} {et~al.}(2013){Bailer-Jones}, {Andrae}, {Arcay},
-  {Astraatmadja}, {Bellas-Velidis}, {Berihuete}, {Bijaoui}, {Carri{\'o}n},
-  {Dafonte}, {Damerdji}, {Dapergolas}, {de Laverny}, {Delchambre}, {Drazinos},
-  {Drimmel}, {Fr{\'e}mat}, {Fustes}, {Garc{\'{\i}}a-Torres}, {Gu{\'e}d{\'e}},
-  {Heiter}, {Janotto}, {Karampelas}, {Kim}, {Knude}, {Kolka}, {Kontizas},
-  {Kontizas}, {Korn}, {Lanzafame}, {Lebreton}, {Lindstr{\o}m}, {Liu},
-  {Livanou}, {Lobel}, {Manteiga}, {Martayan}, {Ordenovic}, {Pichon},
-  {Recio-Blanco}, {Rocca-Volmerange}, {Sarro}, {Smith}, {Sordo}, {Soubiran},
-  {Surdej}, {Th{\'e}venin}, {Tsalmantza}, {Vallenari}, \& {Zorec}}]{BJ2013}
-{Bailer-Jones}, C.~A.~L., {Andrae}, R., {Arcay}, B., {Astraatmadja}, T.,
-  {Bellas-Velidis}, I., {Berihuete}, A., {Bijaoui}, A., {Carri{\'o}n}, C.,
-  {Dafonte}, C., {Damerdji}, Y., {Dapergolas}, A., {de Laverny}, P.,
-  {Delchambre}, L., {Drazinos}, P., {Drimmel}, R., {Fr{\'e}mat}, Y., {Fustes},
-  D., {Garc{\'{\i}}a-Torres}, M., {Gu{\'e}d{\'e}}, C., {Heiter}, U., {Janotto},
-  A.-M., {Karampelas}, A., {Kim}, D.-W., {Knude}, J., {Kolka}, I., {Kontizas},
-  E., {Kontizas}, M., {Korn}, A.~J., {Lanzafame}, A.~C., {Lebreton}, Y.,
-  {Lindstr{\o}m}, H., {Liu}, C., {Livanou}, E., {Lobel}, A., {Manteiga}, M.,
-  {Martayan}, C., {Ordenovic}, C., {Pichon}, B., {Recio-Blanco}, A.,
-  {Rocca-Volmerange}, B., {Sarro}, L.~M., {Smith}, K., {Sordo}, R., {Soubiran},
-  C., {Surdej}, J., {Th{\'e}venin}, F., {Tsalmantza}, P., {Vallenari}, A., \&
-  {Zorec}, J. 2013, \aap, 559, A74
-
-\bibitem[{{Barrado y Navascu{\'e}s} {et~al.}(2001){Barrado y Navascu{\'e}s},
-  {Deliyannis}, \& {Stauffer}}]{barrado2001}
-{Barrado y Navascu{\'e}s}, D., {Deliyannis}, C.~P., \& {Stauffer}, J.~R. 2001,
-  \apj, 549, 452
-
-\bibitem[{{Beers} {et~al.}(2006){Beers}, {Lee}, {Sivarani}, {Allende Prieto},
-  {Wilhelm}, {Fiorentin}, {Bailer-Jones}, {Norris}, \& {SEGUE Calibration
-  Team}}]{Beers2006}
-{Beers}, T.~C., {Lee}, Y., {Sivarani}, T., {Allende Prieto}, C., {Wilhelm}, R.,
-  {Fiorentin}, P.~R., {Bailer-Jones}, C., {Norris}, J.~E., \& {SEGUE
-  Calibration Team}. 2006, \memsai, 77, 1171
-
-\bibitem[{{Boeche} {et~al.}(2011){Boeche}, {Siebert}, {Williams}, {de Jong},
-  {Steinmetz}, {Fulbright}, {Ruchti}, {Bienaym{\'e}}, {Bland-Hawthorn},
-  {Campbell}, {Freeman}, {Gibson}, {Gilmore}, {Grebel}, {Helmi}, {Munari},
-  {Navarro}, {Parker}, {Reid}, {Seabroke}, {Siviero}, {Watson}, {Wyse}, \&
-  {Zwitter}}]{Boeche2011}
-{Boeche}, C., {Siebert}, A., {Williams}, M., {de Jong}, R.~S., {Steinmetz}, M.,
-  {Fulbright}, J.~P., {Ruchti}, G.~R., {Bienaym{\'e}}, O., {Bland-Hawthorn},
-  J., {Campbell}, R., {Freeman}, K.~C., {Gibson}, B.~K., {Gilmore}, G.,
-  {Grebel}, E.~K., {Helmi}, A., {Munari}, U., {Navarro}, J.~F., {Parker},
-  Q.~A., {Reid}, W., {Seabroke}, G.~M., {Siviero}, A., {Watson}, F.~G., {Wyse},
-  R.~F.~G., \& {Zwitter}, T. 2011, \aj, 142, 193
-
-\bibitem[{{Bovy} {et~al.}(2014){Bovy}, {Nidever}, {Rix}, {Girardi}, {Zasowski},
-  {Chojnowski}, \& {Holtzman}}]{bovy2014}
-{Bovy}, J., {Nidever}, D.~L., {Rix}, H.-W., {Girardi}, L., {Zasowski}, G.,
-  {Chojnowski}, S.~D., \& {Holtzman}, J. e.~a. 2014, \apj, 790, 127
-  
-%  @book{settles.book12,
-%	Author = {B. Settles},
-%	Publisher = {Morgan \& Claypool},
-%	Series = {Synthesis Lectures on Artificial Intelligence and Machine Learning},
-%	Title = {Active Learning},
-%	Year = {2012}}
-
-\bibitem[{{Freeman}(2012)}]{Freeman2012}
-{Freeman}, K.~C. 2012, in Astronomical Society of the Pacific Conference
-  Series, Vol. 458, Galactic Archaeology: Near-Field Cosmology and the
-  Formation of the Milky Way, ed. W.~{Aoki}, M.~{Ishigaki}, T.~{Suda},
-  T.~{Tsujimoto}, \& N.~{Arimoto}, 393
-
-\bibitem[{{Gilmore} {et~al.}(2012){Gilmore}, {Randich}, {Asplund}, {Binney},
-  {Bonifacio}, {Drew}, {Feltzing}, {Ferguson}, {Jeffries}, {Micela},
-  {Negueruela}, {Prusti}, {Rix}, {Vallenari}, {Alfaro}, {Allende-Prieto},
-  {Babusiaux}, {Bensby}, {Blomme}, {Bragaglia}, {Flaccomio}, {Fran{\c c}ois},
-  {Irwin}, {Koposov}, {Korn}, {Lanzafame}, {Pancino}, {Paunzen},
-  {Recio-Blanco}, {Sacco}, {Smiljanic}, {Van Eck}, \& {Walton}}]{Gilmore2012}
-{Gilmore}, G., {Randich}, S., {Asplund}, M., {Binney}, J., {Bonifacio}, P.,
-  {Drew}, J., {Feltzing}, S., {Ferguson}, A., {Jeffries}, R., {Micela}, G.,
-  {Negueruela}, I., {Prusti}, T., {Rix}, H.-W., {Vallenari}, A., {Alfaro}, E.,
-  {Allende-Prieto}, C., {Babusiaux}, C., {Bensby}, T., {Blomme}, R.,
-  {Bragaglia}, A., {Flaccomio}, E., {Fran{\c c}ois}, P., {Irwin}, M.,
-  {Koposov}, S., {Korn}, A., {Lanzafame}, A., {Pancino}, E., {Paunzen}, E.,
-  {Recio-Blanco}, A., {Sacco}, G., {Smiljanic}, R., {Van Eck}, S., \& {Walton},
-  N. 2012, The Messenger, 147, 25
-
-\bibitem[{{Girardi} {et~al.}(2000){Girardi}, {Bressan}, {Bertelli}, \&
-  {Chiosi}}]{girardi2000}
-{Girardi}, L., {Bressan}, A., {Bertelli}, G., \& {Chiosi}, C. 2000, \aaps, 141,
-  371
-
-\bibitem[{{Gonzalez} {et~al.}(2009){Gonzalez}, {Zoccali}, {Monaco}, {Hill},
-  {Cassisi}, {Minniti}, {Renzini}, {Barbuy}, {Ortolani}, \&
-  {Gomez}}]{gonzalez2009}
-{Gonzalez}, O.~A., {Zoccali}, M., {Monaco}, L., {Hill}, V., {Cassisi}, S.,
-  {Minniti}, D., {Renzini}, A., {Barbuy}, B., {Ortolani}, S., \& {Gomez}, A.
-  2009, \aap, 508, 289
-
-\bibitem[{{Hinkel} {et~al.}(2014){Hinkel}, {Timmes}, {Young}, {Pagano}, \&
-  {Turnbull}}]{Hinkel2014}
-{Hinkel}, N.~R., {Timmes}, F.~X., {Young}, P.~A., {Pagano}, M.~D., \&
-  {Turnbull}, M.~C. 2014, \aj, 148, 54
-
-\bibitem[{{Jofr{\'e}} {et~al.}(2014){Jofr{\'e}}, {Heiter}, {Soubiran},
-  {Blanco-Cuaresma}, {Worley}, {Pancino}, \& {Cantat-Gaudin}}]{Jofre2014}
-{Jofr{\'e}}, P., {Heiter}, U., {Soubiran}, C., {Blanco-Cuaresma}, S., {Worley},
-  C.~C., {Pancino}, E., \& {Cantat-Gaudin}, e.~a. 2014, \aap, 564, A133
-  
-  
-\bibitem[{{Koleva} {et~al.}(2009){Koleva}, {Prugniel}, {Bouchard}, \&
-  {Wu}}]{Koleva2009}
-{Koleva}, M., {Prugniel}, P., {Bouchard}, A., \& {Wu}, Y. 2009, \aap, 501, 1269
-
-
-\bibitem[{{Kordopatis} {et~al.}(2013){Kordopatis}, {Gilmore}, {Steinmetz},
-  {Boeche}, {Seabroke}, {Siebert}, {Zwitter}, {Binney}, {de Laverny},
-  {Recio-Blanco}, {Williams}, {Piffl}, {Enke}, {Roeser}, {Bijaoui}, {Wyse},
-  {Freeman}, {Munari}, {Carrillo}, {Anguiano}, {Burton}, {Campbell}, {Cass},
-  {Fiegert}, {Hartley}, {Parker}, {Reid}, {Ritter}, {Russell}, {Stupar},
-  {Watson}, {Bienaym{\'e}}, {Bland-Hawthorn}, {Gerhard}, {Gibson}, {Grebel},
-  {Helmi}, {Navarro}, {Conrad}, {Famaey}, {Faure}, {Just}, {Kos}, {Matijevi{\v
-  c}}, {McMillan}, {Minchev}, {Scholz}, {Sharma}, {Siviero}, {de Boer}, \& {{\v
-  Z}erjal}}]{Kord2013}
-{Kordopatis}, G., {Gilmore}, G., {Steinmetz}, M., {Boeche}, C., {Seabroke},
-  G.~M., {Siebert}, A., {Zwitter}, T., {Binney}, J., {de Laverny}, P.,
-  {Recio-Blanco}, A., {Williams}, M.~E.~K., {Piffl}, T., {Enke}, H., {Roeser},
-  S., {Bijaoui}, A., {Wyse}, R.~F.~G., {Freeman}, K., {Munari}, U., {Carrillo},
-  I., {Anguiano}, B., {Burton}, D., {Campbell}, R., {Cass}, C.~J.~P.,
-  {Fiegert}, K., {Hartley}, M., {Parker}, Q.~A., {Reid}, W., {Ritter}, A.,
-  {Russell}, K.~S., {Stupar}, M., {Watson}, F.~G., {Bienaym{\'e}}, O.,
-  {Bland-Hawthorn}, J., {Gerhard}, O., {Gibson}, B.~K., {Grebel}, E.~K.,
-  {Helmi}, A., {Navarro}, J.~F., {Conrad}, C., {Famaey}, B., {Faure}, C.,
-  {Just}, A., {Kos}, J., {Matijevi{\v c}}, G., {McMillan}, P.~J., {Minchev},
-  I., {Scholz}, R., {Sharma}, S., {Siviero}, A., {de Boer}, E.~W., \& {{\v
-  Z}erjal}, M. 2013, \aj, 146, 134
-
-\bibitem[{{Lee} {et~al.}(2006){Lee}, {Beers}, {Sivarani}, {Wilhelm}, {Allende
-  Prieto}, {Norris}, {Fiorentin}, {Bailer-Jones}, \& {SEGUE Calibration
-  Team}}]{Lee2006}
-{Lee}, Y.~S., {Beers}, T.~C., {Sivarani}, T., {Wilhelm}, R., {Allende Prieto},
-  C., {Norris}, J.~E., {Fiorentin}, P.~R., {Bailer-Jones}, C.~A., \& {SEGUE
-  Calibration Team}. 2006, in Bulletin of the American Astronomical Society,
-  Vol.~38, American Astronomical Society Meeting Abstracts, 168.15
-
-\bibitem[{{Liu} {et~al.}(2014){Liu}, {Deng}, {Carlin}, {Smith}, {Li},
-  {Newberg}, {Gao}, {Yang}, {Xue}, {Xu}, {Zhang}, {Xin}, {Wu}, \&
-  {Jin}}]{Liu2014}
-{Liu}, C., {Deng}, L.-C., {Carlin}, J.~L., {Smith}, M.~C., {Li}, J., {Newberg},
-  H.~J., {Gao}, S., {Yang}, F., {Xue}, X.-X., {Xu}, Y., {Zhang}, Y.-Y., {Xin},
-  Y., {Wu}, Y., \& {Jin}, G. 2014, \apj, 790, 110
-
-\bibitem[{{Majewski}(2012)}]{Majewski2012}
-{Majewski}, S.~R. 2012, in American Astronomical Society Meeting Abstracts,
-  Vol. 219, American Astronomical Society Meeting Abstracts 219, 205.06
-
-\bibitem[{{M{\'e}sz{\'a}ros} {et~al.}(2013){M{\'e}sz{\'a}ros}, {Holtzman},
-  {Garc{\'{\i}}a P{\'e}rez}, {Allende Prieto}, {Schiavon}, {Basu}, {Bizyaev},
-  {Chaplin}, {Chojnowski}, {Cunha}, {Elsworth}, {Epstein}, {Frinchaboy},
-  {Garc{\'{\i}}a}, {Hearty}, {Hekker}, {Johnson}, {Kallinger}, {Koesterke},
-  {Majewski}, {Martell}, {Nidever}, {Pinsonneault}, {O'Connell}, {Shetrone},
-  {Smith}, {Wilson}, \& {Zasowski}}]{Meszaros2013}
-{M{\'e}sz{\'a}ros}, S., {Holtzman}, J., {Garc{\'{\i}}a P{\'e}rez}, A.~E.,
-  {Allende Prieto}, C., {Schiavon}, R.~P., {Basu}, S., {Bizyaev}, D.,
-  {Chaplin}, W.~J., {Chojnowski}, S.~D., {Cunha}, K., {Elsworth}, Y.,
-  {Epstein}, C., {Frinchaboy}, P.~M., {Garc{\'{\i}}a}, R.~A., {Hearty}, F.~R.,
-  {Hekker}, S., {Johnson}, J.~A., {Kallinger}, T., {Koesterke}, L., {Majewski},
-  S.~R., {Martell}, S.~L., {Nidever}, D., {Pinsonneault}, M.~H., {O'Connell},
-  J., {Shetrone}, M., {Smith}, V.~V., {Wilson}, J.~C., \& {Zasowski}, G. 2013,
-  \aj, 146, 133
-
-\bibitem[{{Newberg} {et~al.}(2012){Newberg}, {Carlin}, {Chen}, {Deng},
-  {L{\'e}pine}, {Liu}, {Yang}, {Yuan}, {Zhang}, {Zhang}, {Legue Working Group},
-  \& {Lamost-Plus Partnership}}]{Newberg2012}
-{Newberg}, H.~J., {Carlin}, J.~L., {Chen}, L., {Deng}, L., {L{\'e}pine}, S.,
-  {Liu}, X., {Yang}, F., {Yuan}, H.-B., {Zhang}, H., {Zhang}, Y., {Legue
-  Working Group}, \& {Lamost-Plus Partnership}. 2012, in Astronomical Society
-  of the Pacific Conference Series, Vol. 458, Galactic Archaeology: Near-Field
-  Cosmology and the Formation of the Milky Way, ed. W.~{Aoki}, M.~{Ishigaki},
-  T.~{Suda}, T.~{Tsujimoto}, \& N.~{Arimoto}, 405
-
-\bibitem[{{Recio-Blanco} {et~al.}(2006){Recio-Blanco}, {Bijaoui}, \& {de
-  Laverny}}]{RB2006}
-{Recio-Blanco}, A., {Bijaoui}, A., \& {de Laverny}, P. 2006, \mnras, 370, 141
-
-\bibitem[{{Schlafly} \& {Finkbeiner}(2011)}]{Schlafly2011}
-{Schlafly}, E.~F. \& {Finkbeiner}, D.~P. 2011, \apj, 737, 103
-
-\bibitem[{{Sch{\"o}nrich} \& {Bergemann}(2014)}]{SB2014}
-{Sch{\"o}nrich}, R. \& {Bergemann}, M. 2014, \mnras, 443, 698
-
-\bibitem[{{Smiljanic} {et~al.}(2014){Smiljanic}, {Korn}, {Bergemann}, {Frasca},
-  {Magrini}, {Masseron}, {Pancino}, {Ruchti}, \& {San Roman}}]{SM2014}
-{Smiljanic}, R., {Korn}, A.~J., {Bergemann}, M., {Frasca}, A., {Magrini}, L.,
-  {Masseron}, T., {Pancino}, E., {Ruchti}, G., \& {San Roman}, e.~a. 2014,
-  \aap, 570, A122
-
-
-\bibitem[{{Steinmetz} {et~al.}(2006){Steinmetz}, {Zwitter}, {Siebert},
-  {Watson}, {Freeman}, {Munari}, {Campbell}, {Williams}, {Seabroke}, {Wyse},
-  {Parker}, {Bienaym{\'e}}, {Roeser}, {Gibson}, {Gilmore}, {Grebel}, {Helmi},
-  {Navarro}, {Burton}, {Cass}, {Dawe}, {Fiegert}, {Hartley}, {Russell},
-  {Saunders}, {Enke}, {Bailin}, {Binney}, {Bland-Hawthorn}, {Boeche}, {Dehnen},
-  {Eisenstein}, {Evans}, {Fiorucci}, {Fulbright}, {Gerhard}, {Jauregi}, {Kelz},
-  {Mijovi{\'c}}, {Minchev}, {Parmentier}, {Pe{\~n}arrubia}, {Quillen}, {Read},
-  {Ruchti}, {Scholz}, {Siviero}, {Smith}, {Sordo}, {Veltz}, {Vidrih}, {von
-  Berlepsch}, {Boyle}, \& {Schilbach}}]{Steinmetz2006}
-{Steinmetz}, M., {Zwitter}, T., {Siebert}, A., {Watson}, F.~G., {Freeman},
-  K.~C., {Munari}, U., {Campbell}, R., {Williams}, M., {Seabroke}, G.~M.,
-  {Wyse}, R.~F.~G., {Parker}, Q.~A., {Bienaym{\'e}}, O., {Roeser}, S.,
-  {Gibson}, B.~K., {Gilmore}, G., {Grebel}, E.~K., {Helmi}, A., {Navarro},
-  J.~F., {Burton}, D., {Cass}, C.~J.~P., {Dawe}, J.~A., {Fiegert}, K.,
-  {Hartley}, M., {Russell}, K.~S., {Saunders}, W., {Enke}, H., {Bailin}, J.,
-  {Binney}, J., {Bland-Hawthorn}, J., {Boeche}, C., {Dehnen}, W., {Eisenstein},
-  D.~J., {Evans}, N.~W., {Fiorucci}, M., {Fulbright}, J.~P., {Gerhard}, O.,
-  {Jauregi}, U., {Kelz}, A., {Mijovi{\'c}}, L., {Minchev}, I., {Parmentier},
-  G., {Pe{\~n}arrubia}, J., {Quillen}, A.~C., {Read}, M.~A., {Ruchti}, G.,
-  {Scholz}, R.-D., {Siviero}, A., {Smith}, M.~C., {Sordo}, R., {Veltz}, L.,
-  {Vidrih}, S., {von Berlepsch}, R., {Boyle}, B.~J., \& {Schilbach}, E. 2006,
-  \aj, 132, 1645
-
-\bibitem[{{Zasowski} {et~al.}(2013){Zasowski}, {Johnson}, {Frinchaboy},
-  {Majewski}, {Nidever}, {Rocha Pinto}, {Girardi}, {Andrews}, {Chojnowski},
-  {Cudworth}, {Jackson}, {Munn}, {Skrutskie}, {Beaton}, {Blake}, {Covey},
-  {Deshpande}, {Epstein}, {Fabbian}, {Fleming}, {Garcia Hernandez}, {Herrero},
-  {Mahadevan}, {M{\'e}sz{\'a}ros}, {Schultheis}, {Sellgren}, {Terrien}, {van
-  Saders}, {Allende Prieto}, {Bizyaev}, {Burton}, {Cunha}, {da Costa},
-  {Hasselquist}, {Hearty}, {Holtzman}, {Garc{\'{\i}}a P{\'e}rez}, {Maia},
-  {O'Connell}, {O'Donnell}, {Pinsonneault}, {Santiago}, {Schiavon}, {Shetrone},
-  {Smith}, \& {Wilson}}]{Zaso2013}
-{Zasowski}, G., {Johnson}, J.~A., {Frinchaboy}, P.~M., {Majewski}, S.~R.,
-  {Nidever}, D.~L., {Rocha Pinto}, H.~J., {Girardi}, L., {Andrews}, B.,
-  {Chojnowski}, S.~D., {Cudworth}, K.~M., {Jackson}, K., {Munn}, J.,
-  {Skrutskie}, M.~F., {Beaton}, R.~L., {Blake}, C.~H., {Covey}, K.,
-  {Deshpande}, R., {Epstein}, C., {Fabbian}, D., {Fleming}, S.~W., {Garcia
-  Hernandez}, D.~A., {Herrero}, A., {Mahadevan}, S., {M{\'e}sz{\'a}ros}, S.,
-  {Schultheis}, M., {Sellgren}, K., {Terrien}, R., {van Saders}, J., {Allende
-  Prieto}, C., {Bizyaev}, D., {Burton}, A., {Cunha}, K., {da Costa}, L.~N.,
-  {Hasselquist}, S., {Hearty}, F., {Holtzman}, J., {Garc{\'{\i}}a P{\'e}rez},
-  A.~E., {Maia}, M.~A.~G., {O'Connell}, R.~W., {O'Donnell}, C., {Pinsonneault},
-  M., {Santiago}, B.~X., {Schiavon}, R.~P., {Shetrone}, M., {Smith}, V., \&
-  {Wilson}, J.~C. 2013, \aj, 146, 81
-
-\end{thebibliography}
-
-%\bibliography{tc3.bib}
+\bibliography{tc3.bib}
 
 
 \end{document}
