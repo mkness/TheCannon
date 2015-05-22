@@ -879,13 +879,13 @@ def infer_labels_nonlinear(fn_pickle,testdata, ids, fout_pickle, weak_lower,weak
       #pickle.dump((Params_all, covs_all),  file_in)
       file_normed = normed_training_data.split('.pickle')[0]
       chi2 = get_goodness_fit(fn_pickle, file_normed, Params_all, MCM_rotate_all)
-      chi2_def = chi2/len(xdata)*1.
+      chi2_def = chi2#/len(xdata)*1.
       pickle.dump((Params_all, covs_all,chi2_def,ids),  file_in)
       file_in.close()
     else: 
       chi2 = get_goodness_fit(fn_pickle, filein, Params_all, MCM_rotate_all)
       #chi2 = 1 
-      chi2_def = chi2/len(xdata)*1.
+      chi2_def = chi2#/len(xdata)*1.
       file_in = open(fout_pickle, 'w')  
       pickle.dump((Params_all, covs_all, chi2_def, ids),  file_in)
       file_in.close()
