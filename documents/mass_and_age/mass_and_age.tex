@@ -16,7 +16,7 @@
 
 \begin{document}
 
-\title{Spectral signatures of asteroseismological quantities}
+\title{Measuring red-giant masses and ages with stellar spectra}
 \author{M.~Ness\altaffilmark{1},
 David~W.~Hogg\altaffilmark{1,2,3},
 H.-W.~Rix\altaffilmark{1},
@@ -30,25 +30,39 @@ H.-W.~Rix\altaffilmark{1},
 \email{ness@mpia.de}
 
 \begin{abstract}%
-With \thecannon, we have demonstrated that it is possible to use a small
-training set of stars with noisy spectral data and known stellar-parameter labels
-to build a data-driven model of stellar spectra that can be used to infer
-stellar-parameter labels for other stars (with differently noisy spectral data).
-Here we train this system with---instead of standard stellar parameter labels---%
-asteroseismic quantities ($\numax$ and $\deltanu$) obtained from a training set of
-stars with both \kepler\ observations and \apogee\ infrared spectral data.
-We use cross-validation to show that
-the asteroseismic labels do a good job of predicting infrared spectra,
-and that infrared spectra at \apogee\ quality can be used to infer asteroseismic
-properties.
-For a typical \apogee\ star we can infer $\numax$ and $\deltanu$ to accuracies of
-XXX and YYY, respectively, using spectroscopic data \emph{alone}.
-In turn, this permits us to infer stellar ages on the red-giant branch to an
-accuracy of approximately ZZZ.
-These findings provide context for future asteroseismology observing efforts;
-in particular, medium-resolution infrared spectroscopy might be as
-effective as high-cadence time-domain photometry for inferring gross properties
-of stellar interiors and ages, for at least some parts of the H-R diagram.
+% Context
+With \thecannon, we have demonstrated that it is possible to use a
+small training set of stars with noisy spectral data and known
+stellar-parameter labels to build a data-driven probabilistic model of
+stellar spectra that can be used to infer stellar-parameter labels for
+other stars (with differently noisy spectral data).
+% Aims
+% Method
+Here we train this system using stars with known stellar mass labels
+obtained from a training set of stars with both
+\kepler\ asteroseismological observations (hence the known masses) and
+\apogee\ infrared spectral data.
+We find that (after training) \thecannon\ can infer stellar
+masses---and therefore also stellar ages---for red-giant stars using
+infrared spectral data alone.
+% Results
+We demonstrate the validity of the stellar masses and ages by three
+methods:
+First, we use cross-validation to demonstrate label accuracy on the
+training set; we find mass accuracies of roughly XXXX and age accuracies
+of roughly ZZZZ for typical-quality \apogee\ spectra.
+Second, we look at the dependence on mass (or age) of
+\thecannon\ spectral expectation, and show that it makes good physical
+sense:
+The age indicators in the spectral space are associated with elements
+that can be ``dredged up'' or elements where chromospheric activity is
+visible, or XXXX or YYYY.
+Third, we use \thecannon\ to estimate age labels for the entire
+\apogee\ sample, and show that the ages of stellar structures in the
+Milky Way follow expectations, even conditioned on abundances.
+All three of these tests show that we can obtain red-giant mass and
+age information from stellar spectra; these capabilities open up new
+opportunities for Milky Way and stellar astrophysics.
 \end{abstract}
 
 \keywords{%
@@ -94,44 +108,5 @@ measurements made on a small subset of stars can be amplified to help
 with parameter estimation on a much larger set, even those for which
 no direct asterosiesmological measurements are possible.
 
-Our motivation is three-fold:
-For one, we are motivated by the fact that spectral data tell you
-different things about stellar parameters than do asteroseismological
-measurements.
-For example, we expect asteroseismology to be much more sensitive
-to the mean stellar density ($G\,M\,R^{-3}$), while we expect spectroscopy to be much
-more sensitive to surface gravity ($G\,M\,R^{-2}$).
-These complementary sensitivities indicate that a combination of
-asteroseismology and spectroscopy must be more powerful on stellar
-structure than either taken alone.
-
-For two, we are motivated by the fact that it is difficult to imagine
-a near future in which nearly as many stars have good-quality
-asteroseismological measurements as will have good-quality
-spectrscopic measurements.
-The reasons for this are cultural and technical, but suffice it to say
-that there are currently millions of stars targeted for
-medium-resolution to high-resolution spectroscopy, but only thousands
-targeted for asteroseismological measurements.
-This means that \emph{if} we are going to benefit maximally from the
-asteroseismology, we have to find a way to transfer it from the thousands
-of direct measurements to the millions of stars that will get no direct
-measurements.
-
-For three, we are motivated by the limitations of current physics-based
-stellar models.
-If we had much better models of stellar interiors and exteriors, we would be
-able to confidently infer physical properties of stars directly from our
-asteroseismological and spectroscopic measurements.
-However, we do not have such models.
-In particular, physics-based models of stellar spectra have small issues that
-lead to variations in stellar-parameter inferences that depend
-significantly on the choice of spectral wavelength coverage, spectral
-resolution, and the settings of physical nuisance parameters or
-numerical modeling scheme.
-
-This last motivation led us to develop \thecannon, a data-driven model
-for stellar spectra.
-DWH: This project...
 
 \end{document}
