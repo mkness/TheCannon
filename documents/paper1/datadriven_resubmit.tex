@@ -809,9 +809,9 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 %run makeoniso+ on makeonisochrone_aftersubmit_fit_normed.py  in TheCannon/code 
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.26]{plots/aftersubmit/stdtest_T_normed.png}
-    \includegraphics[scale=0.26]{./plots/aftersubmit/stdtest_g_normed.png}
-    \includegraphics[scale=0.26]{./plots/aftersubmit/stdtest_feh_normed.png}
+  \includegraphics[scale=0.26]{plots/aftersubmit/stdtest_T_normed.pdf}
+    \includegraphics[scale=0.26]{./plots/aftersubmit/stdtest_g_normed.pdf}
+    \includegraphics[scale=0.26]{./plots/aftersubmit/stdtest_feh_normed.pdf}
     \caption{\textcolor{blue}{The standard deviation in the labels returned in \teff, \logg\ and \feh, shown in the \teff$-$\logg\ plane, normalised by the optimisation error on each measurement, for 20 bootstrapping tests of the training set. The representative sample of $\sim$ 670 stars shown here has been drawn from an equal sampling of a grid spaced by 100 K in \teff, 0.25 dex in \logg\ and 0.25 dex in \feh\ from the labels returned using the model trained on the isochrone-corrected reference objects. The location of the reference objects is shown in the grey shaded regions in the panel. Note the narrow region of reference objects also on the main sequence. The highest scatter in the labels is seen for regions where the labels are extrapolated. These figures are shown for the isochrone-corrected labels discussed in Section 2.4.}}
     \label{fig:sigma}.
 \end{figure}
@@ -821,9 +821,9 @@ This may indicate that the \aspcap\ temperature scale is offset too cool in DR10
 %run -i makeiso_rmsdiff.py in aftersumibt directory
 \begin{figure}[!h]
 \centering
-  \includegraphics[scale=0.26]{./plots/aftersubmit/t_diff2.png}
-    \includegraphics[scale=0.26]{./plots/aftersubmit/g_diff2.png}
-    \includegraphics[scale=0.26]{./plots/aftersubmit/feh_diff2.png}
+  \includegraphics[scale=0.26]{./plots/aftersubmit/t_diff2.pdf}
+    \includegraphics[scale=0.26]{./plots/aftersubmit/g_diff2.pdf}
+    \includegraphics[scale=0.26]{./plots/aftersubmit/feh_diff2.pdf}
     \caption{\textcolor{blue}{The difference in labels between \tc\ and \aspcap\, indicating the regions of extrapolation where the difference in the labels extends beyond the estimated errors of the methods, due to the limited sampling of the reference objects which does not fully cover the label-space of the survey. The \aspcap-corrected training labels were used to generate the model applied at the test step on the DR10 data.}}
     \label{fig:sigma2}.
 \end{figure}
@@ -1094,257 +1094,257 @@ SDSS-III is managed by the Astrophysical Research Consortium for the Participati
  Ohio State University, Pennsylvania State University, University of Portsmouth, Princeton University, the Spanish Participation Group, 
  University of Tokyo, University of Utah, Vanderbilt University, University of Virginia, University of Washington, and Yale University
 
-%\begin{thebibliography}{24}
-%\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
-%
-%\bibitem[{{Ahn} {et~al.}(2014){Ahn}, {Alexandroff}, {Allende Prieto}, {Anders},
-%  {Anderson}, {Anderton}, {Andrews}, {Aubourg}, {Bailey}, {Bastien}, \&
-%  et~al.}]{Ahn2014}
-%{Ahn}, C.~P., {Alexandroff}, R., {Allende Prieto}, C., {Anders}, F.,
-%  {Anderson}, S.~F., {Anderton}, T., {Andrews}, B.~H., {Aubourg}, {\'E}.,
-%  {Bailey}, S., {Bastien}, F.~A., \& et~al. 2014, \apjs, 211, 17
-%
-%\bibitem[{{Allende Prieto} {et~al.}(1999){Allende Prieto}, {Garc{\'{\i}}a
-%  L{\'o}pez}, {Lambert}, \& {Gustafsson}}]{AP1999}
-%{Allende Prieto}, C., {Garc{\'{\i}}a L{\'o}pez}, R.~J., {Lambert}, D.~L., \&
-%  {Gustafsson}, B. 1999, \apj, 527, 879
-%  
-%  \bibitem[{{Bailer-Jones} {et~al.}(2013){Bailer-Jones}, {Andrae}, {Arcay},
-%  {Astraatmadja}, {Bellas-Velidis}, {Berihuete}, {Bijaoui}, {Carri{\'o}n},
-%  {Dafonte}, {Damerdji}, {Dapergolas}, {de Laverny}, {Delchambre}, {Drazinos},
-%  {Drimmel}, {Fr{\'e}mat}, {Fustes}, {Garc{\'{\i}}a-Torres}, {Gu{\'e}d{\'e}},
-%  {Heiter}, {Janotto}, {Karampelas}, {Kim}, {Knude}, {Kolka}, {Kontizas},
-%  {Kontizas}, {Korn}, {Lanzafame}, {Lebreton}, {Lindstr{\o}m}, {Liu},
-%  {Livanou}, {Lobel}, {Manteiga}, {Martayan}, {Ordenovic}, {Pichon},
-%  {Recio-Blanco}, {Rocca-Volmerange}, {Sarro}, {Smith}, {Sordo}, {Soubiran},
-%  {Surdej}, {Th{\'e}venin}, {Tsalmantza}, {Vallenari}, \& {Zorec}}]{BJ2013}
-%{Bailer-Jones}, C.~A.~L., {Andrae}, R., {Arcay}, B., {Astraatmadja}, T.,
-%  {Bellas-Velidis}, I., {Berihuete}, A., {Bijaoui}, A., {Carri{\'o}n}, C.,
-%  {Dafonte}, C., {Damerdji}, Y., {Dapergolas}, A., {de Laverny}, P.,
-%  {Delchambre}, L., {Drazinos}, P., {Drimmel}, R., {Fr{\'e}mat}, Y., {Fustes},
-%  D., {Garc{\'{\i}}a-Torres}, M., {Gu{\'e}d{\'e}}, C., {Heiter}, U., {Janotto},
-%  A.-M., {Karampelas}, A., {Kim}, D.-W., {Knude}, J., {Kolka}, I., {Kontizas},
-%  E., {Kontizas}, M., {Korn}, A.~J., {Lanzafame}, A.~C., {Lebreton}, Y.,
-%  {Lindstr{\o}m}, H., {Liu}, C., {Livanou}, E., {Lobel}, A., {Manteiga}, M.,
-%  {Martayan}, C., {Ordenovic}, C., {Pichon}, B., {Recio-Blanco}, A.,
-%  {Rocca-Volmerange}, B., {Sarro}, L.~M., {Smith}, K., {Sordo}, R., {Soubiran},
-%  C., {Surdej}, J., {Th{\'e}venin}, F., {Tsalmantza}, P., {Vallenari}, A., \&
-%  {Zorec}, J. 2013, \aap, 559, A74
-%
-%\bibitem[{{Barrado y Navascu{\'e}s} {et~al.}(2001){Barrado y Navascu{\'e}s},
-%  {Deliyannis}, \& {Stauffer}}]{barrado2001}
-%{Barrado y Navascu{\'e}s}, D., {Deliyannis}, C.~P., \& {Stauffer}, J.~R. 2001,
-%  \apj, 549, 452
-%
-%\bibitem[{{Beers} {et~al.}(2006){Beers}, {Lee}, {Sivarani}, {Allende Prieto},
-%  {Wilhelm}, {Fiorentin}, {Bailer-Jones}, {Norris}, \& {SEGUE Calibration
-%  Team}}]{Beers2006}
-%{Beers}, T.~C., {Lee}, Y., {Sivarani}, T., {Allende Prieto}, C., {Wilhelm}, R.,
-%  {Fiorentin}, P.~R., {Bailer-Jones}, C., {Norris}, J.~E., \& {SEGUE
-%  Calibration Team}. 2006, \memsai, 77, 1171
-%
-%\bibitem[{{Boeche} {et~al.}(2011){Boeche}, {Siebert}, {Williams}, {de Jong},
-%  {Steinmetz}, {Fulbright}, {Ruchti}, {Bienaym{\'e}}, {Bland-Hawthorn},
-%  {Campbell}, {Freeman}, {Gibson}, {Gilmore}, {Grebel}, {Helmi}, {Munari},
-%  {Navarro}, {Parker}, {Reid}, {Seabroke}, {Siviero}, {Watson}, {Wyse}, \&
-%  {Zwitter}}]{Boeche2011}
-%{Boeche}, C., {Siebert}, A., {Williams}, M., {de Jong}, R.~S., {Steinmetz}, M.,
-%  {Fulbright}, J.~P., {Ruchti}, G.~R., {Bienaym{\'e}}, O., {Bland-Hawthorn},
-%  J., {Campbell}, R., {Freeman}, K.~C., {Gibson}, B.~K., {Gilmore}, G.,
-%  {Grebel}, E.~K., {Helmi}, A., {Munari}, U., {Navarro}, J.~F., {Parker},
-%  Q.~A., {Reid}, W., {Seabroke}, G.~M., {Siviero}, A., {Watson}, F.~G., {Wyse},
-%  R.~F.~G., \& {Zwitter}, T. 2011, \aj, 142, 193
-%
-%\bibitem[{{Bovy} {et~al.}(2014){Bovy}, {Nidever}, {Rix}, {Girardi}, {Zasowski},
-%  {Chojnowski}, \& {Holtzman}}]{bovy2014}
-%{Bovy}, J., {Nidever}, D.~L., {Rix}, H.-W., {Girardi}, L., {Zasowski}, G.,
-%  {Chojnowski}, S.~D., \& {Holtzman}, J. e.~a. 2014, \apj, 790, 127
-%  
-%%  @book{settles.book12,
-%%	Author = {B. Settles},
-%%	Publisher = {Morgan \& Claypool},
-%%	Series = {Synthesis Lectures on Artificial Intelligence and Machine Learning},
-%%	Title = {Active Learning},
-%%	Year = {2012}}
-%
-%\bibitem[{{Freeman}(2012)}]{Freeman2012}
-%{Freeman}, K.~C. 2012, in Astronomical Society of the Pacific Conference
-%  Series, Vol. 458, Galactic Archaeology: Near-Field Cosmology and the
-%  Formation of the Milky Way, ed. W.~{Aoki}, M.~{Ishigaki}, T.~{Suda},
-%  T.~{Tsujimoto}, \& N.~{Arimoto}, 393
-%
-%\bibitem[{{Gilmore} {et~al.}(2012){Gilmore}, {Randich}, {Asplund}, {Binney},
-%  {Bonifacio}, {Drew}, {Feltzing}, {Ferguson}, {Jeffries}, {Micela},
-%  {Negueruela}, {Prusti}, {Rix}, {Vallenari}, {Alfaro}, {Allende-Prieto},
-%  {Babusiaux}, {Bensby}, {Blomme}, {Bragaglia}, {Flaccomio}, {Fran{\c c}ois},
-%  {Irwin}, {Koposov}, {Korn}, {Lanzafame}, {Pancino}, {Paunzen},
-%  {Recio-Blanco}, {Sacco}, {Smiljanic}, {Van Eck}, \& {Walton}}]{Gilmore2012}
-%{Gilmore}, G., {Randich}, S., {Asplund}, M., {Binney}, J., {Bonifacio}, P.,
-%  {Drew}, J., {Feltzing}, S., {Ferguson}, A., {Jeffries}, R., {Micela}, G.,
-%  {Negueruela}, I., {Prusti}, T., {Rix}, H.-W., {Vallenari}, A., {Alfaro}, E.,
-%  {Allende-Prieto}, C., {Babusiaux}, C., {Bensby}, T., {Blomme}, R.,
-%  {Bragaglia}, A., {Flaccomio}, E., {Fran{\c c}ois}, P., {Irwin}, M.,
-%  {Koposov}, S., {Korn}, A., {Lanzafame}, A., {Pancino}, E., {Paunzen}, E.,
-%  {Recio-Blanco}, A., {Sacco}, G., {Smiljanic}, R., {Van Eck}, S., \& {Walton},
-%  N. 2012, The Messenger, 147, 25
-%
-%\bibitem[{{Girardi} {et~al.}(2000){Girardi}, {Bressan}, {Bertelli}, \&
-%  {Chiosi}}]{girardi2000}
-%{Girardi}, L., {Bressan}, A., {Bertelli}, G., \& {Chiosi}, C. 2000, \aaps, 141,
-%  371
-%
-%\bibitem[{{Gonzalez} {et~al.}(2009){Gonzalez}, {Zoccali}, {Monaco}, {Hill},
-%  {Cassisi}, {Minniti}, {Renzini}, {Barbuy}, {Ortolani}, \&
-%  {Gomez}}]{gonzalez2009}
-%{Gonzalez}, O.~A., {Zoccali}, M., {Monaco}, L., {Hill}, V., {Cassisi}, S.,
-%  {Minniti}, D., {Renzini}, A., {Barbuy}, B., {Ortolani}, S., \& {Gomez}, A.
-%  2009, \aap, 508, 289
-%
-%\bibitem[{{Hinkel} {et~al.}(2014){Hinkel}, {Timmes}, {Young}, {Pagano}, \&
-%  {Turnbull}}]{Hinkel2014}
-%{Hinkel}, N.~R., {Timmes}, F.~X., {Young}, P.~A., {Pagano}, M.~D., \&
-%  {Turnbull}, M.~C. 2014, \aj, 148, 54
-%
-%\bibitem[{{Jofr{\'e}} {et~al.}(2014){Jofr{\'e}}, {Heiter}, {Soubiran},
-%  {Blanco-Cuaresma}, {Worley}, {Pancino}, \& {Cantat-Gaudin}}]{Jofre2014}
-%{Jofr{\'e}}, P., {Heiter}, U., {Soubiran}, C., {Blanco-Cuaresma}, S., {Worley},
-%  C.~C., {Pancino}, E., \& {Cantat-Gaudin}, e.~a. 2014, \aap, 564, A133
-%  
-%  
-%\bibitem[{{Koleva} {et~al.}(2009){Koleva}, {Prugniel}, {Bouchard}, \&
-%  {Wu}}]{Koleva2009}
-%{Koleva}, M., {Prugniel}, P., {Bouchard}, A., \& {Wu}, Y. 2009, \aap, 501, 1269
-%
-%
-%\bibitem[{{Kordopatis} {et~al.}(2013){Kordopatis}, {Gilmore}, {Steinmetz},
-%  {Boeche}, {Seabroke}, {Siebert}, {Zwitter}, {Binney}, {de Laverny},
-%  {Recio-Blanco}, {Williams}, {Piffl}, {Enke}, {Roeser}, {Bijaoui}, {Wyse},
-%  {Freeman}, {Munari}, {Carrillo}, {Anguiano}, {Burton}, {Campbell}, {Cass},
-%  {Fiegert}, {Hartley}, {Parker}, {Reid}, {Ritter}, {Russell}, {Stupar},
-%  {Watson}, {Bienaym{\'e}}, {Bland-Hawthorn}, {Gerhard}, {Gibson}, {Grebel},
-%  {Helmi}, {Navarro}, {Conrad}, {Famaey}, {Faure}, {Just}, {Kos}, {Matijevi{\v
-%  c}}, {McMillan}, {Minchev}, {Scholz}, {Sharma}, {Siviero}, {de Boer}, \& {{\v
-%  Z}erjal}}]{Kord2013}
-%{Kordopatis}, G., {Gilmore}, G., {Steinmetz}, M., {Boeche}, C., {Seabroke},
-%  G.~M., {Siebert}, A., {Zwitter}, T., {Binney}, J., {de Laverny}, P.,
-%  {Recio-Blanco}, A., {Williams}, M.~E.~K., {Piffl}, T., {Enke}, H., {Roeser},
-%  S., {Bijaoui}, A., {Wyse}, R.~F.~G., {Freeman}, K., {Munari}, U., {Carrillo},
-%  I., {Anguiano}, B., {Burton}, D., {Campbell}, R., {Cass}, C.~J.~P.,
-%  {Fiegert}, K., {Hartley}, M., {Parker}, Q.~A., {Reid}, W., {Ritter}, A.,
-%  {Russell}, K.~S., {Stupar}, M., {Watson}, F.~G., {Bienaym{\'e}}, O.,
-%  {Bland-Hawthorn}, J., {Gerhard}, O., {Gibson}, B.~K., {Grebel}, E.~K.,
-%  {Helmi}, A., {Navarro}, J.~F., {Conrad}, C., {Famaey}, B., {Faure}, C.,
-%  {Just}, A., {Kos}, J., {Matijevi{\v c}}, G., {McMillan}, P.~J., {Minchev},
-%  I., {Scholz}, R., {Sharma}, S., {Siviero}, A., {de Boer}, E.~W., \& {{\v
-%  Z}erjal}, M. 2013, \aj, 146, 134
-%
-%\bibitem[{{Lee} {et~al.}(2006){Lee}, {Beers}, {Sivarani}, {Wilhelm}, {Allende
-%  Prieto}, {Norris}, {Fiorentin}, {Bailer-Jones}, \& {SEGUE Calibration
-%  Team}}]{Lee2006}
-%{Lee}, Y.~S., {Beers}, T.~C., {Sivarani}, T., {Wilhelm}, R., {Allende Prieto},
-%  C., {Norris}, J.~E., {Fiorentin}, P.~R., {Bailer-Jones}, C.~A., \& {SEGUE
-%  Calibration Team}. 2006, in Bulletin of the American Astronomical Society,
-%  Vol.~38, American Astronomical Society Meeting Abstracts, 168.15
-%
-%\bibitem[{{Liu} {et~al.}(2014){Liu}, {Deng}, {Carlin}, {Smith}, {Li},
-%  {Newberg}, {Gao}, {Yang}, {Xue}, {Xu}, {Zhang}, {Xin}, {Wu}, \&
-%  {Jin}}]{Liu2014}
-%{Liu}, C., {Deng}, L.-C., {Carlin}, J.~L., {Smith}, M.~C., {Li}, J., {Newberg},
-%  H.~J., {Gao}, S., {Yang}, F., {Xue}, X.-X., {Xu}, Y., {Zhang}, Y.-Y., {Xin},
-%  Y., {Wu}, Y., \& {Jin}, G. 2014, \apj, 790, 110
-%
-%\bibitem[{{Majewski}(2012)}]{Majewski2012}
-%{Majewski}, S.~R. 2012, in American Astronomical Society Meeting Abstracts,
-%  Vol. 219, American Astronomical Society Meeting Abstracts 219, 205.06
-%
-%\bibitem[{{M{\'e}sz{\'a}ros} {et~al.}(2013){M{\'e}sz{\'a}ros}, {Holtzman},
-%  {Garc{\'{\i}}a P{\'e}rez}, {Allende Prieto}, {Schiavon}, {Basu}, {Bizyaev},
-%  {Chaplin}, {Chojnowski}, {Cunha}, {Elsworth}, {Epstein}, {Frinchaboy},
-%  {Garc{\'{\i}}a}, {Hearty}, {Hekker}, {Johnson}, {Kallinger}, {Koesterke},
-%  {Majewski}, {Martell}, {Nidever}, {Pinsonneault}, {O'Connell}, {Shetrone},
-%  {Smith}, {Wilson}, \& {Zasowski}}]{Meszaros2013}
-%{M{\'e}sz{\'a}ros}, S., {Holtzman}, J., {Garc{\'{\i}}a P{\'e}rez}, A.~E.,
-%  {Allende Prieto}, C., {Schiavon}, R.~P., {Basu}, S., {Bizyaev}, D.,
-%  {Chaplin}, W.~J., {Chojnowski}, S.~D., {Cunha}, K., {Elsworth}, Y.,
-%  {Epstein}, C., {Frinchaboy}, P.~M., {Garc{\'{\i}}a}, R.~A., {Hearty}, F.~R.,
-%  {Hekker}, S., {Johnson}, J.~A., {Kallinger}, T., {Koesterke}, L., {Majewski},
-%  S.~R., {Martell}, S.~L., {Nidever}, D., {Pinsonneault}, M.~H., {O'Connell},
-%  J., {Shetrone}, M., {Smith}, V.~V., {Wilson}, J.~C., \& {Zasowski}, G. 2013,
-%  \aj, 146, 133
-%
-%\bibitem[{{Newberg} {et~al.}(2012){Newberg}, {Carlin}, {Chen}, {Deng},
-%  {L{\'e}pine}, {Liu}, {Yang}, {Yuan}, {Zhang}, {Zhang}, {Legue Working Group},
-%  \& {Lamost-Plus Partnership}}]{Newberg2012}
-%{Newberg}, H.~J., {Carlin}, J.~L., {Chen}, L., {Deng}, L., {L{\'e}pine}, S.,
-%  {Liu}, X., {Yang}, F., {Yuan}, H.-B., {Zhang}, H., {Zhang}, Y., {Legue
-%  Working Group}, \& {Lamost-Plus Partnership}. 2012, in Astronomical Society
-%  of the Pacific Conference Series, Vol. 458, Galactic Archaeology: Near-Field
-%  Cosmology and the Formation of the Milky Way, ed. W.~{Aoki}, M.~{Ishigaki},
-%  T.~{Suda}, T.~{Tsujimoto}, \& N.~{Arimoto}, 405
-%
-%\bibitem[{{Recio-Blanco} {et~al.}(2006){Recio-Blanco}, {Bijaoui}, \& {de
-%  Laverny}}]{RB2006}
-%{Recio-Blanco}, A., {Bijaoui}, A., \& {de Laverny}, P. 2006, \mnras, 370, 141
-%
-%\bibitem[{{Schlafly} \& {Finkbeiner}(2011)}]{Schlafly2011}
-%{Schlafly}, E.~F. \& {Finkbeiner}, D.~P. 2011, \apj, 737, 103
-%
-%\bibitem[{{Sch{\"o}nrich} \& {Bergemann}(2014)}]{SB2014}
-%{Sch{\"o}nrich}, R. \& {Bergemann}, M. 2014, \mnras, 443, 698
-%
-%\bibitem[{{Smiljanic} {et~al.}(2014){Smiljanic}, {Korn}, {Bergemann}, {Frasca},
-%  {Magrini}, {Masseron}, {Pancino}, {Ruchti}, \& {San Roman}}]{SM2014}
-%{Smiljanic}, R., {Korn}, A.~J., {Bergemann}, M., {Frasca}, A., {Magrini}, L.,
-%  {Masseron}, T., {Pancino}, E., {Ruchti}, G., \& {San Roman}, e.~a. 2014,
-%  \aap, 570, A122
-%
-%
-%\bibitem[{{Steinmetz} {et~al.}(2006){Steinmetz}, {Zwitter}, {Siebert},
-%  {Watson}, {Freeman}, {Munari}, {Campbell}, {Williams}, {Seabroke}, {Wyse},
-%  {Parker}, {Bienaym{\'e}}, {Roeser}, {Gibson}, {Gilmore}, {Grebel}, {Helmi},
-%  {Navarro}, {Burton}, {Cass}, {Dawe}, {Fiegert}, {Hartley}, {Russell},
-%  {Saunders}, {Enke}, {Bailin}, {Binney}, {Bland-Hawthorn}, {Boeche}, {Dehnen},
-%  {Eisenstein}, {Evans}, {Fiorucci}, {Fulbright}, {Gerhard}, {Jauregi}, {Kelz},
-%  {Mijovi{\'c}}, {Minchev}, {Parmentier}, {Pe{\~n}arrubia}, {Quillen}, {Read},
-%  {Ruchti}, {Scholz}, {Siviero}, {Smith}, {Sordo}, {Veltz}, {Vidrih}, {von
-%  Berlepsch}, {Boyle}, \& {Schilbach}}]{Steinmetz2006}
-%{Steinmetz}, M., {Zwitter}, T., {Siebert}, A., {Watson}, F.~G., {Freeman},
-%  K.~C., {Munari}, U., {Campbell}, R., {Williams}, M., {Seabroke}, G.~M.,
-%  {Wyse}, R.~F.~G., {Parker}, Q.~A., {Bienaym{\'e}}, O., {Roeser}, S.,
-%  {Gibson}, B.~K., {Gilmore}, G., {Grebel}, E.~K., {Helmi}, A., {Navarro},
-%  J.~F., {Burton}, D., {Cass}, C.~J.~P., {Dawe}, J.~A., {Fiegert}, K.,
-%  {Hartley}, M., {Russell}, K.~S., {Saunders}, W., {Enke}, H., {Bailin}, J.,
-%  {Binney}, J., {Bland-Hawthorn}, J., {Boeche}, C., {Dehnen}, W., {Eisenstein},
-%  D.~J., {Evans}, N.~W., {Fiorucci}, M., {Fulbright}, J.~P., {Gerhard}, O.,
-%  {Jauregi}, U., {Kelz}, A., {Mijovi{\'c}}, L., {Minchev}, I., {Parmentier},
-%  G., {Pe{\~n}arrubia}, J., {Quillen}, A.~C., {Read}, M.~A., {Ruchti}, G.,
-%  {Scholz}, R.-D., {Siviero}, A., {Smith}, M.~C., {Sordo}, R., {Veltz}, L.,
-%  {Vidrih}, S., {von Berlepsch}, R., {Boyle}, B.~J., \& {Schilbach}, E. 2006,
-%  \aj, 132, 1645
-%
-%\bibitem[{{Zasowski} {et~al.}(2013){Zasowski}, {Johnson}, {Frinchaboy},
-%  {Majewski}, {Nidever}, {Rocha Pinto}, {Girardi}, {Andrews}, {Chojnowski},
-%  {Cudworth}, {Jackson}, {Munn}, {Skrutskie}, {Beaton}, {Blake}, {Covey},
-%  {Deshpande}, {Epstein}, {Fabbian}, {Fleming}, {Garcia Hernandez}, {Herrero},
-%  {Mahadevan}, {M{\'e}sz{\'a}ros}, {Schultheis}, {Sellgren}, {Terrien}, {van
-%  Saders}, {Allende Prieto}, {Bizyaev}, {Burton}, {Cunha}, {da Costa},
-%  {Hasselquist}, {Hearty}, {Holtzman}, {Garc{\'{\i}}a P{\'e}rez}, {Maia},
-%  {O'Connell}, {O'Donnell}, {Pinsonneault}, {Santiago}, {Schiavon}, {Shetrone},
-%  {Smith}, \& {Wilson}}]{Zaso2013}
-%{Zasowski}, G., {Johnson}, J.~A., {Frinchaboy}, P.~M., {Majewski}, S.~R.,
-%  {Nidever}, D.~L., {Rocha Pinto}, H.~J., {Girardi}, L., {Andrews}, B.,
-%  {Chojnowski}, S.~D., {Cudworth}, K.~M., {Jackson}, K., {Munn}, J.,
-%  {Skrutskie}, M.~F., {Beaton}, R.~L., {Blake}, C.~H., {Covey}, K.,
-%  {Deshpande}, R., {Epstein}, C., {Fabbian}, D., {Fleming}, S.~W., {Garcia
-%  Hernandez}, D.~A., {Herrero}, A., {Mahadevan}, S., {M{\'e}sz{\'a}ros}, S.,
-%  {Schultheis}, M., {Sellgren}, K., {Terrien}, R., {van Saders}, J., {Allende
-%  Prieto}, C., {Bizyaev}, D., {Burton}, A., {Cunha}, K., {da Costa}, L.~N.,
-%  {Hasselquist}, S., {Hearty}, F., {Holtzman}, J., {Garc{\'{\i}}a P{\'e}rez},
-%  A.~E., {Maia}, M.~A.~G., {O'Connell}, R.~W., {O'Donnell}, C., {Pinsonneault},
-%  M., {Santiago}, B.~X., {Schiavon}, R.~P., {Shetrone}, M., {Smith}, V., \&
-%  {Wilson}, J.~C. 2013, \aj, 146, 81
-%
-%\end{thebibliography}
+\begin{thebibliography}{24}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{{Ahn} {et~al.}(2014){Ahn}, {Alexandroff}, {Allende Prieto}, {Anders},
+  {Anderson}, {Anderton}, {Andrews}, {Aubourg}, {Bailey}, {Bastien}, \&
+  et~al.}]{Ahn2014}
+{Ahn}, C.~P., {Alexandroff}, R., {Allende Prieto}, C., {Anders}, F.,
+  {Anderson}, S.~F., {Anderton}, T., {Andrews}, B.~H., {Aubourg}, {\'E}.,
+  {Bailey}, S., {Bastien}, F.~A., \& et~al. 2014, \apjs, 211, 17
+
+\bibitem[{{Allende Prieto} {et~al.}(1999){Allende Prieto}, {Garc{\'{\i}}a
+  L{\'o}pez}, {Lambert}, \& {Gustafsson}}]{AP1999}
+{Allende Prieto}, C., {Garc{\'{\i}}a L{\'o}pez}, R.~J., {Lambert}, D.~L., \&
+  {Gustafsson}, B. 1999, \apj, 527, 879
+  
+  \bibitem[{{Bailer-Jones} {et~al.}(2013){Bailer-Jones}, {Andrae}, {Arcay},
+  {Astraatmadja}, {Bellas-Velidis}, {Berihuete}, {Bijaoui}, {Carri{\'o}n},
+  {Dafonte}, {Damerdji}, {Dapergolas}, {de Laverny}, {Delchambre}, {Drazinos},
+  {Drimmel}, {Fr{\'e}mat}, {Fustes}, {Garc{\'{\i}}a-Torres}, {Gu{\'e}d{\'e}},
+  {Heiter}, {Janotto}, {Karampelas}, {Kim}, {Knude}, {Kolka}, {Kontizas},
+  {Kontizas}, {Korn}, {Lanzafame}, {Lebreton}, {Lindstr{\o}m}, {Liu},
+  {Livanou}, {Lobel}, {Manteiga}, {Martayan}, {Ordenovic}, {Pichon},
+  {Recio-Blanco}, {Rocca-Volmerange}, {Sarro}, {Smith}, {Sordo}, {Soubiran},
+  {Surdej}, {Th{\'e}venin}, {Tsalmantza}, {Vallenari}, \& {Zorec}}]{BJ2013}
+{Bailer-Jones}, C.~A.~L., {Andrae}, R., {Arcay}, B., {Astraatmadja}, T.,
+  {Bellas-Velidis}, I., {Berihuete}, A., {Bijaoui}, A., {Carri{\'o}n}, C.,
+  {Dafonte}, C., {Damerdji}, Y., {Dapergolas}, A., {de Laverny}, P.,
+  {Delchambre}, L., {Drazinos}, P., {Drimmel}, R., {Fr{\'e}mat}, Y., {Fustes},
+  D., {Garc{\'{\i}}a-Torres}, M., {Gu{\'e}d{\'e}}, C., {Heiter}, U., {Janotto},
+  A.-M., {Karampelas}, A., {Kim}, D.-W., {Knude}, J., {Kolka}, I., {Kontizas},
+  E., {Kontizas}, M., {Korn}, A.~J., {Lanzafame}, A.~C., {Lebreton}, Y.,
+  {Lindstr{\o}m}, H., {Liu}, C., {Livanou}, E., {Lobel}, A., {Manteiga}, M.,
+  {Martayan}, C., {Ordenovic}, C., {Pichon}, B., {Recio-Blanco}, A.,
+  {Rocca-Volmerange}, B., {Sarro}, L.~M., {Smith}, K., {Sordo}, R., {Soubiran},
+  C., {Surdej}, J., {Th{\'e}venin}, F., {Tsalmantza}, P., {Vallenari}, A., \&
+  {Zorec}, J. 2013, \aap, 559, A74
+
+\bibitem[{{Barrado y Navascu{\'e}s} {et~al.}(2001){Barrado y Navascu{\'e}s},
+  {Deliyannis}, \& {Stauffer}}]{barrado2001}
+{Barrado y Navascu{\'e}s}, D., {Deliyannis}, C.~P., \& {Stauffer}, J.~R. 2001,
+  \apj, 549, 452
+
+\bibitem[{{Beers} {et~al.}(2006){Beers}, {Lee}, {Sivarani}, {Allende Prieto},
+  {Wilhelm}, {Fiorentin}, {Bailer-Jones}, {Norris}, \& {SEGUE Calibration
+  Team}}]{Beers2006}
+{Beers}, T.~C., {Lee}, Y., {Sivarani}, T., {Allende Prieto}, C., {Wilhelm}, R.,
+  {Fiorentin}, P.~R., {Bailer-Jones}, C., {Norris}, J.~E., \& {SEGUE
+  Calibration Team}. 2006, \memsai, 77, 1171
+
+\bibitem[{{Boeche} {et~al.}(2011){Boeche}, {Siebert}, {Williams}, {de Jong},
+  {Steinmetz}, {Fulbright}, {Ruchti}, {Bienaym{\'e}}, {Bland-Hawthorn},
+  {Campbell}, {Freeman}, {Gibson}, {Gilmore}, {Grebel}, {Helmi}, {Munari},
+  {Navarro}, {Parker}, {Reid}, {Seabroke}, {Siviero}, {Watson}, {Wyse}, \&
+  {Zwitter}}]{Boeche2011}
+{Boeche}, C., {Siebert}, A., {Williams}, M., {de Jong}, R.~S., {Steinmetz}, M.,
+  {Fulbright}, J.~P., {Ruchti}, G.~R., {Bienaym{\'e}}, O., {Bland-Hawthorn},
+  J., {Campbell}, R., {Freeman}, K.~C., {Gibson}, B.~K., {Gilmore}, G.,
+  {Grebel}, E.~K., {Helmi}, A., {Munari}, U., {Navarro}, J.~F., {Parker},
+  Q.~A., {Reid}, W., {Seabroke}, G.~M., {Siviero}, A., {Watson}, F.~G., {Wyse},
+  R.~F.~G., \& {Zwitter}, T. 2011, \aj, 142, 193
+
+\bibitem[{{Bovy} {et~al.}(2014){Bovy}, {Nidever}, {Rix}, {Girardi}, {Zasowski},
+  {Chojnowski}, \& {Holtzman}}]{bovy2014}
+{Bovy}, J., {Nidever}, D.~L., {Rix}, H.-W., {Girardi}, L., {Zasowski}, G.,
+  {Chojnowski}, S.~D., \& {Holtzman}, J. e.~a. 2014, \apj, 790, 127
+  
+%  @book{settles.book12,
+%	Author = {B. Settles},
+%	Publisher = {Morgan \& Claypool},
+%	Series = {Synthesis Lectures on Artificial Intelligence and Machine Learning},
+%	Title = {Active Learning},
+%	Year = {2012}}
+
+\bibitem[{{Freeman}(2012)}]{Freeman2012}
+{Freeman}, K.~C. 2012, in Astronomical Society of the Pacific Conference
+  Series, Vol. 458, Galactic Archaeology: Near-Field Cosmology and the
+  Formation of the Milky Way, ed. W.~{Aoki}, M.~{Ishigaki}, T.~{Suda},
+  T.~{Tsujimoto}, \& N.~{Arimoto}, 393
+
+\bibitem[{{Gilmore} {et~al.}(2012){Gilmore}, {Randich}, {Asplund}, {Binney},
+  {Bonifacio}, {Drew}, {Feltzing}, {Ferguson}, {Jeffries}, {Micela},
+  {Negueruela}, {Prusti}, {Rix}, {Vallenari}, {Alfaro}, {Allende-Prieto},
+  {Babusiaux}, {Bensby}, {Blomme}, {Bragaglia}, {Flaccomio}, {Fran{\c c}ois},
+  {Irwin}, {Koposov}, {Korn}, {Lanzafame}, {Pancino}, {Paunzen},
+  {Recio-Blanco}, {Sacco}, {Smiljanic}, {Van Eck}, \& {Walton}}]{Gilmore2012}
+{Gilmore}, G., {Randich}, S., {Asplund}, M., {Binney}, J., {Bonifacio}, P.,
+  {Drew}, J., {Feltzing}, S., {Ferguson}, A., {Jeffries}, R., {Micela}, G.,
+  {Negueruela}, I., {Prusti}, T., {Rix}, H.-W., {Vallenari}, A., {Alfaro}, E.,
+  {Allende-Prieto}, C., {Babusiaux}, C., {Bensby}, T., {Blomme}, R.,
+  {Bragaglia}, A., {Flaccomio}, E., {Fran{\c c}ois}, P., {Irwin}, M.,
+  {Koposov}, S., {Korn}, A., {Lanzafame}, A., {Pancino}, E., {Paunzen}, E.,
+  {Recio-Blanco}, A., {Sacco}, G., {Smiljanic}, R., {Van Eck}, S., \& {Walton},
+  N. 2012, The Messenger, 147, 25
+
+\bibitem[{{Girardi} {et~al.}(2000){Girardi}, {Bressan}, {Bertelli}, \&
+  {Chiosi}}]{girardi2000}
+{Girardi}, L., {Bressan}, A., {Bertelli}, G., \& {Chiosi}, C. 2000, \aaps, 141,
+  371
+
+\bibitem[{{Gonzalez} {et~al.}(2009){Gonzalez}, {Zoccali}, {Monaco}, {Hill},
+  {Cassisi}, {Minniti}, {Renzini}, {Barbuy}, {Ortolani}, \&
+  {Gomez}}]{gonzalez2009}
+{Gonzalez}, O.~A., {Zoccali}, M., {Monaco}, L., {Hill}, V., {Cassisi}, S.,
+  {Minniti}, D., {Renzini}, A., {Barbuy}, B., {Ortolani}, S., \& {Gomez}, A.
+  2009, \aap, 508, 289
+
+\bibitem[{{Hinkel} {et~al.}(2014){Hinkel}, {Timmes}, {Young}, {Pagano}, \&
+  {Turnbull}}]{Hinkel2014}
+{Hinkel}, N.~R., {Timmes}, F.~X., {Young}, P.~A., {Pagano}, M.~D., \&
+  {Turnbull}, M.~C. 2014, \aj, 148, 54
+
+\bibitem[{{Jofr{\'e}} {et~al.}(2014){Jofr{\'e}}, {Heiter}, {Soubiran},
+  {Blanco-Cuaresma}, {Worley}, {Pancino}, \& {Cantat-Gaudin}}]{Jofre2014}
+{Jofr{\'e}}, P., {Heiter}, U., {Soubiran}, C., {Blanco-Cuaresma}, S., {Worley},
+  C.~C., {Pancino}, E., \& {Cantat-Gaudin}, e.~a. 2014, \aap, 564, A133
+  
+  
+\bibitem[{{Koleva} {et~al.}(2009){Koleva}, {Prugniel}, {Bouchard}, \&
+  {Wu}}]{Koleva2009}
+{Koleva}, M., {Prugniel}, P., {Bouchard}, A., \& {Wu}, Y. 2009, \aap, 501, 1269
+
+
+\bibitem[{{Kordopatis} {et~al.}(2013){Kordopatis}, {Gilmore}, {Steinmetz},
+  {Boeche}, {Seabroke}, {Siebert}, {Zwitter}, {Binney}, {de Laverny},
+  {Recio-Blanco}, {Williams}, {Piffl}, {Enke}, {Roeser}, {Bijaoui}, {Wyse},
+  {Freeman}, {Munari}, {Carrillo}, {Anguiano}, {Burton}, {Campbell}, {Cass},
+  {Fiegert}, {Hartley}, {Parker}, {Reid}, {Ritter}, {Russell}, {Stupar},
+  {Watson}, {Bienaym{\'e}}, {Bland-Hawthorn}, {Gerhard}, {Gibson}, {Grebel},
+  {Helmi}, {Navarro}, {Conrad}, {Famaey}, {Faure}, {Just}, {Kos}, {Matijevi{\v
+  c}}, {McMillan}, {Minchev}, {Scholz}, {Sharma}, {Siviero}, {de Boer}, \& {{\v
+  Z}erjal}}]{Kord2013}
+{Kordopatis}, G., {Gilmore}, G., {Steinmetz}, M., {Boeche}, C., {Seabroke},
+  G.~M., {Siebert}, A., {Zwitter}, T., {Binney}, J., {de Laverny}, P.,
+  {Recio-Blanco}, A., {Williams}, M.~E.~K., {Piffl}, T., {Enke}, H., {Roeser},
+  S., {Bijaoui}, A., {Wyse}, R.~F.~G., {Freeman}, K., {Munari}, U., {Carrillo},
+  I., {Anguiano}, B., {Burton}, D., {Campbell}, R., {Cass}, C.~J.~P.,
+  {Fiegert}, K., {Hartley}, M., {Parker}, Q.~A., {Reid}, W., {Ritter}, A.,
+  {Russell}, K.~S., {Stupar}, M., {Watson}, F.~G., {Bienaym{\'e}}, O.,
+  {Bland-Hawthorn}, J., {Gerhard}, O., {Gibson}, B.~K., {Grebel}, E.~K.,
+  {Helmi}, A., {Navarro}, J.~F., {Conrad}, C., {Famaey}, B., {Faure}, C.,
+  {Just}, A., {Kos}, J., {Matijevi{\v c}}, G., {McMillan}, P.~J., {Minchev},
+  I., {Scholz}, R., {Sharma}, S., {Siviero}, A., {de Boer}, E.~W., \& {{\v
+  Z}erjal}, M. 2013, \aj, 146, 134
+
+\bibitem[{{Lee} {et~al.}(2006){Lee}, {Beers}, {Sivarani}, {Wilhelm}, {Allende
+  Prieto}, {Norris}, {Fiorentin}, {Bailer-Jones}, \& {SEGUE Calibration
+  Team}}]{Lee2006}
+{Lee}, Y.~S., {Beers}, T.~C., {Sivarani}, T., {Wilhelm}, R., {Allende Prieto},
+  C., {Norris}, J.~E., {Fiorentin}, P.~R., {Bailer-Jones}, C.~A., \& {SEGUE
+  Calibration Team}. 2006, in Bulletin of the American Astronomical Society,
+  Vol.~38, American Astronomical Society Meeting Abstracts, 168.15
+
+\bibitem[{{Liu} {et~al.}(2014){Liu}, {Deng}, {Carlin}, {Smith}, {Li},
+  {Newberg}, {Gao}, {Yang}, {Xue}, {Xu}, {Zhang}, {Xin}, {Wu}, \&
+  {Jin}}]{Liu2014}
+{Liu}, C., {Deng}, L.-C., {Carlin}, J.~L., {Smith}, M.~C., {Li}, J., {Newberg},
+  H.~J., {Gao}, S., {Yang}, F., {Xue}, X.-X., {Xu}, Y., {Zhang}, Y.-Y., {Xin},
+  Y., {Wu}, Y., \& {Jin}, G. 2014, \apj, 790, 110
+
+\bibitem[{{Majewski}(2012)}]{Majewski2012}
+{Majewski}, S.~R. 2012, in American Astronomical Society Meeting Abstracts,
+  Vol. 219, American Astronomical Society Meeting Abstracts 219, 205.06
+
+\bibitem[{{M{\'e}sz{\'a}ros} {et~al.}(2013){M{\'e}sz{\'a}ros}, {Holtzman},
+  {Garc{\'{\i}}a P{\'e}rez}, {Allende Prieto}, {Schiavon}, {Basu}, {Bizyaev},
+  {Chaplin}, {Chojnowski}, {Cunha}, {Elsworth}, {Epstein}, {Frinchaboy},
+  {Garc{\'{\i}}a}, {Hearty}, {Hekker}, {Johnson}, {Kallinger}, {Koesterke},
+  {Majewski}, {Martell}, {Nidever}, {Pinsonneault}, {O'Connell}, {Shetrone},
+  {Smith}, {Wilson}, \& {Zasowski}}]{Meszaros2013}
+{M{\'e}sz{\'a}ros}, S., {Holtzman}, J., {Garc{\'{\i}}a P{\'e}rez}, A.~E.,
+  {Allende Prieto}, C., {Schiavon}, R.~P., {Basu}, S., {Bizyaev}, D.,
+  {Chaplin}, W.~J., {Chojnowski}, S.~D., {Cunha}, K., {Elsworth}, Y.,
+  {Epstein}, C., {Frinchaboy}, P.~M., {Garc{\'{\i}}a}, R.~A., {Hearty}, F.~R.,
+  {Hekker}, S., {Johnson}, J.~A., {Kallinger}, T., {Koesterke}, L., {Majewski},
+  S.~R., {Martell}, S.~L., {Nidever}, D., {Pinsonneault}, M.~H., {O'Connell},
+  J., {Shetrone}, M., {Smith}, V.~V., {Wilson}, J.~C., \& {Zasowski}, G. 2013,
+  \aj, 146, 133
+
+\bibitem[{{Newberg} {et~al.}(2012){Newberg}, {Carlin}, {Chen}, {Deng},
+  {L{\'e}pine}, {Liu}, {Yang}, {Yuan}, {Zhang}, {Zhang}, {Legue Working Group},
+  \& {Lamost-Plus Partnership}}]{Newberg2012}
+{Newberg}, H.~J., {Carlin}, J.~L., {Chen}, L., {Deng}, L., {L{\'e}pine}, S.,
+  {Liu}, X., {Yang}, F., {Yuan}, H.-B., {Zhang}, H., {Zhang}, Y., {Legue
+  Working Group}, \& {Lamost-Plus Partnership}. 2012, in Astronomical Society
+  of the Pacific Conference Series, Vol. 458, Galactic Archaeology: Near-Field
+  Cosmology and the Formation of the Milky Way, ed. W.~{Aoki}, M.~{Ishigaki},
+  T.~{Suda}, T.~{Tsujimoto}, \& N.~{Arimoto}, 405
+
+\bibitem[{{Recio-Blanco} {et~al.}(2006){Recio-Blanco}, {Bijaoui}, \& {de
+  Laverny}}]{RB2006}
+{Recio-Blanco}, A., {Bijaoui}, A., \& {de Laverny}, P. 2006, \mnras, 370, 141
+
+\bibitem[{{Schlafly} \& {Finkbeiner}(2011)}]{Schlafly2011}
+{Schlafly}, E.~F. \& {Finkbeiner}, D.~P. 2011, \apj, 737, 103
+
+\bibitem[{{Sch{\"o}nrich} \& {Bergemann}(2014)}]{SB2014}
+{Sch{\"o}nrich}, R. \& {Bergemann}, M. 2014, \mnras, 443, 698
+
+\bibitem[{{Smiljanic} {et~al.}(2014){Smiljanic}, {Korn}, {Bergemann}, {Frasca},
+  {Magrini}, {Masseron}, {Pancino}, {Ruchti}, \& {San Roman}}]{SM2014}
+{Smiljanic}, R., {Korn}, A.~J., {Bergemann}, M., {Frasca}, A., {Magrini}, L.,
+  {Masseron}, T., {Pancino}, E., {Ruchti}, G., \& {San Roman}, e.~a. 2014,
+  \aap, 570, A122
+
+
+\bibitem[{{Steinmetz} {et~al.}(2006){Steinmetz}, {Zwitter}, {Siebert},
+  {Watson}, {Freeman}, {Munari}, {Campbell}, {Williams}, {Seabroke}, {Wyse},
+  {Parker}, {Bienaym{\'e}}, {Roeser}, {Gibson}, {Gilmore}, {Grebel}, {Helmi},
+  {Navarro}, {Burton}, {Cass}, {Dawe}, {Fiegert}, {Hartley}, {Russell},
+  {Saunders}, {Enke}, {Bailin}, {Binney}, {Bland-Hawthorn}, {Boeche}, {Dehnen},
+  {Eisenstein}, {Evans}, {Fiorucci}, {Fulbright}, {Gerhard}, {Jauregi}, {Kelz},
+  {Mijovi{\'c}}, {Minchev}, {Parmentier}, {Pe{\~n}arrubia}, {Quillen}, {Read},
+  {Ruchti}, {Scholz}, {Siviero}, {Smith}, {Sordo}, {Veltz}, {Vidrih}, {von
+  Berlepsch}, {Boyle}, \& {Schilbach}}]{Steinmetz2006}
+{Steinmetz}, M., {Zwitter}, T., {Siebert}, A., {Watson}, F.~G., {Freeman},
+  K.~C., {Munari}, U., {Campbell}, R., {Williams}, M., {Seabroke}, G.~M.,
+  {Wyse}, R.~F.~G., {Parker}, Q.~A., {Bienaym{\'e}}, O., {Roeser}, S.,
+  {Gibson}, B.~K., {Gilmore}, G., {Grebel}, E.~K., {Helmi}, A., {Navarro},
+  J.~F., {Burton}, D., {Cass}, C.~J.~P., {Dawe}, J.~A., {Fiegert}, K.,
+  {Hartley}, M., {Russell}, K.~S., {Saunders}, W., {Enke}, H., {Bailin}, J.,
+  {Binney}, J., {Bland-Hawthorn}, J., {Boeche}, C., {Dehnen}, W., {Eisenstein},
+  D.~J., {Evans}, N.~W., {Fiorucci}, M., {Fulbright}, J.~P., {Gerhard}, O.,
+  {Jauregi}, U., {Kelz}, A., {Mijovi{\'c}}, L., {Minchev}, I., {Parmentier},
+  G., {Pe{\~n}arrubia}, J., {Quillen}, A.~C., {Read}, M.~A., {Ruchti}, G.,
+  {Scholz}, R.-D., {Siviero}, A., {Smith}, M.~C., {Sordo}, R., {Veltz}, L.,
+  {Vidrih}, S., {von Berlepsch}, R., {Boyle}, B.~J., \& {Schilbach}, E. 2006,
+  \aj, 132, 1645
+
+\bibitem[{{Zasowski} {et~al.}(2013){Zasowski}, {Johnson}, {Frinchaboy},
+  {Majewski}, {Nidever}, {Rocha Pinto}, {Girardi}, {Andrews}, {Chojnowski},
+  {Cudworth}, {Jackson}, {Munn}, {Skrutskie}, {Beaton}, {Blake}, {Covey},
+  {Deshpande}, {Epstein}, {Fabbian}, {Fleming}, {Garcia Hernandez}, {Herrero},
+  {Mahadevan}, {M{\'e}sz{\'a}ros}, {Schultheis}, {Sellgren}, {Terrien}, {van
+  Saders}, {Allende Prieto}, {Bizyaev}, {Burton}, {Cunha}, {da Costa},
+  {Hasselquist}, {Hearty}, {Holtzman}, {Garc{\'{\i}}a P{\'e}rez}, {Maia},
+  {O'Connell}, {O'Donnell}, {Pinsonneault}, {Santiago}, {Schiavon}, {Shetrone},
+  {Smith}, \& {Wilson}}]{Zaso2013}
+{Zasowski}, G., {Johnson}, J.~A., {Frinchaboy}, P.~M., {Majewski}, S.~R.,
+  {Nidever}, D.~L., {Rocha Pinto}, H.~J., {Girardi}, L., {Andrews}, B.,
+  {Chojnowski}, S.~D., {Cudworth}, K.~M., {Jackson}, K., {Munn}, J.,
+  {Skrutskie}, M.~F., {Beaton}, R.~L., {Blake}, C.~H., {Covey}, K.,
+  {Deshpande}, R., {Epstein}, C., {Fabbian}, D., {Fleming}, S.~W., {Garcia
+  Hernandez}, D.~A., {Herrero}, A., {Mahadevan}, S., {M{\'e}sz{\'a}ros}, S.,
+  {Schultheis}, M., {Sellgren}, K., {Terrien}, R., {van Saders}, J., {Allende
+  Prieto}, C., {Bizyaev}, D., {Burton}, A., {Cunha}, K., {da Costa}, L.~N.,
+  {Hasselquist}, S., {Hearty}, F., {Holtzman}, J., {Garc{\'{\i}}a P{\'e}rez},
+  A.~E., {Maia}, M.~A.~G., {O'Connell}, R.~W., {O'Donnell}, C., {Pinsonneault},
+  M., {Santiago}, B.~X., {Schiavon}, R.~P., {Shetrone}, M., {Smith}, V., \&
+  {Wilson}, J.~C. 2013, \aj, 146, 81
+
+\end{thebibliography}
 
 \bibliography{tc3.bib}
 
