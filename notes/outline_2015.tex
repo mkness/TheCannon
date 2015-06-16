@@ -1,0 +1,107 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\setlength\parindent{0pt}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Outline for The Cannon Projects}
+\author{M.Ness compilation of talks with D.W.Hogg, H.W.Rix, A. Ho}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\section{Initial 2015 Summer Plan}
+\begin{itemize}
+\item Map out a slide deck for other implementations of The Cannon so the intended methodology is clearly laid out. Meeting on 15th July after group meeting to have a brief discussion/get everyone on the same page here.
+\item DWH first author paper on any topic 
+\item complete mass/ages paper (in prep)
+\item complete LAMOST paper (ayqh+ in prep)
+\end{itemize} 
+
+
+\section{First Order Projects}
+\begin{itemize}
+\item RC vs. RGB classification.
+This was put on hold when the classification did not map as cleanly at the test step on to new spectra. Part of the issue may have been the dearth of red giant training objects and these had been selected out of the whole DR12 catalogue as additional training objects to supplement the apokasc training sample. (in collaboration with Jo Bovy). Also Yvonne of ASPCAP is waiting on us to send her our preliminary classification for these. 
+\item metallicity vector frame projections (also in collaboration with Jo Bovy - is Yuan Sen Ting also doing this ?)
+\item Are nearby stars in label-space nearby in spectral-space (and vice versa)?
+I have checked this for some candidates and the qualitative answer is yes. 
+\item Do spectra vary continuously in the labels?
+They must for this to work but we have not explicitly demonstrated this anywhere.
+\item science with ages: e.g. gradient of age of bulge into the disk, fraction of stars $<$ 6 Gyr in the bulge, radial migration tests - determine ages of the 20K red clump sample /all of DR12 and map the low alpha sequence in the red clump/all of DR12 out in galactic radii, compare with simulations of stellar migration, monoabundance maps of age. 
+\item continuum normalisation with The Cannon - can be implemented as a fit at test time. Also, ASPCAP may have improved performance at low SNR given the continuum normalisation we have implemented with The Cannon instead of the pseudo-continnum normalisation as this is so critical for individual abundances. Have an email from Jo Bovy below with instructions on how I can test this but relies on help from Jon Holtzman also applying this normalisation to the synthetic spectra. Note this normalisation fails for rapid rotators. \\
+\end{itemize} 
+
+\section{Concerns}
+\begin{itemize}
+\item Interpretability of the residuals: 2 labels/3 labels/ etc
+\item age - do plot of mean age - individual ages for The Cannon and Kepler: done and shows information in age - now mapped coefficient to linelist to identify species and age/mass indicators \\
+\item age: do a triangle plot of the coefficients teff, logg, feh, alphafe, age: this is done so can see the shape of the coefficients as a function of eachother. \\ 
+\item is age really the right thing to train on or is mass? Mass may be more fundamental and this can be then mapped to age with the models. DO the test of changing to mass. Decided that nu$\_$max and delta$\_$nu are not the right things to train on as Kepler will return those labels so much better precision. Log mass seems better than mass - the scatter is comparable but trends disappear - in principle The Cannon should find out which form is the right form but we set this explicitly for now. 
+\item need to demonstrate we can get age at a comparable accuracy
+\item  do my own calculation of the ages from the seismic scaling relations + parsec isochrones as comparison to Marie Martig's - currently she is working on the best estimates. 
+\item the method is unstable/has degeneracies if have labels that are a function of one another - but may work if one label is e.g. label$\_$4 = t$**$0.5 so should check this. 
+\item generalisation of labels - transform to a new basis via PCA and run the Cannon in the new basis - then transform back to something physical 
+\end{itemize} 
+
+\section{Stellar Ages}
+
+ From HWR: This was about first defining $<$age$>$=f(FeH,aFe) from your full
+ sample (the plot you/Anna showed in talks) and
+ then make a plot as per Figure \ref{fig:age} below. \\
+ 
+\begin{itemize}
+\item made the figure of mean age - individual age for The Cannon and Kepler
+\item should look at y axis of hte flux at each wavelength subtracted the mean flux at each wavelength and look at data  - model - and look at the derivatives
+\end{itemize} 
+
+\begin{itemize}
+\item look at the derivatives of hte flux with respect to the age at small boxes in teff , log g
+\item cross validation; train on 1350, test on 150. 90/10 split.
+\item do the alpha/Fe vesus Fe/H plot and look at subtraction of the means.
+\item convert derivative of flux with respect to age to derivative of flux with respect to element for all elemetns
+\item predict the numax and deltanu via cross valiation
+\item do science - ages, and alpha/fe or other porlbems. 
+\item show that the spectra fall into two distinct classes e.g. with red clump and red giant stars. 
+\end{itemize} 
+
+
+%\begin{figure}[h!]
+%\centering
+%    \includegraphics[scale=0.45]{/Users/ness/new_laptop/Apogee_ages/HWR_ages_notes.png}
+%\caption{HWR notes on Figure to make for ages }
+%\label{fig:age}
+%\end{figure}
+
+\pagebreak
+
+\subsection{Email from Jo Bovy with instructions for using all he has built to test our normalisation} 
+\vspace{20pt}
+
+Note that I am in the middle of installing this and can't get MOOG running on my laptop due to a g77 Mavericks issue that I am trying to fix as of 16 July 2016.\\
+
+Note that the one thing that I need to rely on someone else for here is the normalisation of the model spectra in the same way that the data is normalized - the code relies on the model spectra being in a particular compressed format that it must be input as, so this is why this can not be implemented after the model spectra has been read in. \\
+
+\textit{Note that I already have the Cannon normalization routine in my code, which you can just feed a set of continuum pixels (on the ASPCAP wavelength grid):}\\
+
+\textit{ https://github.com/jobovy/apogee/blob/master/apogee/spec/continuum.py}\\
+
+\textit{ so really I only need the continuum pixels (unless you've changed how you do the normalization from what's described in your paper). But with my code it should be very easy to do this yourself, using the routines described near the bottom here: {$https://github.com/jobovy/apogee/fitting-spectra$}. You would (a) install the code and tell it to install FERRE, (b) run the new continuum-normalized spectra through ferre.fit and (c) run them through ferre.fitelem.}\\
+
+\textit{I did play around with this a little before and the issue is that there is a significant (it seems) difference between the Cannon and the ASPCAP continuum normalization applied to the synthetic spectra (if you just plot them they are noticeably different). Essentially one has to re-normalize the synthetic spectra that make up the library using the same continuum-normalization procedure. Jon could do this, but I can't at this time.}\\
+
+\textit{I think we should move toward marginalizing over the continuum by adding smooth linear basis functions to the models to model distortions (like a polynomial; Hogg thought sines and cosines would be better) and analytically marginalizing over them (which is just matrix algebra). Then the above issue wouldn't matter anymore, but any issue with the continuum normalization would probably be taken care of. This would also be good for the Cannon (which can do this at test time, although not at training time) and I also suggested it to Anna, in particular for LAMOST.}\\
+
+%\subsection{}
+
+
+
+
+
+\end{document}  
