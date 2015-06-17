@@ -36,6 +36,7 @@ I have checked this for some candidates and the qualitative answer is yes.
 They must for this to work but we have not explicitly demonstrated this anywhere.
 \item science with ages: e.g. gradient of age of bulge into the disk, fraction of stars $<$ 6 Gyr in the bulge, radial migration tests - determine ages of the 20K red clump sample /all of DR12 and map the low alpha sequence in the red clump/all of DR12 out in galactic radii, compare with simulations of stellar migration, monoabundance maps of age. 
 \item continuum normalisation with The Cannon - can be implemented as a fit at test time. Also, ASPCAP may have improved performance at low SNR given the continuum normalisation we have implemented with The Cannon instead of the pseudo-continnum normalisation as this is so critical for individual abundances. Have an email from Jo Bovy below with instructions on how I can test this but relies on help from Jon Holtzman also applying this normalisation to the synthetic spectra. Note this normalisation fails for rapid rotators. \\
+\item it must be possible to get individual abundances with The Cannon - we could do one of two things - train on element labels  (and can we set coefficients  to 0 everywhere except for certain windows?) or a better approach which is to use some method (PCA?) to get a new basis to work in to get the individual degrees of information that are in the spectra, given the covariances in the individual chemical element abundances, although transforming back to something physical may be difficult. Any residuals not well fit by the model must correspond to more information in the spectra including element variations? 
 \end{itemize} 
 
 \section{Concerns}
@@ -44,7 +45,7 @@ They must for this to work but we have not explicitly demonstrated this anywhere
 \item age - do plot of mean age - individual ages for The Cannon and Kepler: done and shows information in age - now mapped coefficient to linelist to identify species and age/mass indicators \\
 \item age: do a triangle plot of the coefficients teff, logg, feh, alphafe, age: this is done so can see the shape of the coefficients as a function of eachother. \\ 
 \item is age really the right thing to train on or is mass? Mass may be more fundamental and this can be then mapped to age with the models. DO the test of changing to mass. Decided that nu$\_$max and delta$\_$nu are not the right things to train on as Kepler will return those labels so much better precision. Log mass seems better than mass - the scatter is comparable but trends disappear - in principle The Cannon should find out which form is the right form but we set this explicitly for now. 
-\item need to demonstrate we can get age at a comparable accuracy
+%\item need to demonstrate we can get age at a comparable accuracy
 \item  do my own calculation of the ages from the seismic scaling relations + parsec isochrones as comparison to Marie Martig's - currently she is working on the best estimates. 
 \item the method is unstable/has degeneracies if have labels that are a function of one another - but may work if one label is e.g. label$\_$4 = t$**$0.5 so should check this. 
 \item generalisation of labels - transform to a new basis via PCA and run the Cannon in the new basis - then transform back to something physical 
@@ -65,9 +66,9 @@ They must for this to work but we have not explicitly demonstrated this anywhere
 \item look at the derivatives of the flux with respect to the age at small boxes in teff , log g
 \item cross validation; train on 1350, test on 150. 90/10 split.
 \item do the alpha/Fe vesus Fe/H plot and look at subtraction of the means.
-\item convert derivative of flux with respect to age to derivative of flux with respect to element for all elemetns
+\item convert derivative of flux with respect to age to derivative of flux with respect to element for all elements.
 \item predict the numax and deltanu via cross valiation
-\item do science - ages, and alpha/fe or other porlbems. 
+\item do science - ages, and alpha/fe or other problems. 
 \item show that the spectra fall into two distinct classes e.g. with red clump and red giant stars. 
 \end{itemize} 
 
