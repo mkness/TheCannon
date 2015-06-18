@@ -37,7 +37,9 @@ They must for this to work but we have not explicitly demonstrated this anywhere
 \item science with ages: e.g. gradient of age of bulge into the disk, fraction of stars $<$ 6 Gyr in the bulge, radial migration tests - determine ages of the 20K red clump sample /all of DR12 and map the low alpha sequence in the red clump/all of DR12 out in galactic radii, compare with simulations of stellar migration, monoabundance maps of age. 
 \item continuum normalisation with The Cannon - can be implemented as a fit at test time. Also, ASPCAP may have improved performance at low SNR given the continuum normalisation we have implemented with The Cannon instead of the pseudo-continnum normalisation as this is so critical for individual abundances. Have an email from Jo Bovy below with instructions on how I can test this but relies on help from Jon Holtzman also applying this normalisation to the synthetic spectra. Note this normalisation fails for rapid rotators. \\
 \item it must be possible to get individual abundances with The Cannon - we could do one of two things - train on element labels  (and can we set coefficients  to 0 everywhere except for certain windows?) or a better approach which is to use some method (PCA?) to get a new basis to work in to get the individual degrees of information that are in the spectra, given the covariances in the individual chemical element abundances, although transforming back to something physical may be difficult. Any residuals not well fit by the model must correspond to more information in the spectra including element variations? 
+\item Look at how the spectra vary across the multiple individual exposures; is it systematic and does the systematic variation depend on stellar parameters?
 \end{itemize} 
+
 
 \section{Concerns}
 \begin{itemize}
