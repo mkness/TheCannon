@@ -3,16 +3,33 @@
 % words
 \newcommand{\project}[1]{\textsl{#1}}
 \newcommand{\thecannon}{\project{The~Cannon}} 
+\newcommand{\tc}{\project{The~Cannon}} 
 \newcommand{\apogee}{\project{APOGEE}}
+\newcommand{\apokasc}{\project{APOKASC}}
+\newcommand{\aspcap}{\project{ASPCAP}}
 \newcommand{\corot}{\project{Corot}}
 \newcommand{\kepler}{\project{Kepler}}
 \newcommand{\gaia}{\project{Gaia}}
 \newcommand{\most}{\project{MOST}}
 \newcommand{\documentname}{\textsl{Article}}
 
+\newcommand{\teff}{\mbox{$\rm T_{eff}$}}
+\newcommand{\kms}{\mbox{$\rm kms^{-1}$}}
+\newcommand{\feh}{\mbox{$\rm [Fe/H]$}}
+\newcommand{\xfe}{\mbox{$\rm [X/Fe]$}}
+\newcommand{\alphafe}{\mbox{$\rm [\alpha/Fe]$}}
+\newcommand{\mh}{\mbox{$\rm [M/H]$}}
+\newcommand{\logg}{\mbox{$\rm \log g$}}
+\newcommand{\noise}{\sigma_{n\lambda}}
+\newcommand{\scatter}{s_{\lambda}}
+\newcommand{\pix}{\mathrm{pix}}
+\newcommand{\rfn}{\mathrm{ref}}
+\newcommand{\rgc}{\mbox{$\rm R_{GC}$}}
+\newcommand{\vgal}{\mbox{$\rm V_{GAL}$}}
+
 % math
-\newcommand{\numax}{\nu_{\max}}
-\newcommand{\deltanu}{\Delta\nu}
+\newcommand{\numax}{$\nu_{\max}$}
+\newcommand{\deltanu}{$\Delta\nu$}
 
 \begin{document}
 
@@ -121,23 +138,42 @@ the purpose of this project is to obtain estimates for ages and masses
 
 \ldots DWH: A reminder of what \thecannon\ is.
 
-\ldots MKN: What is the training set?  How has it been selected and
-adjusted?
-from MM:\\ 
-- error on delta_nu and nu_max lower than 5% (the cut was at 10% before)\\
-- no star in the list of fast rotating stars from Jamie Tayar\\
-- no warning or error in ASPCAPFLAG\\
-- Carbon and Nitrogen abundances >-9999\\
+\ldots MKN: What is the training set?  How has it been selected and adjusted?
+
+The training set of stars is a subset of 1500 stars from \citet{Martig2015}. These are \apokasc\ stars, with \numax\ and \deltanu\ measurements from \kepler, with corresponding spectra in the H-band across 1.5-1.7 $\micron$ at a resolution of R $\sim$ 22,500, observed as part of the \apogee\ survey. These stars have been selected with no warning or error in the \aspcap\ FLAG parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the delta$\_$nu and nu$\_$max less than 5\%. These stars are a high Signal to Noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
+
+Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and Mass. The training labels adopted were the \aspcap-corrected \citep{Meszaros2013} values for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$ . The mass label was determined using the standard seismic scaling relation given in \ref{eqn1} \citep{SilvaAguirre2011,Chaplin2011}.
+
+\begin{equation} \label{eq:mass}
+M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( \frac{\Delta \nu}{\Delta \nu_{\odot}}\right)^{-4} \ \left( \frac{T_{\mathrm{eff}}}{T_{\mathrm{eff,\odot}}}\right)^{1.5} \ .
+\label{eq1}
+\end{equation}
+We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are the ones used to build the APOKASC catalogue and were obtained by \cite{Hekker2013} with the OCT method. 
+
+\section{Validation of Model}
+
+For cross validation, we took the 
+
+
+%(note this improves by 10\% from 0.27 to 0.24 if take errors on nu max and delta nu to less than 5 percent. )
+
+%from MM:\\ 
+%- error on delta$\_$nu and nu$\_$max lower than 5\% (the cut was at 10% before)\\
+%- no star in the list of fast rotating stars from Jamie Tayar\\
+%- no warning or error in ASPCAPFLAG\\
+%- Carbon and Nitrogen abundances $>$-9999\\
 
 \ldots MKN: Some visualization of the trained model and teasers.
 
 \section{Experiments and Results}
 
 \ldots MKN: What is the cross-validation and what are the results?
-%plotdiff_5labels_10percent_linear.py
+%plotdiff_5labels_10percent_linear_orig.py trained on 1639 stars if
+%run -i plotdiff_5labels_10percent_linear trained on 1500 stars
 \begin{figure}[h!]
 \centering
-  \includegraphics[scale=0.31]{./plots/validation.png}
+ % \includegraphics[scale=0.31]{./plots/validation.png}
+    \includegraphics[scale=0.31]{./plots/validation_1500.png}
   \caption{Trained on 90\% of the 1639 APOKASC sample and test step on remaining 10\%, run through 10 times.}
 \label{fig:validation}
 \end{figure}
