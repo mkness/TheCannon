@@ -10,6 +10,8 @@
 \newcommand{\corot}{\project{Corot}}
 \newcommand{\kepler}{\project{Kepler}}
 \newcommand{\gaia}{\project{Gaia}}
+\newcommand{\gaiaeso}{\project{Gaia--ESO}}
+\newcommand{\galah}{\project{GALAH}}
 \newcommand{\most}{\project{MOST}}
 \newcommand{\documentname}{\textsl{Article}}
 
@@ -83,7 +85,7 @@ opportunities for Milky Way and stellar astrophysics.
 \end{abstract}
 
 \keywords{%
-keywords: incomplete!
+keywords: incomplete (DWH)!
 ---
 methods: data analysis
 ---
@@ -102,22 +104,38 @@ techniques: spectroscopic
 
 Asteroseismology surveys, such as \most, \corot, and \kepler, have
 been extremely successful and productive in bringing us information
-about stellar interiors and stellar parameters and ages.
+about stellar interiors and (therefore) ages.
 These missions operate by taking high-cadence, high-precision stellar
 photometry, in which stellar oscillation modes are visible in the
 Fourier domain.
 These missions have operated by taking long stretches of
-uninterrupted, uniform, dense imaging data on single stars.
+uninterrupted, uniform, dense imaging data on thousands of individual
+stars.
 They are expensive missions, but absolutely critical to calibrate
-physical stellar models and set standards for stellar parameter
-estimation, all of which is required for the ultimate success of the
-next generation of stellar surveys, particularly including the
-\gaia\ Mission.
-If \gaia\ is able to obtain stellar parameters that are both accurate
-and precise, it will revolutionize our view of the Milky Way and its
-formation.
+physical stellar interior models and set standards for stellar
+parameter estimation, all of which is required for the ultimate
+success of the next generation of stellar surveys, particularly
+including the \gaia\ Mission.
 
-\ldots DWH: The above is crap.
+At the same time, there are many large spectroscopic surveys, such
+as \apogee, \galah, and \gaiaeso, underway to measure the properties
+of stellar \emph{exteriors}.
+These surveys will take high signal-to-noise, high resolution spectra
+of hundreds of thousands of stars, revealing detailed surface chemical
+abundances.
+
+One question that naturally arises is:
+How do we use these two pieces of information (surface spectroscopy
+and interior asteroseismology) to jointly infer stellar properties?
+Another is:
+Is there any way we could learn about stellar interiors from surface
+spectroscopy?
+After all, at current prices, the marginal cost of taking a spectrum of
+a new star is very low relative to the marginal cost of getting its
+asteroseismology.
+If we can determine the interior properties of stars from surface
+spectroscopy alone, even noisily, great opportunities would arise for
+studying the stellar populations of the Milky Way and their formation.
 
 \ldots DWH: What are our hypotheses about how mass or age might appear
 in a stellar spectrum?  It might appear as dredge-up of evolved
@@ -212,7 +230,8 @@ dominant?
 \acknowledgments
 It is a pleasure to thank
   Foo,
-  Dan Foreman-Mackey (NYU and UW), and
+  John Bochanski (Rider),
+  Dan Foreman-Mackey (UW), and
   Bar,
 for valuable discussions and contributions.
 This project made use of
