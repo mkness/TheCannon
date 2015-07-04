@@ -1,3 +1,6 @@
+% style notes
+% - \,percent not \%
+
 \documentclass[12pt, preprint]{aastex}
 
 % words
@@ -13,6 +16,7 @@
 \newcommand{\gaiaeso}{\project{Gaia--ESO}}
 \newcommand{\galah}{\project{GALAH}}
 \newcommand{\most}{\project{MOST}}
+\newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\documentname}{\textsl{Article}}
 
 \newcommand{\teff}{\mbox{$\rm T_{eff}$}}
@@ -151,13 +155,68 @@ alpha-enhanced.  We will consider such age indicators illegitimate;
 the purpose of this project is to obtain estimates for ages and masses
 \emph{that work even within narrow abundance-selected subsamples}.
 
-\section{Method}
+\section{Methods and data}
 
-\ldots DWH: A reminder of what \thecannon\ is.
+We make use of \tc\ (MKN CITE), which is a data-driven method for
+determining stellar parameters and abundances.
+\tc\ is a probabilistic model of stellar spectra---meaning that it
+produces a likelihood function or a probability density in spectral
+space---that is itself a function of stellar parameters and chemical
+abundances (which we collectively call ``labels'').
+The model is not based on physical models, but is instead learned
+from a training set of stars with (assumed) known labels.
+This learning is called the ``training step''.
+The model is used to label a new star \emph{not} in the training set
+by maximizing the likelihood of the label values given the new star's
+spectrum.
+This labeling is called the ``test step''.
+\tc\ differs from other kinds of standard machine-learning methods
+(such as random forest or deep neural networks) in that it contains an
+explicit likelihood function, at both the training step and the test
+step, so it is able to account for heteroskedastic noise and missing
+data in the spectra of both the training and test stars.
 
-\ldots MKN: What is the training set?  How has it been selected and adjusted?
+In detail, the likelihood function we use for \tc\ in this work has a
+gaussian form at each measured spectral wavelength, with a mean that
+is a quadratic function of the labels, and a variance that consists of
+an intrinsic variance added to an observational noise variance (from
+photon noise and other sources).
+DWH: EQUATIONS HERE.
 
-The training set of stars is a subset of 1500 stars from \citet{Martig2015}. These are \apokasc\ stars, with \numax\ and \deltanu\ measurements from \kepler, with corresponding spectra in the H-band across 1.5-1.7 $\micron$ at a resolution of R $\sim$ 22,500, observed as part of the \apogee\ survey. These stars have been selected with no warning or error in the \aspcap\ FLAG parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the delta$\_$nu and nu$\_$max less than 5\%. These stars are a high Signal to Noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
+We have shown in previous work (MKN CITE) that \tc\ does a good job
+of modeling stellar spectra and delivering stellar parameters and
+chemical abundances for stars with spectra taken by the \apogee\ project.
+MKN: DESCRIBE APOGEE BRIEFLY HERE.
+
+One difference between our use of the \apogee\ data and previous work
+with the same data is in continuum estimation.
+We work with continuum-divided spectra, and the method of continuum
+estimation turns out to be important for performance.
+MKN: DESCRIBE HOW WE OBTAIN OUR CONTINUUM ESTIMATES HERE.
+
+In this project, we are once again using \apogee\ data, and once again
+using \tc.
+What's new is that we are adding stellar mass as a stellar parameter
+in the label set provided to \tc\ in the training step, and delivered by
+\tc\ in the test step.
+Stellar mass is a parameter that is not usually considered visible in
+spectral data; in the training set we are obtaining these stellar mass
+parameters via asteroseismology.
+
+In particular, the training set is taken from the \apokasc\ sample of
+stars (MKN CITE).
+This sample of stars are in common between the \kepler\ Mission
+targets and the \apogee\ targets; they have high-quality infrared
+spectra and also asterosesmological measurements.
+The \kepler\ Mission (MKN CITE) took continuous, 30-min cadence (or
+higher cadence) photometric observations of more than $10^5$ stars,
+providing (at least for giant stars) measurements of the
+asteroseismological frequencies and frequency splittings that indicate
+stellar interior density structure.
+The asteroseismological measurements are used---with stellar
+models---to infer stellar masses and thus provide labels.
+
+The training set of stars is a subset of 1500 stars from \citet{Martig2015}. These are \apokasc\ stars, with \numax\ and \deltanu\ measurements from \kepler, with corresponding spectra in the H-band across 1.5-1.7 $\micron$ at a resolution of R $\sim$ 22,500, observed as part of the \apogee\ survey. These stars have been selected with no warning or error in the \aspcap\ \code{FLAG} parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the delta$\_$nu and nu$\_$max less than 5\,percent. These stars comprise a high signal-to-noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
 
 Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and Mass. The training labels adopted were the \aspcap-corrected \citep{Meszaros2013} values for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$ . The mass label was determined using the standard seismic scaling relation given in \ref{eqn1} \citep{SilvaAguirre2011,Chaplin2011}.
 
@@ -165,24 +224,24 @@ Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and 
 M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( \frac{\Delta \nu}{\Delta \nu_{\odot}}\right)^{-4} \ \left( \frac{T_{\mathrm{eff}}}{T_{\mathrm{eff,\odot}}}\right)^{1.5} \ .
 \label{eq1}
 \end{equation}
-We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are the ones used to build the APOKASC catalogue and were obtained by \cite{Hekker2013} with the OCT method. 
+We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are the ones used to build the APOKASC catalogue and were obtained by \cite{Hekker2013} with the OCT method.
 
-\section{Validation of Model}
+\section{Validation of mass and age outputs}
 
 For cross validation, we took the 
 
 
-%(note this improves by 10\% from 0.27 to 0.24 if take errors on nu max and delta nu to less than 5 percent. )
+%(note this improves by 10\,percent from 0.27 to 0.24 if take errors on nu max and delta nu to less than 5 percent. )
 
 %from MM:\\ 
-%- error on delta$\_$nu and nu$\_$max lower than 5\% (the cut was at 10% before)\\
+%- error on delta$\_$nu and nu$\_$max lower than 5\,percent (the cut was at 10% before)\\
 %- no star in the list of fast rotating stars from Jamie Tayar\\
 %- no warning or error in ASPCAPFLAG\\
 %- Carbon and Nitrogen abundances $>$-9999\\
 
 \ldots MKN: Some visualization of the trained model and teasers.
 
-\section{Experiments and Results}
+\section{Experiments and results}
 
 \ldots MKN: What is the cross-validation and what are the results?
 %plotdiff_5labels_10percent_linear_orig.py trained on 1639 stars if
@@ -191,7 +250,7 @@ For cross validation, we took the
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.31]{./plots/validation_1500.pdf}
-  \caption{Trained on 90\% of the 1639 APOKASC sample and test step on remaining 10\%, run through 10 times.}
+  \caption{MKN: Expand to full caption.  Trained on 90\,percent of the 1639 APOKASC sample and test step on remaining 10\,percent, run through 10 times.}
 \label{fig:validation}
 \end{figure}
 
@@ -206,7 +265,7 @@ map on to our hypothesized mass and age indicators?
   \includegraphics[scale=0.21]{./plots/feh_coefficient.png}
   \includegraphics[scale=0.21]{./plots/alphafeh_coefficient.png}
   \includegraphics[scale=0.21]{./plots/mass_coefficient.png}
-  \caption{maps} 
+  \caption{MKN: full caption!} 
 \label{fig:maps}
 \end{figure}
 
