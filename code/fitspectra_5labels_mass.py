@@ -27,8 +27,7 @@ from scipy import ndimage
 from scipy import optimize as opt
 import numpy as np
 from datetime import datetime
-#normed_training_data = '/home/ness/new_laptop/Apogee_DR12/normed_data_5HWR.pickle'
-normed_training_data = 'normed_data_5HWR.pickle'
+normed_training_data = 'normed_data_5.pickle'
 
 def weighted_median(values, weights, quantile):
     """weighted_median
@@ -447,10 +446,6 @@ def get_normalized_training_data_tsch(pixlist,numtake):
   #nu1, nu2 = loadtxt(fn2, usecols = (0,1), unpack =1) 
   #num1 = 800
   numtake = list(numtake)
-  #T_est,g_est,feh_est,alpha_est,rc_est = (T_est[take])[numtake], (g_est[take])[numtake], (feh_est[take])[numtake], (alpha_est[take])[numtake], (rc_est[take])[numtake]
-  #T_est,g_est,feh_est,alpha_est,rc_est = (T_est[take]), (g_est[take]), (feh_est[take]), (alpha_est[take]), (rc_est[take])
-  #rc_est = log(rc_est) 
-  #rc_est = rc_est 
   T_est,g_est,feh_est,alpha_est,rc_est = (T_est[take])[numtake], (g_est[take])[numtake], (feh_est[take])[numtake], (alpha_est[take])[numtake], (rc_est[take])[numtake]
   
   labels = ["teff", "logg", "feh", "alpha", "rc"]
@@ -750,7 +745,7 @@ def get_goodness_fit(fn_pickle, filein, Params_all, MCM_rotate_all):
       f_flux = open(file_with_star_data, 'r') 
       flux = pickle.load(f_flux) 
     if filein == file_normed: 
-      f_flux = open('normed_data_5HWR.pickle', 'r') 
+      f_flux = open('normed_data_5.pickle', 'r') 
       flux, metaall, labels, Ametaall, cluster_name, ids = pickle.load(f_flux)
     f_flux.close() 
     labels = Params_all 
@@ -857,7 +852,6 @@ def nonlinear_invert(f, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, 
     return model, cov
 
 
-#        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order_5HWR.pickle", testdataall, ids, field+"tags_HWRalphatestnu5.pickle",0.00,1.40) 
 def infer_labels_nonlinear(fn_pickle,testdata, ids, fout_pickle, weak_lower,weak_upper):
 #def infer_labels(fn_pickle,testdata, fout_pickle, weak_lower=0.935,weak_upper=0.98):
     """
@@ -1121,11 +1115,11 @@ def leave_one_star_out():
       #return inds1, cluster_name
       train(dataall, metaall,  2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0., leave_out=inds1)
       # up to here 
-      field = "self_2nd_order_5HWR_"
+      field = "self_2nd_order_5"
       file_in = open(normed_training_data, 'r') 
       testdataall, metaall, labels, Ametaall, cluster_name, ids = pickle.load(file_in)
       file_in.close() 
-      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order_5HWR.pickle", testdataall[:,take], idsnew[take], field+str(star_take)+"_itags_ages_mean.pickle",-10.950,10.99) 
+      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order_5.pickle", testdataall[:,take], idsnew[take], field+str(star_take)+"_itags_ages_mean.pickle",-10.950,10.99) 
       #plot_leave_one_out(field, clust_pick) 
     return 
 
@@ -1251,7 +1245,7 @@ if __name__ == "__main__":
     fpickle = "coeffs.pickle" 
     if not glob.glob(fpickle):
         train(dataall, metaall, 1,  fpickle, Ametaall,cluster_name, logg_cut= 40.,teff_cut = 0.)
-    fpickle2 = "coeffs_2nd_order_5HWR.pickle"
+    fpickle2 = "coeffs_2nd_order_5.pickle"
     if not glob.glob(fpickle2):
         train(dataall, metaall, 2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0.)
     self_flag = 2
@@ -1265,7 +1259,8 @@ if __name__ == "__main__":
     
     if self_flag < 1:
       startTime = datetime.now()
-      a = open('/home/ness/new_laptop/Apogee_DR12/apokasc2.txt', 'r') 
+      #a = open('/home/ness/new_laptop/Apogee_DR12/apokasc2.txt', 'r') 
+      a = open('/home/ness/new_laptop/Apogee_DR12/apokasc.txt', 'r') 
       al = a.readlines()
       bl = []
       for each in al:
@@ -1274,7 +1269,7 @@ if __name__ == "__main__":
         testfile = '/home/ness/new_laptop/Apogee_DR12/'+each
         field = testfile.split('.txt')[0]+'_' #"4332_"
         testdataall, ids = get_normalized_test_data_tsch(testfile,pixlist)
-        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order_5HWR.pickle", testdataall, ids, field+"tags_HWRalphatestnu5.pickle",0.00,1.40) 
+        testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order_5.pickle", testdataall, ids, field+"tags_HWRalphatestnu5.pickle",0.00,1.40) 
         print(datetime.now()-startTime)
     if self_flag == 1:
       field = "self_alpha_"
@@ -1288,7 +1283,7 @@ if __name__ == "__main__":
       file_in = open(normed_training_data, 'r') 
       testdataall, metaall, labels, Ametaall, cluster_name,ids = pickle.load(file_in)
       file_in.close() 
-      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order_5HWR.pickle", testdataall, ids, field+"tags_ages_mean.pickle",-10.950,10.99) 
+      testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order_5.pickle", testdataall, ids, field+"tags_ages_mean.pickle",-10.950,10.99) 
     if self_flag == 3:
       leave_one_star_out()
       #leave_one_cluster_out()
@@ -1311,10 +1306,10 @@ if __name__ == "__main__":
       #  num_take = num_all[0:1476]
       #  num_no_take = num_all[1476:]
         savetxt("random_nottrained"+str(num1)+"_linear_cut.txt", num_no_take, fmt = "%s" ) 
-        os.remove('coeffs_2nd_order_5HWR.pickle')
-        os.remove('normed_data_5HWR.pickle')
+        os.remove('coeffs_2nd_order_5.pickle')
+        os.remove('normed_data_5.pickle')
         dataall, metaall, labels, Ametaall, cluster_name, ids = get_normalized_training_data_tsch(pixlist,num_take)
-        fpickle2 = "coeffs_2nd_order_5HWR.pickle"
+        fpickle2 = "coeffs_2nd_order_5.pickle"
         train(dataall, metaall, 2,  fpickle2, Ametaall, cluster_name, logg_cut= 40.,teff_cut = 0.)
         a = open('apokasc2.txt', 'r') 
         al = a.readlines()
@@ -1326,4 +1321,4 @@ if __name__ == "__main__":
           field = testfile.split('.txt')[0]+'_' #"4332_"
           testdataall, ids = get_normalized_test_data_tsch(testfile,pixlist)
           num1 = str(num1) 
-          testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order_5HWR.pickle", testdataall, ids, field+"tags_HWRalphatestnu5_"+str(num1)+"_linear.pickle",0.00,1.40) 
+          testmetaall, inv_covars = infer_labels_nonlinear("coeffs_2nd_order_5.pickle", testdataall, ids, field+"tags_HWRalphatestnu5_"+str(num1)+"_linear.pickle",0.00,1.40) 
