@@ -72,19 +72,19 @@ snr = loadtxt(dir1+"training_apokasc_ages_SNR.list", usecols = (-1,), unpack =1)
 
 numlist = arange(0,10,1) 
 t,g,feh,tout,gout,fehout = [],[],[],[],[],[]
-alpha,alphaout,mass,massout,snrout = [],[],[],[], []
+alpha,alphaout,mass,ln_massout,snrout = [],[],[],[], []
 for num in numlist: 
     a = open(training_files[num], 'r') 
     list_a = loadtxt(starsout_files[num], usecols = (0,), unpack =1) 
     list_a = list(list_a) 
     b = pickle.load(a) 
     a.close()
-    tout1,massout1,gout1,fehout1,alphaout1 = b[0][:,0], b[0][:,4], b[0][:,1], b[0][:,2], b[0][:,3]
+    tout1,ln_massout1,gout1,fehout1,alphaout1 = b[0][:,0], b[0][:,4], b[0][:,1], b[0][:,2], b[0][:,3]
     tout.append(tout1[list_a]) 
     gout.append(gout1[list_a]) 
     fehout.append(fehout1[list_a]) 
     alphaout.append(alphaout1[list_a]) 
-    massout.append(massout1[list_a]) 
+    ln_massout.append(ln_massout1[list_a]) 
     mass.append( massin[list_a]) 
     t.append(tin[list_a]) 
     g.append( gin[list_a]) 
@@ -93,7 +93,7 @@ for num in numlist:
     snrout.append( snr[list_a]) 
 
 t,tout,g,gout = hstack((t)), hstack((tout)), hstack((g)), hstack((gout)) 
-feh,fehout,alpha,alphaout, mass, massout =  hstack((feh)), hstack((fehout)), hstack((alpha)), hstack((alphaout)), hstack((mass)), hstack((massout) ) 
+feh,fehout,alpha,alphaout, mass, ln_massout =  hstack((feh)), hstack((fehout)), hstack((alpha)), hstack((alphaout)), hstack((mass)), hstack((ln_massout) ) 
 snrout = hstack((snrout))
 vmin1,vmax1  = 1, 3.4
 var = gout 
@@ -106,37 +106,38 @@ vmin1,vmax1 = 80,300
 cval = cm.cool
 msize = 20.
 c1 = ax1.scatter(t,tout, c = var,linewidth =0, s = msize ,vmin = vmin1, vmax = vmax1 , cmap = cval)
-#ax2.scatter(g[e**massout>3],gout[e**massout>3], c = var[e**massout>3],linewidth =0, s = 30 ,vmin = vmin1, vmax = vmax1 )
 ax2.scatter(g,gout, c = var,linewidth =0, s = msize ,vmin = vmin1, vmax = vmax1 , cmap = cval)
 ax3.scatter(feh,fehout, c = var,linewidth =0, s = msize ,vmin = vmin1, vmax = vmax1 , cmap = cval)
 ax4.scatter(alpha,alphaout, c = var,linewidth =0, s = msize ,vmin = vmin1, vmax = vmax1 , cmap = cval)
-s1 = ax5.scatter(mass,e**massout, c = var, s = msize ,linewidth = 0 ,vmin = vmin1, vmax = vmax1, cmap = cval)
+#s1 = ax5.scatter(mass,np.exp(ln_massout), c = var, s = msize ,linewidth = 0 ,vmin = vmin1, vmax = vmax1, cmap = cval)
+s1 = ax5.scatter(np.log10(mass),ln_massout/np.log(10.), c = var, s = msize ,linewidth = 0 ,vmin = vmin1, vmax = vmax1, cmap = cval)
 cbar_ax = f.add_axes([0.92, 0.20, 0.01, 0.65])
 test = colorbar(s1, cax=cbar_ax) 
 #test.set_label("[alpha/Fe] ", fontsize = 20) 
 test.set_label("SNR", fontsize = 20) 
 
-ax1.set_xlim(3500,5500)
-ax1.set_ylim(3500,5500)
+ax1.set_xlim(3900,5200)
+ax1.set_xticks([4000,4500,5000])
 ax1.plot([3200,7000], [3200,7000], 'k') 
-ax5.set_xlim(0,4)
-ax5.set_ylim(0,4)
-ax5.plot([-2,4], [-2,4], 'k') 
-ax2.set_xlim(1,4)
-ax2.set_ylim(1,4)
-ax2.plot([0,5],[0,5]) 
+ax2.set_xlim(1.2,3.5)
+ax2.plot([0,5],[0,5])
 ax3.set_xlim(-1,0.5)
-ax3.set_ylim(-1,0.5)
 ax3.plot([-2.1,1],[-2.1,1])
-ax4.set_xlim(-0.1,0.4)
-ax4.set_ylim(-0.1,0.4)
+ax3.set_xticks([-1.0,-0.5,-0,0.5])
+ax4.set_xlim(-0.08,0.35)
 ax4.plot([-0.1,1], [-0.1,1])
+ax4.set_xticks([-0.1,0,0.1,0.2,0.3])
+ax5.set_xlim(-0.3,0.7)
+ax5.plot([-2,4], [-2,4], 'k') 
+for ax in [ax1, ax2, ax3, ax4, ax5]:
+    ax.set_ylim(ax.get_xlim())
+    ax.set_yticks(ax.get_xticks())
 
 biast,rmst = returnscatter(t, tout)
 biasg,rmsg = returnscatter(g, gout)
 biasfeh,rmsfeh = returnscatter(feh, fehout)
 biasalpha,rmsalpha = returnscatter(alpha, alphaout)
-biasnu1,rmsnu1 = returnscatter(mass, e**massout)
+biasnu1,rmsnu1 = returnscatter(np.log10(mass), ln_massout/np.log(10.0))
 
 f1 = 12
 ax1.text(0.45, 0.95,"bias, rms= "+str(round(biast,1))+", "+str(round(rmst,2)), ha='center', va='center', 
@@ -157,7 +158,7 @@ ax1.set_title("Teff (K) ", fontsize = 20)
 ax2.set_title("log g (dex) ", fontsize = 20)
 ax3.set_title("[Fe/H] (dex) ", fontsize = 20)
 ax4.set_title(r"[$\alpha$/Fe] (dex) ", fontsize = 20)
-ax5.set_title(r"mass", fontsize = 20)
+ax5.set_title(r"log_10 mass", fontsize = 20)
 #ax6.set_title("delta_nu", fontsize = 20)
 
 ax1.set_ylabel("THE CANNON LABELS", fontsize = 20, labelpad = 10 ) 
@@ -165,3 +166,4 @@ ax3.set_xlabel("INPUT LABELS", fontsize = 20, labelpad = 10 )
 f.subplots_adjust(hspace=0.42)
 f.subplots_adjust(bottom=0.2)
 savefig('6labels.png', bbox = 'tight', fmt = "png") 
+show()
