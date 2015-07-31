@@ -1,11 +1,11 @@
 \documentclass[pdftex]{beamer}
 %\input{vc}
 % 1.77778 is the ratio of 16 to 9
-%\setlength{\paperheight}{3.0in}
-%\setlength{\paperwidth}{1.77778\paperheight}
+\setlength{\paperheight}{2.9in}
+\setlength{\paperwidth}{1.77778\paperheight}
 % 1.33333 is the ratio of 4 to 3
-\setlength{\paperheight}{3.5in}
-\setlength{\paperwidth}{1.33333\paperheight}
+%\setlength{\paperheight}{3.2in}
+%\setlength{\paperwidth}{1.33333\paperheight}
 % textwidth
 \setlength{\textwidth}{0.85\paperwidth}
 % import the next thing *after* the papersize
@@ -18,12 +18,12 @@
 
 \title{Data-driven models of stars}
 \author[David W. Hogg (NYU)]{David W. Hogg \\
-  \textsl{\small Center for Cosmology and Particle Physics,
-                 New York University} \\
-  \textsl{\small Center for Data Science,
-                 New York University} \\
-  \textsl{\small Max-Planck-Insitut f\"ur Astronomie, Heidelberg}}
-\date{2015 April 08}
+  \textsl{\footnotesize Center for Cosmology and Particle Physics,
+                 New~York~University} \\
+  \textsl{\footnotesize Center for Data Science,
+                 New~York~University} \\
+  \textsl{\footnotesize Max-Planck-Insitut f\"ur Astronomie, Heidelberg}}
+\date{2015 July 31}
 
 \newcommand{\conclusions}{%
 \begin{frame}
@@ -50,8 +50,8 @@
 
 \begin{frame}
   \titlepage
-  in collaboration with:\\
-  \emph{Melissa~Ness}~(MPIA), {\small Hans-Walter~Rix~(MPIA), \\
+  {\footnotesize \textit{in collaboration with:}\\
+  \emph{Melissa~Ness}~(MPIA), Hans-Walter~Rix~(MPIA), \\
   Anna~Ho~(MPIA), Gail~Zasowski~(JHU), and Dan~Foreman-Mackey~(NYU)}
 \end{frame}
 
@@ -85,10 +85,7 @@
     \end{itemize}
   \item stars are formed from particular gas clouds
     \begin{itemize}
-    \item each cloud has its own history of supernovae
     \item stars have conserved surface abundances
-    \item detailed chemical fingerprint
-    \item stars that formed together should share a chemical fingerprint
     \end{itemize}
   \item the combined action-chemical space will be far more
     informative than either taken independently
@@ -168,7 +165,7 @@
     \end{itemize}
   \item concept of non-parametrics
   \item concept of train, validate, and test
-  \item many packages and implementations to choose from
+  \item many packages and implementations
     \begin{itemize}
     \item (and outrageous successes)
     \end{itemize}
@@ -245,7 +242,7 @@
 
 \begin{frame}
   \frametitle{stellar astrophysics}
-  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/four_examples3.pdf}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/four_examples3.pdf}
          \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/iso2_2.png}
 \end{frame}
 
@@ -258,13 +255,13 @@
   \item precise RVs and stellar parameters
   \item plan for a dozen abundances for every star
   \item (our own home-built and special continuum normalization; ask me!)
-  \item \apogee\ DR12 just happened: 156,000 stars now available
+  \item \apogee\ DR12: 156,000 stars now available
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{\sdssiii\ \apogee}
-  ~\hfill\includegraphics[height=\figureheight]{../documents/paper1/plots/four_examples3.pdf}
+  \,\hfill\includegraphics[height=\figureheight]{../documents/paper1/plots/four_examples3.pdf}
 \end{frame}
 
 \begin{frame}
@@ -297,7 +294,7 @@
 
 \begin{frame}
   \frametitle{\tc: training set}
-  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/training_aspcap2.pdf}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/training_aspcap2.pdf}
          \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/training_mkn2.pdf}
 \end{frame}
 
@@ -327,16 +324,20 @@
 
 \begin{frame}
   \frametitle{\tc: model}
+{\footnotesize
   \begin{eqnarray}
     \ln p(\fluxes_n\given\labels_n,\pars) &=& \sum_{\lambda=1}^L \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda,s^2_\lambda)
     \nonumber \\
     \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda,s^2_\lambda) &=& -\frac{1}{2}\,\frac{[f_{\lambda n} - \transpose{\pars_\lambda}\cdot\labels_n]^2}{\sigma^2_{\lambda n} + s^2_\lambda} + \ln (\sigma^2_{\lambda n} + s^2_\lambda)
     \nonumber \\
-    \transpose{\labels} &\equiv& \left\{1, \teff, \logg, \feh, \teff^2, \teff\,\logg, \cdots, \feh^2\right\}
+    \transpose{\labels} &\equiv& \left\{1, \teff, \logg, \feh,\right.
+    \nonumber \\
+                        & & \left.\teff^2, \teff\,\logg, \cdots, \feh^2\right\}
     \nonumber \\
     \transpose{\pars} &\equiv& \left\{\pars_\lambda, s^2_\lambda\right\}_{\lambda=1}^L
     \nonumber
   \end{eqnarray}
+}
 \end{frame}
 
 \begin{frame}
@@ -360,17 +361,17 @@
 
 \begin{frame}
   \frametitle{\tc: model training}
-  ~\hfill\includegraphics<1>[width=\figurewidth]{./data_model_cyan.png}
+  \,\hfill\includegraphics<1>[width=\figurewidth]{./data_model_cyan.png}
 \end{frame}
 
 \begin{frame}
   \frametitle{\tc: model training}
-  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/R1_continuum5.png}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/R1_continuum5.png}
 \end{frame}
 
 \begin{frame}
   \frametitle{\tc: model training cross-validation}
-  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/takeout_histc.png}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/takeout_histc.png}
 \end{frame}
 
 \newcommand{\results}{%
@@ -379,7 +380,7 @@
   \begin{itemize}
   \item \tc\ is far faster than physical modeling
     \begin{itemize}
-    \item model trains in \emph{seconds} (thousands of least-square fits)
+    \item model trains in \emph{seconds} (thousands of fits)
     \item \tc\ labels all 56,000 stars in \apogee\ DR10 in two hours
     \item (pure Python on a laptop)
     \end{itemize}
@@ -396,7 +397,7 @@
 
 \begin{frame}
   \frametitle{\tc: test time}
-  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/4431_v19.png}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/4431_v19.png}
          \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/4383_v19.png}
          \includegraphics<3>[height=\figureheight]{../documents/paper1/plots/4399_v19.png}
          \includegraphics<4>[height=\figureheight]{../documents/paper1/plots/4309_v19.png}
@@ -406,27 +407,27 @@
 
 \begin{frame}
   \frametitle{\tc: comparison with \apogee\ labels}
-  ~\hfill\includegraphics[height=\figureheight]{../documents/paper1/plots/cplot2.png} 
+  \,\hfill\includegraphics[height=\figureheight]{../documents/paper1/plots/cplot2.png} 
 \end{frame}
 
 \begin{frame}
   \frametitle{\tc: label veracity}
-  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/iso2_2.png}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/iso2_2.png}
          \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/iso2a_2.png}
 \end{frame}
 
 \begin{frame}
   \frametitle{\tc: works at low signal-to-noise}
-  ~\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/SNR100to200.png}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/SNR100to200.png}
          \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/SNR20to30.png}
 \end{frame}
 
+\results
+
 \begin{frame}
   \frametitle{\tc: label transfer from \apogee\ to \project{LAMOST}}
-  \includegraphics[width=\figurewidth]{LAMOST.png}
+  \,\hfill\includegraphics[width=\figurewidth]{LAMOST.png}
 \end{frame}
-
-\results
 
 \begin{frame}
   \frametitle{\tc: shortcuts and choices}
@@ -434,7 +435,7 @@
   \item no Bayes; no partial or noisy labels
   \item quadratic order
     \begin{itemize}
-    \item replacing polynomial with a Gaussian process (Ho \& Foreman-Mackey)
+    \item replacing polynomial with a Gaussian process
     \item continuous model complexity; non-parametric
     \end{itemize}
   \item spectral representation
@@ -446,6 +447,12 @@
     \item how to go to many elements?
     \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: masses and ages for red giants}
+  \,\hfill\includegraphics<1>[width=\figurewidth]{6labels_mass.png}%
+          \includegraphics<2>[width=\figurewidth]{6labels_age.png}
 \end{frame}
 
 \begin{frame}
