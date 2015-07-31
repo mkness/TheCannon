@@ -838,6 +838,30 @@ def func(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10,x11,x12,x13,x14,x15,x16,x17,x18
          + x21* b**3 ) 
     return f
 
+def func_general(coeffs_vector,a, b, c,d,e):
+    f = (0
+         + x1*a
+         + x2*b
+         + x3*c
+         + x4*d
+         + x5*e
+         + x6* a**2# 
+         + x7 * a * b
+         + x8 * a * c
+         + x9 * a * d
+         + x10 * a * e
+         + x11* b**2
+         + x12  * b * c
+         + x13  * b * d
+         + x14  * b * e
+         + x15* c**2
+         + x16 * c * d
+         + x17 * c * e
+         + x18* d**2 
+         + x19* d*e
+         + x20* e**2 
+         + x21* b**3 ) 
+    return f
 ## non linear stuff below ##
 # returns the non linear function 
 
@@ -851,6 +875,14 @@ def nonlinear_invert(f, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, 
     model, cov = opt.curve_fit(wrapped_func, xdata, f, sigma = sigmavals, maxfev=8000) 
     return model, cov
 
+def nonlinear_invert_general(f, coeffs_vector,  sigmavals):
+    def wrapped_func(observation_points, a, b, c, d, e):
+        coeffs_vector = observation_points
+        return func_general(coeffs_vector ,a, b, c, d, e)
+
+    xdata = np.vstack([coeffs_vector])
+    model, cov = opt.curve_fit(wrapped_func, xdata, f, sigma = sigmavals, maxfev=8000) 
+    return model, cov
 
 def infer_labels_nonlinear(fn_pickle,testdata, ids, fout_pickle, weak_lower,weak_upper):
 #def infer_labels(fn_pickle,testdata, fout_pickle, weak_lower=0.935,weak_upper=0.98):
