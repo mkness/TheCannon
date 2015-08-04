@@ -105,39 +105,59 @@ vmin1,vmax1 = 80,300
 #var =tout
 cval = cm.cool
 msize = 20.
+
+# convert log mass to log age
+plotage = False
+if plotage:
+    import masstoage_interp
+    from masstoage_interp import *
+    age = get_age_from_mass(feh,mass)
+    ageout = get_age_from_mass(fehout,np.exp(ln_massout))
+
 c1 = ax1.scatter(t,tout, c = var,linewidth =0, s = msize ,vmin = vmin1, vmax = vmax1 , cmap = cval)
 ax2.scatter(g,gout, c = var,linewidth =0, s = msize ,vmin = vmin1, vmax = vmax1 , cmap = cval)
 ax3.scatter(feh,fehout, c = var,linewidth =0, s = msize ,vmin = vmin1, vmax = vmax1 , cmap = cval)
 ax4.scatter(alpha,alphaout, c = var,linewidth =0, s = msize ,vmin = vmin1, vmax = vmax1 , cmap = cval)
 #s1 = ax5.scatter(mass,np.exp(ln_massout), c = var, s = msize ,linewidth = 0 ,vmin = vmin1, vmax = vmax1, cmap = cval)
-s1 = ax5.scatter(np.log10(mass),ln_massout/np.log(10.), c = var, s = msize ,linewidth = 0 ,vmin = vmin1, vmax = vmax1, cmap = cval)
+if plotage:
+    s1 = ax5.scatter(np.log10(age),np.log10(ageout), c = var, s = msize ,linewidth = 0 ,vmin = vmin1, vmax = vmax1, cmap = cval)
+    biasnu1,rmsnu1 = returnscatter(np.log10(age), np.log10(ageout))
+else:
+    s1 = ax5.scatter(np.log10(mass),ln_massout/np.log(10.), c = var, s = msize ,linewidth = 0 ,vmin = vmin1, vmax = vmax1, cmap = cval)
+    biasnu1,rmsnu1 = returnscatter(np.log10(mass), ln_massout/np.log(10.0))
+
 cbar_ax = f.add_axes([0.92, 0.20, 0.01, 0.65])
 test = colorbar(s1, cax=cbar_ax) 
-#test.set_label("[alpha/Fe] ", fontsize = 20) 
 test.set_label("SNR", fontsize = 20) 
 
+def mkn_set_ticks(ax, xticks):
+    ax.set_xticks(xticks)
+    ax.set_yticks(xticks)
+
 ax1.set_xlim(3900,5200)
-ax1.set_xticks([4000,4500,5000])
-ax1.plot([3200,7000], [3200,7000], 'k') 
+mkn_set_ticks(ax1, [4000,4500,5000])
 ax2.set_xlim(1.2,3.5)
-ax2.plot([0,5],[0,5])
 ax3.set_xlim(-1,0.5)
-ax3.plot([-2.1,1],[-2.1,1])
-ax3.set_xticks([-1.0,-0.5,-0,0.5])
+mkn_set_ticks(ax3, [-1.0,-0.5,-0,0.5])
 ax4.set_xlim(-0.08,0.35)
-ax4.plot([-0.1,1], [-0.1,1])
-ax4.set_xticks([-0.1,0,0.1,0.2,0.3])
-ax5.set_xlim(-0.3,0.7)
-ax5.plot([-2,4], [-2,4], 'k') 
+mkn_set_ticks(ax4, [-0.1,0,0.1,0.2,0.3])
+if plotage:
+    ax5.set_xlim(-1.0,1.5)
+    ax5.set_title(r"log_10 age", fontsize = 20)
+else:
+    ax5.set_xlim(-0.3,0.7)
+    ax5.set_title(r"log_10 mass", fontsize = 20)
+
 for ax in [ax1, ax2, ax3, ax4, ax5]:
     ax.set_ylim(ax.get_xlim())
-    ax.set_yticks(ax.get_xticks())
+    #ax.set_yticks(ax.get_xticks())
+    ax.plot(ax.get_xlim(), ax.get_xlim(), "k-")
+
 
 biast,rmst = returnscatter(t, tout)
 biasg,rmsg = returnscatter(g, gout)
 biasfeh,rmsfeh = returnscatter(feh, fehout)
 biasalpha,rmsalpha = returnscatter(alpha, alphaout)
-biasnu1,rmsnu1 = returnscatter(np.log10(mass), ln_massout/np.log(10.0))
 
 f1 = 12
 ax1.text(0.45, 0.95,"bias, rms= "+str(round(biast,1))+", "+str(round(rmst,2)), ha='center', va='center', 
@@ -158,7 +178,6 @@ ax1.set_title("Teff (K) ", fontsize = 20)
 ax2.set_title("log g (dex) ", fontsize = 20)
 ax3.set_title("[Fe/H] (dex) ", fontsize = 20)
 ax4.set_title(r"[$\alpha$/Fe] (dex) ", fontsize = 20)
-ax5.set_title(r"log_10 mass", fontsize = 20)
 #ax6.set_title("delta_nu", fontsize = 20)
 
 ax1.set_ylabel("THE CANNON LABELS", fontsize = 20, labelpad = 10 ) 

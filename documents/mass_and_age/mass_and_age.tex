@@ -72,16 +72,18 @@ infrared spectral data alone.
 We demonstrate the validity of the stellar masses and ages by three
 methods:
 First, we use cross-validation to demonstrate label accuracy on the
-training set; we find mass accuracies of roughly XXXX and age accuracies
-of roughly ZZZZ for typical-quality \apogee\ spectra.
+training set; we find mass accuracies of approximately 25\% and age accuracies
+of roughly $\pm$ 2.5 Gyr for typical-quality \apogee\ spectra.
 Second, we look at the dependence on mass (or age) of
 \thecannon\ spectral expectation, and show that it makes good physical
 sense:
 The age indicators in the spectral space are associated with elements
-that can be ``dredged up'' or elements where chromospheric activity is
-visible, or XXXX or YYYY.
+that can be ``dredged up'', specifically the CN regions of the spectra and regions that contain both C12/C13 blended features. 
+%or elements where chromospheric activity is
+%visible, or XXXX or YYYY.
+% note to self - check that this is is actually correct about the C12/C13 blended features and write a reference to literature about this. 
 Third, we use \thecannon\ to estimate age labels for the entire
-\apogee\ sample, and show that the ages of stellar structures in the
+\apogee\ DR12 sample, and show that the ages of stellar structures in the
 Milky Way follow expectations, even conditioned on abundances.
 All three of these tests show that we can obtain red-giant mass and
 age information from stellar spectra; these capabilities open up new
@@ -157,7 +159,7 @@ the purpose of this project is to obtain estimates for ages and masses
 
 \section{Methods and data}
 
-We make use of \tc\ (MKN CITE), which is a data-driven method for
+We make use of \tc\ \citep{Ness2015}, which is a data-driven method for
 determining stellar parameters and abundances.
 \tc\ is a probabilistic model of stellar spectra---meaning that it
 produces a likelihood function or a probability density in spectral
@@ -404,5 +406,7 @@ This project made use of
 [Insert SDSS boilerplate here.]
 
 All code and data produced in this project is available HERE and THERE.
+
+\bibliography{tc.bib}
 
 \end{document}
