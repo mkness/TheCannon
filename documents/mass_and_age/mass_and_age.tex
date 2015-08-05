@@ -68,23 +68,17 @@ obtained from a training set of stars with both
 We find that (after training) \thecannon\ can infer stellar
 masses---and therefore also stellar ages---for red-giant stars using
 infrared spectral data alone.
+We produce mass and age labels for all XXX,000 red-giant stars in \apogee\ DR12.
 % Results
 We demonstrate the validity of the stellar masses and ages by three
 methods:
-First, we use cross-validation to demonstrate label accuracy on the
-training set; we find mass accuracies of approximately 25\% and age accuracies
-of roughly $\pm$ 2.5 Gyr for typical-quality \apogee\ spectra.
-Second, we look at the dependence on mass (or age) of
-\thecannon\ spectral expectation, and show that it makes good physical
-sense:
-The age indicators in the spectral space are associated with elements
-that can be ``dredged up'', specifically the CN regions of the spectra and regions that contain both C12/C13 blended features. 
-%or elements where chromospheric activity is
-%visible, or XXXX or YYYY.
-% note to self - check that this is is actually correct about the C12/C13 blended features and write a reference to literature about this. 
-Third, we use \thecannon\ to estimate age labels for the entire
-\apogee\ DR12 sample, and show that the ages of stellar structures in the
-Milky Way follow expectations, even conditioned on abundances.
+Cross-validation demonstrates that the method obtains (log) mass accuracies of approximately 0.08~dex and (log) age accuracies
+of roughly 0.25~dex for typical-quality \apogee\ spectra.
+Second, we find that the spectral mass (or age) indicators
+discovered by \thecannon\ are associated with elements that can be ``dredged up'',
+specifically the CN regions of the spectra and regions that contain C12--C13 [typesetting] blended features. 
+Third, we show that the ages of stellar structures in the
+Milky Way follow gross expectations, even conditioned on abundances.
 All three of these tests show that we can obtain red-giant mass and
 age information from stellar spectra; these capabilities open up new
 opportunities for Milky Way and stellar astrophysics.
@@ -247,12 +241,12 @@ For cross validation, we took the
 
 \subsection{Experiments and results: Interpretation of the residuals}
 
-
+%made with run -i /Users/ness/new_laptop/Apogee_ages/makeplot_scatter_test18_step.py
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/scatter_tgfeh.png}
-  \caption{\teff, \logg, \feh}
+  \caption{The first-order coefficients and scatter across the sample regions of the spectra, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \logg, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale. The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \logg\  and \teff\ labels respectively. The \teff\ coefficient has been multiplied by a factor of 1000 simply to show this coefficient on a similar scale to the other coefficients. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note that the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels.}
 \label{fig:validation}
 \end{figure}
 
@@ -332,11 +326,22 @@ This is a C2 region \\
 \ldots MKN: What is the cross-validation and what are the results?
 %plotdiff_5labels_10percent_linear_orig.py trained on 1639 stars if
 %run -i plotdiff_5labels_10percent_linear trained on 1500 stars
+%/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_5labels_10percent_contour.py
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.31]{./plots/validation_1500.pdf}
-  \caption{MKN: Expand to full caption.  Trained on 90\,percent of the 1639 APOKASC sample and test step on remaining 10\,percent, run through 10 times.}
+ %   \includegraphics[scale=0.31]{./plots/validation_1500.pdf}
+        \includegraphics[scale=0.31]{./plots/validation_1639.pdf}
+  \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
+\label{fig:validation}
+\end{figure}
+
+\begin{figure}[p!]
+\centering
+ % \includegraphics[scale=0.31]{./plots/validation.png}
+ %   \includegraphics[scale=0.31]{./plots/validation_1500.pdf}
+        \includegraphics[scale=0.31]{./plots/validation_1639_ages.pdf}
+  \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and age labels (where the mass label has been directly interpolated to mass): the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
 \label{fig:validation}
 \end{figure}
 
