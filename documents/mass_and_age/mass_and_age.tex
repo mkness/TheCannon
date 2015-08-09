@@ -39,6 +39,9 @@
 
 \begin{document}
 
+% plotting in /Apogee_ages/makeplot_scatter_test18_step.py 
+% and plotelements_on_spectra.py 
+
 \title{Measuring red-giant masses and ages with stellar spectra}
 \author{M.~Ness\altaffilmark{1},
 David~W.~Hogg\altaffilmark{1,2,3},
@@ -241,34 +244,40 @@ For cross validation, we took the
 
 \subsection{Experiments and results: Interpretation of the residuals}
 
-%made with run -i /Users/ness/new_laptop/Apogee_ages/makeplot_scatter_test18_step.py
+%%made with run -i /Users/ness/new_laptop/Apogee_ages/makeplot_scatter_test18_step.py
+%\begin{figure}[p!]
+%\centering
+% % \includegraphics[scale=0.31]{./plots/validation.png}
+%    \includegraphics[scale=0.51]{./plots/scatter_tgfeh.png}
+%  \caption{The first-order coefficients and scatter across the sample regions of the spectra, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \logg, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale. The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \logg\  and \teff\ labels respectively. The \teff\ coefficient has been multiplied by a factor of 1000 simply to show this coefficient on a similar scale to the other coefficients. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note that the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels.}
+%\label{fig:validation}
+%\end{figure}
+
+% run run -i makeplot_scatter_test18_step in /Apogee_ages/ o
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.51]{./plots/scatter_tgfeh.png}
-  \caption{The first-order coefficients and scatter across the sample regions of the spectra, A and B. Top panel: the baseline spectra representing the first coefficient from the set of reference spectra; middle panel: the next three coefficients ($\theta_1$, $\theta_2$, $\theta_3$),  which correspond to the labels ($\teff, \logg, \feh$); bottom panel: the scatter of the fit with a tenfold expanded vertical scale. The red, blue and green areas in the top panel encompass the wavelength regions with the 5\% highest (absolute value) coefficients for the \feh, \logg\  and \teff\ labels respectively. The \teff\ coefficient has been multiplied by a factor of 1000 simply to show this coefficient on a similar scale to the other coefficients. This indicates where the flux in these spectrum is particularly sensitive to the labels.  Note that the \feh\ label is dominant in the contribution level and from the top panel it is clear that there is significant covariance between the labels and there are only a few regions of \logg\ sensitivity. The filled dots in the baseline spectrum in the top penal indicate the wavelengths at which the dependencies on all labels are weak, which we operatively identify as continuum pixels.}
-\label{fig:validation}
+    \includegraphics[scale=0.51]{./plots/coeffs_g_3.png}
+  \caption{The first order coefficients of the model trained on the \aspcap\ stars showing the two 20 Angstrom wavelength regions where the \logg\ coefficient reaches the highest absolute amplitude. The 0th coefficient (at top) describes the intersect spectrum and relevant spectral absorption features are marked. The lower panel shows all coefficients, each normalised to their highest amplitude, for all \teff, \logg, \feh,\alphafe\ and mass coefficients.}
+\label{fig:g}
 \end{figure}
 
+Figure \ref{fig:g} shows the two 20 Angstrom regions where the \logg\ coefficient reaches the highest amplitude. The intersect spectra (0th coefficient) is plotted at top and the coefficients for the 5 labels are plotted in the bottom panels.  The left panel includes some of the elements corresponding to the absorption lines. The IR spectral region is highly blended with molecular features and most lines are a blend including CN, C2 and OH features. The maximum amplitude of the \logg\ coefficient does not correspond to the core of the absorption feature of the intersect spectrum but rather the wings. As \logg\ increases, these wings broaden and deepen. Consersely, the panel on the right hand side is the second highest amplitude of the \logg\ coefficient but is positive, The feature this correlates with is the Brackett feature, which becomes shallower and flatter with increasing \logg. 
 
-\begin{figure}[p!]
-\centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.51]{./plots/scatter_alphamass.png}
-  \caption{\teff, \logg, ]feh}
-\label{fig:validation}
-\end{figure}
+
+
 
 \subsubsection{Teff residuals}
 
 The strongest \teff residual is at 15720 \AA. 
 
+% run run -i makeplot_scatter_test18_step in /Apogee_ages/ o
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.41]{./plots/Teff_15720.png}
-  \caption{\teff, \logg, \feh}
-\label{fig:validation}
+    \includegraphics[scale=0.51]{./plots/coeffs_t_3.png}
+  \caption{The first order coefficients of the model trained on the \aspcap\ stars showing the two 20 Angstrom wavelength regions where the \teff\ coefficient reaches the highest absolute amplitude. The 0th coefficient (at top) describes the intersect spectrum and relevant spectral absorption features are marked. The lower panel shows all coefficients, each normalised to their highest amplitude, for all \teff, \logg, \feh,\alphafe\ and mass coefficients.}
+\label{fig:g}
 \end{figure}
 
 This is a Ti I line. \\
