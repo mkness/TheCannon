@@ -253,7 +253,7 @@ For cross validation, we took the
 %\label{fig:validation}
 %\end{figure}
 
-% run run -i makeplot_scatter_test18_step in /Apogee_ages/ o
+% run run -i makeplot_scatter_test18_step/spectra in /Apogee_ages/ o
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
@@ -271,7 +271,7 @@ Figure \ref{fig:g} shows the two 20 Angstrom regions where the \logg\ coefficien
 
 The strongest \teff residual is at 15720 \AA. 
 
-% run run -i makeplot_scatter_test18_step in /Apogee_ages/ o
+% run run -i makeplot_scatter_test18/spectra_step in /Apogee_ages/ o
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
@@ -281,6 +281,23 @@ The strongest \teff residual is at 15720 \AA.
 \end{figure}
 
 This is a Ti I line. \\
+
+% run run -i makeplot_scatter_test18_step_spectra in /Apogee_ages/ o
+\begin{figure}[p!]
+\centering
+ % \includegraphics[scale=0.31]{./plots/validation.png}
+    \includegraphics[scale=0.51]{./plots/coeffs_af_3.png}
+  \caption{The first order coefficients of the model trained on the \aspcap\ stars showing the two 20 Angstrom wavelength regions where the \teff\ coefficient reaches the highest absolute amplitude. The 0th coefficient (at top) describes the intersect spectrum and relevant spectral absorption features are marked. The lower panel shows all coefficients, each normalised to their highest amplitude, for all \teff, \logg, \feh,\alphafe\ and mass coefficients.}
+\label{fig:g}
+\end{figure}
+
+\begin{figure}[p!]
+\centering
+ % \includegraphics[scale=0.31]{./plots/validation.png}
+    \includegraphics[scale=0.51]{./plots/coeffs_m_3.png}
+  \caption{The second coefficient is not there if train on linear mass - concerning..}
+\label{fig:g}
+\end{figure}
 
 
 \subsubsection{\logg residuals}
