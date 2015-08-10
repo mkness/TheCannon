@@ -300,54 +300,6 @@ This is a Ti I line. \\
 \end{figure}
 
 
-\subsubsection{\logg residuals}
-
-\begin{figure}[p!]
-\centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.41]{./plots/logg_16810.png}
-  \caption{\teff, \logg, \feh}
-\label{fig:validation}
-\end{figure}
-
-This is a Brackett line. \\
-
-\subsubsection{alpha-Fe residuals}
-
-\begin{figure}[p!]
-\centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.41]{./plots/alpha_16369.png}
-  \caption{\teff, \logg, \feh}
-\label{fig:validation}
-\end{figure}
-
-This is an Mg line. \\
-
-\subsubsection{mass residuals}
-
-\begin{figure}[p!]
-\centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.31]{./plots/mass_15241.png}
-        \includegraphics[scale=0.31]{./plots/mass_15432.png}
-               \includegraphics[scale=0.31]{./plots/mass_16189.png}
-  \caption{mass}
-\label{fig:validation}
-\end{figure}
-
-This is CN regions only (synthesis). \\
-
-\begin{figure}[p!]
-\centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.31]{./plots/mass_15187.png}
-        \includegraphics[scale=0.31]{./plots/mass_16840.png}
-  \caption{mass residuals}
-\label{fig:validation}
-\end{figure}
-
-This is a C2 region \\
 
 \ldots MKN: What is the cross-validation and what are the results?
 %plotdiff_5labels_10percent_linear_orig.py trained on 1639 stars if
@@ -392,20 +344,26 @@ This is a C2 region \\
 \label{fig:alphabins}
 \end{figure}
 
+% made in 
+\begin{figure}[p!]
+\centering
+ % \includegraphics[scale=0.31]{./plots/validation.png}
+    \includegraphics[scale=0.5]{./plots/median_age_abs.png}
+    \caption{median age  }
+\label{fig:alphabins}
+\end{figure}
+
+\begin{figure}[p!]
+\centering
+ % \includegraphics[scale=0.31]{./plots/validation.png}
+    \includegraphics[scale=0.5]{./plots/median_age_low_alpha_abs.png}
+    \caption{median age of low alpha sequence = draw where this in in feh alphafeh plane. }
+\label{fig:alphabins}
+\end{figure}
+
 \ldots MKN: What are the spectral signatures of mass and how do they
 map on to our hypothesized mass and age indicators?
 
-%makeelements2.py
-\begin{figure}[p!]
-\centering
-  \includegraphics[scale=0.21]{./plots/teff_coefficient.png}
-  \includegraphics[scale=0.21]{./plots/logg_coefficient.png}
-  \includegraphics[scale=0.21]{./plots/feh_coefficient.png}
-  \includegraphics[scale=0.21]{./plots/alphafeh_coefficient.png}
-  \includegraphics[scale=0.21]{./plots/mass_coefficient.png}
-  \caption{MKN: full caption!} 
-\label{fig:maps}
-\end{figure}
 
 \ldots MKN: What does the Galaxy look like in terms of age gradients,
 in subsamples chosen for chemical homogeneity?
