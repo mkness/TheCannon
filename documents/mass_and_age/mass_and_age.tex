@@ -319,18 +319,15 @@ This is a Ti I line. \\
 %/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_5labels_10percent_contour.py
 \begin{figure}[p!]
 \centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
- %   \includegraphics[scale=0.31]{./plots/validation_1500.pdf}
-        \includegraphics[scale=0.31]{./plots/validation_1639.pdf}
+        \includegraphics[scale=0.35]{./plots/validation_1639.pdf}
   \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
 \label{fig:validation}
 \end{figure}
 
 \begin{figure}[p!]
 \centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
  %   \includegraphics[scale=0.31]{./plots/validation_1500.pdf}
-        \includegraphics[scale=0.31]{./plots/validation_1639_ages.pdf}
+        \includegraphics[scale=0.35]{./plots/validation_1639_ages.pdf}
   \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and age labels (where the mass label has been directly interpolated to mass): the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
 \label{fig:validation}
 \end{figure}
@@ -338,21 +335,36 @@ This is a Ti I line. \\
 
 \ldots MKN: how do we show that we are simply not reproducing the alpha-\feh\ information:
 
+\begin{figure}[p!]
+\centering
+ \includegraphics[scale=0.45]{./plots/redclump.pdf}
+    \caption{The 20K red clump sample.}
+\label{fig:alphabins}
+\end{figure}
+
+%run -i makealphafeh_imshow_3panel.py
+
 % made in makealphamap3.py  in Apogee_ages after running plotdiff_5labels2
+% run -i /Users/ness/new_laptop/Apogee_ages/makealphamap4_logmass.py
 \begin{figure}[p!]
 \centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.31]{./plots/alpha_feh_bins.png}
-    \caption{MKN: Expand to full caption.Bins to test Cannon v. Kepler over  Need to make a less noisy version of this plot from full red clump sample potentially  }
+ \includegraphics[scale=0.45]{./plots/alpha_feh_bins3.pdf}
+    \caption{The \feh-\alphafe\ plane colored by mean age of the stars in each bin. The number of stars in each bin is indicated }
 \label{fig:alphabins}
 \end{figure}
 
-% made in 
 \begin{figure}[p!]
 \centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.31]{./plots/delta_age_2.png}
-    \caption{MKN: Expand to full caption.Bins to test Cannon v. Kepler over  Need to make a less noisy version of this plot from full red clump sample potentially  }
+ \includegraphics[scale=0.45]{./plots/alpha_feh_std3.pdf}
+    \caption{The \feh-\alphafe\ plane colored by standard deviation of the age of the stars in each bin. The number of stars in each bin is indicated }
+\label{fig:alphabins}
+\end{figure}
+
+% made in makealphamap4_logmass.py after running the plotdiff as above
+\begin{figure}[p!]
+\centering
+ \includegraphics[scale=0.45]{./plots/Kepler_Cannon_diff.pdf}
+    \caption{The stars in Figure 8 individually subtracted from the mean age in their respective bin, showing correlation within the individual mono-abundance bins in the \alphafe-\feh\ plane. }
 \label{fig:alphabins}
 \end{figure}
 
@@ -360,8 +372,8 @@ This is a Ti I line. \\
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.4]{./plots/median_age_abs.png}
-    \caption{median age  }
+    \includegraphics[scale=0.45]{./plots/median_age_abs.png}
+    \caption{The median age of the 20,000 red clump stars  }
 \label{fig:alphabins}
 \vspace{-60pt}
 \end{figure}
@@ -370,8 +382,8 @@ This is a Ti I line. \\
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.4]{./plots/median_age_low_alpha_abs.png}
-    \caption{median age of low alpha sequence = draw where this in in feh alphafeh plane. }
+    \includegraphics[scale=0.45]{./plots/median_age_low_alpha_abs.png}
+    \caption{The median age of the low alpha sequence of the red clump stars ( draw where this in in feh alphafeh plane). Include number of stars. }
 \label{fig:alphabins}
 \vspace{-60pt}
 \end{figure}
@@ -380,8 +392,8 @@ This is a Ti I line. \\
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.4]{./plots/median_age_mono_abs.png}
-    \caption{median age of low alpha sequence monoabundance  -  \feh\ is 0 to -0.2. }
+    \includegraphics[scale=0.45]{./plots/median_age_mono_abs.png}
+    \caption{The median age of low alpha sequence monoabundance  bin with a cut on  \feh\ of 0 to -0.2. }
 \label{fig:alphabins}
 \end{figure}
 
