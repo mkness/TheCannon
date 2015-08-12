@@ -71,7 +71,7 @@ obtained from a training set of stars with both
 We find that (after training) \thecannon\ can infer stellar
 masses---and therefore also stellar ages---for red-giant stars using
 infrared spectral data alone.
-We produce mass and age labels for all XXX,000 red-giant stars in \apogee\ DR12.
+We produce mass and inferred age labels for all XXX,000 red-giant stars in \apogee\ DR12 and show the age trends in the Milky Way for the \apogee\ red clump sample, which have small ($\approx$ distance errors).
 % Results
 We demonstrate the validity of the stellar masses and ages by three
 methods:
@@ -79,7 +79,7 @@ Cross-validation demonstrates that the method obtains (log) mass accuracies of a
 of roughly 0.25~dex for typical-quality \apogee\ spectra.
 Second, we find that the spectral mass (or age) indicators
 discovered by \thecannon\ are associated with elements that can be ``dredged up'',
-specifically the CN regions of the spectra and regions that contain C12--C13 [typesetting] blended features. 
+specifically the CN regions of the spectra.
 Third, we show that the ages of stellar structures in the
 Milky Way follow gross expectations, even conditioned on abundances.
 All three of these tests show that we can obtain red-giant mass and
@@ -139,13 +139,25 @@ If we can determine the interior properties of stars from surface
 spectroscopy alone, even noisily, great opportunities would arise for
 studying the stellar populations of the Milky Way and their formation.
 
-\ldots DWH: What are our hypotheses about how mass or age might appear
-in a stellar spectrum?  It might appear as dredge-up of evolved
-material from the core into the photosphere.  It might appear as
-chromospheric emission from a time-dependent magnetic field.  It might
-appear as line-shape variations as stellar rotation evolves.  It might
-appear as amplitude variations in non-LTE effects as convection scales
-are different for stars of different masses.
+Age indicators have been found for stellar spectra previously and include the xxx emission in the xxx and the xxx in the UV. Mass or age may appear as information in the stellar spectra in a number of ways. It may appear as a dredge-up of evolved
+material from the core into the photosphere (see Marc P's) email. It may appear as chromospheric emission from a time-dependent magnetic field or it may be reflected in the line-profile variations due to non-LTE effects as convection scales with mass. 
+
+Importantly, mass and therefore inferred age might only appear in the spectra as
+certain combinations of surface abundances that are highly covariant
+with age.  For example, older stars in the Milky Way tend to be more
+alpha-enhanced.  We will consider such age indicators illegitimate;
+the purpose of this project is to obtain estimates for ages and masses
+\emph{that work even within narrow abundance-selected subsamples}.
+
+%Gilroy & Brown and Tautvaisiene et al. - CN references
+
+%\ldots DWH: What are our hypotheses about how mass or age might appear
+%in a stellar spectrum?  It might appear as dredge-up of evolved
+%material from the core into the photosphere.  It might appear as
+%chromospheric emission from a time-dependent magnetic field.  It might
+%appear as line-shape variations as stellar rotation evolves.  It might
+%appear as amplitude variations in non-LTE effects as convection scales
+%are different for stars of different masses.
 
 \ldots DWH: Importantly, age might only appear in the spectra as
 certain combinations of surface abundances that are highly covariant
@@ -227,6 +239,28 @@ We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$H
 
 \section{Validation of mass and age outputs}
 
+
+
+\ldots MKN: What is the cross-validation and what are the results?
+%plotdiff_5labels_10percent_linear_orig.py trained on 1639 stars if
+%run -i plotdiff_5labels_10percent_linear trained on 1500 stars
+%/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_5labels_10percent_contour.py
+\begin{figure}[p!]
+\centering
+        \includegraphics[scale=0.35]{./plots/validation_1639.pdf}
+  \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
+\label{fig:validation}
+\end{figure}
+
+\begin{figure}[p!]
+\centering
+ %   \includegraphics[scale=0.31]{./plots/validation_1500.pdf}
+        \includegraphics[scale=0.35]{./plots/validation_1639_ages.pdf}
+  \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and age labels (where the mass label has been directly interpolated to mass): the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
+\label{fig:validation}
+\end{figure}
+
+
 For cross validation, we took the 
 
 
@@ -297,7 +331,8 @@ This is a Ti I line. \\
     \includegraphics[scale=0.51]{./plots/coeffs_m_3.png}
   \caption{The second coefficient is not there if train on linear mass - concerning..}
 \label{fig:g}
-\end{figure}
+\end{figure}'
+
 
 
 %run -i makeredclumpplot.py
@@ -313,36 +348,11 @@ This is a Ti I line. \\
 
 
 
-\ldots MKN: What is the cross-validation and what are the results?
-%plotdiff_5labels_10percent_linear_orig.py trained on 1639 stars if
-%run -i plotdiff_5labels_10percent_linear trained on 1500 stars
-%/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_5labels_10percent_contour.py
-\begin{figure}[p!]
-\centering
-        \includegraphics[scale=0.35]{./plots/validation_1639.pdf}
-  \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
-\label{fig:validation}
-\end{figure}
-
-\begin{figure}[p!]
-\centering
- %   \includegraphics[scale=0.31]{./plots/validation_1500.pdf}
-        \includegraphics[scale=0.35]{./plots/validation_1639_ages.pdf}
-  \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and age labels (where the mass label has been directly interpolated to mass): the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
-\label{fig:validation}
-\end{figure}
 
 
 \ldots MKN: how do we show that we are simply not reproducing the alpha-\feh\ information:
 
-\begin{figure}[p!]
-\centering
- \includegraphics[scale=0.45]{./plots/redclump.pdf}
-    \caption{The 20K red clump sample.}
-\label{fig:alphabins}
-\end{figure}
-
-%run -i makealphafeh_imshow_3panel.py
+\section{Kepler sample  - validation age is meaningful} 
 
 % made in makealphamap3.py  in Apogee_ages after running plotdiff_5labels2
 % run -i /Users/ness/new_laptop/Apogee_ages/makealphamap4_logmass.py
@@ -368,6 +378,16 @@ This is a Ti I line. \\
 \label{fig:alphabins}
 \end{figure}
 
+\section{Red clump sample - some results } 
+
+%run -i makealphafeh_imshow_3panel.py and readin_ages.py
+\begin{figure}[p!]
+\centering
+ \includegraphics[scale=0.4]{./plots/redclump_4panel.pdf}
+    \caption{The 20K red clump sample: low alpha sequence is broken up into radius and box is the mono-abundance distribution in later figure.}
+\label{fig:alphabins}
+\end{figure}
+
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
 \begin{figure}[p!]
 \centering
@@ -375,7 +395,7 @@ This is a Ti I line. \\
     \includegraphics[scale=0.45]{./plots/median_age_abs.png}
     \caption{The median age of the 20,000 red clump stars  }
 \label{fig:alphabins}
-\vspace{-60pt}
+\vspace{360pt}
 \end{figure}
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
@@ -385,7 +405,7 @@ This is a Ti I line. \\
     \includegraphics[scale=0.45]{./plots/median_age_low_alpha_abs.png}
     \caption{The median age of the low alpha sequence of the red clump stars ( draw where this in in feh alphafeh plane). Include number of stars. }
 \label{fig:alphabins}
-\vspace{-60pt}
+\vspace{-30pt}
 \end{figure}
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 

@@ -40,10 +40,10 @@ def make_grid(xs, xmin, xmax, dx, ys, ymin, ymax, dy, data):
             N = np.float(np.sum(inside))
             Nstars[xxi, yyi] = N
             median_age[xxi, yyi] = np.median(data[inside, 9]) 
-            median_age_low_alpha_pick = data[inside, 8] < 0.12 - 0.2 * data[inside,8] 
+            median_age_low_alpha_pick = data[inside, 8] < 0.08 - 0.15 * data[inside,8] 
             median_age_mid_feh_pick = logical_and(data[inside, 7] < 0, data[inside,7] > -0.2)
             median_age_mono_pick = logical_and(median_age_low_alpha_pick, median_age_mid_feh_pick)
-            median_age_high_alpha_pick = data[inside, 8] >= 0.12 - 0.2 * data[inside,8] 
+            median_age_high_alpha_pick = data[inside, 8] >= 0.08 - 0.15 * data[inside,8] 
             median_age_low_alpha[xxi, yyi] = np.median(data[inside, 9][median_age_low_alpha_pick])
             median_age_high_alpha[xxi, yyi] = np.median(data[inside, 9][median_age_high_alpha_pick])
             median_age_mono[xxi, yyi] = np.median(data[inside, 9][median_age_mono_pick])

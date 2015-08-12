@@ -31,13 +31,13 @@ def makeim(xval,yval,wval,rad, binnum):
   pick_high = logical_and(logical_and(wval > 5, wval < 14) , yval < ycut ) 
   x_values = arange(-2,1,0.1)
   y_values = -0.15*x_values + 0.08
-  ax2.plot(x_values, y_values, 'grey',linestyle = 'dashed')
-  ax2.vlines(-0.2,0 ,0.11, 'grey',linestyle = 'dashed')
-  ax2.vlines(0.0, 0,0.08, 'grey',linestyle = 'dashed')
-  ax2.hlines(0.0, -0.2,0, 'grey' , linestyle = 'dashed') 
+  ax2.plot(x_values, y_values, 'm',linestyle = 'dashed')
+  ax2.vlines(-0.2,0 ,0.11, 'm',linestyle = 'dashed')
+  ax2.vlines(0.0, 0,0.08, 'm',linestyle = 'dashed')
+  ax2.hlines(0.0, -0.2,0, 'm' , linestyle = 'dashed') 
  
   figure() 
-  hist1_rad_low_norm,x4,y4,temp1 = hist2d(rad[pick_low], xval[pick_low], bins = binnum,cmin = 2) 
+  hist1_rad_low_norm,x4,y4,temp1 = hist2d(rad[pick_low], xval[pick_low], bins = binnum,cmin = 4) 
   hist1_rad_high_norm,x5,y5,temp2 = hist2d(rad[pick_high], xval[pick_high], bins = binnum,cmin = 4) 
   #ax.scatter(galr[pick], rc_feh[pick], color = 'k', alpha = 0.8) 
   image_rad_young_density = hist1_rad_low_norm 
@@ -52,7 +52,7 @@ def makeim(xval,yval,wval,rad, binnum):
   ax4.yaxis.set_label_position("right")
   ax4.set_ylabel("[Fe/H]", fontsize = fs) 
   for ax in [ax3,ax4]:
-    ax.set_xlabel('R$_{GAL}$' , fontsize = fs,labelpad = 5) 
+    ax.set_xlabel('R$_{GAL}$ (kpc)' , fontsize = fs,labelpad = 10) 
   ax4.yaxis.tick_right() 
   ax3.text(5.5,0.5, "Age < 1 Gyr", fontsize = fs) 
   ax4.text(5.5,0.5, "Age > 5 Gyr", fontsize = fs) 
@@ -63,9 +63,12 @@ def makeim(xval,yval,wval,rad, binnum):
   ax3.set_yticklabels([])
   ax2.set_yticklabels([])
   fig.subplots_adjust(left=None, bottom=0.15)
+  fig.tight_layout()
   #test = ax.scatter(galr[pick], rc_feh[pick], c = rc_alpha[pick] , s = 30, linewidth  =  0 ) 
   #fig.subplots_adjust(hspace=0)
   fig.subplots_adjust(wspace=0.01)
+  savefig('/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/redclump_4panel.png', fmt = "png",bbox = 'Tight')
+#  savefig('/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/redclump_4panel.pdf', fmt = "pdf",bbox = 'Tight')
   return s1 
 
 pick = galr < 8 
