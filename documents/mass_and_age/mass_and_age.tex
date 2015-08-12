@@ -39,6 +39,12 @@
 
 \begin{document}
 
+% To do. 
+% 1. release two catalogues :
+% 1a) trained on log mass and 1b) trained on log mass
+%2. resample the errors in label space - add a random error to the mass term and rerun the labels through the cannon and see if the standard deviation and bias in the take one out test is any different - if not we know the noisiness in the training set is not an issue
+%3. cut out a lot of regions except for the CN and retrain and see if the take-out-out test sigma increases or decreases in the dispersion - if increases we know we are limited by the information available in the data. If decreases there is degeneracy / noisiness in the covariance of labels? 
+
 % plotting in /Apogee_ages/makeplot_scatter_test18_step.py 
 % and plotelements_on_spectra.py 
 
@@ -132,35 +138,40 @@ and interior asteroseismology) to jointly infer stellar properties?
 Another is:
 Is there any way we could learn about stellar interiors from surface
 spectroscopy?
-After all, at current prices, the marginal cost of taking a spectrum of
+After all, the marginal cost of taking a spectrum of
 a new star is very low relative to the marginal cost of getting its
 asteroseismology.
-If we can determine the interior properties of stars from surface
-spectroscopy alone, even noisily, great opportunities would arise for
-studying the stellar populations of the Milky Way and their formation.
 
-There are a handful of known spectral mass indicators. These derive from rotation, in the line-profile variations due to non-LTE effects, as convection scales with mass, and from chromospheric emission from a time-dependent magnetic field e.g. The Ca II HK and H$\alpha$ (see Soderblom 2010 for a review). Furthermore, they decay of long lived isotopes like Th, which can be measured at 4019 Angstroms, can be used for age dating by comparing its abundance to that of the stable elements in the stellar photosphere. Commonly, age estimates are determined for the sub-giant class of stars observed at high resolution using interpolation between stellar models.  (e.g. Bensby2013, Casagrande2011, Haywood20XX). This region of the \teff-logg\ plane is the least insensitive to age. However, the age constraints using this method are typically weak or may only provide an upper limit on the age estimate. Up until now the Geneva Cophenhagen survey of stars in the solar neighbourhood (Nordstršm et al. 2004), with a sample of about 16,682 stars has been the largest sample of stars, all nearby main sequence stars, with complete data on stellar ages in the Milky Way disk. These ages have been determined given the measured parallaxes to these stars, as well as their stellar parameters of \teff, \logg\ and \feh\ and interpolation between stellar isochrone models \citet{Holm2009} to infer the age. 
+There are a small handful of specific metrics that have been used for inferring age information from surface spectroscopy alone. These derive from rotation, in the line-profile variations due to non-LTE effects, as convection scales with mass, and from chromospheric emission from a time-dependent magnetic field e.g. the Ca II HK and H$\alpha$ (see Soderblom 2010 for a review). The decay of long lived isotopes such as Th, which can be measured at 4019 Angstroms, can also be used for age dating by comparing the abundance of the long lived isotopes to that of the stable elements in the stellar photosphere. 
 
-mention in paper - training set currently small - catalogue of 8K APOKASC stars is coming \\. 
-
-
-\citet{Holm2009}
-
-
-
-Importantly, mass and therefore inferred age might only appear in the spectra as
+Importantly, and in general, mass and therefore inferred age might only appear in the spectra as
 certain combinations of surface abundances that are highly covariant
 with age.  For example, older stars in the Milky Way tend to be more
 alpha-enhanced.  We will consider such age indicators illegitimate;
-the purpose of this project is to obtain estimates for ages and masses
-\emph{that work even within narrow abundance-selected subsamples}.
-Skumanich 1972 - empirical age estimators - Rotation (less relevant once giant) and chromospheric emission - Ca II HK and H-alpha (Magnetic fields manifested as activity) . 
+the purpose of this project is to obtain estimates for ages and masses \emph{that work even within narrow abundance-selected subsamples}.
 
-For a review on ages of stars \citep{Soderblom2010}.
+Typically, age estimates for stars are more commonly determined not from spectroscopy directly, but from their measured stellar parameters (determined from high resolution stellar spectroscopy) by interpolating between stellar isochrone models, in the sub-giant and main sequence regime  (e.g. Bensby2013, Casagrande2011, Haywood20XX). In this \teff-\logg\ regime the models are the least insensitive to age.  However, the age constraints using this method are typically weak or may only provide an upper limit on the age estimate.  This method has been used to determine ages for what has been up until now the largest homogeneous data set of stellar ages in the galactic disk, from the Geneva Cophenhagen Survey (GCS). All of the 16,682 main sequence stars from GCS are located in the solar neighbourhood (Nordstršm et al. 2004).
 
+If we can determine the interior properties of stars from surface
+spectroscopy alone, even noisily, great opportunities arise for
+studying the stellar populations of the Milky Way and their formation. The red clump sample alone from \apogee\ alone, for which accurate distances (to 5 percent) have been determined, comprises 20,000 stars and spans a radial extent across the disk of 4 -- 16 kpc. We use The Cannon to infer stellar masses for stars given a training set of \apokasc\ stars with known mass labels, demonstrate that the information informing the masses (and other labels) is xxx valid and demonstrate that the information in the mass and inferred age label is additional to that of chemical abundance alpha/fe proxy alone. 
+
+present the catalogue of mass and inferred ages for these stars as well as XXXX giant stars in the DR12 data release from the \apogee\ survey. 
+
+%, with a sample of about 16,682 stars, has been the largest sample of stars, all of which are nearby main sequence stars, with complete data on stellar ages in the Milky Way disk. These ages have been determined from the constraints set by the measured parallaxes to these stars and their stellar parameters of \teff, \logg\ and \feh,  using interpolation between stellar isochrone models \citet{Holm2009}.
+
+
+
+%We similarly use stellar models but determine our mass directly from the spectra - and use the models to move from measured inferred mass to inferred age. Not mapping from stellar params to isochrone age space. How do I say this in a better way to describe why it is better? 
+
+
+
+%Skumanich 1972 - empirical age estimators - Rotation (less relevant once giant) and chromospheric emission - Ca II HK and H-alpha (Magnetic fields manifested as activity) . 
+
+%mention in paper - training set currently small - catalogue of 8K APOKASC stars is coming \\. 
 %Gilroy & Brown and Tautvaisiene et al. - CN references
-\citep{Gilroy1991}
-\citep{Taut2010}
+%\citep{Gilroy1991}
+%\citep{Taut2010}
 
 %\ldots DWH: What are our hypotheses about how mass or age might appear
 %in a stellar spectrum?  It might appear as dredge-up of evolved
@@ -204,6 +215,8 @@ is a quadratic function of the labels, and a variance that consists of
 an intrinsic variance added to an observational noise variance (from
 photon noise and other sources).
 DWH: EQUATIONS HERE.
+
+MKN: Put in model - is quadratic but with a cubed log g term - from empirical testing. Found that this reduced the error in the labels, most significatnly for the teff label, of 10percent. No significant gain going to higher order in the other terms. \\. 
 
 We have shown in previous work \citep{Ness2015} that \tc\ does a good job
 of modeling stellar spectra and delivering stellar parameters and
