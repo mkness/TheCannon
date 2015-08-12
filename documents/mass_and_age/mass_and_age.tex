@@ -139,8 +139,14 @@ If we can determine the interior properties of stars from surface
 spectroscopy alone, even noisily, great opportunities would arise for
 studying the stellar populations of the Milky Way and their formation.
 
-Age indicators have been found for stellar spectra previously and include the xxx emission in the xxx and the xxx in the UV. Mass or age may appear as information in the stellar spectra in a number of ways. It may appear as a dredge-up of evolved
-material from the core into the photosphere (see Marc P's) email. It may appear as chromospheric emission from a time-dependent magnetic field or it may be reflected in the line-profile variations due to non-LTE effects as convection scales with mass. 
+There are a handful of known spectral mass indicators. These derive from rotation, in the line-profile variations due to non-LTE effects, as convection scales with mass, and from chromospheric emission from a time-dependent magnetic field e.g. The Ca II HK and H$\alpha$ (see Soderblom 2010 for a review). Furthermore, they decay of long lived isotopes like Th, which can be measured at 4019 Angstroms, can be used for age dating by comparing its abundance to that of the stable elements in the stellar photosphere. Commonly, age estimates are determined for the sub-giant class of stars observed at high resolution using interpolation between stellar models.  (e.g. Bensby2013, Casagrande2011, Haywood20XX). This region of the \teff-logg\ plane is the least insensitive to age. However, the age constraints using this method are typically weak or may only provide an upper limit on the age estimate. Up until now the Geneva Cophenhagen survey of stars in the solar neighbourhood (Nordstršm et al. 2004), with a sample of about 16,682 stars has been the largest sample of stars, all nearby main sequence stars, with complete data on stellar ages in the Milky Way disk. These ages have been determined given the measured parallaxes to these stars, as well as their stellar parameters of \teff, \logg\ and \feh\ and interpolation between stellar isochrone models \citet{Holm2009} to infer the age. 
+
+mention in paper - training set currently small - catalogue of 8K APOKASC stars is coming \\. 
+
+
+\citet{Holm2009}
+
+
 
 Importantly, mass and therefore inferred age might only appear in the spectra as
 certain combinations of surface abundances that are highly covariant
@@ -148,8 +154,13 @@ with age.  For example, older stars in the Milky Way tend to be more
 alpha-enhanced.  We will consider such age indicators illegitimate;
 the purpose of this project is to obtain estimates for ages and masses
 \emph{that work even within narrow abundance-selected subsamples}.
+Skumanich 1972 - empirical age estimators - Rotation (less relevant once giant) and chromospheric emission - Ca II HK and H-alpha (Magnetic fields manifested as activity) . 
+
+For a review on ages of stars \citep{Soderblom2010}.
 
 %Gilroy & Brown and Tautvaisiene et al. - CN references
+\citep{Gilroy1991}
+\citep{Taut2010}
 
 %\ldots DWH: What are our hypotheses about how mass or age might appear
 %in a stellar spectrum?  It might appear as dredge-up of evolved
@@ -159,12 +170,12 @@ the purpose of this project is to obtain estimates for ages and masses
 %appear as amplitude variations in non-LTE effects as convection scales
 %are different for stars of different masses.
 
-\ldots DWH: Importantly, age might only appear in the spectra as
-certain combinations of surface abundances that are highly covariant
-with age.  For example, older stars in the Milky Way tend to be more
-alpha-enhanced.  We will consider such age indicators illegitimate;
-the purpose of this project is to obtain estimates for ages and masses
-\emph{that work even within narrow abundance-selected subsamples}.
+%\ldots DWH: Importantly, age might only appear in the spectra as
+%certain combinations of surface abundances that are highly covariant
+%with age.  For example, older stars in the Milky Way tend to be more
+%alpha-enhanced.  We will consider such age indicators illegitimate;
+%the purpose of this project is to obtain estimates for ages and masses
+%\emph{that work even within narrow abundance-selected subsamples}.
 
 \section{Methods and data}
 
@@ -194,25 +205,26 @@ an intrinsic variance added to an observational noise variance (from
 photon noise and other sources).
 DWH: EQUATIONS HERE.
 
-We have shown in previous work (MKN CITE) that \tc\ does a good job
+We have shown in previous work \citep{Ness2015} that \tc\ does a good job
 of modeling stellar spectra and delivering stellar parameters and
-chemical abundances for stars with spectra taken by the \apogee\ project.
-MKN: DESCRIBE APOGEE BRIEFLY HERE.
+chemical abundances for stars with spectra taken by the \apogee\ project \citep{Majewski2012}. \apogee\ is an SDSS \footnote{\url{www.sdss.org}} (Eisenstein et al. 2011) infrared survey of the Milky Way disk, bulge and halo and has provided H-band spectra (1500-1700 nm) of about 150,000 stars in the public data release DR12.  Of this sample, there is a subset of stars that also have been observed by the Kepler satellite, with measurements of ${nu}_max$ and $\Delta_{nu}$, that provide stellar mass estimates for these stars in this particular Kepler field. 
 
-One difference between our use of the \apogee\ data and previous work
-with the same data is in continuum estimation.
-We work with continuum-divided spectra, and the method of continuum
-estimation turns out to be important for performance.
-MKN: DESCRIBE HOW WE OBTAIN OUR CONTINUUM ESTIMATES HERE.
+%The data set used for this functional demonstration of \tc\ is that of the \apogee\ survey (Majewski et al. 2012, 2015 in prep). \apogee, part of the SDSS-III\footnote{\url{www.sdss.org}} (Eisenstein et al. 2011), is a high resolution (R $\sim$ 22,500), high signal to noise (SNR $\sim$ 100), H-band (15200-16900 \AA\footnote{Due to gaps between the instrument's three detectors, the spectra are divided into three pieces: $\sim$151500-15800~\AA, 15890-16430~\AA, and 16490-16900~\AA.}) spectroscopic survey of primarily red giant stars spanning the bulge, disk, and halo of the Milky Way \citep{Zaso2013}.  \apogee 's \aspcap\ pipeline provides the stellar labels for these stars, which include stellar parameters and multiple elemental abundances, in addition to numerous flags that warn of problems with the spectra or problems with the label determination for the spectra (or both).  This pipeline is based on $\chi^2$ fitting of the data to 1D LTE models for seven labels (\teff, \logg, \feh, [$\alpha$/Fe], [C/M], [N/M], and micro-turbulence; Garc\'{i}a~P\'{e}rez et al., 2015, in prep).
+
+%One difference between our use of the \apogee\ data and previous work
+%with the same data is in continuum estimation.
 
 In this project, we are once again using \apogee\ data, and once again
-using \tc.
-What's new is that we are adding stellar mass as a stellar parameter
-in the label set provided to \tc\ in the training step, and delivered by
+using \tc. We work with the continuum-normalized DR12 spectra, and the method of continuum
+estimation turns out to be important for performance. We use the aspcapStar files, but apply our own signal-to-noise invariant continuum normalisation by fitting a low-order polynomial to `true' continuum pixels, as described in \citet{Ness2015}. 
+In addition to the 3 labels demonstrated in \citet{Ness2015} we include an \alphafe\ label and a mass label, to infer stellar masses and therefore ages, using stellar evolution models. Our five labels are provided to \tc\ in the training step, and delivered by
 \tc\ in the test step.
+
 Stellar mass is a parameter that is not usually considered visible in
 spectral data; in the training set we are obtaining these stellar mass
 parameters via asteroseismology.
+
+\citep{Maraston2009}\\
 
 In particular, the training set is taken from the \apokasc\ sample of
 stars (MKN CITE).
