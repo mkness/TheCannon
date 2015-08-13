@@ -154,9 +154,9 @@ Typically, age estimates for stars are more commonly determined not from spectro
 
 If we can determine the interior properties of stars from surface
 spectroscopy alone, even noisily, great opportunities arise for
-studying the stellar populations of the Milky Way and their formation. The red clump sample alone from \apogee\ alone, for which accurate distances (to 5 percent) have been determined, comprises 20,000 stars and spans a radial extent across the disk of 4 -- 16 kpc. We use The Cannon to infer stellar masses for stars given a training set of \apokasc\ stars with known mass labels, demonstrate that the information informing the masses (and other labels) is xxx valid and demonstrate that the information in the mass and inferred age label is additional to that of chemical abundance alpha/fe proxy alone. 
+studying the stellar populations of the Milky Way and their formation. The red clump sample alone from \apogee\ alone, for which accurate distances (to 5 percent) have been determined, comprises 20,000 stars \citep{Bovy2014} and spans a radial extent across the disk of 4 -- 16 kpc. We use \tc\  \citep{Ness2015} to infer stellar masses for stars given a training set of \apokasc\ stars with known mass labels. We present our catalogue of mass and inferred ages for the 20,000 red clump stars, as well as XXXX giant stars in the DR12 data release from the \apogee\ survey. 
 
-present the catalogue of mass and inferred ages for these stars as well as XXXX giant stars in the DR12 data release from the \apogee\ survey. 
+%We show that the spectroscopic  information informing the masses and other labels, as identified by \tc\ is in line with expectations of chemical evolution and stellar physics and we demonstrate that the mass and inferred age labels that are determined provide an additional dimension of information (that is, our age measurement does not reflect a proxy for alpha/Fe). 
 
 %, with a sample of about 16,682 stars, has been the largest sample of stars, all of which are nearby main sequence stars, with complete data on stellar ages in the Milky Way disk. These ages have been determined from the constraints set by the measured parallaxes to these stars and their stellar parameters of \teff, \logg\ and \feh,  using interpolation between stellar isochrone models \citet{Holm2009}.
 
@@ -220,7 +220,7 @@ MKN: Put in model - is quadratic but with a cubed log g term - from empirical te
 
 We have shown in previous work \citep{Ness2015} that \tc\ does a good job
 of modeling stellar spectra and delivering stellar parameters and
-chemical abundances for stars with spectra taken by the \apogee\ project \citep{Majewski2012}. \apogee\ is an SDSS \footnote{\url{www.sdss.org}} (Eisenstein et al. 2011) infrared survey of the Milky Way disk, bulge and halo and has provided H-band spectra (1500-1700 nm) of about 150,000 stars in the public data release DR12.  Of this sample, there is a subset of stars that also have been observed by the Kepler satellite, with measurements of ${nu}_max$ and $\Delta_{nu}$, that provide stellar mass estimates for these stars in this particular Kepler field. 
+chemical abundances for stars with spectra taken by the \apogee\ project \citep{Majewski2012}.  \apogee\ is an SDSS \footnote{\url{www.sdss.org}} (Eisenstein et al. 2011) infrared survey of the Milky Way disk, bulge and halo and has provided H-band spectra (1500-1700 nm) of about 150,000 stars in the public data release DR12.  Of this sample, there is a subset of stars that also have been observed by the Kepler satellite, with measurements of ${nu}_max$ and $\Delta_{nu}$, that provide stellar mass estimates for these stars in this particular Kepler field. 
 
 %The data set used for this functional demonstration of \tc\ is that of the \apogee\ survey (Majewski et al. 2012, 2015 in prep). \apogee, part of the SDSS-III\footnote{\url{www.sdss.org}} (Eisenstein et al. 2011), is a high resolution (R $\sim$ 22,500), high signal to noise (SNR $\sim$ 100), H-band (15200-16900 \AA\footnote{Due to gaps between the instrument's three detectors, the spectra are divided into three pieces: $\sim$151500-15800~\AA, 15890-16430~\AA, and 16490-16900~\AA.}) spectroscopic survey of primarily red giant stars spanning the bulge, disk, and halo of the Milky Way \citep{Zaso2013}.  \apogee 's \aspcap\ pipeline provides the stellar labels for these stars, which include stellar parameters and multiple elemental abundances, in addition to numerous flags that warn of problems with the spectra or problems with the label determination for the spectra (or both).  This pipeline is based on $\chi^2$ fitting of the data to 1D LTE models for seven labels (\teff, \logg, \feh, [$\alpha$/Fe], [C/M], [N/M], and micro-turbulence; Garc\'{i}a~P\'{e}rez et al., 2015, in prep).
 
@@ -237,14 +237,15 @@ Stellar mass is a parameter that is not usually considered visible in
 spectral data; in the training set we are obtaining these stellar mass
 parameters via asteroseismology.
 
-\citep{Maraston2009}\\
+%\citep{Maraston2009}\\
 
 In particular, the training set is taken from the \apokasc\ sample of
-stars (MKN CITE).
+stars observed by \apogee\ ( Majewski et al., 2012), the first data release of which was made in \citet{P2014}. 
 This sample of stars are in common between the \kepler\ Mission
 targets and the \apogee\ targets; they have high-quality infrared
 spectra and also asterosesmological measurements.
-The \kepler\ Mission (MKN CITE) took continuous, 30-min cadence (or
+Specifically, they have \numax\ and \deltanu\ measurements from \kepler, derived from the scaling relations \ref{eqn1} and corresponding spectra in the H-band across 1.5-1.7 $\micron$ at a resolution of R $\sim$ 22,500, as part of the \apogee\ survey. 
+The \kepler\ Mission \citep{B2010} took continuous, 30-min cadence (or
 higher cadence) photometric observations of more than $10^5$ stars,
 providing (at least for giant stars) measurements of the
 asteroseismological frequencies and frequency splittings that indicate
@@ -252,9 +253,9 @@ stellar interior density structure.
 The asteroseismological measurements are used---with stellar
 models---to infer stellar masses and thus provide labels.
 
-The training set of stars is a subset of 1500 stars from \citet{Martig2015}. These are \apokasc\ stars, with \numax\ and \deltanu\ measurements from \kepler, with corresponding spectra in the H-band across 1.5-1.7 $\micron$ at a resolution of R $\sim$ 22,500, observed as part of the \apogee\ survey. These stars have been selected with no warning or error in the \aspcap\ \code{FLAG} parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the delta$\_$nu and nu$\_$max less than 5\,percent. These stars comprise a high signal-to-noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
+The training set of stars is a 1639 subset of high quality \apokasc\ stars from \citet{Martig2015}. These stars have been selected with no warning or error in the \aspcap\ \code{FLAG} parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the delta$\_$nu and nu$\_$max less than 10\,percent. These stars comprise a high signal-to-noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
 
-Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and Mass. The training labels adopted were the \aspcap-corrected \citep{Meszaros2013} values for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$ . The mass label was determined using the standard seismic scaling relation given in \ref{eqn1} \citep{SilvaAguirre2011,Chaplin2011}.
+Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and mass. The training labels adopted were the \aspcap-corrected \citep{Meszaros2013} values for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$ . The mass label was determined using the standard seismic scaling relation given in \ref{eqn1} \citep{SilvaAguirre2011,Chaplin2011}.
 
 \begin{equation} \label{eq:mass}
 M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( \frac{\Delta \nu}{\Delta \nu_{\odot}}\right)^{-4} \ \left( \frac{T_{\mathrm{eff}}}{T_{\mathrm{eff,\odot}}}\right)^{1.5} \ .
@@ -262,11 +263,15 @@ M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( 
 \end{equation}
 We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are the ones used to build the APOKASC catalogue and were obtained by \cite{Hekker2013} with the OCT method.
 
+We train and return a label for masses and not ages. To transform mass to age for each star, we use the PARSEC isochrones and adopt the red clump evolutionary state to select the relationship between mass and age at each metallicity.  The results for the ages are directly tied to the models and the assumptions made in the choice of both which models to use and which evolutionary state is adopted, although adoption of red clump versus red giant star has negligible effect on the overall age distribution and shifts individual ages by $<$ . 
+
 \section{Validation of mass and age outputs}
 
+To determine the uncertainties on our individual \teff, \logg, \feh, \alphafe\ and mass, we perform a take-stars out test on the set of reference objects.
+For the take-stars out test we train the spectral model iteratively on 90\,percent of the reference spectra and then run the test step on the remaining 10\,percent of the spectra and we do this 10 times, stepping through each next 10\,percent of the data. Our results are shown in Figure \figurename~\ref{fig:validation1} for the five labels. The input labels are from \aspcap\ an astroseismology as described in Section X and the y labels are the output labels are from \tc.  The sixth panel in this Figure shows the masses transformed to ages using interpolation between the PARSEC isochrones, where the red clump evolutionary state has been adopted on the isochrones at each age and \feh. 
 
+This \figurename\ shows that \tc 's purely mathematical approach of label transfer estimates the stellar labels with accuracies of 35K in \teff, 0.08 dex in \logg, 0.02 in \feh, 0.02 in \alphafe\ and  0.08 dex in log mass, or 0.25 dex in log age (Gyr). It is important to remember that the objects plotted are the left-out objects and the spectrum of these objects are completely detached from the training step,  except that they have the same experimental set-up and are drawn from a part of label space that is represented by the remaining reference objects.
 
-\ldots MKN: What is the cross-validation and what are the results?
 %plotdiff_5labels_10percent_linear_orig.py trained on 1639 stars if
 %run -i plotdiff_5labels_10percent_linear trained on 1500 stars
 %/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_5labels_10percent_contour.py
@@ -274,7 +279,7 @@ We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$H
 \centering
         \includegraphics[scale=0.35]{./plots/validation_1639.pdf}
   \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
-\label{fig:validation}
+\label{fig:validation1}
 \end{figure}
 
 \begin{figure}[p!]
@@ -282,7 +287,7 @@ We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$H
  %   \includegraphics[scale=0.31]{./plots/validation_1500.pdf}
         \includegraphics[scale=0.35]{./plots/validation_1639_ages.pdf}
   \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and age labels (where the mass label has been directly interpolated to mass): the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
-\label{fig:validation}
+\label{fig:validation2}
 \end{figure}
 
 
@@ -296,8 +301,6 @@ For cross validation, we took the
 %- no star in the list of fast rotating stars from Jamie Tayar\\
 %- no warning or error in ASPCAPFLAG\\
 %- Carbon and Nitrogen abundances $>$-9999\\
-
-\ldots MKN: Some visualization of the trained model and teasers.
 
 \section{Experiments and results}
 
