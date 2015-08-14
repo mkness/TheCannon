@@ -284,11 +284,14 @@ if __name__ == "__main__": #args in command line
     #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_af_3", cent_g1, cent_g2,2) 
     # mass 
     #cent_g1 = 16904 # highest mass
-    cent_g2 = 15332 # second highest mass for _5
     cent_g1 = 15241 # highest mass for _5 and _5 HWR
+    cent_g2 = 15332 # second highest mass for _5
     #cent_g2 = 15432.5 # highest mass for _5HWR
     plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_m_3", cent_g1, cent_g2,3) 
     #plotdata('coeffs_2nd_order_5HWR.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_m_3", cent_g1, cent_g2,3) 
+    #cent_g1 = 15929
+    #cent_g2 = 16410.7
+    #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_V_3", cent_g1, cent_g2,3) 
 
 
 def plotlines2(ax):

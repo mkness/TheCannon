@@ -208,12 +208,16 @@ cent_wl7 = 16369 # highest alpha
 # mass
 cent_wl4 = 15241 # highest mass for _5 and _5 HWR
 cent_wl8 = 15332 # second highest mass for _5
+# V
+cent_wla = 15929 # highest mass for _5 and _5 HWR
+cent_wlb = 16410.7 # second highest mass for _5
 #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_t_3", cent_g1, cent_g2,0) 
     # feh,alpha 
     #cent_g1 = 15221.5 # highest feh
     #cent_g2 = 16369 # highest alpha 
     #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_af_3", cent_g1, cent_g2,2) 
     # mass 
-plotstars(file1, wl_star,params1, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_1", cent_wl1,cent_wl2,cent_wl3,cent_wl4, cent_wl5, cent_wl6, cent_wl7, cent_wl8, 14) 
+#plotstars(file1, wl_star,params1, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_1", cent_wl1,cent_wl2,cent_wl3,cent_wl4, cent_wl5, cent_wl6, cent_wl7, cent_wl8, 14) 
 #plotstars(file4, wl_star,params4, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_4", cent_wl1,cent_wl2) 
-plotstars(file7, wl_star,params7, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_7", cent_wl1,cent_wl2,cent_wl3,cent_wl4,cent_wl5, cent_wl6, cent_wl7,cent_wl8, 14) 
+#plotstars(file7, wl_star,params7, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_7", cent_wl1,cent_wl2,cent_wl3,cent_wl4,cent_wl5, cent_wl6, cent_wl7,cent_wl8, 14) 
+plotstars(file7, wl_star,params7, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_elem", cent_wl1,cent_wl2,cent_wl3,cent_wl4,cent_wl5, cent_wl6, cent_wla,cent_wlb, 14) 
