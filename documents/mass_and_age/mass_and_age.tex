@@ -316,115 +316,87 @@ The middle panel of Figure \ref{fig:logg} shows the first order coefficients tha
 
 The wings of strong lines are known as \logg\ indicators in stars \citep{Gray2008} and the wings of Mg lines in the optical wavelength region, which are sensitive to pressure broadening, are demonstrated in \citet{F1997} to be features from which to derive \logg\ for F and G main sequence stars. That the strongest coefficient in \logg\ comes from the wings of a strong Mg line in the H-band \apogee\ spectral region is therefore well aligned with empirical analyses in other, more comprehensively studied wavelength regions. Brackett lines (as well as Balmer and Paschen lines)  are similarly sensitive to pressure (Stark) broadening and are therefore excellent tracers of \logg\ in stars. The second highest amplitude coefficient is at the Brackett feature in the \apogee\ spectral region and the bottom panel at right shows how significantly the flux varies as a function of \logg\ for the Brackett feature at $\approx$ 16810 Angstroms. In addition to being second highest in amplitude, the sign of this coefficient for this feature is positive and so has the opposite relation with flux to that of the \logg\ parameter and the Mg wings. As seen in the bottom panel at left, the wings of the Mg feature deepen with increasing \logg, where as for the Brackett feature at right, the spectral profile flattens with increasing \logg, for any given set of stellar \teff, \feh, \alphafe\ and mass parameters, hence the inverse relative relationship between the two features. 
 
-Figure \ref{fig:teff} shows the same information as Figure \ref{fig:logg} but for the two highest \teff\ coefficients, centered on $\approx$ 15338 and 15720 Angstroms. The highest \teff\ coefficients correspond to the core of two Ti lines in the spectra (one of which is blended also with Fe and the other with CN). The temperature coefficient is in typically positive in the \apogee\ spectral region, with exceptions, for example at the Brackett feature shown in Figure \ref{fig:logg} )where it is inversely correlated with the \logg\ coefficient). \teff\ is typically strongly anticorrelated with \feh\ and \alphafe, as seen in Figure \ref{fig:teff}: in a spectra at a given \feh, as the temperature increases the lines weaken and so the flux decreases, similarly, at a given \teff, as the metallicity increases the lines strengthen, and the flux increases. That we have coefficients for features that we can directly identify from the \apogee\ linelist means that, we have a model not only for the (typically blended) absorption features, but how all of the individual elements behave with the five modeled labels at the limit of the spectral resolution. For example, note the asymmetry in the behaviour of the variation of the \teff\ label for the spectra in the left bottom panel of Figure \ref{fig:teff}: this reflects the blending of the absorption feature and that coefficients at a given flux are sensitive to  particular individual elements rather than particular absorption features. It is possible to describe this only with  coefficients that are determined at every wavelength in flux. 
-
-Figure \ref{fig:feha} is demonstrative of the highest \feh\ and \alphafe\ coefficient in the spectra. The \feh\ and \alphafe\ labels are typically correlated with the cores of all of the absorption features in the spectra, particularly for the \feh\ label, as seen at left. The [M/H] of  a star simply correlates with the \feh\ and the \alphafe\ is known to increase with \feh\ and flattens to a plateau at high \alphafe and low \feh, subject to the star formation rate and initial mass function. For many but by no means all absorption features, the \teff\ shows an inverse correlation with temperature as seen in the left hand panel of Figure \ref{fig:teff}. The strongest \feh\ coefficient corresponds to a core of a (blended) Mn feature, the flux of which changes dramatically as a function of \feh\ over the range of \feh = --0.8 -- +0.2 as shown in the bottom panel of Figure \ref{fig:teff}. Mn is one of the Fe-group elements (in addition to V, Ti, Cr, Co and Ni) this element correlates directly with \feh\ \citep[see][]{Maria2008, B2015}. The largest coefficient in \alphafe\ corresponds to the core of the strong Mg line at $\approx$ 16370 Angstroms (also belnded with CO and OH) and dissimilarly to the \logg\ coefficent, it is the core of the line that correlates with \alphafe. Note that for the \logg\ coefficient at this blended Mg feature in the middle panel of Figure \ref{fig:feha} at right that the \logg\ coefficient is $\approx$ 0 at the very centre of the line profile and increases to a significant dependency in the wings of the feature, primarily for the higher wavelength edge. 
-
-
-Finally, having motivated that \tc\ delivers very physically sensible origins of the \teff, \logg, \alphafe\ and \feh\ labels, we assess the source of the critical mass information from which we can infer age of \apogee\ stars. From analyses in other wavelength regions, we have the expectation of potential mass indicators due to (i) chromospheric activity (emission), (ii) drege-up effects (changing line strengths and profiles of particular elements) or (iii) some combination of individual elemental abundances that reflect the enrichment history of the Milky Way with time (changing element ratios in the spectra). 
-
-Figure \ref{fig:mass} shows the two largest coefficients in the log mass label. The information for the mass label is from CN features. The five highest mass coefficients in fact were verified to all be simply CN. This is consistent with the discovery by Martig et al., (2015), in prep which shows that the C/N ratio from \apogee\ in their delivered catalog of abundances correlates with the mass and inferred age of the \apokasc\ stars. Martig et al., (2015) in prep were able to make a model to deliver the age of the \apogee\ stars given the measured C and N from \aspcap. We are essentially doing the same thing here, but from the spectral level. We do not require measurements of individual abundances nor do we inform the model where the information is coming from, that is an output of our training. Given our data-driven model and derivation of mass directly from the spectra, we have optimal performance of our model as signal to noise decreases. 
-
-There is a relatively fractional differnece in the spectra as a function of mass (see the bottom panes of Figure \ref{fig:mass} compared to the other labels (where the spectral profile changes significantly with varying the labels) and there is a non-linear change in the spectra with linear mass. This is clear looking at the lowest, intermediate and highest masses that have been modeled in the left bottom panel of this Figures. From the synethesised spectra from the model, it is apparent that it is not only the line strength that changes with the mass coefficient, but , importantly, it is the line profile. These two CN regions shown in Figure \ref{fig:mass} with the highest mass coefficients are actually a blend of CN molecules containing both C12 and C13, so some combination of changing ratio of these ratios may play an important role in delivering the mass information in the spectrum. \tc\ is ideal to identify the subtleties in the spectral flux changes that would otherwise be very difficult to model and determine, using an integrated absorption feature equivalent width measurement alone.
-
-% up to here - need to talk about C and N . 
-% need to talk about scatter
-% need to talk about log mass
-% need to talk about fit of model - model is good in all regions. 
-
-
-%Gilroy & Brown and Tautvaisiene et al. - CN references
-%\citep{Gilroy1991}
-%\citep{Taut2010}
-
-
-
-
-For the first label vector for example in the middle panel of \figurename~\ref{fig:coeffs}, 
-there is typically asymmetry for a given absorption feature, in the flux and the labels. 
-There are very few regions where the flux is a function of only one of the labels, and pixels are typically co-variant. 
-(that is, the same pixel will have a higher flux at both lower \teff\ and higher \feh). 
-This simply reflects well-known co-variances between, for example, temperature and \feh .
-The strongest \logg\ dependence is typically associated with weak lines including the wings of the 
-feature and the \feh\ label, with strong lines, particularly the depth of the line. 
-
-The bottom panel of \figurename~\ref{fig:coeffs} shows the scatter vector of the spectral model, 
-indicating the dispersion of the flux of the training data around the best-fit spectral model at each pixel. 
-The scatter is small and this indicates that our model is a good representation of the data. 
-However, the scatter is highest where the most information in the spectra are contained. 
-This implies that either our quadratic-in-labels spectral model is still somewhat too restricted, or that the labels of our training dataset are imperfect or incomplete 
-(for example, lacking $[\alpha / Fe]$ as a label), or a combination of these effects. 
-From the coefficients of an initial fit of this spectral models (see, for example, the middle panel of \figurename~\ref{fig:coeffs}), 
-the continuum pixels have been determined following Section X
-These are marked in the cyan dots in the top panel of the figure and are used for an iterated, 
-consistent continuum-normalization for all spectra, both of the reference and of the survey objects.
 
 % run run -i makeplot_scatter_test18_step/spectra in /Apogee_ages/ o
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_g_3.png}
-  \caption{The first order coefficients of the model trained on the \aspcap\ stars showing the two 20 Angstrom wavelength regions where the \logg\ coefficient reaches the highest absolute amplitude. The 0th coefficient (at top) describes the intersect spectrum and relevant spectral absorption features are marked. The lower panel shows all coefficients, each normalised to their highest amplitude, for all \teff, \logg, \feh,\alphafe\ and mass coefficients.}
+  \caption{The first order coefficients of the model trained on the \aspcap\ stars showing the two 20 Angstrom wavelength regions where the \logg\ coefficient reaches the highest absolute amplitude. The 0$^{th}$ coefficient (at top) describes the intersect spectrum and relevant spectral absorption features are marked. The lower panel shows all coefficients, each normalised to their highest amplitude, for all \teff, \logg, \feh,\alphafe\ and mass coefficients.}
 \label{fig:logg}
 \end{figure}
 
-Figure \ref{fig:g} shows the two 20 Angstrom regions where the \logg\ coefficient reaches the highest amplitude. The intersect spectra (0th coefficient) is plotted at top and the coefficients for the 5 labels are plotted in the bottom panels.  The left panel includes some of the elements corresponding to the absorption lines. The IR spectral region is highly blended with molecular features and most lines are a blend including CN, C2 and OH features. The maximum amplitude of the \logg\ coefficient does not correspond to the core of the absorption feature of the intersect spectrum but rather the wings. As \logg\ increases, these wings broaden and deepen. Consersely, the panel on the right hand side is the second highest amplitude of the \logg\ coefficient but is positive, The feature this correlates with is the Brackett feature, which becomes shallower and flatter with increasing \logg. 
-
-
-
-
-\subsubsection{Teff residuals}
-
-The strongest \teff residual is at 15720 \AA. 
+Figure \ref{fig:teff} shows the same information as Figure \ref{fig:logg} but for the two highest \teff\ coefficients, centered on $\approx$ 15338 and 15720 Angstroms. The highest \teff\ coefficients correspond to the core of two Ti lines in the spectra (one of which is blended also with Fe and the other with CN). The temperature coefficient is in typically positive in the \apogee\ spectral region, with exceptions, for example at the Brackett feature shown in Figure \ref{fig:logg} )where it is inversely correlated with the \logg\ coefficient). \teff\ is typically strongly anticorrelated with \feh\ and \alphafe, as seen in Figure \ref{fig:teff}: in a spectra at a given \feh, as the temperature increases the lines weaken and so the flux decreases, similarly, at a given \teff, as the metallicity increases the lines strengthen, and the flux increases. That we have coefficients for features that we can directly identify from the \apogee\ linelist means that, we have a model not only for the (typically blended) absorption features, but how all of the individual elements behave with the five modeled labels at the limit of the spectral resolution. For example, note the asymmetry in the behaviour of the variation of the \teff\ label for the spectra in the left bottom panel of Figure \ref{fig:teff}: this reflects the blending of the absorption feature and that coefficients at a given flux are sensitive to  particular individual elements rather than particular absorption features. It is possible to describe this only with  coefficients that are determined at every wavelength in flux. 
 
 % run run -i makeplot_scatter_test18/spectra_step in /Apogee_ages/ o
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_t_3.png}
-  \caption{The first order coefficients of the model trained on the \aspcap\ stars showing the two 20 Angstrom wavelength regions where the \teff\ coefficient reaches the highest absolute amplitude. The 0th coefficient (at top) describes the intersect spectrum and relevant spectral absorption features are marked. The lower panel shows all coefficients, each normalised to their highest amplitude, for all \teff, \logg, \feh,\alphafe\ and mass coefficients.}
+  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest \teff\ coefficient.}
 \label{fig:teff}
 \end{figure}
 
-This is a Ti I line. \\
+Figure \ref{fig:feha} is demonstrative of the highest \feh\ and \alphafe\ coefficient in the spectra. The \feh\ and \alphafe\ labels are typically correlated with the cores of all of the absorption features in the spectra, particularly for the \feh\ label, as seen at left. The [M/H] of  a star simply correlates with the \feh\ and the \alphafe\ is known to increase with \feh\ and flattens to a plateau at high \alphafe and low \feh, subject to the star formation rate and initial mass function. For many but by no means all absorption features, the \teff\ shows an inverse correlation with temperature as seen in the left hand panel of Figure \ref{fig:teff}. The strongest \feh\ coefficient corresponds to a core of a (blended) Mn feature, the flux of which changes dramatically as a function of \feh\ over the range of \feh = --0.8 -- +0.2 as shown in the bottom panel of Figure \ref{fig:teff}. Mn is one of the Fe-group elements (in addition to V, Ti, Cr, Co and Ni) this element correlates directly with \feh\ \citep[see][]{Maria2008, B2015}. The largest coefficient in \alphafe\ corresponds to the core of the strong Mg line at $\approx$ 16370 Angstroms (also belnded with CO and OH) and dissimilarly to the \logg\ coefficent, it is the core of the line that correlates with \alphafe. Note that for the \logg\ coefficient at this blended Mg feature in the middle panel of Figure \ref{fig:feha} at right that the \logg\ coefficient is $\approx$ 0 at the very centre of the line profile and increases to a significant dependency in the wings of the feature, primarily for the higher wavelength edge. 
 
-% run run -i makeplot_scatter_test18_step_spectra in /Apogee_ages/ o
+
+% run run -i makeplot_scatter_test18_step_spectra in /Apogee_ages/ 
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_af_3.png}
-  \caption{The first order coefficients of the model trained on the \aspcap\ stars showing the two 20 Angstrom wavelength regions where the \teff\ coefficient reaches the highest absolute amplitude. The 0th coefficient (at top) describes the intersect spectrum and relevant spectral absorption features are marked. The lower panel shows all coefficients, each normalised to their highest amplitude, for all \teff, \logg, \feh,\alphafe\ and mass coefficients.}
+    \includegraphics[scale=0.51]{./plots/coeffs_t_3.png}
+  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest \feh\ coefficient, at left and highest \alphafe\ coefficient, at right.}
 \label{fig:teff}
 \end{figure}
+
+
+Finally, having motivated that \tc\ delivers very physically sensible origins of the \teff, \logg, \alphafe\ and \feh\ labels, we examine the origin of the mass information from which we can infer age of \apogee\ stars. From analyses in other wavelength regions, we have the expectation of mass indicators in spectra due to (i) chromospheric activity (emission), (ii) drege-up effects (and changing line strengths and profiles of particular elements) or (iii) some combination of individual elemental abundances that reflect the enrichment history of the Milky Way with time (changing element ratios in the spectra). 
+
+Figure \ref{fig:mass} shows the two largest coefficients in the log mass label. The information for the mass label is from CN features. Although we show only two regions as demonstrative, we have verified that the five highest mass coefficient amplitudes all correspond to CN features. The relationship between mass and CN is consistent with the discovery by Martig et al., (2015), in prep which shows that the [C/N] ratio calculated from \apogee's their delivered catalog of C and N abundances in data release DR12 correlates with the mass and inferred age of the \apokasc\ stars. Martig et al., (2015) in prep used the [C/N] ratio to create a model from these abundances and known masses of the \apokasc\ stars. With \tc\, this information is also been exploited, only at the spectral level: we do not inform \tc's generative model however where the information in the spectrum is to be derived from, that is a product of the training step. The data-driven model and derivation of mass directly from the spectra itself means that \tc\ will be able to maximally exploit the information in the spectra and as signal to noise decreases, to return masses which can be used to infer ages for \apogee\ stars.  
+
+There is a relatively small change in the spectra as a function of mass (see the bottom panels of Figure \ref{fig:mass} compared to the other labels and there is a non-linear change in the spectra with linear mass. This is clear looking at the lowest, intermediate and highest masses that have been modeled in the left bottom panel of this Figures. From the synthesised spectra from the model, it is apparent that it is not only the line strength that changes with the mass coefficient, but it is the line profile. The two CN regions shown in Figure \ref{fig:mass} with the highest mass coefficients are actually a blend of CN molecules containing both $^{12}$C and $^{13}$C. The changing ratio of these elements in the apogee spectra may play an important role in delivering the mass of the star and the changing profile of the features may reflect that these ratios are changing. The $^{12}$C/$^{13}$C ratio has been shown to be the best diagnostic of deep mixing and least sensitive to stellar parameters and due to the first dredge up, $^{12}$C decreases at the same time as $^{13}$C and $^{14}$N increase \citep{Taut2010}.  As well as being diagnostics of stellar mass by reflecting the mixing history of the stasr, carbon isotope ratios are also used to differentiate first ascent giants and red clump stars \citep[see][and references therein]{Taut2013} Dredge-up is the mixing during stellar evolution where by the CN in the hydrogen envelope of a stars interior are bought up to the surface. This happens as the star evolves off the main sequence and up the giant branch \citep{Gilroy1991}. 
+
+%The first dredge up significantly changes the abundances of $^{12}$C and $^{14}$N, decreaseing the carbon by around 30 percent and increasing the nitrogen by 80 percent.  \citep{Taut2013}.
+
+%\tc\ is the ideal tool to extract even fractional and very subtle differences in the spectral flux, which would otherwise be very difficult to determine, using an integrated absorption feature equivalent width measurement alone.
+
 
 \begin{figure}[p!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_m_3.png}
-  \caption{The second coefficient is not there if train on linear mass - concerning..}
+  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest mass coefficients.}
 \label{fig:feha}
 \end{figure}'
 
 
+\subsection{The generative model}
+
+The \apogee\ sample comprises primarily red giant stars and a subset of  $\approx$ 20,000 red clump stars, identified by \citet{Bovy2014}. We take our model, trained using the reference \apokasc\ stars and determine the stellar parameters and masses for these red clump stars. which cover a radial extent of 4 -- 16 kpc and are located at heights $|z|$ $<$ 1.5 kpc. The red clump sample is a representative and unbiased sample of Milky Way disk stars located across a large radial extent and with an expected age distribution peaking at about 2 Gyr with a tail out to old ages (see Figure X of Bovy et al., 20XX). 
+
+
+In Figure \ref{fig:spectra}, the spectra of one of the red clump stars, showing a typical red clump spectra, is shown in the black line, for each of the wavelength regions for which the highest amplitude of the coefficients is shown (Figures \ref{fig:logg} -- \ref{fig:mass}).  This star has parameters returned with \tc\ of \teff\ = 4843 K, \logg\ = 2.5 dex, \feh\ = --0.06 dex, \alphafe\ = 0.04 and mass = 1.0 and the interpolated age using the PARSEC isochrones and red clump evolutionary state is 10.6 Gyrs. The data is shown in black, the synthesised spectra from the parameters of \tc\ for this star are in blue and the best fit model from the \apogee\ stellar parameters pipeline \aspcap\ is shown in red. The generated model from \tc\ provides a better fit to the data than the best fit synthetic model from available to \aspcap, demonstrating the 5-labels well describe the flux behaviour of the red clump sample stars the training sample. Note that one of the regions where \aspcap\ performs most poorly is the brackett line which is highly \logg\ sensitive. This may indicate a problem with the model stellar atmospheres or it's associated oscillator strength for this feature. 
+
+%t1,g1,feh1,alpha1,age1, mass1 = 4708.49983734, 2.17652168722, 0.0617198884138, 0.015425129037, 1.55488236009, 1.88141910392
 
 %run -i makeredclumpplot.py
 \begin{figure}[p!]
 \centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-     \includegraphics[scale=0.5]{./plots/spectra_fits_7.png}
-%    \includegraphics[scale=0.5]{./plots/spectra_fits_7_tg.png}\\
-%    \includegraphics[scale=0.5]{./plots/spectra_fits_7_fm.png}
-  \caption{fits in regions of logg and teff at top and feh and alphafeh and mass at bottom.}
-\label{fig:mass}
+      \includegraphics[scale=0.5]{./plots/spectra_fits_7.png}
+  \caption{A spectra of one of the red clump stars in the catalogue of \citet{Bovy2014} shown in black, with the best fit model from \tc\ in blue. The best fit model from \aspcap\ is shown in red.}
+\label{fig:spectra}
 \end{figure}
 
 
+We have demonstrated that mathematically, \tc\ works and can return labels of \teff, \logg, \feh, \alphafe\ and mass for \apogee\ spectra. We have shown where the information is contained in the stellar spectrum that most informs each of these labels. Most importantly, that the mass information is derived from weak CN regions, which is a physically sensible origin of the mass dependence given expectations from stellar evolution and changes in these elements from dredge-up mixing processes as the star moves along the red giant branch. We have shown that at test time for the red clump stars, stars that have not been used in training, the model that is generated by \tc's best fit labels provides an excellent match to the real spectra (for stars within the label-range of the training set). In fact, the data-driven model of \tc\ trained on these five labels only (so no individual abundances) provides a better match to the real data than the synthetic stellar models utilised by \aspcap.
+
+With the mass label returned by \tc\ and the inferred age, we are not simply reproducing the \alphafe\ information. We demonstrate this in a number of ways. We examine the age information within small monoabundance boxes in \feh-\alphafe\ space for the training sample and investigate the trends as a function of radius for young and old stars for the low-alpha sequence of the red clump stars as well as the mean age map of the Milky Way disk as traced by the red clump stars.
 
 
+\subsection{The monoabundance age distribution of the \apokasc\ sample}
 
-\ldots MKN: how do we show that we are simply not reproducing the alpha-\feh\ information:
-
-\section{Kepler sample  - validation age is meaningful} 
+In Figure \ref{fig:alphabins} the \apokasc\ training sample is shown in the \alphafe-\feh plane, binned into monoabundance, or small boxes, within this space and the panel at the far left indicates how many stars are in each of these bins. The colormap represents the mean age and the age dispersion from \tc, at left and centre panels respectively. These are the stars used for training and therefore have both the input label on mass (or inferred age) from the seismic scaling relations and the output label on mass and inferred age from \tc. In Figure \ref{fig:mono} a sampling of three of these bins and then all of the bins plotted together is shown, for the individual age label for each star, from \tc\ on the x-axis and from Kepler on the y-axis, minus the mean age value in age monoabundance bin. If there was no additional information in each of the monoabundance bins with respect to age, that is, if the age information was simply a redelivery of the \alphafe\ label then there would be no expected correlation between the difference in \tc\ and Kepler and the mean age. That there is a 1:1 relation between these two axes reflects that \tc\ works mathematically to determine the mass label and that the mass label within a monoabundance bin carries additional information.
 
 % made in makealphamap3.py  in Apogee_ages after running plotdiff_5labels2
 % run -i /Users/ness/new_laptop/Apogee_ages/makealphamap4_logmass.py
@@ -450,14 +422,24 @@ This is a Ti I line. \\
 \label{fig:alphabins}
 \end{figure}
 
-\section{Red clump sample - some results } 
+
+
+\subsection{Age maps of the Milky way disk from 4--16 kpc with \apogee\ spectra}
+
+We determine the masses and infer the ages for the \approx$ 20,000 red clump stars which have distances to approximately 5,\percent. The catalogue of ages we provide in Table X for the red clump stars represents the largest homogeneous sample of stars in the Milky Way with associated age labels, and extends the age mapping from the previous local neighborhood only (GCS) to trace the inner to outer disk of the Milky Way, from 4 -- 16 kpc.  
+
+We provide the full age catalog for \apogee's red giant stars, in addition to the red clump stars, adopting the red giant evolutionary state for the transformation from mass label to age label, and provide these data in Table 2, but use only the red clump stars to demonstrate the age trends of the Milky Way disk due to their small distance uncertainties. 
+
+
+Figure \ref{redclump} shows the mean age of the red clump stars in the \alphafe-\feh plane and the density distribution of these stars (top panels).  The dashed line in the right hand panel of this Figure, where the density of the red clump stars is plotted, shows the selection that we have made for analysis of the low-alpha sequence of these stars only. This figure also shows a small box in \feh-\alphafe\ space that we have selected to examine the age trends of the Galaxy over, also demonstrative of the additional information contained within the mass and inferred age label for the true age distribution of stars in the Milky Way (and so in addition to the chemical enrichment marker of \alphafe). 
+
 
 %run -i makealphafeh_imshow_3panel.py and readin_ages.py
 \begin{figure}[p!]
 \centering
  \includegraphics[scale=0.4]{./plots/redclump_4panel.pdf}
     \caption{The 20K red clump sample: low alpha sequence is broken up into radius and box is the mono-abundance distribution in later figure.}
-\label{fig:alphabins}
+\label{fig:redclump}
 \end{figure}
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
@@ -466,7 +448,7 @@ This is a Ti I line. \\
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.45]{./plots/median_age_abs.png}
     \caption{The median age of the 20,000 red clump stars  }
-\label{fig:alphabins}
+\label{fig:alphabins2}
 \vspace{360pt}
 \end{figure}
 
@@ -476,9 +458,10 @@ This is a Ti I line. \\
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.45]{./plots/median_age_low_alpha_abs.png}
     \caption{The median age of the low alpha sequence of the red clump stars ( draw where this in in feh alphafeh plane). Include number of stars. }
-\label{fig:alphabins}
+\label{fig:alphabins3}
 \vspace{-30pt}
 \end{figure}
+
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
 \begin{figure}[p!]
@@ -486,8 +469,11 @@ This is a Ti I line. \\
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.45]{./plots/median_age_mono_abs.png}
     \caption{The median age of low alpha sequence monoabundance  bin with a cut on  \feh\ of 0 to -0.2. }
-\label{fig:alphabins}
+\label{fig:alphabins4}
 \end{figure}
+
+
+
 
 %\begin{figure}[p!]
 %\centering
@@ -518,11 +504,10 @@ dominant?
 \ldots MKN: How do you obtain our code, data, and results?
 
 \acknowledgments
-It is a pleasure to thank
-  Foo,
+It is a pleasure to thank Maria Bergemann (MPIA)
   John Bochanski (Rider),
   Dan Foreman-Mackey (UW), and
-  Bar,
+insert other relevant people here.
 for valuable discussions and contributions.
 This project made use of
   The NASA Astrophysics Data System,
