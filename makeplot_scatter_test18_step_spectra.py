@@ -236,7 +236,8 @@ def plotdata(file_in, wl0, bw,prefix, cent_g1, cent_g2,indx_coeff):
     #for each in [ax2, ax4]: 
     #  each.axhline(dataall.shape[1], **line_kwargs)
     ax2.set_ylabel(r"${\theta_0}$", fontsize = 20) 
-    ax3.set_ylabel( r"${\theta_1}$,"+r"${\theta_2}$, "+r"${\theta_3}$, "+r"${\theta_4}$, "+r"${\theta_5}$" ,fontsize = 20) 
+    #ax3.set_ylabel( r"${\theta_1}$,"+r"${\theta_2}$, "+r"${\theta_3}$, "+r"${\theta_4}$, "+r"${\theta_5}$" ,fontsize = 20) 
+    ax3.set_ylabel( r"${\theta_l}$" ,fontsize = 20) 
     ax1.set_ylabel( "Normalized Flux" ,fontsize = 20) 
     ax1.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = 20,labelpad = 5) 
     ax4.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = 20,labelpad = 5) 
@@ -279,9 +280,9 @@ if __name__ == "__main__": #args in command line
     #cent_g2 = 15720 # teff max 
     #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_t_3", cent_g1, cent_g2,0) 
     # feh,alpha 
-    #cent_g1 = 15221.5 # highest feh
-    #cent_g2 = 16369 # highest alpha 
-    #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_af_3", cent_g1, cent_g2,2) 
+    cent_g1 = 15221.5 # highest feh
+    cent_g2 = 16369.0 # highest alpha 
+    plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_af_3", cent_g1, cent_g2,2) 
     # mass 
     #cent_g1 = 16904 # highest mass
     cent_g1 = 15241 # highest mass for _5 and _5 HWR

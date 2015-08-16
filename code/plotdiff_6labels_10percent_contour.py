@@ -148,7 +148,7 @@ for a,b,ax in zip(varin,varout,axall):
     extent = [ybins[0], ybins[-1], xbins[0], xbins[-1]]
 
 fs = 18 
-cbar_ax = f.add_axes([0.92, 0.20, 0.01, 0.65])
+cbar_ax = f.add_axes([0.92, 0.20, 0.01, 0.70])
 im = ax7.imshow(counts.T, cmap=plt.cm.gray_r, extent=extent, norm=LogNorm(vmin=0.01, vmax=1), interpolation = 'Nearest',origin = 'lower')
 #im = ax7.imshow(test1.T, cmap=plt.cm.gray, extent=extent, norm = None, interpolation = 'Nearest',origin = 'lower')
 test = f.colorbar(im, cax=cbar_ax)
