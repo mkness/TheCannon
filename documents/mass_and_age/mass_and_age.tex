@@ -251,53 +251,38 @@ photon noise and other sources). For our model we use a the quadratic-in-labels 
 
 $f_{n\lambda} =
 \set{\theta}_\lambda^T \cdot \starlabelvec_n + \mbox{noise}$, 
-but where $\set{\theta}_\lambda$ now contains 21 elements at every pixel. For the case of the five labels $(\teff , \logg , \feh, \alphafe, \mbox{mass})$ the label vector $\starlabelvec_n$
+but where $\set{\theta}_\lambda$ now contains 22 elements at every pixel. For the case of the five labels $(\teff , \logg , \feh, \alphafe, \mbox{mass})$ the label vector $\starlabelvec_n$
 becomes  
 
-%\begin{align}
-%\begin{eqnarray}
 \begin{equation}
 \begin{split}
 \starlabelvec_n \equiv  [1, \teff, \logg, \feh, \alphafe, \mbox{mass}, \teff^2, \\
- \teff\cdot\logg, \teff\cdot\feh, \teff\cdot\alphafe, \teff\cdot \mbox{mass} \\
- \logg^2, \logg\cdot\feh, \logg\cdot\alphafe, \logg\cdot \mbox{mass},  \\
-\feh^2, \feh\cdot\alphafe, \feh\cdot \mbox{mass}, \alphafe^2, \alphafe\cdot \mbox{mass}, \mbox{mass}^2, \\\mbox{mass} \cot\alphafe, \logg^3]
+ \teff\cdot\logg, \teff\cdot\feh, \teff\cdot\alphafe, \teff\cdot \mbox{mass},  \logg^2, \\
+  \logg\cdot\feh, \logg\cdot\alphafe, \logg\cdot \mbox{mass}, \feh^2, \\
+  \feh\cdot\alphafe, \feh\cdot \mbox{mass}, \alphafe^2, \alphafe\cdot \mbox{mass}, \mbox{mass}^2,  \logg^3]
 \end{split}
-%\end{aligned}
- \label{eq:quad}\quad.
-%\end{eqnarray}
+ \label{eq:quad}
 \end{equation}
-%\end{align}
+
 
 %MKN: Put in model - is quadratic but with a cubed log g term - from empirical testing. Found that this reduced the error in the labels, most significatnly for the teff label, of 10percent. No significant gain going to higher order in the other terms. \\. 
 
 We have shown in previous work \citep{Ness2015} that \tc\ does a good job
 of modeling stellar spectra and delivering stellar parameters and
-chemical abundances for stars with spectra taken by the \apogee\ project \citep{Majewski2012}.  \apogee\ is an SDSS \footnote{\url{www.sdss.org}} (Eisenstein et al. 2011) infrared survey of the Milky Way disk, bulge and halo and has provided H-band spectra (1500-1700 nm) of about 150,000 stars in the public data release DR12.  Of this sample, there is a subset of stars that also have been observed by the Kepler satellite, with measurements of ${nu}_max$ and $\Delta_{nu}$, that provide stellar mass estimates for these stars in this particular Kepler field. 
+chemical abundances for stars with spectra taken by the \apogee\ project \citep{Majewski2012}.  \apogee\ is an SDSS \footnote{\url{www.sdss.org}} (Eisenstein et al. 2011) infrared survey of the Milky Way disk, bulge and halo and has provided H-band spectra (1500-1700 nm) of about 150,000 stars in the public data release DR12.  Of this sample, there is a subset of stars that also have been observed by the Kepler satellite, with measurements of ${nu}_max$ and $\Delta_{nu}$, that provide stellar mass estimates for these stars in this particular Kepler field. These stars are the \apokasc\ sample \citep{P2014}. In this project, we are once again using \apogee\ data, and once again
+using \tc. 
 
-%The data set used for this functional demonstration of \tc\ is that of the \apogee\ survey (Majewski et al. 2012, 2015 in prep). \apogee, part of the SDSS-III\footnote{\url{www.sdss.org}} (Eisenstein et al. 2011), is a high resolution (R $\sim$ 22,500), high signal to noise (SNR $\sim$ 100), H-band (15200-16900 \AA\footnote{Due to gaps between the instrument's three detectors, the spectra are divided into three pieces: $\sim$151500-15800~\AA, 15890-16430~\AA, and 16490-16900~\AA.}) spectroscopic survey of primarily red giant stars spanning the bulge, disk, and halo of the Milky Way \citep{Zaso2013}.  \apogee 's \aspcap\ pipeline provides the stellar labels for these stars, which include stellar parameters and multiple elemental abundances, in addition to numerous flags that warn of problems with the spectra or problems with the label determination for the spectra (or both).  This pipeline is based on $\chi^2$ fitting of the data to 1D LTE models for seven labels (\teff, \logg, \feh, [$\alpha$/Fe], [C/M], [N/M], and micro-turbulence; Garc\'{i}a~P\'{e}rez et al., 2015, in prep).
-
-%One difference between our use of the \apogee\ data and previous work
-%with the same data is in continuum estimation.
-
-In this project, we are once again using \apogee\ data, and once again
-using \tc. We work with the continuum-normalized DR12 spectra, and the method of continuum
-estimation turns out to be important for performance. We use the aspcapStar files, but apply our own signal-to-noise invariant continuum normalisation by fitting a low-order polynomial to `true' continuum pixels, as described in \citet{Ness2015}. 
-In addition to the 3 labels demonstrated in \citet{Ness2015} we include an \alphafe\ label and a mass label, to infer stellar masses and therefore ages, using stellar evolution models. Our five labels are provided to \tc\ in the training step, and delivered by
-\tc\ in the test step.
+We work with the continuum-normalized DR12 spectra, and the method of continuum
+estimation turns out to be important for performance. We use the aspcapStar files provided by \apogee, but apply our own signal-to-noise invariant continuum normalisation by fitting a low-order polynomial to `true' continuum pixels, as described in \citet{Ness2015}. 
+The three labels of \teff, \logg\ and \feh\ delivered with \tc\ were demonstrated in \citet{Ness2015}.  In this work we determine two additional labels, of \alphafe\ label and mass. From the mass, we infer age, using stellar evolution models. Our five labels are provided to \tc\ in the training step, and delivered by \tc\ in the test step.
 
 Stellar mass is a parameter that is not usually considered visible in
 spectral data; in the training set we are obtaining these stellar mass
-parameters via asteroseismology.
-
-%\citep{Maraston2009}\\
-
-In particular, the training set is taken from the \apokasc\ sample of
-stars observed by \apogee\ ( Majewski et al., 2012), the first data release of which was made in \citet{P2014}. 
-This sample of stars are in common between the \kepler\ Mission
-targets and the \apogee\ targets; they have high-quality infrared
-spectra and also asterosesmological measurements.
-Specifically, they have \numax\ and \deltanu\ measurements from \kepler, derived from the scaling relations \ref{eqn1} and corresponding spectra in the H-band across 1.5-1.7 $\micron$ at a resolution of R $\sim$ 22,500, as part of the \apogee\ survey. 
+parameters via asteroseismology. In particular, the training set is taken from the \apokasc\ sample of
+stars observed by \apogee\ \citep{Majewski2012}, the first data release of which was made in \citet{P2014}. 
+This sample of stars have high-quality infrared
+spectra from \apogee\ and also asterosesmological measurements from the \kepler\ mission.
+Specifically, they have \numax\ and \deltanu\ measurements from \kepler, derived from the standard scaling relations \citep[see][and references therein]{P2014} and corresponding spectra in the H-band across 1.5-1.7 $\micron$ at a resolution of R $\sim$ 22,500, as part of the \apogee\ survey. 
 The \kepler\ Mission \citep{B2010} took continuous, 30-min cadence (or
 higher cadence) photometric observations of more than $10^5$ stars,
 providing (at least for giant stars) measurements of the
@@ -306,14 +291,18 @@ stellar interior density structure.
 The asteroseismological measurements are used---with stellar
 models---to infer stellar masses and thus provide labels.
 
-The training set of stars is a 1639 subset of high quality \apokasc\ stars from \citet{Martig2014}. These stars have been selected with no warning or error in the \aspcap\ \code{FLAG} parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the delta$\_$nu and nu$\_$max less than 10\,percent. These stars comprise a high signal-to-noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
-
-Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and mass. The training labels adopted were the \aspcap-corrected \citep{Meszaros2013} values for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$ . The mass label was determined using the standard seismic scaling relation given in \ref{eqn1} \citep{SilvaA2011,Chaplin2011}.
+The training set of stars is a 1639 subset of high quality \apokasc\ stars from \citet{Martig2014}. These stars have been selected by \citet{Martig2014} based on additional quality cuts: only stars with no warning or error in the \aspcap\ \code{FLAG} parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the delta$\_$nu and nu$\_$max less than 10\,percent are included. The \apokasc\ stars comprise a high signal-to-noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
+%
+%Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and mass.
+ The five training labels adopted are from the \aspcap-corrected \citep{Meszaros2013} values for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$ . The mass label was determined delta$\_$nu and nu$\_$max measurements using the standard seismic scaling relation given in \citep{SilvaA2011,Chaplin2011} and repeated in Equation \ref{scaling}.
 
 \begin{equation} \label{eq:mass}
 M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( \frac{\Delta \nu}{\Delta \nu_{\odot}}\right)^{-4} \ \left( \frac{T_{\mathrm{eff}}}{T_{\mathrm{eff,\odot}}}\right)^{1.5} \ .
 \end{equation}
-We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are the ones used to build the APOKASC catalogue and were obtained by \cite{Hekker2013} with the OCT method.
+\label{scaling}
+
+
+We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz, as per \citet{Martig2014}. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are the ones used to build the APOKASC catalogue and were obtained by \cite{Hekker2013}.
 
 We train and return a label for masses and not ages. To transform mass to age for each star, we use the PARSEC isochrones and adopt the red clump evolutionary state to select the relationship between mass and age at each metallicity.  The results for the ages are directly tied to the models and the assumptions made in the choice of both which models to use and which evolutionary state is adopted, although adoption of red clump versus red giant star has negligible effect on the overall age distribution and individual age differences are on the order of $<$5\,percent between these two evolutionary states. 
 
