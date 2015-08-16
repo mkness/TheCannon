@@ -68,7 +68,7 @@
 % plotting in /Apogee_ages/makeplot_scatter_test18_step.py 
 % and plotelements_on_spectra.py 
 
-\title{Measuring red-giant masses and ages with stellar spectra: An age catalogue of the Milky Way disk from \apogee\ }
+\title{Measuring red-giant masses and ages with stellar spectra: An age catalogue of the Milky Way disk from \apogee }
 \author{M.~Ness\altaffilmark{1},
 David~W.~Hogg\altaffilmark{1,2,3},
 H.-W.~Rix\altaffilmark{1},
@@ -401,21 +401,36 @@ The largest coefficient in \alphafe\ corresponds to the core of the strong Mg li
 \subsubsection{Spectral dependencies on mass} 
 
 Finally, having motivated that \tc\ delivers very physically sensible origins of the \teff, \logg, \alphafe\ and \feh\ labels, we examine the origin of the mass information from which we can infer age of \apogee\ stars. 
-These first four labels are the least controversial and very standard stellar labels to derive from spectra. Deriving a mass label directly from stellar spectra marks a significant step forward in the exploitation of stellar spectra. With the exception of a few indices which have been used previously to derive age from spectra, this is the first claim of a direct extraction of unique mass information from a stellar spectral region using a general methodology, not informed by stellar physics but rather, the other way around. 
+These first four labels are the least controversial to derive. However, delivering a mass label directly from stellar spectra, particularly given the large stellar surveys like \apogee\ which provide the potential to map ages of stars over a large spatial extent, marks a significant step forward in the exploitation of stellar spectra. With the exception of a few indices which have been used previously to derive mass and inferred age from spectra, this is the first claim of a direct extraction of unique mass information from a stellar spectral region using a general methodology. This approach is not informed by stellar physics. Mathematically this works (as per the cross validation) and now we examine the interpretability of the mass label in chemical elemental abundance space. 
 
-From analyses in other wavelength regions, we have the expectation of mass indicators in spectra due to (i) chromospheric activity (emission), (ii) drege-up effects (and changing line strengths and profiles of particular elements) or (iii) some combination of individual elemental abundances that reflect the enrichment history of the Milky Way with time (changing element ratios in the spectra). 
+From previous analyses in the UV and optical wavelength regions, we might expect spectral mass indicators, if present, to be realised in (i) chromospheric activity (emission), (ii) drege-up effects (and changing line strengths and profiles of particular elements) or (iii) some combination of individual elemental abundances that reflect the enrichment history of the Milky Way with time (changing element ratios in the spectra). 
 
-Figure \ref{fig:mass} shows the two largest coefficients in the log mass label. The information for the mass label is from CN features. Although we show only two regions as demonstrative, we have verified that the five highest mass coefficient amplitudes all correspond to CN features. The relationship between mass and CN is consistent with the discovery by Martig et al., (2015), in prep which shows that the [C/N] ratio calculated from \apogee's their delivered catalog of C and N abundances in data release DR12 correlates with the mass and inferred age of the \apokasc\ stars. Martig et al., (2015) in prep used the [C/N] ratio to create a model from these abundances and known masses of the \apokasc\ stars. With \tc\, this information is also been exploited, only at the spectral level: we do not inform \tc's generative model however where the information in the spectrum is to be derived from, that is a product of the training step. The data-driven model and derivation of mass directly from the spectra itself means that \tc\ will be able to maximally exploit the information in the spectra and as signal to noise decreases, to return masses which can be used to infer ages for \apogee\ stars.  
+Figure \ref{fig:mass} shows the two largest coefficients in the log mass label. The information for the mass label is from (the relatively weak) CN molecular features. Although we show only two regions as demonstrative, we have verified that the five highest mass coefficient amplitudes all correspond uniquely to CN molecular features. The relationship between mass and CN is consistent with the discovery by Martig et al., (2015), in prep., which shows that the [C/N] ratio calculated from \apogee's delivered catalog of C and N abundances in data release DR12 correlates with the mass and inferred age of the \apokasc\ stars. Martig et al., (2015) in prep., use the [C/N] ratio to create a model from these abundances and known masses of the \apokasc\ stars. With \tc\, this information is similarly exploited, only at the spectral level itself: we do not inform \tc's generative model about the origin of the information (instead we rely on stellar physics to interpret the regions where the information is highest). 
+
+From the synthesised spectra in the bottom left-hand panel, it is apparent that it is not only the line strength that changes with the mass coefficient, but rather it is the line profile. Furthermore, from inspection of the second highest mass coefficient at right, it is clear that the spectra changes only very weakly in some locations where the mass coefficient is high. Indeed, the changes in spectra as a function of mass are in general very subtle compared to the other labels. This is likely responsible for the relatively large scatter in the mass label determined with the take-stars out test, shown in Figure 1. Note the other stellar labels have been historically well determined from spectra, even without general mathematical methods like \tc, which optimally exploist all of the available and potential information. The correlations contained in the traditional stellar labels of \teff, \logg, \feh\ and \alphafe\ are more straightforward to extract (e.g. \feh\ correlates with the cores of most absorption features in the spectra). This highlights the strength of an approach like \tc\ to determine and quantify the information that can be truly extracted from data, particularly as a function of signal to noise. 
+
+Examining the CN molecular regions in more detail, the two CN regions shown in Figure \ref{fig:mass} with the highest mass coefficients are in fact a blend of CN molecules containing both $^{12}$C and $^{13}$C. It is this ratio which may drive the changing line profile as a function of mass and may play an important role in delivering the mass information from \apogee\ spectra. This is because the $^{12}$C/$^{13}$C ratio is known as one of the best diagnostics of deep mixing in stellar interiors and so is known to contain information with respect to stellar mass.  In addition to being diagnostics of stellar mass, by being markers of the mixing history of the stars, carbon isotope ratios have also used to differentiate first ascent giants and red clump stars \citep[see][and references therein]{Taut2013}. These elements change abundances during dredge-up, which is effectively the mixing during stellar evolution where by the CN in the hydrogen envelope of a stars interior are bought up to the surface. This happens as the star evolves off the main sequence and up the giant branch \citep{Gilroy1991}. As a consequence of the first dredge up, $^{12}$C decreases whilst $^{13}$C and $^{14}$N show corresponding increases \citep{Taut2010}. 
+% and is relatively insensitive to stellar parameters
+
+%With \tc, which exploits the spectral region in full, the information from which the mass is derived from likely includes additional elements to C and N 
+%
+%and also more regions of CN then \aspcap, which uses a subset of set spectral windows to derive individual C and N abundances. Although the information from \tc\ is then coming from an optimally largest set of flux in the spectra, the information content in any given flux may be very small, even for the highest coefficients. For example, from the bottom right hand panel of Figure \ref{fig:mass} in particular, it is clear that there is only a very marginal change in the spectra as a function of mass. This is dramatically smaller than for the other labels, even for the highest mass coefficient at left. Note there is also a non-linear change in the spectra with linear mass which can be seen by inspection of the flux corresponding to the lowest, intermediate and highest mass spectra generated in the bottom panels. 
+%
+%The ages can be inferred directly from the spectral mass labels without relying on pipeline measurements of individual abundances, which are known to degrade quickly with decreasing SNR \citep[e.g.][]{Hayden2015}. 
+
+
+%
+% The data-driven model and derivation of mass directly from the spectra itself means that \tc\ will be able to maximally exploit the information in the spectra and as signal to noise decreases, to return masses which can be used to infer ages for \apogee\ stars.  
 
 \begin{figure}[h!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_m_3.png}
-  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest mass coefficients.}
+  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest mass coefficients (in red).}
 \label{fig:mass}
 \end{figure}
 
-There is a relatively small change in the spectra as a function of mass (see the bottom panels of Figure \ref{fig:mass} compared to the other labels and there is a non-linear change in the spectra with linear mass. This is clear looking at the lowest, intermediate and highest masses that have been modeled in the left bottom panel of this Figures. From the synthesised spectra from the model, it is apparent that it is not only the line strength that changes with the mass coefficient, but it is the line profile. The two CN regions shown in Figure \ref{fig:mass} with the highest mass coefficients are actually a blend of CN molecules containing both $^{12}$C and $^{13}$C. The changing ratio of these elements in the apogee spectra may play an important role in delivering the mass of the star and the changing profile of the features may reflect that these ratios are changing. The $^{12}$C/$^{13}$C ratio has been shown to be the best diagnostic of deep mixing and least sensitive to stellar parameters and due to the first dredge up, $^{12}$C decreases at the same time as $^{13}$C and $^{14}$N increase \citep{Taut2010}.  As well as being diagnostics of stellar mass by reflecting the mixing history of the stasr, carbon isotope ratios are also used to differentiate first ascent giants and red clump stars \citep[see][and references therein]{Taut2013} Dredge-up is the mixing during stellar evolution where by the CN in the hydrogen envelope of a stars interior are bought up to the surface. This happens as the star evolves off the main sequence and up the giant branch \citep{Gilroy1991}. 
+
 
 %The first dredge up significantly changes the abundances of $^{12}$C and $^{14}$N, decreaseing the carbon by around 30 percent and increasing the nitrogen by 80 percent.  \citep{Taut2013}.
 
@@ -425,7 +440,7 @@ There is a relatively small change in the spectra as a function of mass (see the
 
 
 
-\subsection{The generative model}
+\subsection{The generative model compared to test data}
 
 The \apogee\ sample comprises primarily red giant stars and a subset of  $\approx$ 20,000 red clump stars, identified by \citet{Bovy2014}. We take our model, trained using the reference \apokasc\ stars and determine the stellar parameters and masses for these red clump stars. which cover a radial extent of 6 -- 14 kpc and are located at heights $|z|$ $<$ 1.5 kpc. The red clump sample is a representative and unbiased sample of Milky Way disk stars located across a large radial extent and with an expected age distribution peaking at about 2 Gyr with a tail out to old ages (see Figure X of Bovy et al., 20XX). 
 
@@ -435,7 +450,7 @@ In Figure \ref{fig:spectra}, the spectra of one of the red clump stars, showing 
 %t1,g1,feh1,alpha1,age1, mass1 = 4708.49983734, 2.17652168722, 0.0617198884138, 0.015425129037, 1.55488236009, 1.88141910392
 
 %run -i makeredclumpplot.py
-\begin{figure}[p!]
+\begin{figure}[h!]
 \centering
       \includegraphics[scale=0.5]{./plots/spectra_fits_7.png}
   \caption{A spectra of one of the red clump stars in the catalogue of \citet{Bovy2014} shown in black, with the best fit model from \tc\ in blue. The best fit model from \aspcap\ is shown in red.}
@@ -579,6 +594,10 @@ convincing that we really have an age indicator here.
 \ldots MKN: How do you obtain our code, data, and results?
 
 \section{Conclusion} 
+
+
+
+The derivation of stellar masses directly from stellar spectra using \tc\ is highly relevant for other wavelength regions and surveys, like GALAH, (the spectral region of which contains two strong H-$\alpha$ features, already known to be good mass indicators). 
 
 \acknowledgments
 It is a pleasure to thank Maria Bergemann (MPIA)
