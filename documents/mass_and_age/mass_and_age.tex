@@ -274,7 +274,7 @@ using \tc.
 
 We work with the continuum-normalized DR12 spectra, and the method of continuum
 estimation turns out to be important for performance. We use the aspcapStar files provided by \apogee, but apply our own signal-to-noise invariant continuum normalisation by fitting a low-order polynomial to `true' continuum pixels, as described in \citet{Ness2015}. 
-The three labels of \teff, \logg\ and \feh\ delivered with \tc\ were demonstrated in \citet{Ness2015}.  In this work we determine two additional labels, of \alphafe\ label and mass. From the mass, we infer age, using stellar evolution models. Our five labels are provided to \tc\ in the training step, and delivered by \tc\ in the test step.
+The three labels of \teff, \logg\ and \feh\ delivered with \tc\ were demonstrated in \citet{Ness2015}.  In this work we determine two additional labels, of \alphafe\ label and mass. From the mass, we train on log mass, as we find that the error on mass is linear in log mass (and log age) rather than linear mass and age. We infer age, using stellar evolution models. Our five labels are provided to \tc\ in the training step, and delivered by \tc\ in the test step.
 
 Stellar mass is a parameter that is not usually considered visible in
 spectral data; in the training set we are obtaining these stellar mass
@@ -291,10 +291,10 @@ stellar interior density structure.
 The asteroseismological measurements are used---with stellar
 models---to infer stellar masses and thus provide labels.
 
-The training set of stars is a 1639 subset of high quality \apokasc\ stars from \citet{Martig2014}. These stars have been selected by \citet{Martig2014} based on additional quality cuts: only stars with no warning or error in the \aspcap\ \code{FLAG} parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the delta$\_$nu and nu$\_$max less than 10\,percent are included. The \apokasc\ stars comprise a high signal-to-noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
+The training set of stars is a 1639 subset of high quality \apokasc\ stars from \citet{Martig2014}. These stars have been selected by \citet{Martig2014} based on additional quality cuts: only stars with no warning or error in the \aspcap\ \code{FLAG} parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the  \deltanu\ and $\nu\_{\mbox{max}}$ less than 10\,percent are included. The \apokasc\ stars comprise a high signal-to-noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
 %
 %Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and mass.
- The five training labels adopted are from the \aspcap-corrected \citep{Meszaros2013} values for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$ . The mass label was determined delta$\_$nu and nu$\_$max measurements using the standard seismic scaling relation given in \citep{SilvaA2011,Chaplin2011} and repeated in Equation \ref{scaling}.
+ The five training labels adopted are from the \aspcap-corrected \citep{Meszaros2013} values for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$ . The mass label was determined from the  \deltanu\ and $\nu\_{\mbox{max}}$ measurements using the standard seismic scaling relation given in \citet{SilvaA2011,Chaplin2011} and repeated in Equation \ref{scaling}.
 
 \begin{equation} \label{eq:mass}
 M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( \frac{\Delta \nu}{\Delta \nu_{\odot}}\right)^{-4} \ \left( \frac{T_{\mathrm{eff}}}{T_{\mathrm{eff,\odot}}}\right)^{1.5} \ .
@@ -302,11 +302,13 @@ M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( 
 \label{scaling}
 
 
-We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz, as per \citet{Martig2014}. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are the ones used to build the APOKASC catalogue and were obtained by \cite{Hekker2013}.
+We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz, as per \citet{Martig2014}. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are those used for the \apokasc\ catalogue and were obtained by \cite{Hekker2013}.
 
-We train and return a label for masses and not ages. To transform mass to age for each star, we use the PARSEC isochrones and adopt the red clump evolutionary state to select the relationship between mass and age at each metallicity.  The results for the ages are directly tied to the models and the assumptions made in the choice of both which models to use and which evolutionary state is adopted, although adoption of red clump versus red giant star has negligible effect on the overall age distribution and individual age differences are on the order of $<$5\,percent between these two evolutionary states. 
+To transform the mass label determined by \tc\ to an inferred age label for each star, we use the PARSEC isochrones \citep{Bressan2012} with a mass loss parameter of $\eta_{\mbox{Reimers}}$ = 0.2 and adopt the red clump evolutionary state to set the relationship between mass and age at each metallicity.  The mapping of mass to age is directly tied to the models and subject to assumptions including the models chosen, the stellar mass loss parameter and the evolutionary state. These assumptions lead to small absolute differences in the age scaling of the stars given the mass. However,  the relative ages are consistent and quantatively we draw no different conclusions in any of our results by varying these primary input assumptions. For example, assuming a red clump evolutionary state ( instead of a red giant) does not change the age distribution of the sample and individual stellar age differences are on the order of $<$ 5\,percent between these two evolutionary states. 
 
-\section{Validation of mass and age determinations}
+\section{Experiments and results}
+
+\subsection{Validation of the mass and age determinations}
 
 To determine the uncertainties on our individual \teff, \logg, \feh, \alphafe\ and mass, we perform a take-stars out test on the set of reference objects.
 For the take-stars out test we train the spectral model iteratively on 90\,percent of the reference spectra and then run the test step on the remaining 10\,percent of the spectra and we do this 10 times, stepping through each next 10\,percent of the data. Our results are shown in \figurename~\ref{fig:validation1} for the five labels. The input (x-axis) labels are from \aspcap\ and astroseismology, as described in Section X and the output (y-axis) labels are the output labels are from \tc.  The sixth panel in this Figure shows the masses transformed to ages using interpolation between the PARSEC isochrones, where the red clump evolutionary state has been adopted on the isochrones at each age and \feh. 
@@ -316,49 +318,36 @@ This \figurename\ shows that \tc 's purely mathematical approach of label transf
 %plotdiff_5labels_10percent_linear_orig.py trained on 1639 stars if
 %run -i plotdiff_5labels_10percent_linear trained on 1500 stars
 %/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_5labels_10percent_contour.py
-\begin{figure}[p!]
+%/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_6labels_10percent_contour.py
+\begin{figure}[h!]
 \centering
-        \includegraphics[scale=0.35]{./plots/validation_1639.pdf}
-  \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
+        \includegraphics[scale=0.35]{./plots/validation_1639_6.pdf}
+  \caption{Cross validation of training dataset of 1639 stars, for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
 \label{fig:validation1}
 \end{figure}
 
-\begin{figure}[p!]
-\centering
- %   \includegraphics[scale=0.31]{./plots/validation_1500.pdf}
-        \includegraphics[scale=0.35]{./plots/validation_1639_ages.pdf}
-  \caption{Cross validation of training dataset for the \teff, \logg, \feh, \alphafe\ and age labels (where the mass label has been directly interpolated to mass): the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
-\label{fig:validation2}
-\end{figure}
+\subsection{The origin of the labels in the H-band spectra}
 
+%\tc\ is a generative model made from the set of reference objects and we can, for a given set of the five labels, produce a model spectrum of that star.  
+\tc\ is a generative model that determines a coefficient at every pixel, or wavelength, and these coefficients describe how the flux depends on the stellar labels, given the model (in this work, in Equation \ref{eq:quad}).   A near-zero coefficient for a given pixel indicates that the flux at that pixel is independent of the labels. Conversely, the largest values of the coefficients are where the spectra changes most significantly with the label or labels. Here we examine the origin of the highest coefficients for the first order, linear coefficients. We use the first order coefficients to identify some key regions of the spectra that contain the most information with respect to the labels, and to determine which elements and molecules in particular these coefficients correlate with. 
 
-%(note this improves by 10\,percent from 0.27 to 0.24 if take errors on nu max and delta nu to less than 5 percent. )
+Figures \ref{fig:logg} to \ref{fig:mass}, show the first order coefficients of our model described in Equation \ref{eq:quad} over a narrow wavelength range ($\approx$ 30 Angstroms) centered on where the coefficients reach their largest amplitude. The 0$^{\mbox{th}}$ order coefficient is shown in the top panel and the first order linear terms are shown in the middle panels. For a given set of labels, we can also generate the spectra (using all coefficients) and we  show in the bottom panel of these Figures, the generated spectra for a representative star, for three steps across each of the stellar labels. This directly illustrates how the flux changes with labels in regions where the coefficients are highest.  
 
-%from MM:\\ 
-%- error on delta$\_$nu and nu$\_$max lower than 5\,percent (the cut was at 10% before)\\
-%- no star in the list of fast rotating stars from Jamie Tayar\\
-%- no warning or error in ASPCAPFLAG\\
-%- Carbon and Nitrogen abundances $>$-9999\\
-%In this way, it is only the residuals between the model and the test stars contain all of the additional information that is not already contained within the 5-labels. 
-%dependency. 
+We use the DR12 \apogee\ linelist (Shetrone et al., 2015, in preparation), Kurucz model atmospheres \citep{castelli2004} and the stellar synthesis code MOOG \citep{sneden1979}, to determine which elements correspond to the absorption features in the spectra where the highest coefficients are located. The elements and molecules are marked on the 0$^{\mbox{th}}$ order coefficient spectra in the top panel of each of the Figures. The 0$^{\mbox{th}}$ order-coefficient vector $\theta_0$, or the baseline spectrum of the model is, essentially, the intersect spectrum of the training set of stars. The absorption features in the H-band are heavily blended with OH, CN and $^2$C molecules and the figures indicate which absorption features are comprised of blends of molecules and elements, at the stellar parameter space of \apogee\ stars. The elements that show the most significant changes with the labels show gratifying accord with expectations from stellar physics and these are discussed below, for each of the five labels. 
 
-\section{Experiments and results}
+\subsubsection{Spectral dependencies on \logg} 
 
-\subsection{Interpretation of the residuals}
+Figure \ref{fig:logg} shows the 30 Angstrom regions of the spectra centered on the two highest first-order \logg\ coefficient $\theta_{logg}$. The three panels at left show the highest \logg\ coefficient and the three panels at right show the second highest coefficient. Relevant elements and molecules that correspond to the absorption features are marked at top on the baseline spectrum of the model.  
 
-\tc\ is a generative model made from the set of reference objects and we can, for a given set of the five labels, produce a model spectrum of that star.  The coefficients of the model that are returned at each pixel quantify how much the label (or labels in the case of the cross-terms) describes the flux at that pixel. A near-zero coefficient for a given pixel indicates that the pixel is not described by the label/s and the largest values of the coefficients are where the spectra changes most significantly with the label or labels. 
+The middle panel of Figure \ref{fig:logg} shows the first order coefficients that are linear in \teff, \logg, \feh, \alphafe\ and mass. The coefficients have all been normalised to their largest absolute value, so that an amplitude of $\theta_{ref}$ = 1 for any coefficient is at the highest value.  The bottom panel of Figure  \ref{fig:logg} shows a generated spectrum from \tc's model for a reference set of stellar parameters of a star in the training set, at \teff = 4710K, \feh = 0.05 and \alphafe = 0.015, for three different \logg\ values of \logg\ = 1.5, \logg\ = 2.1 and \logg\ = 3.3. From the centre left panel of Figure \ref{fig:logg} it is clear that any given pixel can have a dependency on multiple labels, and typically some coefficients, like \teff\ and \logg\ show an inverse relationship with the spectra. 
 
-In the following set of Figures \ref{fig:logg} to \ref{fig:mass}, we demonstrate the model coefficients and generated spectra across small wavelength regions ($\approx$ 30 Angstrom) centered on where the coefficients reach their largest amplitudes, for each of the five labels. We use the DR12 \apogee\ linelist, Kurucz model atmospheres (cite) and the stellar synthesis code MOOG (Sneden et al., 199X), to determine which elements correspond to the absorption features in the spectra where the highest coefficients are located. The absorption features in the H-band are heavily blended with OH, CN and C2 molecules and the figures indicate which absorption features are comprised of blends of molecules and elements, at the for the stellar parameter space of \apogee\ stars. The elements that show the most significant changes with the labels show gratifying accord with expectations from stellar physics and these are discussed below, for each of the five labels. 
-
-Figure \ref{fig:logg} shows the 30 Angstrom regions of the spectra centered on the two highest first-order \logg\ coefficient $\theta_{logg}$. The three panels at left show the highest \logg\ coefficient and the three panels at right show the second highest coefficient. The top panel of this Figure shows the zeroth order-coefficient vector $\theta_0$, or the baseline spectrum of the model and this is, essentially, the intersect spectrum of the training set of stars. Relevant elements and molecules that correspond to the absorption features are marked. 
-
-The middle panel of Figure \ref{fig:logg} shows the first order coefficients that are linear in \teff, \logg, \feh, \alphafe\ and mass. The coefficients have all been normalised to their largest absolute value, so that an amplitude of $\theta_{ref}$ = 1 for any coefficient is at the highest value.  The bottom panel of Figure  \ref{fig:logg} shows a generated spectrum from \tc's model for a reference set of stellar parameters of a star in the training set, at \teff = 4710K, \feh = 0.05 and \alphafe = 0.015, for three different \logg\ values of \logg\ = 1.5, \logg\ = 2.1 and \logg\ = 3.3. From the centre left panel of Figure \ref{fig:logg} it is clear that any given pixel can have a dependency on multiple labels, and typically some coefficients, like \teff\ and \logg\ show an inverse relationship with the spectra. The Mg feature in the spectra shown in the top hand panel of Figure \ref{fig:logg} corresponds to the location of the highest amplitude \logg\ linear coefficient. Importantly, the highest amplitude of this coefficient corresponds to the wings of the Mg line and not the core, in particular, the higher wavelength side of the Mg wing. The core of the Mg feature actually corresponds to a rapid decrease in the coefficient,or reduction in the information content of these pixels with respect to the \logg\ label. This Mg feature at 15770.15 Angstroms, is one of the two strongest Mg features (along with the Mg feature at 15753.29 Angstroms) across the \apogee\ H-band spectral region. 
+The Mg feature in the spectra shown in the top hand panel of Figure \ref{fig:logg} corresponds to the location of the highest amplitude \logg\ linear coefficient. Importantly, the highest amplitude of this coefficient corresponds to the wings of the Mg line and not the core, in particular, the higher wavelength side of the Mg wing. The core of the Mg feature actually corresponds to a rapid decrease in the coefficient,or reduction in the information content of these pixels with respect to the \logg\ label. This Mg feature at 15770.15 Angstroms, is one of the two strongest Mg features (along with the Mg feature at 15753.29 Angstroms) across the \apogee\ H-band spectral region. 
 
 The wings of strong lines are known as \logg\ indicators in stars \citep{Gray2008} and the wings of Mg lines in the optical wavelength region, which are sensitive to pressure broadening, are demonstrated in \citet{F1997} to be features from which to derive \logg\ for F and G main sequence stars. That the strongest coefficient in \logg\ comes from the wings of a strong Mg line in the H-band \apogee\ spectral region is therefore well aligned with empirical analyses in other, more comprehensively studied wavelength regions. Brackett lines (as well as Balmer and Paschen lines)  are similarly sensitive to pressure (Stark) broadening and are therefore excellent tracers of \logg\ in stars. The second highest amplitude coefficient is at the Brackett feature in the \apogee\ spectral region and the bottom panel at right shows how significantly the flux varies as a function of \logg\ for the Brackett feature at $\approx$ 16810 Angstroms. In addition to being second highest in amplitude, the sign of this coefficient for this feature is positive and so has the opposite relation with flux to that of the \logg\ parameter and the Mg wings. As seen in the bottom panel at left, the wings of the Mg feature deepen with increasing \logg, where as for the Brackett feature at right, the spectral profile flattens with increasing \logg, for any given set of stellar \teff, \feh, \alphafe\ and mass parameters, hence the inverse relative relationship between the two features. 
 
 
 % run run -i makeplot_scatter_test18_step/spectra in /Apogee_ages/ o
-\begin{figure}[p!]
+\begin{figure}[h!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_g_3.png}
@@ -385,9 +374,8 @@ Figure \ref{fig:feha} is demonstrative of the highest \feh\ and \alphafe\ coeffi
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_af_3.png}
-    \includegraphics[scale=0.51]{./plots/coeffs_t_3.png}
   \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest \feh\ coefficient, at left and highest \alphafe\ coefficient, at right.}
-\label{fig:teff}
+\label{fig:feha}
 \end{figure}
 
 
@@ -407,7 +395,7 @@ There is a relatively small change in the spectra as a function of mass (see the
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_m_3.png}
   \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest mass coefficients.}
-\label{fig:feha}
+\label{fig:mass}
 \end{figure}'
 
 
