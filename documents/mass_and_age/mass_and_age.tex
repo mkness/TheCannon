@@ -97,7 +97,7 @@ obtained from a training set of stars with both
 \apogee\ infrared spectral data.
 We find that after training on mass, \thecannon\ can infer stellar
 masses---and therefore also stellar ages---for red-giant stars using
-infrared spectral data alone. \tc\ returns (log) masses to an accuracy of 0.08~dex and (log) ages to 0.25 dex for typical-quality \apogee\ spectra.  We produce a catalogue of mass and inferred age labels for all XXX,000 red-giant stars in \apogee\ DR12 and investigate the age distribution in the Milky Way's disk using the red clump sample of 20,000 stars, which span a galactic radius of 4 - 14 kpc and which have small distance errors ($\approx$ 5\, percent). We show from these data that the ages of stellar structures in the Milky Way demonstrate an evolution consistent with inside out formation and radial mixing for longer lived stars, even conditioned on abundances. We demonstrate that the capability to infer age from spectroscopy alone works mathematically using cross validation and we show that the mass information derives from elements associated with dredge-up processes predicted by stellar evolution. This capability opens up new opportunities for Milky Way and stellar astrophysics.
+infrared spectral data alone. \tc\ returns (log) masses to an accuracy of 0.08~dex and (log) ages to 0.25 dex for typical-quality \apogee\ spectra.  We produce a catalogue of mass and inferred age labels for all XXX,000 red-giant stars in \apogee\ DR12 and investigate the age distribution of the Milky Way's disk using the red clump sample of 20,000 stars, which span a galactic radius of 4 - 15 kpc. We show from these data that the ages of stellar structures in the Milky Way demonstrate an evolution consistent with inside out formation and radial mixing for longer lived stars, even conditioned on abundances. We demonstrate that the capability to infer age from spectroscopy alone works mathematically using cross validation and we show that the mass information derives from elements associated with dredge-up processes predicted by stellar evolution. This capability of determining masses and inferred ages from stellar spectra opens up new opportunities for Milky Way and stellar astrophysics.
 
 % Results
 %We demonstrate the validity of the stellar masses and ages that we determine with \tc\ with three
@@ -459,11 +459,15 @@ Thee input label for the inferred age is from the seismic scaling relations for 
 
 \section{Results: Stellar ages for the red clump sample of the Milky Way}
 
-\subsection{The generative model from \tc\ applied to the red clump stars}
+\subsection{\tc's generative model at the test step: the red clump stars}
 
-The \apogee\ sample comprises primarily red giant stars and a subset of  $\approx$ 20,000 red clump stars, identified by \citet{Bovy2014}. We take our model, trained using the reference \apokasc\ stars and determine the stellar parameters and masses for these red clump stars. which cover a radial extent of 6 -- 14 kpc and are located at heights $|z|$ $<$ 1.5 kpc. The red clump sample is a representative and unbiased sample of Milky Way disk stars located across a large radial extent and with an expected age distribution peaking at about 2 Gyr with a tail out to old ages (see Figure X of Bovy et al., 20XX). 
+The \apogee\ DR12 sample comprises primarily red giant stars plus a valuable subset of  $\approx$ 20,000 red clump stars, identified by \citet{Bovy2014}.  These stars have individual distance uncertainties of 5\,percent. These red clump stars cover a large radial extent of the disk, spanning distances of 4 -- 15 kpc and are located predominantly at heights $|z|$ $<$ 3.0 kpc from the plane. The red clump sample is a representative and unbiased sample of Milky Way disk stars and has an expected age distribution peaking at about 1.8 Gyr with a tail out to old ages \citep[see Figure 15 of][]{Bovy2014}. We take our model, trained using the reference \apokasc\ stars and determine the stellar parameters and masses for these red clump stars. We then infer ages by interpolating in label-space onto PARSEC isochrones.
+%, given the \feh\ and mass labels. 
 
-In Figure \ref{fig:spectra}, the spectra of one of the red clump stars, showing a typical red clump spectra, is shown in the black line, for each of the wavelength regions for which the highest amplitude of the coefficients is shown (Figures \ref{fig:logg} -- \ref{fig:mass}).  This star has parameters returned with \tc\ of \teff\ = 4843 K, \logg\ = 2.5 dex, \feh\ = --0.06 dex, \alphafe\ = 0.04 and mass = 1.0 and the interpolated age using the PARSEC isochrones and red clump evolutionary state is 10.6 Gyrs. The data is shown in black, the synthesised spectra from the parameters of \tc\ for this star are in blue and the best fit model from the \apogee\ stellar parameters pipeline \aspcap\ is shown in red. The generated model from \tc\ provides a better fit to the data than the best fit synthetic model from available to \aspcap, demonstrating the 5-labels well describe the flux behaviour of the red clump sample stars the training sample. Note that one of the regions where \aspcap\ performs most poorly is the brackett line which is highly \logg\ sensitive. This may indicate a problem with the model stellar atmospheres or it's associated oscillator strength for this feature. 
+In Figure \ref{fig:spectra}, the spectra of one of the red clump stars, which is representative a typical red clump spectra in the catalogue, is shown along with the generative model from \tc\ at it's stellar labels and the best fitting model from \aspcap. The data is shown in black, the synthesised model from \tc\ is shown in the blue dashed line and the best fit model from \aspcap\ is shown in the red dash-dotted line. The wavelength regions shown in this Figure are those for which the highest amplitude of the coefficients are located (Figures \ref{fig:logg} -- \ref{fig:mass}).  This red star which we use as an example has parameters returned by \tc\ of \teff\ = 4843 K, \logg\ = 2.5 dex, \feh\ = --0.06 dex, \alphafe\ = 0.04 and mass = 1.0 and the interpolated age using the PARSEC isochrones and red clump evolutionary state is 10.6 Gyrs. 
+
+
+The generated model from \tc\ provides a very good fit to the data and in fact is a better fit to the data than the best fit synthetic model from \aspcap. That we well reproduce the data with the model from \tc\ demonstrates the five-labels that we use to train as well as our polynomial model are sufficient to very well describe the behaviour of the flux of a typical red clump stars given the training set of reference stars from the \apokasc\ catalogue. Note in this Figure, that one of the regions where \aspcap\ performs most poorly is  at the brackett line, which is highly \logg\ sensitive (Figure \ref{fig:logg}. This may indicate a problem with the model stellar atmospheres or it's associated oscillator strength for this feature. 
 
 %run -i makeredclumpplot.py
 \begin{figure}[h!]
@@ -475,9 +479,9 @@ In Figure \ref{fig:spectra}, the spectra of one of the red clump stars, showing 
 
 
 
-\subsection{Age maps of the Milky way disk from 6--14 kpc with \apogee\ spectra}
+\subsection{The stellar age distribution of the Milky Way's disk across 4 --15 kpc}
 
-We determine the masses and infer the ages for the $\approx$ 20,000 red clump stars which have distances to approximately 5 percent. The catalogue of ages we provide in Table 1 for the red clump stars represents the largest homogeneous sample of stars in the Milky Way with associated age labels, and extends the age mapping from the previous local neighborhood only (GCS) to trace the inner to outer disk of the Milky Way, from 6 -- 14 kpc.  
+We determine the masses and infer the ages for the $\approx$ 20,000 red clump stars which have distances known to approximately 5 percent. The catalogue of ages we provide in Table 1 for the red clump stars represents the largest homogeneous sample of stars in the Milky Way with associated age labels, and extends the age mapping from the previous local neighborhood only (GCS) to trace the inner to outer disk of the Milky Way, from 4 -- 15 kpc.  
 
 We provide the full age catalog for \apogee's red giant stars, in addition to the red clump stars, adopting the red giant evolutionary state for the transformation from mass label to age label, and provide these data in Table 2, but use only the red clump stars to demonstrate the age trends of the Milky Way disk due to their small distance uncertainties. 
 
@@ -495,7 +499,7 @@ Figure \ref{fig:redclump} shows the mean age of the red clump stars in the \alph
 
 Examining now the metallicity distribution of the low-alpha sequence with radius, the bottom panels of Figure \ref{fig:redclump} compare the distribution of \feh\ for the XXX stars with ages $<$ 1 Gyrs, at left and the YYY stars with ages $>$ 5 Gyrs, at right. It is clear that the distribution $>$ doubles in width in both the radial direction and with \feh. The relationship between metallicity and radius is weaker for the older stars. Note that the apparent overdensity at about 8kpc across all \feh\ represents the Kepler field in the sample. That the \feh-radius correlation weakens with age likely reflects dynamical evolution processes in the Milky Way, such as radial migration, so that stars within this age range have been redistributed from their birth place, as a scattered weaker trend would imply. The youngest stars have been subject to much lesser dynamical timescales and more tightly traces the origin of their birthplace in the trend seen here between radius and \feh. The gradient measured for this population from a simple best fit straight line to this distribution at young ages $<$ 1 Gyr is XXX dex/kpc $\pm$ YY kpc. 
 
-\ldots MKN question: Should I fit a model to quantify the 2D age gradient to get median age as a function of (z,R) so we can write down an equation for the age of the red clump as a function of thees params? What form should this take - polynomial form ? 
+%\ldots MKN question: Should I fit a model to quantify the 2D age gradient to get median age as a function of (z,R) so we can write down an equation for the age of the red clump as a function of thees params? What form should this take - polynomial form ? 
 
 %in the The dashed line in the right hand panel of this Figure, where the density of the red clump stars is plotted, shows the selection that we have made for analysis of the low-alpha sequence of these stars only. This figure also shows a small box in \feh-\alphafe\ space that we have selected to examine the age trends of the Galaxy over, also demonstrative of the additional information contained within the mass and inferred age label for the true age distribution of stars in the Milky Way (and so in addition to the chemical enrichment marker of \alphafe). 
 
@@ -509,34 +513,22 @@ For the red clump sequence we now show the maps of the median age of the stars a
 
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
-\begin{figure}[p!]
+\begin{figure}[h!]
 \centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.45]{./plots/median_age_abs.png}
-    \caption{The median age of the 20,000 red clump stars  }
+    \includegraphics[scale=0.45]{./plots/median_3panel.png}
+    \caption{Maps of the median age of the  \apogee\ red clump stars showing all $\approx$ 20,000 stars at left, the low alpha-sequence only at centre and a small abundance bin in the low-alpha sequence at right.  }
 \label{fig:redclump_age}
-\vspace{360pt}
 \end{figure}
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
-\begin{figure}[p!]
+\begin{figure}[h!]
 \centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.45]{./plots/median_age_low_alpha_abs.png}
-    \caption{The median age of the low alpha sequence of the red clump stars ( draw where this in in feh alphafeh plane). Include number of stars. }
-\label{fig:redclump_low}
-\vspace{-30pt}
+    \includegraphics[scale=0.45]{./plots/feh_3panel.png}
+    \caption{Maps of the median \alphafe of the  \apogee\ red clump stars showing the same samples as Figure \ref{fig:redclump_age}. }
+\label{fig:redclump_alpha}
 \end{figure}
 
 
-% made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
-\begin{figure}[p!]
-\centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.45]{./plots/median_age_mono_abs.png}
-    \caption{The median age of low alpha sequence monoabundance  bin with a cut on  \feh\ of 0 to -0.2. }
-\label{fig:redclump_mono}
-\end{figure}
 
 TABLE 1: Masses and ages of red clump stars - note at edges edge effects. 
 
@@ -588,16 +580,16 @@ Our code and documentation which includes instructions for downloading the train
 
 \section{Conclusion} 
 
-\ldots MKN write some conclusions after a break from writing. 
+\ldots MKN write some conclusions after a break from writing.... 
 
-This data-driven generative modeling approach is not explicitly informed by stellar physics and instead in itself has the potential to inform stellar physics.
+\ldots This data-driven generative modeling approach is not explicitly informed by stellar physics and instead in itself has the potential to inform stellar physics.
 % and with a general methodology that can be applied to any spectral region so if mass information is present, it can be inferred.
 % it is not constrained by theoretical assumptions
 %the least controversial to
 
-The derivation of stellar masses directly from stellar spectra using \tc\ is relevant for other wavelength regions and surveys, for example GALAH, (the spectral region of which contains two strong H-$\alpha$ features, already known to be good mass indicators). 
+\ldots The derivation of stellar masses directly from stellar spectra using \tc\ is relevant for other wavelength regions and surveys, for example GALAH, (the spectral region of which contains two strong H-$\alpha$ features, already known to be good mass indicators). 
 
-\acknowledgments
+\section*{Acknowledgments}
 It is a pleasure to thank Maria Bergemann (MPIA)
   John Bochanski (Rider),
   Dan Foreman-Mackey (UW), and
