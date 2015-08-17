@@ -448,27 +448,12 @@ In Figure \ref{fig:alphabins} the \apokasc\ set of reference stars used to train
 
 Thee input label for the inferred age is from the seismic scaling relations for these objects and the output label is derived from the inferred age from the mass label output by \tc\ in cross validation testing (the take star out test performed in Section X). In Figure \ref{fig:alphabins} a sampling of three of these bins and then all of the bins plotted together is shown, for the individual age label for each star, from \tc\ on the x-axis and from Kepler on the y-axis, minus the mean age value in age monoabundance bin. If there was no additional information in each of the monoabundance bins with respect to age, that is, if the age information was simply a reincarnation of the \alphafe\ label then there would be no expected correlation between the difference in \tc\ and Kepler and the mean age. That there is a 1:1 relation between these two axes reflects that \tc\ works mathematically to determine the mass label and that the mass label within a monoabundance bin carries additional information.
 
-% made in makealphamap3.py  in Apogee_ages after running plotdiff_5labels2
-% run -i /Users/ness/new_laptop/Apogee_ages/makealphamap4_logmass.py
-\begin{figure}[p!]
+% made in run -i makealphamap4_logmass_oneplot.py
+%  in Apogee_ages after running plotdiff_5labels2 or run -i  plotdiff_5labels_10percent_contour_copy.py
+\begin{figure}[h!]
 \centering
- \includegraphics[scale=0.45]{./plots/alpha_feh_bins3.pdf}
-    \caption{The \feh-\alphafe\ plane colored by mean age of the stars in each bin. The number of stars in each bin is indicated }
-\label{fig:alphabins}
-\end{figure}
-
-\begin{figure}[p!]
-\centering
- \includegraphics[scale=0.45]{./plots/alpha_feh_std3.pdf}
-    \caption{The \feh-\alphafe\ plane colored by standard deviation of the age of the stars in each bin. The number of stars in each bin is indicated }
-\label{fig:alphabins}
-\end{figure}
-
-% made in makealphamap4_logmass.py after running the plotdiff as above
-\begin{figure}[p!]
-\centering
- \includegraphics[scale=0.45]{./plots/Kepler_Cannon_diff.pdf}
-    \caption{The stars in Figure 8 individually subtracted from the mean age in their respective bin, showing correlation within the individual mono-abundance bins in the \alphafe-\feh\ plane. }
+ \includegraphics[scale=0.38]{./plots/alpha_feh_rc.pdf}
+    \caption{The \feh-\alphafe\ planes at left and centre colored by mean age of the stars in each bin at left,  and the age dispersion at centre, where the number of stars in each bin is indicated at left. The far right hand panel shows the stars in the \feh-\alphafe\ plane where the individual stars $i$ have been subtracted from the mean age in their respective bin, taking both the age from \tc\ and the age from Kepler. The panel on the far right shows the correlation in the input and output age label delivered by \tc\ in cross-validation within a narrow bin in abundance space.  }
 \label{fig:alphabins}
 \end{figure}
 
@@ -479,8 +464,6 @@ Thee input label for the inferred age is from the seismic scaling relations for 
 The \apogee\ sample comprises primarily red giant stars and a subset of  $\approx$ 20,000 red clump stars, identified by \citet{Bovy2014}. We take our model, trained using the reference \apokasc\ stars and determine the stellar parameters and masses for these red clump stars. which cover a radial extent of 6 -- 14 kpc and are located at heights $|z|$ $<$ 1.5 kpc. The red clump sample is a representative and unbiased sample of Milky Way disk stars located across a large radial extent and with an expected age distribution peaking at about 2 Gyr with a tail out to old ages (see Figure X of Bovy et al., 20XX). 
 
 In Figure \ref{fig:spectra}, the spectra of one of the red clump stars, showing a typical red clump spectra, is shown in the black line, for each of the wavelength regions for which the highest amplitude of the coefficients is shown (Figures \ref{fig:logg} -- \ref{fig:mass}).  This star has parameters returned with \tc\ of \teff\ = 4843 K, \logg\ = 2.5 dex, \feh\ = --0.06 dex, \alphafe\ = 0.04 and mass = 1.0 and the interpolated age using the PARSEC isochrones and red clump evolutionary state is 10.6 Gyrs. The data is shown in black, the synthesised spectra from the parameters of \tc\ for this star are in blue and the best fit model from the \apogee\ stellar parameters pipeline \aspcap\ is shown in red. The generated model from \tc\ provides a better fit to the data than the best fit synthetic model from available to \aspcap, demonstrating the 5-labels well describe the flux behaviour of the red clump sample stars the training sample. Note that one of the regions where \aspcap\ performs most poorly is the brackett line which is highly \logg\ sensitive. This may indicate a problem with the model stellar atmospheres or it's associated oscillator strength for this feature. 
-
-%t1,g1,feh1,alpha1,age1, mass1 = 4708.49983734, 2.17652168722, 0.0617198884138, 0.015425129037, 1.55488236009, 1.88141910392
 
 %run -i makeredclumpplot.py
 \begin{figure}[h!]
@@ -501,6 +484,15 @@ We provide the full age catalog for \apogee's red giant stars, in addition to th
 
 Figure \ref{fig:redclump} shows the mean age of the red clump stars in the \alphafe-\feh\ plane and the density distribution of these stars (top panels).  We select the low-alpha sequence only to examine the trends of the metallicity \feh\ as a function of radius for the low compared to the intermediate age stars. This selection is for all stars below the dashed line in the density Figure at top right. Presumably, in selection of these stars we are selecting stars along a single sequence of chemical enrichment history and we might expect differences in the distribution of \feh\ as a function of radius for this sequence as a function of age, due to Galaxy evolution processes. The box in the density map is for a small monoabundance population that we select for plotting the trends of inferred age and radius for a small region of chemical homogenity, as additionally demonstrative of the information within the age label, even within a narrow abundance space. 
 
+%run -i makealphafeh_imshow_3panel.py and readin_ages.py
+%run -i makealphafeh_imshow_4panel.py and readin_ages.py
+\begin{figure}[h!]
+\centering
+ \includegraphics[scale=0.5]{./plots/redclump_4panel.pdf}
+    \caption{The 20K red clump sample: low alpha sequence is broken up into radius and box is the mono-abundance distribution in later figure.}
+\label{fig:redclump}
+\end{figure}
+
 Examining now the metallicity distribution of the low-alpha sequence with radius, the bottom panels of Figure \ref{fig:redclump} compare the distribution of \feh\ for the XXX stars with ages $<$ 1 Gyrs, at left and the YYY stars with ages $>$ 5 Gyrs, at right. It is clear that the distribution $>$ doubles in width in both the radial direction and with \feh. The relationship between metallicity and radius is weaker for the older stars. Note that the apparent overdensity at about 8kpc across all \feh\ represents the Kepler field in the sample. That the \feh-radius correlation weakens with age likely reflects dynamical evolution processes in the Milky Way, such as radial migration, so that stars within this age range have been redistributed from their birth place, as a scattered weaker trend would imply. The youngest stars have been subject to much lesser dynamical timescales and more tightly traces the origin of their birthplace in the trend seen here between radius and \feh. The gradient measured for this population from a simple best fit straight line to this distribution at young ages $<$ 1 Gyr is XXX dex/kpc $\pm$ YY kpc. 
 
 \ldots MKN question: Should I fit a model to quantify the 2D age gradient to get median age as a function of (z,R) so we can write down an equation for the age of the red clump as a function of thees params? What form should this take - polynomial form ? 
@@ -514,13 +506,7 @@ For the red clump sequence we now show the maps of the median age of the stars a
 %Then predict the median age for any star in any region.
 
 
-%run -i makealphafeh_imshow_3panel.py and readin_ages.py
-\begin{figure}[p!]
-\centering
- \includegraphics[scale=0.4]{./plots/redclump_4panel.pdf}
-    \caption{The 20K red clump sample: low alpha sequence is broken up into radius and box is the mono-abundance distribution in later figure.}
-\label{fig:redclump}
-\end{figure}
+
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
 \begin{figure}[p!]

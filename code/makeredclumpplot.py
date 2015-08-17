@@ -101,10 +101,13 @@ def plotstars(filein, wl, params,prefix,cent_wl1, cent_wl2,cent_wl3, cent_wl4,ce
       model_tc = makespec(t1,g1,feh1,alpha1,mass1 )
       #if indx == 0: 
       #  ax.plot(wl,model_aspcap, color='r', lw=lw,alpha = 0.5) 
+      lw2 = 1.
+      lw1 = 2.
+      lw2 = 2.
+      ax.plot(wl,data , color='k', lw=lw2,label = 'data') #, label=label)
       if indx == 1: 
-        ax.plot(wl,model_aspcap, color='r', lw=lw,alpha = 0.8, label= "ASPCAP model") 
-        ax.plot(wl,model_tc, color='b', lw=lw,alpha = 0.8, label = 'The Cannon model') 
-      ax.plot(wl,data , color='k', lw=lw,label = 'data') #, label=label)
+        ax.plot(wl,model_aspcap, color='r', lw=lw1,alpha = 0.8, label= "ASPCAP model", linestyle = 'dashdot') 
+        ax.plot(wl,model_tc, color='b', lw=lw1,alpha = 0.8, label = 'The Cannon model', linestyle = 'dashed')
       return None
 
   axes = [ ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8] 
@@ -221,5 +224,6 @@ cent_wlb = 16410.7 # second highest mass for _5
 #plotstars(file7, wl_star,params7, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_7", cent_wl1,cent_wl2,cent_wl3,cent_wl4,cent_wl5, cent_wl6, cent_wl7,cent_wl8, 14) 
 plotstars(file1, wl_star,params1, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_1", cent_wl1,cent_wl2,cent_wl3,cent_wl4,cent_wl5, cent_wl6, cent_wl7,cent_wl8, 14) 
 #plotstars(file2, wl_star,params2, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_2", cent_wl1,cent_wl2, cent_wl3, cent_wl4, cent_wl5, cent_wl6, cent_wl7,cent_wl8,14) 
-#plotstars(file7, wl_star,params7, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_7", cent_wl1,cent_wl2,cent_wl3,cent_wl4,cent_wl5, cent_wl6, cent_wl7,cent_wl8, 14) 
+plotstars(file7, wl_star,params7, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_7", cent_wl1,cent_wl2,cent_wl3,cent_wl4,cent_wl5, cent_wl6, cent_wl7,cent_wl8, 14) 
 #plotstars(file7, wl_star,params7, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/spectra_fits_elem", cent_wl1,cent_wl2,cent_wl3,cent_wl4,cent_wl5, cent_wl6, cent_wla,cent_wlb, 14) 
+show() 

@@ -1,3 +1,4 @@
+# run -i readin_ages first 
 def makeim(xval,yval,wval,rad, binnum):
   fs = 20
   hist1,x2,y2,temp = hist2d(xval, yval, weights = wval, bins= binnum,cmin = 5) 

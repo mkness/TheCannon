@@ -77,17 +77,19 @@ if __name__ == "__main__":
 
     print "Making (R,z) grid..."
     # start magic number time
-    Rmin, Rmax = 5., 14. # kpc
-    zmin, zmax = 0.0, 2.0 # kpc
+    Rmin, Rmax = 2., 16. # kpc
+    Rmin, Rmax = 4., 15. # kpc
+    zmin, zmax = -5.0, 5.0 # kpc
+    zmin, zmax = -2.0, 2.0 # kpc
     dR = 0.1 # kpc
     (Rgrid, zgrid, Nstars, young_fracs,
      low_alpha_fracs, median_age,std_age, median_feh, median_alpha, median_age_low_alpha, median_age_high_alpha, median_age_mono) = make_grid(data[:, 2], Rmin, Rmax, dR,
-                                  abs(data[:, 4]), zmin, zmax, dR, data)
+                                  (data[:, 4]), zmin, zmax, dR, data)
 
     plt.figure(figsize=(12,6))
     plt.clf()
     imshow_kwargs = {"interpolation": "nearest",
-                     "aspect": 3.0,
+                     "aspect": 1.0,
                      "origin": "lower",
                      "extent": (Rmin, Rmax, zmin, zmax)}
     plt.imshow(young_fracs.T, cmap=plt.cm.YlGnBu, vmin=0., vmax=1.,
