@@ -31,36 +31,34 @@ s = matplotlib.font_manager.FontProperties()
 s.set_family('serif')
 s.set_size(14)
 from matplotlib import rc
-rc('text', usetex=False)
+rc('text', usetex=True)
 rc('font', family='serif')
 rcParams["xtick.labelsize"] = 13
 rcParams["ytick.labelsize"] = 13
-rcParams['figure.figsize'] = 24.0, 3.5
-#f = plt.figure()
-#ax = f.add_subplot(111,frameon = 0 )
-#ax.set_xlabel("Input Labels",labelpad = 40, fontsize = 20 )
-#ax.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
-#ax1 = f.add_subplot(111,sharey = None,sharex = None)
-#ax2 = f.add_subplot(121,sharey = None,sharex = None)
-#ax3 = f.add_subplot(131,sharey = None,sharex = None)
-#ax3 = f.add_subplot(132,sharey = None)
-#ax4 = f.add_subplot(143,sharey = None)
-#ax2 = f.add_subplot(112)
-#ax3 = f.add_subplot(113)
-#ax4 = f.add_subplot(114)
-#ax5 = f.add_subplot(115)
-#ax6 = f.add_subplot(116)
-#    ax1 = fig.add_subplot(311)#,sharey = None)
-#    ax2 = fig.add_subplot(312)
-#    ax3 = fig.add_subplot(313)
+rcParams['figure.figsize'] = 24.0, 8.0
 
-f, (ax1, ax2, ax3,ax4,ax5,ax6) = plt.subplots(ncols=6,nrows=1)
-#f, ((ax1, ax2, ax3,ax4,ax5,ax6),(axa1,ax2a,ax3a,ax4a,ax5a,ax6a)) = plt.subplots(ncols=6,nrows=2)
-ax = f.add_subplot(111,frameon = 0 )
-ax.set_xlabel("Input Labels",labelpad = 5, fontsize = 20 )
-ax.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
-#f, (ax1, ax2, ax3,ax4,ax5,ax6) = plt.subplots(ncols=6)
+f, ((ax1, ax2, ax3,ax4,ax5,ax6),(ax1a,ax2a,ax3a,ax4a,ax5a,ax6a)) = plt.subplots(ncols=6,nrows=2,sharex=False,sharey=False)
+#ax = f.add_subplot(111,frameon = 0 )
+#ax.set_xlabel("Input Labels",labelpad = 5, fontsize = 20 )
+#ax.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
 f2, (ax7,ax8) = plt.subplots(ncols=2)
+
+# set labels 
+fs = 20 
+ax1.set_xlabel("Teff$_{\mbox{ASPCAP}}$", fontsize = fs) 
+ax2.set_xlabel("logg$_{\mbox{KEPLER}}$", fontsize = fs) 
+ax3.set_xlabel("[Fe/H]$_{\mbox{ASPCAP}}$", fontsize = fs) 
+ax4.set_xlabel(r"[$\alpha$/Fe]$_{\mbox{ASPCAP}}$", fontsize = fs) 
+ax5.set_xlabel("log$_{10}$ mass$_{\mbox{KEPLER}}$", fontsize = fs) 
+ax6.set_xlabel("log$_{10}$ age$_{\mbox{KEPLER}}$", fontsize = fs) 
+ax1a.set_xlabel(r"$\Delta_{\mbox{Teff}}$", fontsize = fs) 
+ax2a.set_xlabel(r"$\Delta_{\mbox{logg}}$", fontsize = fs) 
+ax3a.set_xlabel(r"$\Delta_{\mbox{[Fe/H]}}$", fontsize = fs) 
+ax4a.set_xlabel(r"$\Delta_{\mbox{$\alpha$/Fe}}$", fontsize = fs) 
+ax5a.set_xlabel(r"$\Delta_{\mbox{log$_{10}$ mass}}$", fontsize = fs) 
+ax6a.set_xlabel(r"$\Delta_{\mbox{log$_{10}$ age}}$", fontsize = fs) 
+ax4a.set_xticks([-0.1,0,0.1]) 
+ax2a.set_xticks([-0.5,0,0.5]) 
 
 
 def returnscatter(x,y):
@@ -149,8 +147,14 @@ for a,b,ax in zip(varin,varout,axall):
     test1,test2,test3,test4 = ax.hist2d(varin[0],varin[1],bins=30,norm = LogNorm(), cmin=1,cmap = cm.gray_r) #normed=True)
     extent = [ybins[0], ybins[-1], xbins[0], xbins[-1]]
 
-fs = 14 
-cbar_ax = f.add_axes([0.94, 0.20, 0.01, 0.70])
+axall_bottom = [ax1a,ax2a,ax3a,ax4a,ax5a,ax6a]
+for a,b,ax in zip(varin,varout,axall_bottom):
+    ax.hist(a-b,bins=30,histtype = 'step', color = 'k',normed=0)
+    lims = max(abs(a-b))*1.05
+    ax.set_xlim(-1*lims,lims) 
+
+#cbar_ax = f.add_axes([0.94, 0.20, 0.01, 0.70])
+cbar_ax = f.add_axes([0.94, 0.595, 0.01, 0.30])
 im = ax7.imshow(counts.T, cmap=plt.cm.gray_r, extent=extent, norm=LogNorm(vmin=0.01, vmax=1), interpolation = 'Nearest',origin = 'lower')
 #im = ax7.imshow(test1.T, cmap=plt.cm.gray, extent=extent, norm = None, interpolation = 'Nearest',origin = 'lower')
 test = f.colorbar(im, cax=cbar_ax)
@@ -176,9 +180,9 @@ ax4.set_xlim(-0.08,0.35)
 mkn_set_ticks(ax4, [-0.1,0,0.1,0.2,0.3])
 if plotage:
     ax5.set_xlim(-0.3,0.7)
-    ax5.set_title(r"log 10 mass (M$_{\odot}$)", fontsize = fs)
+    ax5.set_title("log$_{10}$ mass (M$_{\odot}$)", fontsize = fsize)
     ax6.set_xlim(-0.5,1.5)
-    ax6.set_title(r"Derived log 10 age (Gyr) ", fontsize = fs)
+    ax6.set_title("Derived log$_{10}$ age (Gyr) ", fontsize = fsize)
 
 
 for ax in [ax1, ax2, ax3, ax4, ax5,ax6]:
@@ -191,38 +195,61 @@ biasg,rmsg = returnscatter(g, gout)
 biasfeh,rmsfeh = returnscatter(feh, fehout)
 biasalpha,rmsalpha = returnscatter(alpha, alphaout)
 
-f1 = 10
-ax1.text(0.45, 0.95,"bias, rms= "+str(round(biast,1))+", "+str(round(rmst,2)), ha='center', va='center', 
-              transform=ax1.transAxes, fontsize = f1)
-ax2.text(0.45, 0.95,"bias, rms= "+str(round(biasg,2))+", "+str(round(rmsg,2)), ha='center', va='center', 
-              transform=ax2.transAxes, fontsize = f1)
-ax3.text(0.45, 0.95,"bias, rms= "+str(round(biasfeh,3))+", "+str(round(rmsfeh,2)), ha='center', va='center', 
-              transform=ax3.transAxes, fontsize = f1)
-ax4.text(0.45, 0.95,"bias, rms= "+str(round(biasalpha,3))+", "+str(round(rmsalpha,2)), ha='center', va='center', 
-              transform=ax4.transAxes, fontsize = f1)
-ax5.text(0.45, 0.95,"bias, rms= "+str(round(biasmass,3))+", "+str(round(rmsmass,2)), ha='center', va='center', 
-              transform=ax5.transAxes, fontsize = f1)
-ax6.text(0.45, 0.95,"bias, rms= "+str(round(biasage,3))+", "+str(round(rmsage,2)), ha='center', va='center', 
-              transform=ax6.transAxes, fontsize = f1)
+f1 = 12
+#axall_bottom = [ax1a,ax2a,ax3a,ax4a,ax5a,ax6a]
+biases = [str(round(biast,1)),str(round(biasg,2)),str(round(biasfeh,3)),str(round(biasalpha,3)),str(round(biasmass,2)), str(round(biasage,2))]
+rmses = [str(round(rmst,1)),str(round(rmsg,2)),str(round(rmsfeh,2)),str(round(rmsalpha,2)),str(round(rmsmass,2)), str(round(rmsage,2))]
+for ax,biasval,rmsval in zip(axall_bottom, biases, rmses):
+    biasval = 'bias = '+biasval
+    rmsval = 'rms = '+rmsval
+    ax.annotate(biasval, xy=(0, 0), xycoords='axes fraction', fontsize=f1,
+                xytext=(1, 175), textcoords='offset points',
+                ha='left', va='top')
+    ax.annotate(rmsval, xy=(0, 0), xycoords='axes fraction', fontsize=f1,
+                xytext=(1, 164), textcoords='offset points',
+                ha='left', va='top')
+  
+#ax1.text(0.45, 0.95,"bias, rms= "+str(round(biast,1))+", "+str(round(rmst,2)), ha='center', va='center', 
+#              transform=ax1.transAxes, fontsize = f1)
+#ax2.text(0.45, 0.95,"bias, rms= "+str(round(biasg,2))+", "+str(round(rmsg,2)), ha='center', va='center', 
+#              transform=ax2.transAxes, fontsize = f1)
+#ax3.text(0.45, 0.95,"bias, rms= "+str(round(biasfeh,3))+", "+str(round(rmsfeh,2)), ha='center', va='center', 
+#              transform=ax3.transAxes, fontsize = f1)
+#ax4.text(0.45, 0.95,"bias, rms= "+str(round(biasalpha,3))+", "+str(round(rmsalpha,2)), ha='center', va='center', 
+#              transform=ax4.transAxes, fontsize = f1)
+#ax5.text(0.45, 0.95,"bias, rms= "+str(round(biasmass,3))+", "+str(round(rmsmass,2)), ha='center', va='center', 
+#              transform=ax5.transAxes, fontsize = f1)
+#ax6.text(0.45, 0.95,"bias, rms= "+str(round(biasage,3))+", "+str(round(rmsage,2)), ha='center', va='center', 
+#              transform=ax6.transAxes, fontsize = f1)
 
-fsize = 17
+fsize = 20
 lpad = 7
 lpad2 = 7 # -3
-ax1.set_title("Teff (K) ", fontsize = 20)
-ax2.set_title("log g (dex) ", fontsize = 20)
-ax3.set_title("[Fe/H] (dex) ", fontsize = 20)
-ax4.set_title(r"[$\alpha$/Fe] (dex) ", fontsize = 20)
+ax1.set_title("Teff (K) ", fontsize = fsize)
+ax2.set_title("log g (dex) ", fontsize = fsize)
+ax3.set_title("[Fe/H] (dex) ", fontsize = fsize)
+ax4.set_title(r"[$\alpha$/Fe] (dex) ", fontsize = fsize)
 #ax6.set_title("delta_nu", fontsize = 20)
 
-ax1.set_ylabel("The Cannon Labels", fontsize = 20, labelpad = 10 ) 
+ax1.set_ylabel("The Cannon Labels", fontsize = fsize, labelpad = 10 ) 
+ax1a.set_ylabel("Number of Stars", fontsize = fsize, labelpad = 10 ) 
 ##ax3.set_xlabel("Input Labels", fontsize = 20, labelpad = 10 ) 
-f.subplots_adjust(hspace=0.42)
+f.subplots_adjust(hspace=0.3)
 f.subplots_adjust(bottom=0.2)
 print ax6.get_position() 
 addval = 0.025
-xa,xb,ya,yb = 0.7892851+addval, 0.2, 0.9+addval, 0.9 
-#print ax6.get_position()
+test = ax6.get_position()
+testa = ax6a.get_position()
+test = array(test) 
+testa = array(testa) 
+print test, testa
+xa,xb,ya,yb = test[0][0],test[0][1], test[1][0], test[1][1]
+xaa,xba,yaa,yba = testa[0][0],testa[0][1], testa[1][0], testa[1][1]
+xa,xb,ya,yb = xa+addval,xb, ya+addval, yb 
+xaa,xba,yaa,yba = xaa+addval,xba, yaa+addval, yba 
 ax6.set_position([xa,xb,ya-xa,yb-xb]) 
+ax6a.set_position([xaa,xba,yaa-xa,yba-xba]) 
+#xa,xb,ya,yb = 0.7892851+addval, 0.2, 0.9+0.005, 0.9 
 draw() 
 close(f2) 
 show()

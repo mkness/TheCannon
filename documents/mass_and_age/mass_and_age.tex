@@ -69,7 +69,8 @@
 % plotting in /Apogee_ages/makeplot_scatter_test18_step.py 
 % and plotelements_on_spectra.py 
 
-\title{Measuring red-giant masses and ages with stellar spectra: An age catalogue for the Milky Way disk from \apogee }
+%\title{Measuring red-giant masses and ages from stellar spectra: Stellar Ages across the Milky Way disk}
+\title{Masses and ages from stellar spectra for the APOGEE catalogue of red clump and red giant stars}
 \author{M.~Ness\altaffilmark{1},
 David~W.~Hogg\altaffilmark{1,2,3},
 H.-W.~Rix\altaffilmark{1},
@@ -135,6 +136,7 @@ techniques: spectroscopic
 \ldots Do I do enough to show that the mass/age is coming from CN regions \\
 \ldots To do - rewrite interpolation between mass to age and understand why Bovy 2014 truncates at 0.8 Gyr (where as we truncate at 0.3 Gyr) \\
 \ldots Is there enough quantative discussion of the age distribution as a function of $(R,z)$ of the red clump sample - should I go into more detail/reference a bunch of literature here? \\
+\ldots MKN add label range of training dataset (and test dataset - similarly to original paper figs).
 
 
 \section{Introduction}\label{sec:Intro}
@@ -328,8 +330,8 @@ This \figurename\ shows that \tc 's purely mathematical approach of label transf
 %/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_6labels_10percent_contour.py
 \begin{figure}[h!]
 \centering
-        \includegraphics[scale=0.35]{./plots/validation_1639_6.pdf}
-  \caption{Cross validation of training dataset of 1639 stars, for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
+        \includegraphics[scale=0.4]{./plots/validation_1639_6.pdf}
+  \caption{Cross validation of the training dataset of 1639 stars, for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
 \label{fig:validation1}
 \end{figure}
 
@@ -338,13 +340,13 @@ This \figurename\ shows that \tc 's purely mathematical approach of label transf
 %\tc\ is a generative model made from the set of reference objects and we can, for a given set of the five labels, produce a model spectrum of that star.  
 \tc\ is a generative model that determines a coefficient at every pixel, or wavelength, and these coefficients describe how the flux depends on the stellar labels, given the model (in this work, in Equation \ref{eq:quad}).   A near-zero coefficient for a given pixel indicates that the flux at that pixel is independent of the labels. Conversely, the largest values of the coefficients are where the spectra changes most significantly with the label or labels. Here we examine the origin of the highest coefficients for the first order, linear coefficients. We use the first order coefficients to identify some key regions of the spectra that contain the most information with respect to the labels, and to determine which elements and molecules in particular these coefficients correlate with. 
 
-Figures \ref{fig:logg} to \ref{fig:mass} show the first order coefficients of our model described in Equation \ref{eq:quad} over a narrow wavelength range ($\approx$ 30 Angstroms) centered on where the coefficients reach their largest amplitude. The 0$^{\mbox{th}}$ order coefficient is shown in the top panel and the first order linear terms are shown in the middle panels. For a given set of labels, we can also generate the spectra (using all coefficients) and we  show in the bottom panel of these Figures, the generated spectra for a representative star, for three steps across each of the stellar labels. This directly illustrates how the flux changes with labels in regions where the coefficients are highest.  
+Figures \ref{fig:logg} to \ref{fig:mass} show the first order coefficients of our model described in Equation \ref{eq:quad} over a narrow wavelength range ($\approx$ 30 Angstroms) centered on where the coefficients reach their largest amplitude. The 0$^{\mbox{th}}$ order coefficient is shown in the top panel and the first order linear terms $\theta_l$ where $l$ = \teff, \logg, \feh, \alphafe\ and mass are shown in the middle panels. For a given set of labels, we can also generate the spectra (using all coefficients) and we  show in the bottom panel of these Figures, the generated spectra for a representative star, for three steps across each of the stellar labels. This directly illustrates how the flux changes with labels in regions where the coefficients are highest.  
 
 We use the DR12 \apogee\ linelist (Shetrone et al., 2015, in preparation), Kurucz model atmospheres \citep{castelli2004} and the stellar synthesis code MOOG \citep{sneden1979}, to determine which elements correspond to the absorption features in the spectra where the highest coefficients are located. The elements and molecules are marked on the 0$^{\mbox{th}}$ order coefficient spectra in the top panel of each of the Figures. The 0$^{\mbox{th}}$ order-coefficient vector $\theta_0$, or the baseline spectrum of the model is, essentially, the intersect spectrum of the training set of stars. The absorption features in the H-band are heavily blended with OH, CN and $^2$C molecules and the figures indicate which absorption features are comprised of blends of molecules and elements, at the stellar parameter space of \apogee\ stars. The elements that show the most significant changes with the labels show gratifying accord with expectations from stellar physics and these are discussed below, for each of the five labels. 
 
 \subsubsection{Spectral dependencies on \logg} 
 
-Figure \ref{fig:logg} shows two 30 Angstrom regions of the spectra centered on the two highest first-order \logg\ coefficient amplitudes, $\theta_{logg}$. The three panels at left show the highest \logg\ coefficient and the three panels at right show the second highest coefficient. Relevant elements and molecules that correspond to the absorption features are marked at top on the baseline spectrum of the model.  The middle panel of Figure \ref{fig:logg} shows the first order coefficients that are linear in \teff, \logg, \feh, \alphafe\ and mass. The coefficients have all been normalised to their largest absolute value, so that an amplitude of $\theta_l$ = 1 for any coefficient is at the highest value.  
+Figure \ref{fig:logg} shows two 30 Angstrom regions of the spectra centered on the two highest first-order \logg\ coefficient amplitudes, $\theta_l$ = $\theta_{logg}$. The three panels at left show the highest \logg\ coefficient and the three panels at right show the second highest coefficient. Relevant elements and molecules that correspond to the absorption features are marked at top on the baseline spectrum of the model.  The middle panel of Figure \ref{fig:logg} shows the first order coefficients $\theta_l$ that are linear in \teff, \logg, \feh, \alphafe\ and mass. The coefficients have all been normalised to their largest absolute value, so that an amplitude of $\theta_l$ = 1 for any coefficient is at the highest value.  
 
 % run run -i makeplot_scatter_test18_step/spectra in /Apogee_ages/ o
 \begin{figure}[h!]
@@ -449,7 +451,7 @@ Examining the CN molecular regions in more detail, the two CN regions shown in F
 \subsection{The information contained in the mass label within monoabundance space}
 %\subsection{The mass label in monoabundance age distribution of the \apokasc\ sample}
 
-We use small regions of monoabundance space to demonstrate that we have a bone fide spectral mass label, from which we infer true stellar ages. We explore the age label in monoabundance space so as to demonstrate that in our age label we deliver information which in itself is unique and does not reflect some combination of the other four labels. We wish to illustrate in particular, that the mass label that we use to infer age is not simply another expression of the \alphafe\ label. The \alphafe\ label itself is often used as an overall age proxy in abundance studies given simplified expectations from stellar evolution and chemical yields in stellar populations. 
+We use small regions of monoabundance space to demonstrate that we have a bone-fide spectral mass label, from which we infer true stellar ages. We explore the age label in monoabundance space so as to demonstrate that in our age label we deliver information which in itself is unique and does not reflect some combination of the other four labels. We wish to illustrate in particular, that the mass label that we use to infer age is not simply another expression of the \alphafe\ label. The \alphafe\ label itself is often used as an overall age proxy in abundance studies given gross expectations from stellar evolution and chemical yields in stellar populations. 
 
 In Figure \ref{fig:alphabins} the \apokasc\ set of reference stars used to train \tc\ are shown in the \alphafe-\feh\ plane. These stars are binned into small monoabundance boxes in this Figure and the panel at the far left indicates how many stars are in each of these bins. The colormap represents the mean age and the age dispersion from \tc, at left and centre panels respectively. 
 
@@ -459,7 +461,8 @@ Thee input label for the inferred age is from the seismic scaling relations for 
 %  in Apogee_ages after running plotdiff_5labels2 or run -i  plotdiff_5labels_10percent_contour_copy.py
 \begin{figure}[h!]
 \centering
- \includegraphics[scale=0.38]{./plots/alpha_feh_rc.pdf}
+% \includegraphics[scale=0.38]{./plots/alpha_feh_rc.pdf}
+  \includegraphics[scale=0.4]{./plots/alpha_feh_rc2.pdf}
     \caption{The \feh-\alphafe\ planes at left and centre colored by mean age of the stars in each bin at left,  and the age dispersion at centre, where the number of stars in each bin is indicated at left. The far right hand panel shows the stars in the \feh-\alphafe\ plane where the individual stars $i$ have been subtracted from the mean age in their respective bin, taking both the age from \tc\ and the age from Kepler. The panel on the far right shows the correlation in the input and output age label delivered by \tc\ in cross-validation within a narrow bin in abundance space.  }
 \label{fig:alphabins}
 \end{figure}
@@ -480,7 +483,7 @@ Figure \ref{fig:spectra} illustrates that the generated model from \tc\ provides
 \begin{figure}[h!]
 \centering
       \includegraphics[scale=0.5]{./plots/spectra_fits_7.png}
-  \caption{A spectra of one of the red clump stars in the catalogue of \citet{Bovy2014} shown in black, with the best fit model from \tc\ in blue. The best fit model from \aspcap\ is shown in red.}
+  \caption{A spectra of one of the red clump stars in the catalogue of \citet{Bovy2014} shown in black, with the best fit model from \tc\ in red. The best fit model from \aspcap\ is shown in the grey dashed line}
 \label{fig:spectra}
 \end{figure}
 
@@ -507,8 +510,9 @@ The top right hand panel of Figure \ref{fig:redclump} shows a small box in the \
 %run -i makealphafeh_imshow_4panel.py and readin_ages.py
 \begin{figure}[h!]
 \centering
- \includegraphics[scale=0.5]{./plots/redclump_4panel.pdf}
-    \caption{The 20K red clump sample: low alpha sequence is broken up into radius and box is the mono-abundance distribution in later figure.}
+ \includegraphics[scale=0.5]{./plots/redclump_4panel.pdf}\\
+%  \includegraphics[scale=0.25]{./plots/redclump_4panel.png}
+    \caption{The $\approx$ 20,000 red clump sample: low alpha sequence is broken up into radius and box is the mono-abundance distribution in later figure.}
 \label{fig:redclump}
 \end{figure}
 
@@ -525,18 +529,20 @@ Figure \ref{fig:redclump_alpha} shows the same $(R,z)$ distributions as Figure \
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
 \begin{figure}[h!]
 \centering
-    \includegraphics[scale=0.42]{./plots/median_3panel.png}
+%    \includegraphics[scale=0.42]{./plots/median_3panel.png}
+        \includegraphics[scale=0.36]{./plots/agealphamap.pdf}
     \caption{$(R,z)$ Maps of the median age of the  \apogee\ red clump stars showing all $\approx$ 20,000 stars at left, the low alpha-sequence only at centre and a small abundance bin in the low-alpha sequence at right.  }
 \label{fig:redclump_age}
 \end{figure}
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
-\begin{figure}[h!]
-\centering
-    \includegraphics[scale=0.42]{./plots/feh_3panel.png}
-    \caption{The same $(R,z)$ maps of the median \alphafe\ of the \apogee\ red clump samples as Figure \ref{fig:redclump_age}, but coloured by median \alphafe.}
-\label{fig:redclump_alpha}
-\end{figure}
+%\begin{figure}[h!]
+%\centering
+%    \includegraphics[scale=0.42]{./plots/feh_3panel.png}
+%    
+%    \caption{The same $(R,z)$ maps of the median \alphafe\ of the \apogee\ red clump samples as Figure \ref{fig:redclump_age}, but coloured by median \alphafe.}
+%\label{fig:redclump_alpha}
+%\end{figure}
 
 
 
@@ -611,7 +617,7 @@ Our code and documentation which includes instructions for downloading the train
 \section*{Acknowledgments}
 It is a pleasure to thank Maria Bergemann (MPIA)
   John Bochanski (Rider),
-  Dan Foreman-Mackey (UW), and
+  Dan Foreman-Mackey (UW), Amelia Stutz (MPIA) and
 insert other relevant people here.
 for valuable discussions and contributions.
 This project made use of

@@ -42,7 +42,7 @@ ymajorLocator   = MultipleLocator(50)
 xmajorLocator   = MultipleLocator(10)
 ######rcParams['figure.figsize'] = 22.0, 10.0
 
-def plotcutlines2(filein,ax,wl_cent):
+def plotcutlines2(filein,ax,wl_cent,indx):
     wl,elem,offset1,offset2 = loadtxt(filein, usecols = (0,2,-2,-1), unpack =1,delimiter = ',') 
     a = open(filein,'r') 
     al = a.readlines() 
@@ -52,8 +52,11 @@ def plotcutlines2(filein,ax,wl_cent):
     elem_name = array(elem_name) 
     pick = logical_and(wl > wl_cent -13, wl < wl_cent + 13) 
     for a1,b1,c1,d1 in  zip(wl[pick],elem_name[pick],offset1[pick],offset2[pick]):
-      ax.vlines(a1, c1,d1,linewidth=0.5, linestyle = 'dotted', color = 'grey' ,alpha=1.0)
-      ax.text(a1, c1-0.03,b1, rotation='vertical',color = 'k', horizontalalignment= 'center',alpha=1.0,fontsize = 10) 
+      if indx==1:
+        ax.vlines(a1, c1,d1,linewidth=1.0, linestyle = 'dotted', color = 'grey' ,alpha=1.0)
+        ax.text(a1, c1-0.03,b1, rotation='vertical',color = 'k', horizontalalignment= 'center',alpha=1.0,fontsize = 10) 
+      if indx==0:
+        ax.vlines(a1, -2,2,linewidth=1.0, linestyle = 'dotted', color = 'grey' ,alpha=1.0)
       draw() 
     return
 
@@ -167,7 +170,7 @@ def plotdata(file_in, wl0, bw,prefix, cent_g1, cent_g2,indx_coeff):
                                    (ax6, 5, "r", "log Mass")]:
 
         # note this is ln Mass and not log mass 
-        if indx_coeff == 2:
+        if indx_coeff == 20:
           _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx]/max(abs(coeffs[0:4000,indx])) , covs[:, indx, indx]/max(abs(coeffs[:,indx])), color, label=label)
         else: 
           _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx]/max(abs(coeffs[:,indx])) , covs[:, indx, indx]/max(abs(coeffs[:,indx])), color, label=label)
@@ -193,8 +196,12 @@ def plotdata(file_in, wl0, bw,prefix, cent_g1, cent_g2,indx_coeff):
     #cent_g2 = 16810
     #plotlines(cent_g1,ax2,coeffs,xgrid,s1,showvector)
     #plotlines(cent_g1,ax5,coeffs,xgrid,s1,showvector)
-    plotcutlines2('keeplines3.txt',ax2,cent_g1) 
-    plotcutlines2('keeplines3.txt',ax5,cent_g2) 
+    plotcutlines2('keeplines3.txt',ax2,cent_g1,1) 
+    plotcutlines2('keeplines3.txt',ax5,cent_g2,1) 
+    plotcutlines2('keeplines3.txt',ax1,cent_g1,0) 
+    plotcutlines2('keeplines3.txt',ax4,cent_g2,0) 
+    plotcutlines2('keeplines3.txt',ax3,cent_g1,0) 
+    plotcutlines2('keeplines3.txt',ax6,cent_g2,0) 
     leg = ax6.legend(numpoints=1, fontsize = 10,loc = 3,ncol = 5, frameon = False)
     for legobj in leg.legendHandles:
       legobj.set_linewidth(2.0)
@@ -239,8 +246,8 @@ def plotdata(file_in, wl0, bw,prefix, cent_g1, cent_g2,indx_coeff):
     #ax3.set_ylabel( r"${\theta_1}$,"+r"${\theta_2}$, "+r"${\theta_3}$, "+r"${\theta_4}$, "+r"${\theta_5}$" ,fontsize = 20) 
     ax3.set_ylabel( r"${\theta_l}$" ,fontsize = 20) 
     ax1.set_ylabel( "Normalized Flux" ,fontsize = 20) 
-    ax1.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = 20,labelpad = 5) 
-    ax4.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = 20,labelpad = 5) 
+    ax1.set_xlabel("wavelength $\lambda$" + r" (\mbox{\AA})", fontsize = 20,labelpad = 10) 
+    ax4.set_xlabel("wavelength $\lambda$" + r" (\mbox{\AA})", fontsize = 20,labelpad = 10) 
     #r"$\dot{\Theta}$[deg/s]"
     ax2.yaxis.set_major_locator(ymajorLocator2)
     ax3.yaxis.set_major_locator(ymajorLocator3)
@@ -285,10 +292,10 @@ if __name__ == "__main__": #args in command line
     plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_af_3", cent_g1, cent_g2,2) 
     # mass 
     #cent_g1 = 16904 # highest mass
-    cent_g1 = 15241 # highest mass for _5 and _5 HWR
-    cent_g2 = 15332 # second highest mass for _5
+    #cent_g1 = 15241 # highest mass for _5 and _5 HWR
+    #cent_g2 = 15332 # second highest mass for _5
     #cent_g2 = 15432.5 # highest mass for _5HWR
-    plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_m_3", cent_g1, cent_g2,3) 
+    #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_m_3", cent_g1, cent_g2,3) 
     #plotdata('coeffs_2nd_order_5HWR.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_m_3", cent_g1, cent_g2,3) 
     #cent_g1 = 15929
     #cent_g2 = 16410.7
@@ -302,7 +309,6 @@ def plotlines2(ax):
 def plotlines(wavelength_centre,ax,coeffs,xgrid,s1,showvector, cent_g1, cent_g2):
     bw = 10.
     pick = logical_and(s1 < 50, logical_and(xgrid > wavelength_centre-bw+2, xgrid < wavelength_centre+bw-2) ) # find low-element-number lines in the plot range 
-    #pick = logical_and(s1 >= 50, logical_and(xgrid > wavelength_centre-bw+2, xgrid < wavelength_centre+bw-2) ) # find low-element-number lines in the plot range 
     for jj in arange(len(pick))[pick]:
         if showvector[jj]:
             strpick = s1[jj]

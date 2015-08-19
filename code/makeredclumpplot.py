@@ -14,7 +14,7 @@ s = matplotlib.font_manager.FontProperties()
 s.set_family('serif')
 s.set_size(14)
 from matplotlib import rc
-#rc('text', usetex=False)
+rc('text', usetex=True)
 rc('text', usetex=True)
 rc('font', family='serif')
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
@@ -49,7 +49,7 @@ import pickle
 #a = open('coeffs_2nd_order_5.pickle', 'r')
 #bc = pickle.load(a)
 #coeffs = bc[4]
-#wl_star = bc[0][:,0,0] 
+wl_star = bc[0][:,0,0] 
 #a.close() 
 
 def makespec(t,g,feh,alpha,mass): 
@@ -89,7 +89,7 @@ def plotstars(filein, wl, params,prefix,cent_wl1, cent_wl2,cent_wl3, cent_wl4,ce
   ax7 = temp[2,1]
   ax8 = temp[3,1]
   t1,g1,feh1,alpha1,mass1 = params[0], params[1],params[2], params[3],params[4]
-  param_str = " Teff="+str(np.int(t1))+", logg="+str(np.round(g1,1))+", [Fe/H]="+ str(np.round(feh1,2))+", [alpha/Fe]="+str(np.round(alpha1,2))+", Mass="+str(np.round(mass1,2))
+  param_str = " Teff="+str(np.int(t1))+", logg="+str(np.round(g1,1))+", [Fe/H]="+ str(np.round(feh1,2))+r", [$\alpha$/Fe]="+str(np.round(alpha1,2))+", Mass="+str(np.round(mass1,2))
   def _plot_something(filein,params, ax, wl, indx, color, lw=1.0, label=""):
       a = pyfits.open(filein) 
       data = a[1].data
@@ -101,13 +101,13 @@ def plotstars(filein, wl, params,prefix,cent_wl1, cent_wl2,cent_wl3, cent_wl4,ce
       model_tc = makespec(t1,g1,feh1,alpha1,mass1 )
       #if indx == 0: 
       #  ax.plot(wl,model_aspcap, color='r', lw=lw,alpha = 0.5) 
-      lw2 = 1.
+      lw2 = 0.1
       lw1 = 2.
-      lw2 = 2.
-      ax.plot(wl,data , color='k', lw=lw2,label = 'data') #, label=label)
+      lw2 = 1.
       if indx == 1: 
-        ax.plot(wl,model_aspcap, color='r', lw=lw1,alpha = 0.8, label= "ASPCAP model", linestyle = 'dashdot') 
-        ax.plot(wl,model_tc, color='b', lw=lw1,alpha = 0.8, label = 'The Cannon model', linestyle = 'dashed')
+        ax.plot(wl,model_aspcap, color='gray', lw=lw1,alpha = 0.6, label= "ASPCAP model", linestyle = 'dashed') 
+        ax.plot(wl,model_tc, color='r', lw=lw1,alpha = 0.6, label = 'The Cannon model', linestyle = '-')
+      ax.plot(wl,data , color='k', lw=lw2,label = 'data') #, label=label)
       return None
 
   axes = [ ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8] 
@@ -119,8 +119,8 @@ def plotstars(filein, wl, params,prefix,cent_wl1, cent_wl2,cent_wl3, cent_wl4,ce
   #_plot_something(filein, params,ax4, wl_star,1, 'k')
   leg = ax1.legend(numpoints=1, fontsize = 12,loc = 3, frameon = False) 
   ax5.text(cent_wl5 - 13, 0.72, param_str)  
-  for legobj in leg.legendHandles:
-    legobj.set_linewidth(2.0)
+  #for legobj in leg.legendHandles:
+  #  legobj.set_linewidth(2.0)
 #  ax3.plot(wl_star, model_tc, 'b',alpha=0.5) 
   #fig.subplots_adjust(hspace=0)
   fig.subplots_adjust(wspace=0.09)
@@ -134,36 +134,36 @@ def plotstars(filein, wl, params,prefix,cent_wl1, cent_wl2,cent_wl3, cent_wl4,ce
       ax.set_ylabel("Normalized Flux", fontsize = fs) 
   for ax in [ax1,ax1]:
       ax.set_xlim(cent_wl1-bw,cent_wl1+bw) # logg1
-      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = fs,labelpad = 5) 
+      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{\AA})", fontsize = fs,labelpad = 5) 
       ax.xaxis.set_major_formatter(FormatStrFormatter('%.0f'))
   #for ax in axlist2:
   for ax in [ax2,ax2]:
       ax.set_xlim(cent_wl2-bw,cent_wl2+bw) # logg1
-      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = fs,labelpad = 5) 
+      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{\AA})", fontsize = fs,labelpad = 5) 
       ax.xaxis.set_major_formatter(FormatStrFormatter('%.0f'))
   for ax in [ax3,ax3]:
       ax.set_xlim(cent_wl3-bw,cent_wl3+bw) # logg1
-      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = fs,labelpad = 5) 
+      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{\AA})", fontsize = fs,labelpad = 5) 
       ax.xaxis.set_major_formatter(FormatStrFormatter('%.0f'))
   for ax in [ax4,ax4]:
       ax.set_xlim(cent_wl4-bw,cent_wl4+bw) # logg1
-      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = fs,labelpad = 5) 
+      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{\AA})", fontsize = fs,labelpad = 5) 
       ax.xaxis.set_major_formatter(FormatStrFormatter('%.0f'))
   for ax in [ax5,ax5]:
       ax.set_xlim(cent_wl5-bw,cent_wl5+bw) # logg1
-      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = fs,labelpad = 5) 
+      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{\AA})", fontsize = fs,labelpad = 5) 
       ax.xaxis.set_major_formatter(FormatStrFormatter('%.0f'))
   for ax in [ax6,ax6]:
       ax.set_xlim(cent_wl6-bw,cent_wl6+bw) # logg1
-      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = fs,labelpad = 5) 
+      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{\AA})", fontsize = fs,labelpad = 5) 
       ax.xaxis.set_major_formatter(FormatStrFormatter('%.0f'))
   for ax in [ax7,ax7]:
       ax.set_xlim(cent_wl7-bw,cent_wl7+bw) # logg1
-      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = fs,labelpad = 5) 
+      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{\AA})", fontsize = fs,labelpad = 5) 
       ax.xaxis.set_major_formatter(FormatStrFormatter('%.0f'))
   for ax in [ax8,ax8]:
       ax.set_xlim(cent_wl8-bw,cent_wl8+bw) # logg1
-      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{$\AA$})", fontsize = fs,labelpad = 5) 
+      ax.set_xlabel("wavelength $\lambda$" + r" (\mbox{\AA})", fontsize = fs,labelpad = 5) 
       ax.xaxis.set_major_formatter(FormatStrFormatter('%.0f'))
   for ax in axlist:
       ax.set_ylim(0.69,1.05) # logg1
