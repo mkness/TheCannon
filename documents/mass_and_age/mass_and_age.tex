@@ -70,7 +70,7 @@
 % and plotelements_on_spectra.py 
 
 %\title{Measuring red-giant masses and ages from stellar spectra: Stellar Ages across the Milky Way disk}
-\title{Masses and ages from stellar spectra for the APOGEE catalogue of red clump and red giant stars}
+\title{Masses and ages from stellar spectra -- a catalogue of APOGEE red clump and red giant ages for the Milky Way disk}
 \author{M.~Ness\altaffilmark{1},
 David~W.~Hogg\altaffilmark{1,2,3},
 H.-W.~Rix\altaffilmark{1},
@@ -99,7 +99,7 @@ obtained from a training set of stars with both
 \apogee\ infrared spectral data.
 We find that after training on mass, \thecannon\ can infer stellar
 masses---and therefore also stellar ages---for red-giant stars using
-infrared spectral data alone. \tc\ returns (log) masses to an accuracy of 0.08~dex and (log) ages to 0.25 dex for typical-quality \apogee\ spectra.  We produce a catalogue of mass and inferred age labels for all XXX,000 red-giant stars in \apogee\ DR12 and investigate the age distribution of the Milky Way's disk using the red clump sample of 20,000 stars, which span a galactic radius of 4 - 15 kpc. We show from these data that the ages of stellar structures in the Milky Way demonstrate an evolution consistent with inside out formation and radial mixing for longer lived stars, even conditioned on abundances. We demonstrate that the capability to infer age from spectroscopy alone works mathematically using cross validation and we show that the mass information derives from elements associated with dredge-up processes predicted by stellar evolution. This capability of determining masses and inferred ages from stellar spectra opens up new opportunities for Milky Way and stellar astrophysics.
+infrared spectral data alone. \tc\ returns (log) masses to an accuracy of 0.08~dex and (log) ages to 0.25 dex for typical-quality \apogee\ spectra.  We produce a catalogue of mass and inferred age labels for 105,000 red-giant stars in \apogee\ DR12, including a subsample of 20,000 red clump stars. We examine the age distribution of the Milky Way's disk using the red clump sample, which spans a galactic radius of 4 - 15 kpc. We show from these data that the ages of stellar structures in the Milky Way demonstrate an evolution consistent with inside out formation and radial mixing for longer lived stars, even conditioned on abundances. We demonstrate that the capability to infer age from spectroscopy alone works mathematically using cross validation and we show that the mass information derives from elements associated with dredge-up processes predicted by stellar evolution. This capability of determining masses and inferred ages from stellar spectra opens up new opportunities for Milky Way and stellar astrophysics.
 
 % Results
 %We demonstrate the validity of the stellar masses and ages that we determine with \tc\ with three
@@ -131,13 +131,13 @@ surveys
 techniques: spectroscopic
 }
 
-\section*{Questions from MKN}
-
-\ldots Do I do enough to show that the mass/age is coming from CN regions \\
-\ldots To do - rewrite interpolation between mass to age and understand why Bovy 2014 truncates at 0.8 Gyr (where as we truncate at 0.3 Gyr) \\
-\ldots Is there enough quantative discussion of the age distribution as a function of $(R,z)$ of the red clump sample - should I go into more detail/reference a bunch of literature here? \\
-\ldots MKN add label range of training dataset (and test dataset - similarly to original paper figs).
-
+%\section*{Questions from MKN}
+%
+%\ldots Do I do enough to show that the mass/age is coming from CN regions \\
+%\ldots To do - rewrite interpolation between mass to age and understand why Bovy 2014 truncates at 0.8 Gyr (where as we truncate at 0.3 Gyr) \\
+%\ldots Is there enough quantative discussion of the age distribution as a function of $(R,z)$ of the red clump sample - should I go into more detail/reference a bunch of literature here? \\
+%\ldots MKN add label range of training dataset (and test dataset - similarly to original paper figs).
+%
 
 \section{Introduction}\label{sec:Intro}
 
@@ -188,7 +188,7 @@ alpha-enhanced.  We will consider such age indicators illegitimate;
 the purpose of this project is to obtain estimates for ages and masses \emph{that work even within narrow abundance-selected subsamples}.
 
 
-We use \tc\  \citep{Ness2015} to infer stellar mass, \teff, \logg, \feh\ and \alphafe\ for \apogee\ stars.  Our data-driven generative model quantifies the information content at each pixel. Therefore, we are able to examine the origin of the information in the spectra for our five labels of \teff, \logg, \feh, \alphafe\ and mass. We have shown previously, in  \citet{Ness2015},  that \tc\ is successful for delivering the three primary labels of \teff, \logg\ and \feh\ for \apogee\ stars. The additional mass label (and \alphafe\ label) that we infer in this work is able to be determined because we have a training set of stars, which have known masses (and very accurate \logg\ labels) from astroseismology and known stellar parameters of \teff, \feh\ and \alphafe\ from \apogee's stellar pipeline \aspcap. We deliver our catalogue of mass and inferred ages for the 20,000 red clump stars in the \apogee\ survey, which have well known distances, as well as for the XXXX giant stars in the DR12 \apogee\ data release.
+We use \tc\  \citep{Ness2015} to infer stellar mass, \teff, \logg, \feh\ and \alphafe\ for \apogee\ stars.  Our data-driven generative model quantifies the information content at each pixel. Therefore, we are able to examine the origin of the information in the spectra for our five labels of \teff, \logg, \feh, \alphafe\ and mass. We have shown previously, in  \citet{Ness2015},  that \tc\ is successful for delivering the three primary labels of \teff, \logg\ and \feh\ for \apogee\ stars. The additional mass label (and \alphafe\ label) that we infer in this work is able to be determined because we have a training set of stars, which have known masses (and very accurate \logg\ labels) from astroseismology and known stellar parameters of \teff, \feh\ and \alphafe\ from \apogee's stellar pipeline \aspcap. We deliver our catalogue of mass and inferred ages for the 20,000 red clump stars in the \apogee\ survey, which have well known distances, as well as for the 85,000 red giant stars in the DR12 \apogee\ data release that are within the label (stellar-parameter) range of our training set.
 
 
 %The red clump sample alone from \apogee\ in itself, for which accurate distances (to 5 percent) have been determined, comprises 20,000 stars \citep{Bovy2014} and spans a radial extent across the disk of 6 -- 14 kpc. 
@@ -368,7 +368,7 @@ Similarly, Brackett lines (as well as Balmer and Paschen lines)  are sensitive t
 
 \subsubsection{Spectral dependencies on \teff} 
 
-Figure \ref{fig:teff} shows the same information as for Figure \ref{fig:logg} but for the two highest \teff\ coefficients, centered on $\approx$ 15338 and 15720 Angstroms. The highest \teff\ coefficients correspond to the cores of two Ti lines in the H-band spectra (one of which is blended also with Fe and the other with CN). The temperature coefficient is typically positive in the \apogee\ spectral region, with exceptions, for example at the Brackett feature shown in Figure \ref{fig:logg} (where it is inversely correlated with the \logg\ coefficient). \teff\ is typically strongly anticorrelated with \feh\ and \alphafe, as seen in Figure \ref{fig:teff}. This anticorrelation reflects that in a spectra at a given \feh, as the temperature increases the lines weaken and so the flux decreases, whereas at a given \teff, as the metallicity increases the lines strengthen, and the flux increases. 
+Figure \ref{fig:teff} shows the same information as for Figure \ref{fig:logg} but for the two highest \teff\ coefficients, $\theta_l$ = $\theta_{\mbox{Teff}}$ centered on $\approx$ 15338 and 15720 Angstroms. The highest \teff\ coefficients correspond to the cores of two Ti lines in the H-band spectra (one of which is blended also with Fe and the other with CN). The temperature coefficient is typically positive in the \apogee\ spectral region, with exceptions, for example at the Brackett feature shown in Figure \ref{fig:logg} (where it is inversely correlated with the \logg\ coefficient). \teff\ is typically strongly anticorrelated with \feh\ and \alphafe, as seen in Figure \ref{fig:teff}. This anticorrelation reflects that in a spectra at a given \feh, as the temperature increases the lines weaken and so the flux decreases, whereas at a given \teff, as the metallicity increases the lines strengthen, and the flux increases. 
 
 As we have a coefficient at \textit{every} wavelength, which we can map to the chemical elements and molecules in the spectra using the \apogee\ linelist, we can interpret the spectral relationship between labels and flux in more detail than for an integrated absorption feature itself.  For example, note the asymmetry in the variation of the \teff\ label in the left-hand bottom panel of Figure \ref{fig:teff}. This asymmetry likely reflects the changing ratio of the blends within this absorption feature (in this case, the feature is a blend of Ti and Fe, which are offset within this feature in their central wavelength). By the generative modeling of the spectra at every pixel in the flux, we optimise the potential to characterise and interpret the data, including \textit{within} given absorption features. 
 
@@ -392,7 +392,7 @@ The coupling of the data-driven model to stellar physics and mapping to the elem
 
 \subsubsection{Spectral dependencies on \feh\ and \alphafe} 
 
-Figure \ref{fig:feha} is demonstrative of the highest \feh\ and \alphafe\ coefficient in the spectra. The \feh\ and \alphafe\ labels are typically correlated with the cores of all of the absorption features in the spectra, particularly for the \feh\ label, as seen at left. This is unsurprising as the overall metallicity,  [M/H] of  a star simply correlates with the \feh\ and the \alphafe\ is known to increase with \feh\ and flattens to a plateau at high \alphafe\ and low \feh, subject to the star formation rate and initial mass function. For many (but not all) absorption features, the \teff\ shows an inverse correlation with temperature as seen in the left hand panel of Figure \ref{fig:teff}. 
+Figure \ref{fig:feha} is demonstrative of the highest \feh\ and \alphafe\ coefficient in the spectra, $\theta_{\mbox{[Fe/H]}}$, $\theta_{[\alpha/Fe]}$. The \feh\ and \alphafe\ labels are typically correlated with the cores of all of the absorption features in the spectra, particularly for the \feh\ label, as seen at left. This is unsurprising as the overall metallicity,  [M/H] of  a star simply correlates with the \feh\ and the \alphafe\ is known to increase with \feh\ and flattens to a plateau at high \alphafe\ and low \feh, subject to the star formation rate and initial mass function. For many (but not all) absorption features, the \teff\ shows an inverse correlation with temperature as seen in the left hand panel of Figure \ref{fig:teff}. 
 
 The strongest \feh\ coefficient corresponds to a core of a (blended) Mn feature, the flux of which changes dramatically as a function of \feh\ over the range of  --0.8 $<$ \feh\ $<$ +0.2 as shown in the bottom panel of Figure \ref{fig:teff}. Mn is one of the Fe-group elements (in addition to V, Ti, Cr, Co and Ni) and this element is known to correlate directly with \feh\ \citep[see][]{Maria2008, B2015}. 
 
@@ -502,7 +502,9 @@ Figure \ref{fig:redclump} shows the median age of the red clump stars in the \al
 
 The bottom panels of Figure \ref{fig:redclump} show normalized density maps of \feh\ of the low age (at left) and the intermediate age stars (at right), as a function of radius. At bottom left, there are 1669 stars with ages $<$ 1 Gyr and at right, there are 6716 stars with ages $>$ 5 Gyr. Note that there is an apparent overdensity at about 8 kpc across all \feh, for the intermediate age selection. This represents the Kepler field in the sample.
 
-The \feh\ distribution for intermediate age stars, as a function of \rgal\ is far less tightly correlated with radius compared to the youngest stars in the red clump sample. The gradient measured for the youngest population ($<$ 1 Gyr), at left, from a simple best fit straight line is XXX dex/kpc $\pm$ YY kpc. Conversely, the gradient fit to the intermediate age population (Age $>$ 5 Gyr) from a simple best fit straight line is YYY dex/kpc. That the \feh-radius correlation weakens with age likely reflects dynamical evolution processes in the Milky Way which redistribute the stars in the disk, such as radial migration. Intermediate stars, being longer lived, would have experienced a more significant dynamical timescale over which these processes take effect and so are scattered more from their original birth radii.  The youngest stars have been subject to a shorter dynamical evolution history and their current origin likely more tightly traces the origin of their birthplace, reflected in the correlation between radius and \feh, tracing the chemical enrichment of the gas which increases toward the centre of the Galaxy.  
+Importantly, the median age of the red clump sample is not the median age of the population from which is is drawn and the red clump age distribution, from stellar evolution theory is peaked at young ages. As discussed in \citet{Bovy2014}, the red clump population is a long lived evolutionary phase (for which precise distances can be determined), so is an excellent population tracer. At the same time, the fraction of the mass in the red clump is a function of the overall star formation history or age distribution of the Milky Way's disk.  The red clump whilst being an excellent tracer of the Milky Way disk does not represent the unbiased stellar distribution function of ages in the Milky Way disk. 
+
+The \feh\ distribution for intermediate age stars, as a function of \rgal\ is far less tightly correlated with radius compared to the youngest stars in the red clump sample. The gradient measured for the youngest population ($<$ 1 Gyr), at left, from a simple best fit straight line is -0.063 $\pm$ 0.003 dex/kpc. Conversely, the gradient fit to the intermediate age population (Age $>$ 5 Gyr) from a simple best fit straight line is -0.04 $\pm$ 0.002 dex/kpc. That the \feh-radius correlation weakens with age likely reflects dynamical evolution processes in the Milky Way which redistribute the stars in the disk, such as radial migration. Intermediate stars, being longer lived, would have experienced a more significant dynamical timescale over which these processes take effect and so are scattered more from their original birth radii.  The youngest stars have been subject to a shorter dynamical evolution history and their current origin likely more tightly traces the origin of their birthplace, reflected in the correlation between radius and \feh, tracing the chemical enrichment of the gas which increases toward the centre of the Galaxy.  
 
 The top right hand panel of Figure \ref{fig:redclump} shows a small box in the \feh-\alphafe\ plane which we select stars for conditioning our age analysis on abundances. We use this monoabundance box to investigate and compare the mean trends of age across the disk $(R,z)$, contrasted with that for all stars, in demonstrating the information in the age label, even conditioned on abundances. 
 
@@ -512,26 +514,27 @@ The top right hand panel of Figure \ref{fig:redclump} shows a small box in the \
 \centering
  \includegraphics[scale=0.5]{./plots/redclump_4panel.pdf}\\
 %  \includegraphics[scale=0.25]{./plots/redclump_4panel.png}
-    \caption{The $\approx$ 20,000 red clump sample: low alpha sequence is broken up into radius and box is the mono-abundance distribution in later figure.}
+    \caption{The $\approx$ 20,000 red clump sample of stars. The top left panel shows all stars colored by median age, where the median age$_{\mbox{RC}}$ does not represent the median age of the population from which it was drawn. The density distribution of this sample is shown at the top right and the sequences we use for examining the age of the disk, of the low$-\alpha$ sequence and mono-abundance population bins are indicated. The bottom panels show the \feh-\rgal\ distribution for the young and intermediate stars, in the low$-\alpha$ sequence.}
 \label{fig:redclump}
 \end{figure}
 
+Figure \ref{fig:redclump_age} shows the $(R,z)$ distribution of the red clump sample colored by median age across 4 - 15 kpc for  (i) all stars, at left, (ii) the low alpha sequence, second from left and (iii) the mono-abundance sample bin shown in the top right panel of \ref{fig:redclump}, third from left. The distribution of young, intermediate and old age stars, for all of the stars (far left panel) is shown in the histogram at far right. 
 
-
-Figure \ref{fig:redclump_age} shows the $(R,z)$ distribution of the red clump sample coloured by median age across 4 - 15 kpc for  (i) all stars, at left, (ii) the low alpha sequence, centre and (iii) the mono-abundance sample bin shown in the top right panel of \ref{fig:redclump}, at right. As seen most clearly for the panel at left showing all of the stars, the stars in a narrow $|z|$ range in the plane are typically young, spanning the radial extent of the sample. Older stars are present at smaller radii and preferentially further from the plane. Stars transition to older ages further from the plane as the radius increases and there is an apparent vertical flaring in the age distribution with radius, with younger stars also dominating the ages at larger heights from the plane at the largest radii. The young stars in the plane suggest ongoing star formation in the gas enriched regions of the Galaxy and the younger stars in the outer most regions support  an inside out formation scenario for the Milky Way. These distributions imply that younger stars are born also at relatively large heights from the plane, in the outer regions of the disk. 
+Figure \ref{fig:redclump_age} shows that the stars in a narrow $|z|$ range in the plane are typically young, spanning the radial extent of the sample. There are fewer stars in the low-alpha sequence far from the plane and the low-alpha sequence is dominant at larger radii (e.g. Hayden et al., 2015), however the same trends are seen in all three panels of age distributions. Older stars are present, preferentially at smaller radii as seen most clearly in the far left panel, and preferentially these are located further from the plane than younger stars. Stars transition to older ages further from the plane as the radius increases and there is an apparent vertical flaring in the age distribution with radius, with younger stars also dominating the ages at larger heights from the plane at the largest radii. The histogram at far right shows the very different distributions of young and old stars. The youngest stars are strongly peaked near $z$ $\sim$ 0 as they are concentrated to the plane, suggesting ongoing star formation in the gas enriched regions of the Galaxy. The older stars show a much broader distribution and extend to larger heights from the plane and are present in larger relative fraction at smaller radii, preferentially at larger $z$.  The younger stars extending out to larger radii including farther from the plane supports an inside out formation scenario for the Milky Way. These distributions which show young stars also at large heights from the plane imply that younger stars are born also at relatively large heights from the plane. %, in the outer regions of the disk. 
 
 The centre and far right panels show a restricted distribution in  $z$, as the young alpha sequence is concentrated to the plane. Nevertheless, even conditioned on abundances, there are the same apparent age trends seen in the left-hand panel. Old stars are preferentially seen at larger heights from the plane, and for the low-alpha sequence, very few old stars are present at the largest radial extents of the sample. For the mono-abundance selection in the panel at the far right, there are a handful of old stars present across the radial extent of the sample, preferentially at largest heights from the plane. At the same time, as also seen for the centre panel, there are young stars seen at large $z$, across all $R$. Clearly, the young-alpha sequence does not represent a homogeneously young population, and the age label demonstrates that conditioned on abundances, older stars are distributed differently to younger stars in the disk of the Milky Way. 
 
-\ldots MKN rewrite these next two paragraphs to be clearer.
-
-Figure \ref{fig:redclump_alpha} shows the same $(R,z)$ distributions as Figure \ref{fig:redclump_age}, but coloured by the median alpha-enhancement of the stars rather than the mean age of the stars. For the low-alpha sequence (centre) and the monoabundance bin of stars (at right), the chemical space is homogenous. If the age indicator was not providing any additional information, other than being a simpe reiteration of, or proxy for the \alphafe\ label, we would not expect to see the structure that is present in the median age that we do in the centre and right panels of Figure \ref{fig:redclump_age}. 
+%\ldots MKN rewrite these next two paragraphs to be clearer.
+%
+%Figure \ref{fig:redclump_alpha} shows the same $(R,z)$ distributions as Figure \ref{fig:redclump_age}, but coloured by the median alpha-enhancement of the stars rather than the mean age of the stars. For the low-alpha sequence (centre) and the monoabundance bin of stars (at right), the chemical space is homogenous. If the age indicator was not providing any additional information, other than being a simpe reiteration of, or proxy for the \alphafe\ label, we would not expect to see the structure that is present in the median age that we do in the centre and right panels of Figure \ref{fig:redclump_age}. 
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
+% now made in /Users/ness/new_laptop/Apogee_ages/run -i makerzage_4panel.py
 \begin{figure}[h!]
 \centering
 %    \includegraphics[scale=0.42]{./plots/median_3panel.png}
-        \includegraphics[scale=0.36]{./plots/agealphamap.pdf}
-    \caption{$(R,z)$ Maps of the median age of the  \apogee\ red clump stars showing all $\approx$ 20,000 stars at left, the low alpha-sequence only at centre and a small abundance bin in the low-alpha sequence at right.  }
+        \includegraphics[scale=0.43]{./plots/agealphamap_hist.pdf}
+    \caption{$(R,z)$ Maps of the median age of the  \apogee\ red clump stars showing all $\approx$ 20,000 stars at far left, the low alpha-sequence only in the second panel from left and a small abundance bin in the low-alpha sequence third panel from left. The final panel, at right is a histogram of the different age distributions as a function of age, showing all stars across $z$, for a young, intermediate and old selection.  }
 \label{fig:redclump_age}
 \end{figure}
 
@@ -545,8 +548,17 @@ Figure \ref{fig:redclump_alpha} shows the same $(R,z)$ distributions as Figure \
 %\end{figure}
 
 
+%run -i readin_play_logmass.py in /Users/ness/new_laptop/Apogee_Ages/results/
+\begin{figure}[h!]
+\centering
+%    \includegraphics[scale=0.42]{./plots/median_3panel.png}
+        \includegraphics[scale=0.43]{./plots/agealphamap_hist_all2.pdf}
+    \caption{$(R,z)$ Maps of the median age of the  \apogee\ red clump stars showing all $\approx$ 20,000 stars at far left, the low alpha-sequence only in the second panel from left and a small abundance bin in the low-alpha sequence third panel from left. The final panel, at right is a histogram of the different age distributions as a function of age, showing all stars across $z$, for a young, intermediate and old selection.  }
+\label{fig:redclump_age}
+\end{figure}
 
-From the \alphafe\ map of all stars, shown at left in Figure \ref{fig:redclump_alpha}, it is apparent that the high-alpha sequence dominates at small $R$ and large $z$, and the low-alpha sequence dominates at large $R$ (seen by Hayden et al., 2015). However, the gradient moving along the plane in \alphafe, where stars are more alpha enriched in the plane at larger $R$, traces chemical enrichment and not age. This gradient in the median \alphafe\ with $R$ at $z$ = 0 likely reflects that the stars are formed out of more enriched gas in the outer regions, aligned with inside-out formation. However, from the age distribution in the left panel of Figure \ref{fig:redclump_age}, the ages of stars in the plane in the inner-most region of the sample is not significantly different to that of the median age in the outer most region, The information in the \alphafe\ abundance space does not directly translate to stellar age. The stars in the plane at small and large $R$ are similarly young, but in the outer region the young stars also extent to larger heights from the plane. There is only enriched gas in the later forming outer most region which has not experience the same chemical enrichment history as the longer-forming inner most region of the disk.
+
+%From the \alphafe\ map of all stars, shown at left in Figure \ref{fig:redclump_alpha}, it is apparent that the high-alpha sequence dominates at small $R$ and large $z$, and the low-alpha sequence dominates at large $R$ (seen by Hayden et al., 2015). However, the gradient moving along the plane in \alphafe, where stars are more alpha enriched in the plane at larger $R$, traces chemical enrichment and not age. This gradient in the median \alphafe\ with $R$ at $z$ = 0 likely reflects that the stars are formed out of more enriched gas in the outer regions, aligned with inside-out formation. However, from the age distribution in the left panel of Figure \ref{fig:redclump_age}, the ages of stars in the plane in the inner-most region of the sample is not significantly different to that of the median age in the outer most region, The information in the \alphafe\ abundance space does not directly translate to stellar age. The stars in the plane at small and large $R$ are similarly young, but in the outer region the young stars also extent to larger heights from the plane. There is only enriched gas in the later forming outer most region which has not experience the same chemical enrichment history as the longer-forming inner most region of the disk.
 
 % gas fed back in the plane.  This may be as the stars in the plane 
  
@@ -564,8 +576,9 @@ Second, we have shown that the spectral mass (or age) indicators discovered by \
 
 Additionally, for the low-alpha sequence only, the young and intermediate stars show an \feh\ distribution with radius that is consistent with radial mixing processes that are expected to be relevant for the intermediate and old populations, but not the youngest stars.  The mean age map of the Milky Way disk as traced by the red clump stars indicates a flaring of the disk as a function of age; moving out in radius, younger stars are present at larger and larger heights from the plane and at small radii the youngest stars are located in significant fraction only in the plane of the disk. Note in these maps that even for the low-alpha sequence, there are old alpha-enriched stars and the oldest stars are located at all radii, even the largest radii, at heights preferentially farthest from the plane. 
 
-We provide our full catalogue of stellar labels, including the age of each star as inferred from its mass label for all XXXX DR12 red giant stars within the label range of the training set, as well as for the full red clump catalogue, in Table \ref{tab:online}.  Interpolating from mass to age enforces an age edge at each end of the distribution and so an artificial truncation. This means there is an artificially sharp overdensity of stars at both limits of the age distribution (for the youngest and oldest stars). With \tc\ we can also train on mass and as we have no physical prior for our model, this avoids the artificial truncation at the hard limits of the mass to age grid. However, this results in the same stars having both negative ages and also ages older than the age of the universe, due to the intrinsic accuracy of our model and scatter that extends to outside physical parameter space. The age$_{trained}$ column of our table nevertheless provides our results when age and not mass is used as the training label for \tc.
+We provide our full catalogue of stellar labels, including the age of each star as inferred from its mass label for 85,000 DR12 red giant stars within the label range of the training set, as well as for the full red clump catalogue, in Table \ref{tab:online}.  Interpolating from mass to age enforces an age edge at each end of the distribution and so an artificial truncation. This means there is an artificially sharp overdensity of stars at both limits of the age distribution (for the youngest and oldest stars). With \tc\ we can also train on mass and as we have no physical prior for our model, this avoids the artificial truncation at the hard limits of the mass to age grid. However, this results in the same stars having both negative ages and also ages older than the age of the universe, due to the intrinsic accuracy of our model and scatter that extends to outside physical parameter space. The age$_{trained}$ column of our table nevertheless provides our results when age and not mass is used as the training label for \tc.
 
+% results are in here: /Users/ness/new_laptop/Apogee_ages/results with the pick givine 85,000 stars - note distances are not very good to bulge need to fix this (for ages too near Sun are old) and
 \begin{table*}[!h]
 \tiny{
 \centering
@@ -577,8 +590,7 @@ We provide our full catalogue of stellar labels, including the age of each star 
 \small{(2MASS)} & K & dex &  dex  & K & dex & dex &  & & & &    \\    
 \hline
 \tiny{21353892+4229507} & XX & XX  & XX  & XX & XX  & XX  & XX & XX & XX & XX & XX\\
-\tiny{21354474+4250256} & XX & XX  & XX  & XX & XX  & XX  & XX & XX & XX & XX & XX\\
-\tiny{21354775+4233120} & XX & XX  & XX  & XX & XX  & XX  & XX & XX & XX& XX & XX \\
+\tiny{21354474+4250256} & XX & XX  & XX  & XX & XX  & XX  & XX & XX & XX & XX & XX\\\tiny{21354775+4233120} & 4689.2 & 2.80  & 0.58  & 0.14 &   & 0.93  & 7.5 & 0.01 & 0.01 & 2.85 & 12.9 \\
 \tiny{21355458+4222326} & XX & XX  & XX  & XX & XX  & XX  & XX & XX & XX & XX & XX\\
 \tiny{21360285+4231145} & XX & XX  & XX  & XX & XX  & XX  & XX & XX & XX & XX & XX\\
 \tiny{21360822+4225525} & XX & XX  & XX  & XX & XX  & XX  & XX & XX & XX & XX & XX\\
@@ -602,17 +614,17 @@ Our code and documentation which includes instructions for downloading the train
 %\label{fig:alphabins}
 %\end{figure}
 
-
-\section{Conclusion} 
-
-\ldots MKN write some conclusions after a break from writing.... 
-
-\ldots This data-driven generative modeling approach is not explicitly informed by stellar physics and instead in itself has the potential to inform stellar physics.
-% and with a general methodology that can be applied to any spectral region so if mass information is present, it can be inferred.
-% it is not constrained by theoretical assumptions
-%the least controversial to
-
-\ldots The derivation of stellar masses directly from stellar spectra using \tc\ is relevant for other wavelength regions and surveys, for example GALAH, (the spectral region of which contains two strong H-$\alpha$ features, already known to be good mass indicators). 
+%
+%\section{Conclusion} 
+%
+%\ldots MKN write some conclusions after a break from writing.... 
+%
+%\ldots This data-driven generative modeling approach is not explicitly informed by stellar physics and instead in itself has the potential to inform stellar physics.
+%% and with a general methodology that can be applied to any spectral region so if mass information is present, it can be inferred.
+%% it is not constrained by theoretical assumptions
+%%the least controversial to
+%
+%\ldots The derivation of stellar masses directly from stellar spectra using \tc\ is relevant for other wavelength regions and surveys, for example GALAH, (the spectral region of which contains two strong H-$\alpha$ features, already known to be good mass indicators). 
 
 \section*{Acknowledgments}
 It is a pleasure to thank Maria Bergemann (MPIA)
