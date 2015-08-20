@@ -170,7 +170,7 @@ def plotdata(file_in, wl0, bw,prefix, cent_g1, cent_g2,indx_coeff):
                                    (ax6, 5, "r", "log Mass")]:
 
         # note this is ln Mass and not log mass 
-        if indx_coeff == 20:
+        if indx_coeff == 1:
           _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx]/max(abs(coeffs[0:4000,indx])) , covs[:, indx, indx]/max(abs(coeffs[:,indx])), color, label=label)
         else: 
           _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx]/max(abs(coeffs[:,indx])) , covs[:, indx, indx]/max(abs(coeffs[:,indx])), color, label=label)
@@ -279,17 +279,18 @@ if __name__ == "__main__": #args in command line
     wl2 = 15700
     # g 
     #cent_g1 = 16030 # log g max - there is a spike here - need to raise this issue  - only arises when training on log mass 
-    #cent_g1 = 15770 # log g max
-    #cent_g2 = 16810 # log g 2nd 
-    #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_g_3", cent_g1, cent_g2,1) 
+    cent_g1 = 15770 # log g max
+    cent_g2 = 16810 # log g 2nd 
+    #cent_g2 = 16030 # bad terrible spike
+    plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_g_3", cent_g1, cent_g2,1) 
     # t 
     #cent_g1 = 15339 # teff 2nd max 
     #cent_g2 = 15720 # teff max 
     #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_t_3", cent_g1, cent_g2,0) 
     # feh,alpha 
-    cent_g1 = 15221.5 # highest feh
-    cent_g2 = 16369.0 # highest alpha 
-    plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_af_3", cent_g1, cent_g2,2) 
+    #cent_g1 = 15221.5 # highest feh
+    #cent_g2 = 16369.0 # highest alpha 
+    #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_af_3", cent_g1, cent_g2,2) 
     # mass 
     #cent_g1 = 16904 # highest mass
     #cent_g1 = 15241 # highest mass for _5 and _5 HWR
