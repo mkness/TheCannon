@@ -86,21 +86,36 @@ A.Y.~Q~Ho \altaffilmark{1},
 \email{ness@mpia.de}
 
 \begin{abstract}%
-% Context
-With \thecannon, we have demonstrated that it is possible to use a
-small training set of stars with noisy spectral data and known
-stellar-parameter labels to build a data-driven probabilistic model of
-stellar spectra that can be used to infer stellar-parameter labels for
-other stars (with differently noisy spectral data).
-% Aims
-% Method
-Here we train this system using stars with known stellar mass labels
-obtained from a training set of stars with both
-\kepler\ asteroseismological observations (with derived masses) and
-\apogee\ infrared spectral data.
-We find that after training on mass, \thecannon\ can infer stellar
-masses---and therefore also stellar ages---for red-giant stars using
-infrared spectral data alone. \tc\ returns (log) masses to an accuracy of 0.08~dex and (log) ages to 0.25 dex for typical-quality \apogee\ spectra.  We produce a catalogue of mass and inferred age labels for 85,000 red-giant stars in \apogee\ DR12, including a subsample of 20,000 red clump stars. We examine the age distribution of the Milky Way's disk using the red clump sample, which spans a galactic radius of 4 - 15 kpc. We show from these data that the ages of stellar structures in the Milky Way demonstrate an evolution consistent with inside out formation and radial mixing for longer lived stars, even conditioned on abundances. We demonstrate that the capability to infer age from spectroscopy alone works mathematically using cross validation and we show that the mass information derives from elements associated with dredge-up processes predicted by stellar evolution. This capability of determining masses and inferred ages from stellar spectra opens up new opportunities for Milky Way and stellar astrophysics.
+The mass of a star is arguably its most fundamental parameter. It implies a stellar-evolutionary age 
+for post main sequence stars. Yet, stellar masses had never been derived directly from spectra for giant stars,
+which are tracers luminous enough to be observed across the Galaxy.
+From the Kepler and APOGEE surveys, samples of several thousand stars exist
+with high-quality spectra and astroseismic masses. 
+Here we show that from these data we can build a data-driven spectral model using  \tc , which can determine stellar masses 
+to 0.08~dex
+%, along with $\teff$, log~g,$\feh$ and $\alphafe$
+ from APOGEE DR12 spectra of giants (RCand RGB stars);
+these imply age estimates accurate to 0.25~dex. We show that \tc~ constrains the ages foremost from spectral regions
+with CN absorption lines, elements whose surface abundances reflect mass-dependent dredge-up. We show that the age information
+is not simply a corollary of the birth-material abundances $\feh$ and $\alphafe$. This way we have derived an unprecedented sample
+of 85,000 giants (including 20,000 RC stars) with mass -- and hence age -- estimates, spanning $R_{GC}\sim 4 -15$~kpc.
+Such stellar age constraints across the Milky Way, beyond those implied by $\feh$ and $\alphafe$,  open up new avenues in Galactic archeology.
+
+%% Context
+%With \thecannon, we have demonstrated that it is possible to use a
+%small training set of stars with noisy spectral data and known
+%stellar-parameter labels to build a data-driven probabilistic model of
+%stellar spectra that can be used to infer stellar-parameter labels for
+%other stars (with differently noisy spectral data).
+%% Aims
+%% Method
+%Here we train this system using stars with known stellar mass labels
+%obtained from a training set of stars with both
+%\kepler\ asteroseismological observations (with derived masses) and
+%\apogee\ infrared spectral data.
+%We find that after training on mass, \thecannon\ can infer stellar
+%masses---and therefore also stellar ages---for red-giant stars using
+%infrared spectral data alone. \tc\ returns (log) masses to an accuracy of 0.08~dex and (log) ages to 0.25 dex for typical-quality \apogee\ spectra.  We produce a catalogue of mass and inferred age labels for 85,000 red-giant stars in \apogee\ DR12, including a subsample of 20,000 red clump stars. We examine the age distribution of the Milky Way's disk using the red clump sample, which spans a galactic radius of 4 - 15 kpc. We show from these data that the ages of stellar structures in the Milky Way demonstrate an evolution consistent with inside out formation and radial mixing for longer lived stars, even conditioned on abundances. We demonstrate that the capability to infer age from spectroscopy alone works mathematically using cross validation and we show that the mass information derives from elements associated with dredge-up processes predicted by stellar evolution. This capability of determining masses and inferred ages from stellar spectra opens up new opportunities for Milky Way and stellar astrophysics.
 
 % Results
 %We demonstrate the validity of the stellar masses and ages that we determine with \tc\ with three
@@ -132,38 +147,48 @@ surveys
 techniques: spectroscopic
 }
 
-%\section*{Questions from MKN}
-%
-%\ldots Do I do enough to show that the mass/age is coming from CN regions \\
-%\ldots To do - rewrite interpolation between mass to age and understand why Bovy 2014 truncates at 0.8 Gyr (where as we truncate at 0.3 Gyr) \\
-%\ldots Is there enough quantative discussion of the age distribution as a function of $(R_{GAL},z)$ of the red clump sample - should I go into more detail/reference a bunch of literature here? \\
-%\ldots MKN add label range of training dataset (and test dataset - similarly to original paper figs).
-%
 
 \section{Introduction}\label{sec:Intro}
 
-Asteroseismology surveys, such as \most, \corot, and \kepler, have
-been extremely successful and productive in bringing us information
-about stellar interiors and (therefore) ages.
-These missions operate by taking high-cadence, high-precision stellar
-photometry, in which stellar oscillation modes are visible in the
-Fourier domain.
-These missions have operated by taking long stretches of
-uninterrupted, uniform, dense imaging data on thousands of individual
-stars.
-They are expensive missions, but absolutely critical to calibrate
-physical stellar interior models and set standards for stellar
-parameter estimation, all of which is required for the ultimate
-success of the next generation of stellar surveys, particularly
-including the \gaia\ Mission.
+In the Galactic archeology, the quest to understand the formation and evolution history of the Milky Way through the
+properties of its stars, age-dating of stars is fundamental. Having ages of extensive sets of stars across our galaxy, and
+the element abundances of the material from which they formed, would be a powerful constraint on galaxy evolution and on chemical evolution.
+Yet, as almost all stars are in equilibrium\footnote{Most stars not in equilibrium undergo periodic variations, such as pulsations, but without discernable secular evolution.}, age is not a quantity that can direcly measured. Instead, one must rely on measuring instantaneous stellar properties (or ``labels'') that correlate with age in a physically understood or in a calibrateable way (see Soderblom 2010 for an excellent review).
+Inevitably, stellar age estimates involve some form of stellar evolution models, both for stars in clusters and for single field stars. 
 
-At the same time, there are many large spectroscopic surveys, such
-as \apogee\ \citep{Majewski2012}, \gaiaeso\ \citep{Gilmore2012} and \galah\ \citep{Freeman2012}, underway to measure the properties
-of stellar \emph{exteriors}.
-These surveys will take high signal-to-noise, high resolution spectra
-of hundreds of thousands of stars, revealing detailed surface chemical
-abundances.
-One question that naturally arises is:
+For the most part, age estimates from spectroscopic surveys have been determined for stars before or just after their main-sequence turn-off. 
+In that regime, stellar evolutionary isochrones are well separated (at a given metallicity), and for well-measured \teff , \logg and \feh ages follow from isochrone matching. 
+Such stellar parameters are typically derived from high resolution spectroscopy, which delivers low associated errors on the parameters \citep[e.g.][]{Bensby2013, Casagrande2011, haywood2013} [add Bergemann Gaia-ESO...].  To date, the largest homogeneous data set of stellar ages in the galactic disk has been derived in this fashion, from the Geneva Cophenhagen Survey (GCS). Yet, all of these 16,682 main sequence stars from GCS are located in the immediate solar neighbourhood of $<0.1$~kpc \citep{nordstrom2004short}.
+Recent analogous analyses [Haywood 2013; Bergemann 2014] have pushed to greater distances, but still remain limited to essentially the solar radius in the Galaxy.
+
+
+To obtain stellar age maps throughout the Milky Way, one needs age estimates for more luminous stars, in evolutionary phases that are prevalent 
+across most ages and metallicities. Giant stars satisfy these criteria. However, for giant stars isochrones of different agesnearly overlap, making it 
+all but impossible to get precise ages from \teff , \logg  and \feh measurements, unless we have tiny errors in these measurements
+and enormous confidence in the accuracy of stellar isochrones. 
+However, for basically all post main sequence stars, in particular stars on the red giant branch (RGB) or in the red clump (RC), the stellar mass should be
+powerful constraint on the stars' age (see e.g. Martig et al 2014). In that case the challenge is reduced to estimating stellar masses for extensive samples
+of giant stars throught the Galaxies; these masses then imply ages.
+
+In recent years, asteroseismology surveys, such as \most, \corot, and \kepler, have
+been extremely successful and productive in producing information
+about stellar interiors and hence masses, in particular for giants. 
+These missions operate by taking high-cadence, high-precision stellar
+photometry over long, uninterrupted time intervals, in which stellar oscillation 
+modes are visible in the Fourier domain. These modes, in turn are related to the density and mass of the stars.
+At present, all these astroseismological surveys cover only a few directios in the sky, and hence a small portion of the Galaxy.
+
+At the same time, there are a number of large spectroscopic surveys, such
+as \apogee\ \citep{Majewski2012}, \gaiaeso\ \citep{Gilmore2012} and \galah\ \citep{Freeman2012}, that
+are producing high signal-to-noise, high resolution spectra
+of hundreds of thousands of stars across the entire sky. These allow to measure properties of stars
+from their photosphere, specifically  \teff , \logg , \feh~ and \xfe~ for many elements. 
+
+{\bf: HWR is not sure whether casting this as ``spectrsocopy is determining interior properties'' is a defensible statement. We are -- with spectroscopy --
+strictly determining surface properties, e.g. the surface CNO abundance; everything else is ``inference''; I am not sure we can claim that the
+Cannon training can overcome this.. let's discuss..}
+
+{\it One question that naturally arises is:
 How do we use these two pieces of information of surface spectroscopy
 and interior asteroseismology to jointly infer stellar properties?
 Another is:
@@ -173,10 +198,9 @@ After all, the marginal cost of taking a spectrum of
 a new star is very low relative to the marginal cost of getting its
 asteroseismology.
 
-Using astroseismology, stellar mass is determined for stars directly from the scaling relations which describe the frequency spacing and amplitude of the modes as a function of the mass. For inferring mass and therefore age information from surface spectroscopy alone, there are only a small handful of specific metrics in the optical and UV wavelength bands that have been previously used  \citep[see][and references therein]{soderblom2010}. These metrics derive from rotation, in the line-profile variations due to non-LTE effects (as convection scales with mass) and from chromospheric emission from a time-dependent magnetic field e.g. the Ca II HK and H$\alpha$ features. The decay of long lived isotopes such as Th, which can be measured at 4019 Angstroms, can also be used for age dating by comparing the abundance of the long lived isotopes to that of the stable elements in the stellar photosphere. 
+Using astroseismology, stellar mass is determined for stars directly from the scaling relations which describe the frequency spacing and amplitude of the modes as a function of the mass. For inferring mass and therefore age information from surface spectroscopy alone, there are only a small handful of specific metrics in the optical and UV wavelength bands that have been previously used  \citep[see][and references therein]{soderblom2010}. These metrics derive from rotation, in the line-profile variations due to non-LTE effects (as convection scales with mass) and from chromospheric emission from a time-dependent magnetic field e.g. the Ca II HK and H$\alpha$ features. The decay of long lived isotopes such as Th, which can be measured at 4019 Angstroms, can also be used for age dating by comparing the abundance of the long lived isotopes to that of the stable elements in the stellar photosphere. }
 
 
-Typically, age estimates have been determined for main sequence and turn-off stars not from spectral features themselves, but from using the measured stellar parameters by interpolating between stellar models. In the main-sequence and turn-off \teff-\logg\ regime, the stellar evolution models are the least insensitive to age. The stellar parameters are typically derived from high resolution spectroscopy, which delivers low associated errors on the parameters \citep[e.g.][]{Bensby2013, Casagrande2011, haywood2013}.   However, the age constraints obtained using this method are typically weak or may only provide an upper limit on the estimated age.  This approach has been used to determine ages for what has been up until now the largest homogeneous data set of stellar ages in the galactic disk, from the Geneva Cophenhagen Survey (GCS). All of the 16,682 main sequence stars from GCS are located in the solar neighbourhood \citep{nordstrom2004short}.
 
 If we can instead determine the interior properties of stars from surface
 spectroscopy alone, even noisily, great opportunities arise for
@@ -331,7 +355,7 @@ This \figurename\ shows that \tc 's purely mathematical approach of label transf
 %/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_6labels_10percent_contour.py
 \begin{figure}[h!]
 \centering
-        \includegraphics[scale=0.4]{./plots/validation_1639_6.pdf}
+        \includegraphics[scale=0.4]{./plots/validation_1500.pdf}
   \caption{Cross validation of the training dataset of 1639 stars, for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
 \label{fig:validation1}
 \end{figure}
@@ -658,3 +682,4 @@ This project made use of
 \bibliography{tc.bib}
 
 \end{document}
+
