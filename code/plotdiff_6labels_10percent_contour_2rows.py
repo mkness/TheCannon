@@ -86,8 +86,9 @@ def returnscatter(x,y):
 
 # read in files 
 dir1 = '/Users/ness/new_laptop/Apogee_ages/crossvalidation/' 
-starsout_files = glob(dir1+"random_not*log*")
-training_files =  glob(dir1+"training*5_*_log.pickle*")
+dir2 = '/Users/ness/new_laptop/Apogee_ages/crossvalidation_quad/' 
+starsout_files = glob(dir2+"random_not*log*")
+training_files =  glob(dir2+"training*5_*_log.pickle*")
 fn2 = dir1+'apokasc_ages_actual.txt'
 fn = dir1+'training_apokasc_ages.list'
 tin,gin,fehin,alphain, T_A, g_A, feh_A,rc_est = np.loadtxt(fn, usecols = (1,2,3,4,1,2,3,5), unpack =1)

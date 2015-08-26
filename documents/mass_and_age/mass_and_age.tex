@@ -1,4 +1,7 @@
- % style notes
+% This file is part of The Cannon project.
+% Copyright 2015 the authors.
+
+% style notes
 % - \,percent not \%
 
 \documentclass[12pt, preprint]{aastex}
@@ -8,15 +11,15 @@
 \newcommand{\project}[1]{\textsl{#1}}
 \newcommand{\thecannon}{\project{The~Cannon}} 
 \newcommand{\tc}{\project{The~Cannon}} 
-\newcommand{\apogee}{\project{APOGEE}}
-\newcommand{\apokasc}{\project{APOKASC}}
-\newcommand{\aspcap}{\project{ASPCAP}}
+\newcommand{\apogee}{\project{\textsc{apogee}}}
+\newcommand{\apokasc}{\project{\textsc{apokasc}}}
+\newcommand{\aspcap}{\project{\textsc{aspcap}}}
 \newcommand{\corot}{\project{Corot}}
 \newcommand{\kepler}{\project{Kepler}}
 \newcommand{\gaia}{\project{Gaia}}
-\newcommand{\gaiaeso}{\project{Gaia--ESO}}
-\newcommand{\galah}{\project{GALAH}}
-\newcommand{\most}{\project{MOST}}
+\newcommand{\gaiaeso}{\project{Gaia--\textsc{eso}}}
+\newcommand{\galah}{\project{\textsc{galah}}}
+\newcommand{\most}{\project{\textsc{most}}}
 \newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\documentname}{\textsl{Article}}
 
@@ -66,11 +69,7 @@
 %2. resample the errors in label space - add a random error to the mass term and rerun the labels through the cannon and see if the standard deviation and bias in the take one out test is any different - if not we know the noisiness in the training set is not an issue
 %3. cut out a lot of regions except for the CN and retrain and see if the take-out-out test sigma increases or decreases in the dispersion - if increases we know we are limited by the information available in the data. If decreases there is degeneracy / noisiness in the covariance of labels? 
 
-% plotting in /Apogee_ages/makeplot_scatter_test18_step.py 
-% and plotelements_on_spectra.py 
-
-%\title{Measuring red-giant masses and ages from stellar spectra: Stellar Ages across the Milky Way disk}
-\title{Masses and ages from stellar spectra -- a catalogue of APOGEE red clump and red giant ages for the Milky Way disk}
+\title{Spectroscopic determination of masses (and implied ages) \\for red giants}
 \author{M.~Ness\altaffilmark{1},
 David~``W."~Hogg\altaffilmark{1,2,3},
 H.-W.~Rix\altaffilmark{1},
@@ -81,53 +80,25 @@ A.Y.~Q~Ho \altaffilmark{1},
 \altaffiltext{2}{Center for Cosmology and Particle Physics, Department of Phyics,
              New York University, 4 Washington Pl., room 424, New York, NY, 10003, USA}
 \altaffiltext{3}{Center for Data Science, New York University, 726 Broadway, 7th Floor, New York, NY 10003, USA}
-% \altaffiltext{4}{NSF Astronomy and Astrophysics Postdoctoral Fellow}
-% \altaffiltext{5}{Department of Physics \& Astronomy, Johns Hopkins University, Baltimore, MD, 21218, USA}
 \email{ness@mpia.de}
 
 \begin{abstract}%
-The mass of a star is arguably its most fundamental parameter. For giant stars, it implies a stellar-evolutionary age. 
-Yet, stellar masses had never been derived directly from spectra for giants,
-which are tracers luminous enough to be observed across the Galaxy.
-From the Kepler and APOGEE surveys, samples of several thousand stars exist
+The mass of a star is arguably its most fundamental parameter. For red-giant stars, it implies a stellar-evolution age. 
+Yet, stellar masses and ages have never been derived directly from spectra for red giants,
+despite their value as tracers luminous enough to be observed across the Galaxy.
+From the \kepler\ and \apogee\ surveys, samples of several thousand stars exist
 with high-quality spectra and astroseismic masses. 
 Here we show that from these data we can build a data-driven spectral model using  \tc , which can determine stellar masses 
-to 0.08~dex
+to $\sim$ 0.08~dex
 %, along with $\teff$, log~g,$\feh$ and $\alphafe$
- from APOGEE DR12 spectra of giants (RC and RGB stars);
+ from \apogee\ \textsc{dr}12 spectra of giants (RC and RGB stars);
 these imply age estimates accurate to 0.25~dex. We show that \tc~ constrains the ages foremost from spectral regions
 with CN absorption lines, elements whose surface abundances reflect mass-dependent dredge-up. We show that the age information
 is not simply a corollary of the birth-material abundances $\feh$ and $\alphafe$. This way we have derived an unprecedented sample
 of 85,000 giants (including 20,000 RC stars) with mass -- and hence age -- estimates, spanning $R_{GC}\sim 4 -15$~kpc.
 Such stellar age constraints across the Milky Way, beyond those implied by $\feh$ and $\alphafe$,  open up new avenues in Galactic archeology.
 
-%% Context
-%With \thecannon, we have demonstrated that it is possible to use a
-%small training set of stars with noisy spectral data and known
-%stellar-parameter labels to build a data-driven probabilistic model of
-%stellar spectra that can be used to infer stellar-parameter labels for
-%other stars (with differently noisy spectral data).
-%% Aims
-%% Method
-%Here we train this system using stars with known stellar mass labels
-%obtained from a training set of stars with both
-%\kepler\ asteroseismological observations (with derived masses) and
-%\apogee\ infrared spectral data.
-%We find that after training on mass, \thecannon\ can infer stellar
-%masses---and therefore also stellar ages---for red-giant stars using
-%infrared spectral data alone. \tc\ returns (log) masses to an accuracy of 0.08~dex and (log) ages to 0.25 dex for typical-quality \apogee\ spectra.  We produce a catalogue of mass and inferred age labels for 85,000 red-giant stars in \apogee\ DR12, including a subsample of 20,000 red clump stars. We examine the age distribution of the Milky Way's disk using the red clump sample, which spans a galactic radius of 4 - 15 kpc. We show from these data that the ages of stellar structures in the Milky Way demonstrate an evolution consistent with inside out formation and radial mixing for longer lived stars, even conditioned on abundances. We demonstrate that the capability to infer age from spectroscopy alone works mathematically using cross validation and we show that the mass information derives from elements associated with dredge-up processes predicted by stellar evolution. This capability of determining masses and inferred ages from stellar spectra opens up new opportunities for Milky Way and stellar astrophysics.
 
-% Results
-%We demonstrate the validity of the stellar masses and ages that we determine with \tc\ with three
-%methods:
-%Cross-validation demonstrates that the method obtains (log) mass accuracies of approximately 0.08~dex and (log) age accuracies
-%of roughly 0.25~dex for typical-quality \apogee\ spectra.
-%We find that the spectral mass (or age) indicators
-%discovered by \thecannon\ are associated with elements that can be ``dredged up'',
-%specifically, the CN regions of the spectra. We produce a catalogue of mass and inferred age labels for all XXX,000 red-giant stars in \apogee\ DR12 and investigate and age distribution in the Milky Way's disk using the \apogee\ red clump sample in particular, which spans a galactic radius of 4 - 14 kpc and which have small distance errors ($\approx$ 5\, percent). We show from this that the ages of stellar structures in the Milky Way follow evolution consistent with inside out formation and radial mixing processes that are relevant for longer lived stars, even conditioned on abundances.
-%All three of these tests show that we can obtain red-giant mass and
-%age information from stellar spectra; these capabilities open up new
-%opportunities for Milky Way and stellar astrophysics. 
 
 \end{abstract}
 
@@ -235,36 +206,6 @@ In Section \ref{sec:methods} we describe the implementation and application of \
 We deliver our catalogue of mass and inferred ages for the 20,000 red clump stars in the \apogee\ survey, which have well known distances, as well as for the 85,000 red giant stars in the DR12 \apogee\ data release that are within the label (stellar-parameter) range of our training set.
 
 
-%The red clump sample alone from \apogee\ in itself, for which accurate distances (to 5 percent) have been determined, comprises 20,000 stars \citep{Bovy2014} and spans a radial extent across the disk of 6 -- 14 kpc. 
-
-%We show that the spectroscopic  information informing the masses and other labels, as identified by \tc\ is in line with expectations of chemical evolution and stellar physics and we demonstrate that the mass and inferred age labels that are determined provide an additional dimension of information (that is, our age measurement does not reflect a proxy for alpha/Fe). 
-
-%, with a sample of about 16,682 stars, has been the largest sample of stars, all of which are nearby main sequence stars, with complete data on stellar ages in the Milky Way disk. These ages have been determined from the constraints set by the measured parallaxes to these stars and their stellar parameters of \teff, \logg\ and \feh,  using interpolation between stellar isochrone models \citet{Holm2009}.
-
-
-
-%We similarly use stellar models but determine our mass directly from the spectra - and use the models to move from measured inferred mass to inferred age. Not mapping from stellar params to isochrone age space. How do I say this in a better way to describe why it is better? 
-
-
-
-%Skumanich 1972 - empirical age estimators - Rotation (less relevant once giant) and chromospheric emission - Ca II HK and H-alpha (Magnetic fields manifested as activity) . 
-
-%mention in paper - training set currently small - catalogue of 8K APOKASC stars is coming \\. 
-
-%\ldots DWH: What are our hypotheses about how mass or age might appear
-%in a stellar spectrum?  It might appear as dredge-up of evolved
-%material from the core into the photosphere.  It might appear as
-%chromospheric emission from a time-dependent magnetic field.  It might
-%appear as line-shape variations as stellar rotation evolves.  It might
-%appear as amplitude variations in non-LTE effects as convection scales
-%are different for stars of different masses.
-
-%\ldots DWH: Importantly, age might only appear in the spectra as
-%certain combinations of surface abundances that are highly covariant
-%with age.  For example, older stars in the Milky Way tend to be more
-%alpha-enhanced.  We will consider such age indicators illegitimate;
-%the purpose of this project is to obtain estimates for ages and masses
-%\emph{that work even within narrow abundance-selected subsamples}.
 
 \section{Methods and data}
 \label{sec:methods}
@@ -425,10 +366,7 @@ As we have a coefficient at \textit{every} wavelength, which we can map to the c
 
 The coupling of the data-driven model to stellar physics and mapping to the elements or molecules that determine the flux has important applications for stellar astrophysics. Here our aim is simply to motivate that the information in the spectra or regions of highest spectral dependence on the labels, originates from genuinely sensible and plausible chemical features in spectral space.  
 
-% identification of the most informative wavelength pixels and
-% This could be used to inform a selection of wavelength regions for surveys to best determine stellar labels as well as to better understand the relationship between the chemical and physical labels in stars. 
-%with the astrophysical information and
-% rather than particular absorption features. It is possible to describe this only with  coefficients that are determined at every wavelength in flux. the coefficients at a given flux are sensitive to particular individual elements, which are blended at the spectral resolution of \apogee, but still separated in their central wavelength value. B which can be developed further beyond the demonstrative regions of spectral dependence in labels shown here. and in general, the changing contribution of elements or molecules within that blended feature
+
 
 % run run -i makeplot_scatter_test18/spectra_step in /Apogee_ages/ o
 \begin{figure}[h!]

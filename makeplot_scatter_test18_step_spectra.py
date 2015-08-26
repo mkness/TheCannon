@@ -57,6 +57,12 @@ def plotcutlines2(filein,ax,wl_cent,indx):
         ax.text(a1, c1-0.03,b1, rotation='vertical',color = 'k', horizontalalignment= 'center',alpha=1.0,fontsize = 10) 
       if indx==0:
         ax.vlines(a1, -2,2,linewidth=1.0, linestyle = 'dotted', color = 'grey' ,alpha=1.0)
+      if indx==3:
+        ax.vlines(15770.9, -2,2.8,linewidth=1.5, linestyle = 'dashed', color = 'blue' ,alpha=0.5)
+        ax.vlines(15769.4, -2,2.8,linewidth=1.5, linestyle = 'dashed', color = 'blue' ,alpha=0.5)
+      if indx==4:
+        ax.vlines(15770.9, -2,0.8,linewidth=1.5, linestyle = 'dashed', color = 'blue' ,alpha=0.5)
+        ax.vlines(15769.4, -2,0.8,linewidth=1.5, linestyle = 'dashed', color = 'blue' ,alpha=0.5)
       draw() 
     return
 
@@ -95,16 +101,14 @@ def plotdata(file_in, wl0, bw,prefix, cent_g1, cent_g2,indx_coeff):
     #ax5 = temp[0,1]
     #ax6 = temp[1,1]
 
-    def _plot_something(ax, wl, val, var, color, lw=0.2, label=""):
+    def _plot_something(ax, wl, val, var, color, lw=0.2, alpha= 0.8, alpha2=0.5,label=""):
       factor = 1.
       if label == "Teff_test "+r"($\times$ 1000)": factor = 1000. # magic numbers
       if label == "log Mass_test "+r"($\times$ 10)": factor = 10. # magic numbers
       sig = np.sqrt(var)
-      #ax.step(wl, factor*(val+sig), color=color, lw=lw, label=label)
-      #ax.step(wl, factor*(val-sig), color=color, lw=lw) 
-      ax.plot(wl, factor*(val+sig), color=color, lw=lw, label=label)
-      ax.plot(wl, factor*(val-sig), color=color, lw=lw) 
-      ax.fill_between(wl, factor*(val+sig), factor*(val-sig), color = color, alpha = 0.5) 
+      ax.plot(wl, factor*(val+sig), color=color, lw=lw, alpha=alpha,label=label)
+      ax.plot(wl, factor*(val-sig), color=color, lw=lw,alpha=alpha) 
+      ax.fill_between(wl, factor*(val+sig), factor*(val-sig), color = color, alpha = alpha2) 
 
       return None
     
@@ -156,55 +160,68 @@ def plotdata(file_in, wl0, bw,prefix, cent_g1, cent_g2,indx_coeff):
     for ax, indx, color, label in [(ax2, 0, "k", ""),
             (ax5, 0, "k", "")]:
       _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx] , covs[:, indx, indx], color, label=label)
-    for ax, indx, color, label in [(ax3, 1, "g", "Teff"),
-                                   (ax6, 1, "g", "Teff"),
-                                   (ax3, 2, "b", "logg"),
-                                   (ax6, 2, "b", "logg"),
-                                   (ax3, 3, "m", "[Fe/H]"), 
-                                   (ax6, 3, "m", "[Fe/H]"),
-                                   (ax3, 4, "c", r"[$\alpha$/Fe]"), 
-                                   (ax6, 4, "c", r"[$\alpha$/Fe]"),
-                                   #(ax3, 5, "r", "log Mass "+r"($\times$ 10)"), 
-                                   #(ax6, 5, "r", "log Mass "+r"($\times$ 10)")]:
-                                   (ax3, 5, "r", "log Mass"),
-                                   (ax6, 5, "r", "log Mass")]:
-
+     
+    a1,a2,a3,a4,a5  = [0.4,0.4,0.4,0.4,0.4]
+    avals= [a1,a2,a3,a4,a5] 
+    avals2= [0.4,0.4,0.4,0.4,0.4] 
+    avals[indx_coeff] = 1.0
+    avals2[indx_coeff] = 1.0
+    if indx_coeff !=  2: 
+      for ax, indx, color, label,alval,alval2 in [(ax3, 1, "g", "Teff",avals[0],avals2[0]),
+                                     (ax6, 1, "g", "Teff",avals[0],avals2[0]),
+                                     (ax3, 2, "b", "logg",avals[1],avals2[1]),
+                                     (ax6, 2, "b", "logg",avals[1],avals2[1]),
+                                     (ax3, 3, "m", "[Fe/H]",avals[2],avals2[2]), 
+                                     (ax6, 3, "m", "[Fe/H]",avals[2],avals2[2]),
+                                     (ax3, 4, "c", r"[$\alpha$/Fe]",avals[2],avals2[2]), 
+                                     (ax6, 4, "c",r"[$\alpha$/Fe]",avals[2],avals2[2]),
+                                     (ax3, 5, "r","log Mass",avals[3],avals2[3]),
+                                     (ax6, 5, "r", "log Mass",avals[3],avals2[3])]:
         # note this is ln Mass and not log mass 
-        if indx_coeff == 1:
-          _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx]/max(abs(coeffs[0:4000,indx])) , covs[:, indx, indx]/max(abs(coeffs[:,indx])), color, label=label)
-        else: 
-          _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx]/max(abs(coeffs[:,indx])) , covs[:, indx, indx]/max(abs(coeffs[:,indx])), color, label=label)
+          if indx_coeff == 1:
+            _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx]/max(abs(coeffs[0:4000,indx])) , covs[:, indx, indx]/max(abs(coeffs[:,indx])), color, alpha=alval,alpha2=alval2,label=label)
+          else: 
+            _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx]/max(abs(coeffs[:,indx])) , covs[:, indx, indx]/max(abs(coeffs[:,indx])), color, alpha=alval,alpha2=alval2,label=label)
+    if indx_coeff ==  2: 
+      for ax, indx, color, label,alval,alval2 in [(ax3, 1, "g", "Teff",avals[0],avals2[0]),
+                                     (ax6, 1, "g", "Teff",avals[0],avals2[0]),
+                                     (ax3, 2, "b", "logg",avals[1],avals2[1]),
+                                     (ax6, 2, "b", "logg",avals[1],avals2[1]),
+                                     (ax3, 3, "m", "[Fe/H]",avals[2],avals2[2]), 
+                                     (ax6, 3, "m", "[Fe/H]",avals[0],avals2[0]),
+                                     (ax3, 4, "c", r"[$\alpha$/Fe]",avals[0],avals2[0]), 
+                                     (ax6, 4, "c",r"[$\alpha$/Fe]",avals[2],avals2[2]),
+                                     (ax3, 5, "r","log Mass",avals[3],avals2[3]),
+                                     (ax6, 5, "r", "log Mass",avals[3],avals2[3])]:
+        # note this is ln Mass and not log mass 
+          if indx_coeff == 1:
+            _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx]/max(abs(coeffs[0:4000,indx])) , covs[:, indx, indx]/max(abs(coeffs[:,indx])), color, alpha=alval,alpha2=alval2,label=label)
+          else: 
+            _plot_something(ax, dataall[:, 0, 0], coeffs[:, indx]/max(abs(coeffs[:,indx])) , covs[:, indx, indx]/max(abs(coeffs[:,indx])), color, alpha=alval,alpha2=alval2,label=label)
     
     pick2 = abs(coeffs[:,2]) > 5*std(coeffs[:,2]) 
-    #list_blue = dataall[pick2,0,0] 
-    #istblue1 = [15768.8, 15770.3, 16809.2]
-    #istblue2 = [15769.9, 15772.9, 16813.9] 
-    #istblue3 = [15769.35, 15771.15, 16810.6] 
-    #iffis = diff(dataall[:,0,0])[0]
-    #or one in listblue3:
-    # ax1.vlines(one, -2,2, color = 'b', alpha = 0.1,linewidth = 3) 
-    # ax4.vlines(one, -2,2, color = 'b', alpha = 0.1,linewidth = 3) 
-    # #ax2.vlines(one, -2,2, color = 'b', alpha = 0.5) # 2 and 5 are middle, 1 and 4 are bottom, 3 and 6 are top 
-    # #ax3.vlines(one, -2,2, color = 'b', alpha = 0.5) 
-    # #ax6.vlines(one, -2,2, color = 'b', alpha = 0.5) 
     
-    #for one,two in zip(listblue1,listblue2):
-      #ax1.fill_between( [one,two], [0,0], [2,2], color = 'b',alpha = 0.1)
-      #ax4.fill_between( [one,two], [0,0], [2,2], color = 'b',alpha = 0.1)
-    
-    #cent_g1 = 15770
-    #cent_g2 = 16810
-    #plotlines(cent_g1,ax2,coeffs,xgrid,s1,showvector)
-    #plotlines(cent_g1,ax5,coeffs,xgrid,s1,showvector)
     plotcutlines2('keeplines3.txt',ax2,cent_g1,1) 
     plotcutlines2('keeplines3.txt',ax5,cent_g2,1) 
     plotcutlines2('keeplines3.txt',ax1,cent_g1,0) 
     plotcutlines2('keeplines3.txt',ax4,cent_g2,0) 
     plotcutlines2('keeplines3.txt',ax3,cent_g1,0) 
     plotcutlines2('keeplines3.txt',ax6,cent_g2,0) 
+    if indx_coeff == 1:
+      plotcutlines2('keeplines3.txt',ax2,cent_g2,4) 
+      plotcutlines2('keeplines3.txt',ax5,cent_g2,4) 
+      plotcutlines2('keeplines3.txt',ax1,cent_g2,3) 
+      plotcutlines2('keeplines3.txt',ax4,cent_g2,3) 
+      plotcutlines2('keeplines3.txt',ax3,cent_g2,3) 
+      plotcutlines2('keeplines3.txt',ax6,cent_g2,3) 
+
     leg = ax6.legend(numpoints=1, fontsize = 10,loc = 3,ncol = 5, frameon = False)
     for legobj in leg.legendHandles:
       legobj.set_linewidth(2.0)
+    if indx_coeff == 2: 
+      leg2 = ax3.legend(numpoints=1, fontsize = 10,loc = 3,ncol = 5, frameon = False)
+      for legobj in leg2.legendHandles:
+        legobj.set_linewidth(2.0)
     if indx_coeff != 3: 
       for ax in [ax1,ax2,ax4,ax5]:
         ax.set_ylim(0.39,1.15) 
@@ -279,24 +296,24 @@ if __name__ == "__main__": #args in command line
     wl2 = 15700
     # g 
     #cent_g1 = 16030 # log g max - there is a spike here - need to raise this issue  - only arises when training on log mass 
-    #cent_g1 = 15770 # log g max
-    #cent_g2 = 16810 # log g 2nd 
+    cent_g1 = 15770 # log g max
+    cent_g2 = 16810 # log g 2nd 
     #cent_g2 = 16030 # bad terrible spike
-    #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_g_3", cent_g1, cent_g2,1) 
+    plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_g_3", cent_g1, cent_g2,1) 
     # t 
-    #cent_g1 = 15339 # teff 2nd max 
-    #cent_g2 = 15720 # teff max 
-    #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_t_3", cent_g1, cent_g2,0) 
+    cent_g1 = 15339 # teff 2nd max 
+    cent_g2 = 15720 # teff max 
+    plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_t_3", cent_g1, cent_g2,0) 
     # feh,alpha 
     cent_g1 = 15221.5 # highest feh
     cent_g2 = 16369.1 # highest alpha 
     plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_af_3", cent_g1, cent_g2,2) 
     # mass 
     #cent_g1 = 16904 # highest mass
-    #cent_g1 = 15241 # highest mass for _5 and _5 HWR
-    #cent_g2 = 15332 # second highest mass for _5
-    #cent_g2 = 15432.5 # highest mass for _5HWR
-    #plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_m_3", cent_g1, cent_g2,3) 
+    cent_g1 = 15241 # highest mass for _5 and _5 HWR
+    cent_g2 = 15332 # second highest mass for _5
+    ##cent_g2 = 15432.5 # highest mass for _5HWR
+    plotdata('coeffs_2nd_order_5.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_m_3", cent_g1, cent_g2,3) 
     #plotdata('coeffs_2nd_order_5HWR.pickle', wl3,100, "/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/coeffs_m_3", cent_g1, cent_g2,3) 
     #cent_g1 = 15929
     #cent_g2 = 16410.7
