@@ -83,9 +83,8 @@ A.Y.~Q~Ho \altaffilmark{1},
 \email{ness@mpia.de}
 
 \begin{abstract}%
-The mass of a star is arguably its most fundamental parameter. For red-giant stars, it implies a stellar-evolution age. 
-Yet, stellar masses and ages have never been derived directly from spectra for red giants,
-despite their value as tracers luminous enough to be observed across the Galaxy.
+The mass of a star is arguably its most fundamental parameter. For red-giant stars, which are tracers luminous enough to be observed across the Galaxy, it implies a stellar-evolution age. 
+Yet, stellar masses and ages have never been derived directly from spectra for red giants.
 From the \kepler\ and \apogee\ surveys, samples of several thousand stars exist
 with high-quality spectra and astroseismic masses. 
 Here we show that from these data we can build a data-driven spectral model using  \tc , which can determine stellar masses 
@@ -94,9 +93,9 @@ to $\sim$ 0.08~dex
  from \apogee\ \textsc{dr}12 spectra of giants (RC and RGB stars);
 these imply age estimates accurate to 0.25~dex. We show that \tc~ constrains the ages foremost from spectral regions
 with CN absorption lines, elements whose surface abundances reflect mass-dependent dredge-up. We show that the age information
-is not simply a corollary of the birth-material abundances $\feh$ and $\alphafe$. This way we have derived an unprecedented sample
+is not simply a corollary of the birth-material abundances \feh\ and \alphafe. This way we have derived an unprecedented sample
 of 85,000 giants (including 20,000 RC stars) with mass -- and hence age -- estimates, spanning $R_{GC}\sim 4 -15$~kpc.
-Such stellar age constraints across the Milky Way, beyond those implied by $\feh$ and $\alphafe$,  open up new avenues in Galactic archeology.
+Such stellar age constraints across the Milky Way, beyond those implied by \feh\ and \alphafe\,  open up new avenues in Galactic archeology.
 
 
 
@@ -131,22 +130,22 @@ techniques: spectroscopic
 In the Galactic archeology, the quest to understand the formation and evolution history of the Milky Way through the
 properties of its stars, age-dating of stars is fundamental. Having ages of extensive sets of stars across our galaxy, and
 the element abundances of the material from which they formed, would be a powerful constraint on galaxy evolution and on chemical evolution.
-Yet, as almost all stars are in equilibrium\footnote{Most stars not in equilibrium undergo periodic variations, such as pulsations, but without discernable secular evolution.}, age is not a quantity that can direcly measured. Instead, one must rely on measuring instantaneous stellar properties (or ``labels'') that correlate with age in a physically understood or in a calibrateable way (see Soderblom 2010 for an excellent review).
+Yet, as almost all stars are in equilibrium\footnote{Most stars not in equilibrium undergo periodic variations, such as pulsations, but without discernable secular evolution.}, age is not a quantity that can direcly measured. Instead, one must rely on measuring instantaneous stellar properties (or ``labels'') that correlate with age in a physically understood or in a way that can be calibrated \citep[see][for an excellent review]{soderblom2010}.
 Inevitably, stellar age estimates involve some form of stellar evolution models, both for stars in clusters and for single field stars. 
 
 For the most part, age estimates from spectroscopic surveys have been determined for stars before or just after their main-sequence turn-off. 
-In that regime, stellar evolutionary isochrones are well separated (at a given metallicity), and for well-measured \teff , \logg and \feh ages follow from isochrone matching. 
-Such stellar parameters are typically derived from high resolution spectroscopy, which delivers low associated errors on the parameters \citep[e.g.][]{Bensby2013, Casagrande2011, haywood2013} [add Bergemann Gaia-ESO...].  To date, the largest homogeneous data set of stellar ages in the galactic disk has been derived in this fashion, from the Geneva Cophenhagen Survey (GCS). Yet, all of these 16,682 main sequence stars from GCS are located in the immediate solar neighbourhood of $<0.1$~kpc \citep{nordstrom2004short}.
-Recent analogous analyses [Haywood 2013; Bergemann 2014] have pushed to greater distances, but still remain limited to essentially the solar radius in the Galaxy.
+In that regime, stellar evolutionary isochrones are well separated (at a given metallicity), and for well-measured \teff, \logg\ and \feh\ ages follow from isochrone matching. 
+Such stellar parameters are typically derived from high resolution spectroscopy, which delivers low associated errors on the parameters \citep[e.g.][]{Bensby2013, Casagrande2011, haywood2013, B2014}.  To date, the largest homogeneous data set of stellar ages in the galactic disk has been derived in this fashion, from the Geneva Cophenhagen Survey (GCS). Yet, all of these 16,682 main sequence stars from GCS are located in the immediate solar neighbourhood of $<0.1$~kpc \citep{nordstrom2004short}.
+Recent analogous analyses \citep[e.g.][]{haywood2013, B2014} have pushed to greater distances, but still remain limited to essentially the solar radius in the Galaxy.
 
 
 To map stellar ages throughout the Milky Way, one needs more luminous stars, in evolutionary phases that are prevalent 
 across most ages and metallicities. Giant stars satisfy these criteria. However, for giant stars isochrones of different ages nearly overlap, making it 
-all but impossible to get precise ages from \teff , \logg  and \feh measurements, unless we have tiny errors in these measurements
+all but impossible to get precise ages from \teff , \logg\  and \feh\ measurements, unless we have tiny errors in these measurements
 and enormous confidence in the accuracy of stellar isochrones. 
 However, for basically all post main sequence stars, in particular stars on the red giant branch (RGB) or in the red clump (RC), the stellar mass should be
-powerful constraint on the stars' age (see e.g. Martig et al 2014). In that case the challenge is reduced to estimating stellar masses for extensive samples
-of giant stars throught the Galaxies; these masses then imply ages.
+powerful constraint on the stars' age \citep[see e.g.,][]{Martig2014}. In that case the challenge is reduced to estimating stellar masses for extensive samples
+of giant stars throughout the Galaxies; these masses then imply ages.
 
 In recent years, asteroseismology surveys such as \most, \corot, and \kepler, have
 been extremely successful in producing information
@@ -157,17 +156,17 @@ modes are visible in the Fourier domain. These modes, in turn are related to the
 At present, all these astroseismological surveys cover only a few directions in the sky, and hence a small portion of the Galaxy.
 
 At the same time, there are a number of large spectroscopic surveys, such
-as \apogee\ \citep{Majewski2012}, \gaiaeso\ \citep{Gilmore2012} and \galah\ \citep{Freeman2012}, that
-are producing high signal-to-noise, high resolution spectra
-of hundreds of thousands of stars across the entire sky. These allow to measure properties of stars from their photosphere, specifically \teff , \logg , \feh~ and \xfe~ for many elements. A star's surface abundances, in particular \feh~ and \alphafe~ of course hold clues to its age, because the plausibility of stars forming from material of a given abundance dramatically varies with time and radius throughout the galaxy: e.g. stars 
-were far more likely to have formed from metal-poor but $\alpha$-enhanced ISM than they are now. But such age constraints arise from the properties of the birth material, not from the current properties of the star itself, and hence age estimates and chemical evolution of the ISM are inevitably degenerate [see Schšnrich \& Binney ; Chiappini; chem evolution modellers..]
+as \apogee\ \citep{Majewski2012}, \gaiaeso\ \citep{Gilmore2012} and \galah\ \citep{Freeman2012}. These surveys are 
+producing high signal-to-noise, high resolution spectra
+of hundreds of thousands of stars across the entire sky. These allow to measure properties of stars from their photosphere, specifically \teff, \logg, \feh\ and \xfe\ for many elements. A star's surface abundances, in particular \feh\ and \alphafe\ of course hold clues to its age, because the plausibility of stars forming from material of a given abundance dramatically varies with time and radius throughout the galaxy: e.g. stars 
+were far more likely to have formed from metal-poor but $\alpha$-enhanced ISM than they are now. But such age constraints arise from the properties of the birth material, not from the current properties of the star itself, and hence age estimates and chemical evolution of the ISM are inevitably degenerate \citep[see e.g.,][]{Schonrich2009, Ch2002}.
 
 The question then naturally arises how one can combine the information from these two types of surveys, information about the stellar interior and masses from seismology; and
 stellar parameters and element-abundances from spectroscopy. For stars that have been observed by both kinds of surveys this can be done at the catalog level \citep{Martig2014}.
 
-[I think it would be appropriate to discuss briefly the approach of Martig2015, which is essentially a companion paper..]
+Following this approach, Martig et al., (2015) have used red giants int the \apokasc\ sample of stars, for which seismic parameters are known from Kepler \citep{P2014} and \teff,\logg,\feh, \alphafe\  are \xfe\ are measured from \apogee\ spectra \citep{Ahn2014}. Martig et al., (2015) have found a tight correlation between the masses determined from the standard seismic scaling relations and the [C/N] measurement from \apogee, for the \apokasc\ sample.  They therefore are able to provide a model for stellar mass and age, as a function of [C/N] abundance measurements. 
 
-In this paper, we set out to develop a data-driven and far-reaching connection between the astroseismic and the spectroscopic results on giant stars, with the ultimate goal of determining stellar masses of giants, and hence ages, directly from spectra. The goal is to derive age estimates that do not simply reflect the abundances of the star's birth material (such as joint \feh and \alphafe estimates); we aim for age estimates that give meaningful results even {\sl at a given [Fe/H] and [$\alpha$/Fe]}.
+In this paper, we set out to develop a data-driven and far-reaching connection between the astroseismic and the spectroscopic results on giant stars, with the ultimate goal of determining stellar masses of giants, and hence ages, directly from spectra. The goal is to derive age estimates that do not simply reflect the abundances of the star's birth material (such as joint \feh\ and \alphafe\ estimates); we aim for age estimates that give meaningful results even {\sl at a given [Fe/H] and [$\alpha$/Fe]}.
 
 % {\bf: HWR is not sure whether casting this as ``spectroscopy is determining interior properties'' is a defensible statement. We are -- with spectroscopy --
 % strictly determining surface properties, e.g. the surface CNO abundance; everything else is ``inference''; I am not sure we can claim that the
@@ -198,8 +197,8 @@ In this paper, we set out to develop a data-driven and far-reaching connection b
 % the purpose of this project is to obtain estimates for ages and masses \emph{that work even within narrow abundance-selected subsamples}.
 
 
-In this paper, we use a set of 1.600 stars from the APOGEE DR12 spectral sample with stellar mass measurements from astroseismology [REF], along with DR12's  \teff, \logg, \feh\ and \alphafe .  Using \tc~ \citep{Ness2015} we then generate a data-driven generative model for the five stellar labels \teff, \logg, \feh, \alphafe\ and mass. This model quantifies the information content at each pixel.  
-Therefore, we can examine the origin of the information on these labels directly in the spectra. We have shown previously, in  \citet{Ness2015} [Ho et al],  that \tc\ is successful for delivering the labels of \teff, \logg\ , \feh\  and \alphafe for \apogee\ stars. With a training set of stars with know masses, we can expand the same approach to include a fifth stellar label, mass. 
+In this paper, we use a set of 1639 stars from the \apogee\ DR12 spectral sample with stellar mass measurements from astroseismology \citep{P2014}, along with DR12's  \teff, \logg, \feh\ and \alphafe .  Using \tc~ \citep{Ness2015} we then generate a data-driven generative model for the five stellar labels \teff, \logg, \feh, \alphafe\ and mass. This model quantifies the information content at each pixel.  
+Therefore, we can examine the origin of the information on these labels directly in the spectra. We have shown previously, in  \citet{Ness2015} [Ho et al],  that \tc\ is successful for delivering the labels of \teff, \logg, \feh\  and \alphafe for \apogee\ stars. With a training set of stars with know masses, we can expand the same approach to include a fifth stellar label, mass. 
 
 In Section \ref{sec:methods} we describe the implementation and application of \tc for the case at hand. We also lay out the verification of the mass label estimates, and we illustrate where in the spectrum the information on the various labels originates. 
 
@@ -245,7 +244,7 @@ In detail, the likelihood function we use for \tc\ has a
 gaussian form at each measured spectral wavelength, with a mean that
 is a quadratic function of the labels, and a variance that consists of
 an intrinsic variance added to an observational noise variance (from
-photon noise and other sources). For our model we use a the quadratic-in-labels form, but with a cubic \logg\ term, which was found empirically to improve the accuracy of the \teff\ label in the cross-validation test by $\approx$ 10\,percent.  This model presumes that the continuum-normalized flux is a polynomial of the stellar labels, as below: 
+photon noise and other sources). For our model we use a the quadratic-in-labels form of \citet{Ness2015}. This model presumes that the continuum-normalized flux is a polynomial of the stellar labels, as below: 
 
 $f_{n\lambda} =
 \set{\theta}_\lambda^T \cdot \starlabelvec_n + \mbox{noise}$, 
@@ -257,7 +256,7 @@ becomes
 \starlabelvec_n \equiv  [1, \teff, \logg, \feh, \alphafe, \mbox{mass}, \teff^2, \\
  \teff\cdot\logg, \teff\cdot\feh, \teff\cdot\alphafe, \teff\cdot \mbox{mass},  \logg^2, \\
   \logg\cdot\feh, \logg\cdot\alphafe, \logg\cdot \mbox{mass}, \feh^2, \\
-  \feh\cdot\alphafe, \feh\cdot \mbox{mass}, \alphafe^2, \alphafe\cdot \mbox{mass}, \mbox{mass}^2,  \logg^3]
+  \feh\cdot\alphafe, \feh\cdot \mbox{mass}, \alphafe^2, \alphafe\cdot \mbox{mass}, \mbox{mass}^2]
 \end{split}
  \label{eq:quad}
 \end{equation}
@@ -312,7 +311,7 @@ To transform the mass label determined by \tc\ to an inferred age label for each
 To determine the uncertainties on our individual \teff, \logg, \feh, \alphafe\ and mass, we perform a take-stars out test on the set of reference objects.
 For the take-stars out test we train the spectral model iteratively on 90\,percent of the reference spectra and then run the test step on the remaining 10\,percent of the spectra and we do this 10 times, stepping through each next 10\,percent of the data. Our results are shown in \figurename~\ref{fig:validation1} for the five labels. The top panels show the cross validation results comparing the input and output labels and teh bottom panels show the histograms of the $\Delta$(input - ouptut) for each label. The input labels (x-axis in the top panel of the Figure) are from \aspcap\ and astroseismology, as described in Section 2 and the output labels (y-axis in the top panel) are the output labels are from \tc.  The sixth panel in this Figure shows the masses transformed to ages using interpolation between the PARSEC isochrones, where the red clump evolutionary state has been adopted on the isochrones at each age and \feh. 
 
-This \figurename\ shows that \tc 's purely mathematical approach of label transfer estimates the stellar labels with accuracies of 35K in \teff, 0.08 dex in \logg, 0.02 in \feh, 0.02 in \alphafe\ and  0.08 dex in log mass, or 0.25 dex in log age (Gyr) over the label-range of the reference stars. It is important to remember that the objects plotted are the left-out objects and the spectrum of these objects are completely detached from the training step,  except that they have the same experimental set-up and are drawn from a part of label space that is represented by the remaining reference objects.
+This \figurename\ shows that \tc 's purely mathematical approach of label transfer estimates the stellar labels with accuracies of 35K in \teff, 0.08 dex in \logg, 0.02 in \feh, 0.02 in \alphafe\ and  0.08 dex in log mass, or 0.22 dex in log age (Gyr) over the label-range of the reference stars. It is important to remember that the objects plotted are the left-out objects and the spectrum of these objects are completely detached from the training step,  except that they have the same experimental set-up and are drawn from a part of label space that is represented by the remaining reference objects.
 
 %plotdiff_5labels_10percent_linear_orig.py trained on 1639 stars if
 %run -i plotdiff_5labels_10percent_linear trained on 1500 stars
@@ -320,7 +319,7 @@ This \figurename\ shows that \tc 's purely mathematical approach of label transf
 %/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_6labels_10percent_contour.py
 \begin{figure}[h!]
 \centering
-        \includegraphics[scale=0.4]{./plots/validation_1639_6.pdf}
+        \includegraphics[scale=0.4]{./plots/validation_1639_6_quad.pdf}
   \caption{Cross validation of the training dataset of 1639 stars, for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
 \label{fig:validation1}
 \end{figure}
@@ -341,11 +340,12 @@ The absorption features in the H-band are heavily blended with OH, CN and $^2$C 
 Figure \ref{fig:logg} shows two 30 Angstrom regions of the spectra centered on the two highest first-order \logg\ coefficient amplitudes, $\theta_l$ = $\theta_{logg}$. The three panels at left show the highest \logg\ coefficient and the three panels at right show the second highest coefficient. Relevant elements and molecules that correspond to the absorption features are marked at top on the baseline spectrum of the model.  The middle panel of Figure \ref{fig:logg} shows the first order coefficients $\theta_l$ that are linear in \teff, \logg, \feh, \alphafe\ and mass. The coefficients have all been normalised to their largest absolute value, so that an amplitude of $\theta_l$ = 1 for any coefficient is at the highest value.  
 
 % run run -i makeplot_scatter_test18_step/spectra in /Apogee_ages/ o
+ %run -i makeplot_scatter_test18_step_spectraB.py
 \begin{figure}[h!]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_g_3.png}
-  \caption{The 0$^{\mbox{th}}$ and first order coefficients ($\theta_0$ , $\theta_{\mbox{$l$}}$) of the model trained on the \aspcap\ stars showing the two 30 Angstrom wavelength regions where the \logg\ coefficient (in blue) reaches its highest absolute amplitude. The 0$^{\mbox{th}}$ coefficient (at top) describes the intersect spectrum and relevant spectral absorption features are marked. The middle panel shows all coefficients, each normalised to their highest amplitude, for all \textit{$l$} = \teff, \logg, \feh,\alphafe\ and mass coefficients. The bottom panels show the generated spectra from \tc's model to the reference set of stars used for training, for three increasing values of \logg\ that span the range of \logg\ values in the training set.}
+  \caption{The 0$^{\mbox{th}}$ and first order coefficients ($\theta_0$ , $\theta_{\mbox{$l$}}$) of the model trained on the \aspcap\ stars showing the two 30 Angstrom wavelength regions where the \logg\ coefficient (in dark blue) reaches its highest absolute amplitude. The 0$^{\mbox{th}}$ coefficient (at top) describes the intersect spectrum and a number of spectral absorption features are marked. The middle panel shows all coefficients, each normalised to their highest amplitude, for all \textit{$l$} = \teff, \logg, \feh,\alphafe\ and mass coefficients, where all coefficients are shown in transparent lines except for the \logg, which is of interest here. The bottom panels show the generated spectra from \tc's model, for three increasing values of \logg, which span the full range of \logg\ values in the training set. The selected parameters for this star are set around the fiducial point of the stars in the training set, and represent a typical \apokasc\ spectra. The panel at left where the \logg\ coefficient reaches its highest amplitude shows the \logg\ information is concentrated to the wings of the strong Mg feature in the spectra (dissimilarly to the \alphafe\ information which is in the core as seen from the cyan coefficient. The panels at right show the broadening of the flux as a consequence of the H Brackett-11 line which, like Mg,  is similarly gravity sensitive due to pressure broadening effects (see the text). }
 \label{fig:logg}
 \end{figure}
 
@@ -373,10 +373,9 @@ The coupling of the data-driven model to stellar physics and mapping to the elem
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_t_3.png}
-  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest \teff\ coefficient (in green).}
+  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest \teff\ coefficient (in green). The \teff\ coefficient is typically anticorrelated with the \feh and \alphafe\ coefficients and traces the absorption profiles, reaching the highest amplitudes at the core of metal lines across the entire spectrum.}
 \label{fig:teff}
 \end{figure}
-
 
 
 \subsubsection{Spectral dependencies on \feh\ and \alphafe} 
@@ -393,7 +392,7 @@ The largest coefficient in \alphafe\ corresponds to the core of the strong Mg li
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_af_3.png}
-  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest \feh\ coefficient (in magenta), at left and highest \alphafe\ coefficient (in cyan), at right.}
+  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest \feh\ coefficient (in magenta), at left and highest \alphafe\ coefficient (in cyan), at right. The largest coefficient in \feh\ is from an Mn (iron-peak) line which correlates with \feh. Note that for this line in the mid-panel at left, the \alphafe\ coefficient is near-zero where the \feh\ information is highest. The highest amplitude of the \alphafe\ coefficient is seen in the core of one of the strong Mg lines in the \apogee\ spectra, shown in the panel at right.}
 \label{fig:feha}
 \end{figure}
 
@@ -429,7 +428,7 @@ Examining the CN molecular regions in more detail, the two CN regions shown in F
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_m_3.png}
-  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest mass coefficients (in red).}
+  \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest mass coefficients (in red). The bottom panels show that that spectra change line shape and depth with varying mass and the mass coefficients are highest in region of CN molecular blends. In particular, these blends corresponding to the highest mass coefficient in this Figure comprise both $^{12}$C and $^{13}C. The spectral flux difference in the core of the CN feature at the wavelength that corresponds to the second-largest amplitude in mass at right is weak. From the bottom panel at right it is apparent that the spectra changes more significantly in other regions where the coefficient in mass is smaller. These larger flux changes with mass across this 30 Angstroms shown are in regions where the cross terms between mass and other labels are high (e.g. \feh\ \times mass). A pixel is rarely dependent on only one of the labels and other labels combine to describe the flux as reflected in the cross-term coefficients.  So although we show here the first order linear terms, changes in the spectral flux of a given label may reflect a combination of effects from multiple sources. The regions where the first-order linear coefficients are highest for each label does not indicate that that label is the dominant controller of the flux at that point, only that the relative fraction of information for that label across the spectra is highest there. This does tell us which spectral wavelength regions contain the relative largest amount of information in the spectrum, for that label independently of all other labels.}
 \label{fig:mass}
 \end{figure}
 
@@ -452,7 +451,7 @@ Thee input label for the inferred age is from the seismic scaling relations for 
 \centering
 % \includegraphics[scale=0.38]{./plots/alpha_feh_rc.pdf}
   \includegraphics[scale=0.4]{./plots/alpha_feh_rc2.pdf}
-    \caption{The \feh-\alphafe\ planes at left and centre colored by mean age of the stars in each bin at left,  and the age dispersion at centre, where the number of stars in each bin is indicated at left. The far right hand panel shows the stars in the \feh-\alphafe\ plane where the individual stars $i$ have been subtracted from the mean age in their respective bin, taking both the age from \tc\ and the age from Kepler. The panel on the far right shows the correlation in the input and output age label delivered by \tc\ in cross-validation within a narrow bin in abundance space.  }
+    \caption{The \feh-\alphafe\ planes at left and centre for the training set of \apokasc\ stars, colored by mean age of the stars in each bin at left,  and the age dispersion at centre, where the number of stars in each bin is indicated at left. The far right hand panel shows the stars in the \feh-\alphafe\ plane where the individual stars $i$ have been subtracted from the mean age in their respective bin, taking both the age from \tc\ and the age from Kepler. The panel on the far right shows the correlation in the input and output age label delivered by \tc\ in cross-validation within a narrow bin in abundance space.  }
 \label{fig:alphabins}
 \end{figure}
 
@@ -472,7 +471,7 @@ Figure \ref{fig:spectra} illustrates that the generated model from \tc\ provides
 \begin{figure}[h!]
 \centering
       \includegraphics[scale=0.5]{./plots/spectra_fits_7.png}
-  \caption{A spectra of one of the red clump stars in the catalogue of \citet{Bovy2014} shown in black, with the best fit model from \tc\ in red. The best fit model from \aspcap\ is shown in the grey dashed line}
+  \caption{A spectra of one of the red clump stars in the catalogue of \citet{Bovy2014} shown in black, with the best fit model from \tc\ in red. The eight wavelength regions shown correspond to the highest first-order coefficient amplitudes shown in Figures 2 to 5 (from top to bottom). The best fit model from \aspcap\ is shown in the grey dashed line.}
 \label{fig:spectra}
 \end{figure}
 
@@ -552,7 +551,7 @@ The centre and far right panels show a restricted distribution in  $z$, as the y
 
 \section{Discussion}
 
-We have demonstrated the validity of the stellar masses and ages that we determine with \tc\ by three methods. First, mathematically, \tc\ works and can return labels of \teff, \logg, \feh, \alphafe\ and mass for \apogee\ spectra, which we validate with a take-stars out test (see Figure 1). As determined with cross-validation, we can determine log masses to an accuracy of 0.08 dex and log ages to an accuracy of 0.25 dex. Not only does \tc\ mathematically work, but the generative model provides an excellent match to the data at test time. We have shown that at test time for the red clump stars, which we use in Section 4 to explore the age distribution of stars in the Milky Way, that the best fit model from \tc\ is an excellent match to the real data at test time. 
+We have demonstrated the validity of the stellar masses and ages that we determine with \tc\ by three methods. First, mathematically, \tc\ works and can return labels of \teff, \logg, \feh, \alphafe\ and mass for \apogee\ spectra, which we validate with a take-stars out test (see Figure 1). As determined with cross-validation, we can determine log masses to an accuracy of 0.08 dex and log ages to an accuracy of 0.22 dex. Not only does \tc\ mathematically work, but the generative model provides an excellent match to the data at test time. We have shown that at test time for the red clump stars, which we use in Section 4 to explore the age distribution of stars in the Milky Way, that the best fit model from \tc\ is an excellent match to the real data at test time. 
 
 The well matched model to the data, from \tc's best fit labels, verifies that these five labels and polynomial model are sufficient to very well model the behaviour of the flux with the labels at test time.  In fact, the data-driven model of \tc\ trained on these five labels only (no individual abundances) provides a better match to the real data than the synthetic stellar models utilised by \aspcap.
 
@@ -570,7 +569,7 @@ With \tc\ we can also train on mass and as we have no physical prior for our mod
 %    \includegraphics[scale=0.42]{./plots/median_3panel.png}
     %    \includegraphics[scale=0.43]{./plots/agealphamap_hist_all2.pdf}
      %           \includegraphics[scale=0.43]{./plots/agealphamap_jet.pdf}
-              \includegraphics[scale=0.43]{./plots/agealphamap_testcm.pdf}
+              \includegraphics[scale=0.43]{./plots/agealphamap_testcm_rg.pdf}
     \caption{$(R_{GAL},z)$ Maps of the median age of the \apogee\  red giant stars showing all $\approx$ 85,000 stars at far left, the low alpha-sequence only of these stars in the second panel from left and a small abundance bin in the low-alpha sequence third panel from left. The final panel, at right is a histogram of the different age distributions as a function of age, showing all stars across $z$, for a young, intermediate and old selection.  }
 \label{fig:allage}
 \end{figure}

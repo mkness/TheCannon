@@ -87,8 +87,8 @@ def returnscatter(x,y):
 # read in files 
 dir1 = '/Users/ness/new_laptop/Apogee_ages/crossvalidation/' 
 dir2 = '/Users/ness/new_laptop/Apogee_ages/crossvalidation_quad/' 
-starsout_files = glob(dir2+"random_not*log*")
-training_files =  glob(dir2+"training*5_*_log.pickle*")
+starsout_files = glob(dir2+"random_*")
+training_files =  glob(dir2+"training*log*pickle*")
 fn2 = dir1+'apokasc_ages_actual.txt'
 fn = dir1+'training_apokasc_ages.list'
 tin,gin,fehin,alphain, T_A, g_A, feh_A,rc_est = np.loadtxt(fn, usecols = (1,2,3,4,1,2,3,5), unpack =1)
@@ -179,6 +179,7 @@ ax3.set_xlim(-1,0.5)
 mkn_set_ticks(ax3, [-1.0,-0.5,-0,0.5])
 ax4.set_xlim(-0.08,0.35)
 mkn_set_ticks(ax4, [-0.1,0,0.1,0.2,0.3])
+fsize = 20
 if plotage:
     ax5.set_xlim(-0.3,0.7)
     ax5.set_title("log$_{10}$ mass (M$_{\odot}$)", fontsize = fsize)
@@ -256,4 +257,5 @@ close(f2)
 show()
 draw()
 #savefig('6labels_together.png', bbox = 'tight', fmt = "png") 
-savefig("/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/validation_1639_6.pdf", bbox = 'tight', fmt = "pdf")
+#savefig("/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/validation_1639_6.pdf", bbox = 'tight', fmt = "pdf")
+savefig("/Users/ness/new_laptop/TheCannon/TheCannon/documents/mass_and_age/plots/validation_1639_6_quad.pdf", bbox = 'tight', fmt = "pdf")
