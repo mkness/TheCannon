@@ -71,15 +71,14 @@
 
 \title{Spectroscopic determination of masses (and implied ages) \\for red giants}
 \author{M.~Ness\altaffilmark{1},
-David~``W."~Hogg\altaffilmark{1,2,3},
-H.-W.~Rix\altaffilmark{1},
-M.~Martig \altaffilmark{1},
-A.Y.~Q~Ho \altaffilmark{1},
-\textbf{others}}
+        David~W.~Hogg\altaffilmark{1,2,3},
+        H.-W.~Rix\altaffilmark{1},
+        M.~Martig \altaffilmark{1}, \&
+        A.Y.~Q~Ho \altaffilmark{1, 4}}
 \altaffiltext{1}{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg, Germany}
-\altaffiltext{2}{Center for Cosmology and Particle Physics, Department of Phyics,
-             New York University, 4 Washington Pl., room 424, New York, NY, 10003, USA}
+\altaffiltext{2}{Center for Cosmology and Particle Physics, Department of Phyics, New York University, 4 Washington Pl., room 424, New York, NY, 10003, USA}
 \altaffiltext{3}{Center for Data Science, New York University, 726 Broadway, 7th Floor, New York, NY 10003, USA}
+\altaffiltext{4}{Department of Astronomy, California Institute of Technology, 1200 East California Blvd, Pasadena CA 91125}
 \email{ness@mpia.de}
 
 \begin{abstract}%
@@ -324,7 +323,7 @@ This \figurename\ shows that \tc 's purely mathematical approach of label transf
 %run -i plotdiff_5labels_10percent_linear trained on 1500 stars
 %/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_5labels_10percent_contour.py
 %/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_6labels_10percent_contour.py
-\begin{figure}[h!]
+\begin{figure}[p]
 \centering
         \includegraphics[scale=0.4]{./plots/validation_1639_6_quad.pdf}
   \caption{Cross validation of the training dataset of 1639 stars, for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times.}
@@ -348,7 +347,7 @@ Figure \ref{fig:logg} shows two 30 Angstrom regions of the spectra centered on t
 
 % run run -i makeplot_scatter_test18_step/spectra in /Apogee_ages/ o
  %run -i makeplot_scatter_test18_step_spectraB.py
-\begin{figure}[h!]
+\begin{figure}[p]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_g_3.png}
@@ -376,7 +375,7 @@ The coupling of the data-driven model to stellar physics and mapping to the elem
 
 
 % run run -i makeplot_scatter_test18/spectra_step in /Apogee_ages/ o
-\begin{figure}[h!]
+\begin{figure}[p]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_t_3.png}
@@ -395,7 +394,7 @@ The largest coefficient in \alphafe\ corresponds to the core of the strong Mg li
 
 
 % run run -i makeplot_scatter_test18_step_spectra in /Apogee_ages/ 
-\begin{figure}[h!]
+\begin{figure}[p]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_af_3.png}
@@ -431,7 +430,7 @@ Examining the CN molecular regions in more detail, the two CN regions shown in F
 %
 % The data-driven model and derivation of mass directly from the spectra itself means that \tc\ will be able to maximally exploit the information in the spectra and as signal to noise decreases, to return masses which can be used to infer ages for \apogee\ stars.  
 
-\begin{figure}[h!]
+\begin{figure}[p]
 \centering
  % \includegraphics[scale=0.31]{./plots/validation.png}
     \includegraphics[scale=0.51]{./plots/coeffs_m_3.png}
@@ -454,7 +453,7 @@ Thee input label for the inferred age is from the seismic scaling relations for 
 
 % made in run -i makealphamap4_logmass_oneplot.py
 %  in Apogee_ages after running plotdiff_5labels2 or run -i  plotdiff_5labels_10percent_contour_copy.py
-\begin{figure}[h!]
+\begin{figure}[p]
 \centering
 % \includegraphics[scale=0.38]{./plots/alpha_feh_rc.pdf}
   \includegraphics[scale=0.4]{./plots/alpha_feh_rc2.pdf}
@@ -475,7 +474,7 @@ Figure \ref{fig:spectra} illustrates that the generated model from \tc\ provides
 %despite that we include no individual abundances in our model
 
 %run -i makeredclumpplot.py
-\begin{figure}[h!]
+\begin{figure}[p]
 \centering
       \includegraphics[scale=0.5]{./plots/spectra_fits_7.png}
   \caption{A spectra of one of the red clump stars in the catalogue of \citet{Bovy2014} shown in black, with the best fit model from \tc\ in red. The eight wavelength regions shown correspond to the highest first-order coefficient amplitudes shown in Figures 2 to 5 (from top to bottom). The best fit model from \aspcap\ is shown in the grey dashed line.}
@@ -505,7 +504,7 @@ The top right hand panel of Figure \ref{fig:redclump} shows a small box in the \
 
 %run -i makealphafeh_imshow_3panel.py and readin_ages.py
 %run -i makealphafeh_imshow_4panel.py and readin_ages.py
-\begin{figure}[h!]
+\begin{figure}[p]
 \centering
  \includegraphics[scale=0.5]{./plots/redclump_4panel.pdf}\\
 %  \includegraphics[scale=0.25]{./plots/redclump_4panel.png}
@@ -519,7 +518,7 @@ Figure \ref{fig:redclump_age} shows that the stars in a narrow $|z|$ range in th
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
 % now made in /Users/ness/new_laptop/Apogee_ages/run -i makerzage_4panel.py
-\begin{figure}[h!]
+\begin{figure}[p]
 \centering
 %    \includegraphics[scale=0.42]{./plots/median_3panel.png}
         \includegraphics[scale=0.43]{./plots/agealphamap_hist.pdf}
@@ -536,7 +535,7 @@ The centre and far right panels show a restricted distribution in  $z$, as the y
 
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
-%\begin{figure}[h!]
+%\begin{figure}[p]
 %\centering
 %    \includegraphics[scale=0.42]{./plots/feh_3panel.png}
 %    
@@ -571,7 +570,7 @@ We provide our full catalogue of stellar labels, including the age of each star 
 With \tc\ we can also train on mass and as we have no physical prior for our model, this avoids the artificial truncation at the hard limits of the mass to age grid. However, this results in the same stars having both negative ages and also ages older than the age of the universe, due to the intrinsic accuracy of our model and scatter that extends to outside physical parameter space. The age$_{trained}$ column of our table nevertheless provides our results when (log) age and not (log) mass is used as the training label for \tc.
 
 %run -i readin_play_logmass.py in /Users/ness/new_laptop/Apogee_Ages/results/
-\begin{figure}[h!]
+\begin{figure}[p]
 \centering
 %    \includegraphics[scale=0.42]{./plots/median_3panel.png}
     %    \includegraphics[scale=0.43]{./plots/agealphamap_hist_all2.pdf}
@@ -584,7 +583,7 @@ With \tc\ we can also train on mass and as we have no physical prior for our mod
 In Figure \ref{fig:allage} we show the fractional age distribution for all 85,000 stars in Table \ref{tab:online}, where distances have been determined via interpolation to Parsec isochrones from the stellar parameters. The panels are the same as for Figure \ref{fig:redclump_age} except now shown in terms of fractional ages (Stars with ages $<$ 5 Gyr) and for a larger extent in $(R_{GAL},z)$, as the red giant stars cover a much larger spatial region than the red clump alone. The distance uncertainty for the red giant stars, which comprise 80\,percent of this sample, is much higher than the red clump, at about 30\%. Distances toward the bulge are particularly uncertain and likely underestimated due to the high and differential reddening in this direction (see Ness et al., 2015, in prep).  These Figures demonstrate that the stars toward the centre of the Galaxy are almost exclusively old and stars in the outer regions are predominantly young. The young stars are concentrated to the plane and fractionally decrese relative to older stars, moving away from the plane. Young stars appear at all heights from the plane, even conditioned on abundances for the low-alpha sequence and the mono-abundance population and in the outer-most regions the stars at all heights are predominantly young. There are old alpha-poor stars that appear and these are located even at large heights from the plane, seen in the middle and second from right panels in Figure \ref{fig:allage}.
 
 % results are in here: /Users/ness/new_laptop/Apogee_ages/results with the pick givine 85,000 stars - note distances are not very good to bulge need to fix this (for ages too near Sun are old) and
-\begin{table*}[!h]
+\begin{table*}[p]
 \tiny{
 \centering
 \caption{Partial column excerpt from the online table of 5 stellar labels (\teff, \logg, \feh, \alphafe\ and mass) determined by \tc\ for the XXXX red giant stars (with \feh\ $>$ --1.0) and $\approx$ 20,000 red clump stars in \apogee 's data release DR12. } 
@@ -602,11 +601,7 @@ In Figure \ref{fig:allage} we show the fractional age distribution for all 85,00
 \hline
 \end{tabular}
 \label{tab:online} }
-\end{table*}  
-
-
-
-
+\end{table*}
 
 Our code and documentation which includes instructions for downloading the training set of reference objects and the red clump catalogue from \citet{Bovy2014} is located at The github repository for \tc \footnote{https://github.com/mkness/TheCannon/}
 
