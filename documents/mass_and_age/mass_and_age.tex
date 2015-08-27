@@ -91,10 +91,10 @@ Here we show that from these data we can build a data-driven spectral model usin
 to $\sim$ 0.08~dex
 %, along with $\teff$, log~g,$\feh$ and $\alphafe$
  from \apogee\ \textsc{dr}12 spectra of giants (RC and RGB stars);
-these imply age estimates accurate to 0.25~dex. We show that \tc~ constrains the ages foremost from spectral regions
+these imply age estimates accurate to $\sim 0.2$~dex. We show that \tc~ constrains the ages foremost from spectral regions
 with CN absorption lines, elements whose surface abundances reflect mass-dependent dredge-up. We show that the age information
 is not simply a corollary of the birth-material abundances \feh\ and \alphafe. This way we have derived an unprecedented sample
-of 85,000 giants (including 20,000 RC stars) with mass -- and hence age -- estimates, spanning $R_{GC}\sim 4 -15$~kpc.
+of 85,000 giants (including 20,000 RC stars) with mass -- and hence age -- estimates, spanning the entire disk.
 Such stellar age constraints across the Milky Way, beyond those implied by \feh\ and \alphafe\,  open up new avenues in Galactic archeology.
 
 
@@ -272,7 +272,9 @@ chemical abundances for stars with spectra taken by the \apogee\ project \citep{
 using \tc. %These stars are the \apokasc\ sample \citep{P2014}.
 
 We work with the continuum-normalized DR12 spectra, and the method of continuum
-estimation turns out to be important for performance. We use the aspcapStar files provided by \apogee, but apply our own signal-to-noise invariant continuum normalisation by fitting a low-order polynomial to `true' continuum pixels, as described in \citet{Ness2015}. 
+estimation turns out to be important for performance. We use the aspcapStar files provided by \apogee, but apply our own signal-to-noise invariant continuum normalisation by fitting a low-order polynomial to `true' continuum pixels, as described in \citet{Ness2015}. Additionally, we 
+
+
 The three labels of \teff, \logg\ and \feh\ delivered with \tc\ were demonstrated in \citet{Ness2015}.  In this work we determine two additional labels, of \alphafe\ label and mass. From the mass, we train on log mass, as we find that the error on mass is linear in log mass (and log age) rather than linear mass and age. We infer age, using stellar evolution models. Our five labels are provided to \tc\ in the training step, and delivered by \tc\ in the test step.
 
  The training set is taken from the stars in the Kepler field, the so called \apokasc\ sample \citep{P2014}  of stars observed by \apogee.
