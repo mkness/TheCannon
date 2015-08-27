@@ -3,6 +3,7 @@
 *.fits*
 *~
 *.aux
+*.bbl
 *.dvi
 *.log
 *.blg
