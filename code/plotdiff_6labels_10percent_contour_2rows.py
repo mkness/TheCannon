@@ -8,15 +8,12 @@ import matplotlib.cm as cm
 import pyfits 
 import glob 
 from glob import glob 
-import numpy 
 import pickle
-from numpy import * 
 from scipy import ndimage
 from scipy import interpolate 
+import numpy as np 
 from numpy import loadtxt
 import os 
-import numpy as np
-from numpy import * 
 import matplotlib 
 from pylab import rcParams
 from pylab import * 
@@ -94,10 +91,41 @@ fn = dir1+'training_apokasc_ages.list'
 tin,gin,fehin,alphain, T_A, g_A, feh_A,rc_est = np.loadtxt(fn, usecols = (1,2,3,4,1,2,3,5), unpack =1)
 massin = loadtxt(fn2, usecols = (-2,), unpack =1) 
 snr = loadtxt(dir1+"training_apokasc_ages_SNR.list", usecols = (-1,), unpack =1) 
+nu_max, delta_nu = loadtxt("/Users/ness/new_laptop/Apogee_ages/nu.txt", usecols = (0,1), unpack =1) 
+namestar = []
+a = open(fn, 'r') 
+al = a.readlines()
+for each in al:
+    namestar.append(each.split()[0].split('-')[-1].split('.fits')[0]) 
+namestar = array(namestar) 
 
-numlist = arange(0,10,1) 
+
+# self file in so evaluates the fit 
+#here read in the chi2 values
+
+fd = open("/Users/ness/new_laptop/Apogee_ages/Marie_compare/self_2nd_order_tags_logmass.pickle", 'r')
+Params_all, covs_all,chi,ids = pickle.load(fd)
+fd.close()
+chi2 = sum(chi[:,:]*chi[:,:], axis=0) 
+nums_a = []
+len1 = shape(chi)[1]
+for i in range(0,len1):
+    nums_a.append(len(chi[:,i][chi[:,i] == 0.]) ) 
+
+nums_a = array(nums_a) 
+nums = shape(chi)[0] - nums_a
+chi2_dof = array(chi2*1./nums )
+select_chi2_dof = chi2_dof < 2. 
+select_chi2_dof = array(select_chi2_dof) 
+# 
+
+numlist = arange(0,11,1) 
 t,g,feh,tout,gout,fehout = [],[],[],[],[],[]
 alpha,alphaout,mass,ln_massout,snrout = [],[],[],[], []
+nu_max_in, delta_nu_in = [], [] 
+nameout = [] 
+select_chi2 = [] 
+
 for num in numlist: 
     a = open(training_files[num], 'r') 
     list_a = loadtxt(starsout_files[num], usecols = (0,), unpack =1) 
@@ -107,11 +135,15 @@ for num in numlist:
     tout1,ln_massout1,gout1,fehout1,alphaout1 = b[0][:,0], b[0][:,4], b[0][:,1], b[0][:,2], b[0][:,3]
     tout.append(tout1[list_a]) 
     gout.append(gout1[list_a]) 
+    select_chi2.append(select_chi2_dof[list_a])
     fehout.append(fehout1[list_a]) 
     alphaout.append(alphaout1[list_a]) 
     ln_massout.append(ln_massout1[list_a]) 
     mass.append( massin[list_a]) 
+    nu_max_in.append(nu_max[list_a])
+    delta_nu_in.append(delta_nu[list_a])
     t.append(tin[list_a]) 
+    nameout.append(namestar[list_a]) 
     g.append( gin[list_a]) 
     feh.append( fehin[list_a]) 
     alpha.append( alphain[list_a]) 
@@ -120,6 +152,10 @@ for num in numlist:
 t,tout,g,gout = hstack((t)), hstack((tout)), hstack((g)), hstack((gout)) 
 feh,fehout,alpha,alphaout, mass, ln_massout =  hstack((feh)), hstack((fehout)), hstack((alpha)), hstack((alphaout)), hstack((mass)), hstack((ln_massout) ) 
 snrout = hstack((snrout))
+select_chi2 = hstack((select_chi2)) 
+nameout = hstack((nameout))
+nu_max_in = hstack((nu_max_in))
+delta_nu_in = hstack((delta_nu_in))
 vmin1,vmax1  = 1, 3.4
 var = gout 
 vmin1,vmax1  = -0.03, 0.3
@@ -137,15 +173,15 @@ if plotage:
     ageout = get_age_from_mass(fehout,np.exp(ln_massout))
 
 if plotage: 
-  varin  =  [ t,g,feh,alpha,log10(mass), log10(age)]
-  varout  =  [ tout,gout,fehout,alphaout,log10(e**ln_massout), log10(ageout)] 
+  varin  =  [ t,g,feh,alpha,log10(mass), np.log10(age)]
+  varout  =  [ tout,gout,fehout,alphaout,np.log10(np.e**ln_massout), np.log10(ageout)] 
 else:
-  varin  =  [ t,g,feh,alpha,log10(mass), log10(mass)]
-  varout  =  [ tout,gout,fehout,alphaout,log10(e**ln_massout),log10(e**ln_massout)  ]
+  varin  =  [ t,g,feh,alpha,log10(mass), np.log10(mass[select_chi2])]
+  varout  =  [ tout,gout,fehout,alphaout,np.log10(np.e**ln_massout),np.log10(np.e**ln_massout)  ]
 axall = [ax1,ax2,ax3,ax4,ax5,ax6]
 for a,b,ax in zip(varin,varout,axall):
-    counts,ybins,xbins,image = ax.hist2d(a,b,bins=30,norm=LogNorm(),cmin=1,cmap = cm.gray_r )# ,normed=True)
-    test1,test2,test3,test4 = ax.hist2d(varin[0],varin[1],bins=30,norm = LogNorm(), cmin=1,cmap = cm.gray_r) #normed=True)
+    counts,ybins,xbins,image = ax.hist2d(a[select_chi2],b[select_chi2],bins=30,norm=LogNorm(),cmin=1,cmap = cm.gray_r )# ,normed=True)
+    test1,test2,test3,test4 = ax.hist2d(varin[0][select_chi2],varin[1][select_chi2],bins=30,norm = LogNorm(), cmin=1,cmap = cm.gray_r) #normed=True)
     extent = [ybins[0], ybins[-1], xbins[0], xbins[-1]]
 
 axall_bottom = [ax1a,ax2a,ax3a,ax4a,ax5a,ax6a]
@@ -160,9 +196,13 @@ im = ax7.imshow(counts.T, cmap=plt.cm.gray_r, extent=extent, norm=LogNorm(vmin=0
 #im = ax7.imshow(test1.T, cmap=plt.cm.gray, extent=extent, norm = None, interpolation = 'Nearest',origin = 'lower')
 test = f.colorbar(im, cax=cbar_ax)
 test.set_label("Number of Stars", fontsize = fs) 
-biasage,rmsage = returnscatter(np.log10(age), np.log10(ageout))
-biasmass,rmsmass = returnscatter(np.log10(mass), ln_massout/np.log(10.0))
+biasage,rmsage = returnscatter(np.log10(age[select_chi2]), np.log10(ageout[select_chi2]))
+biasmass,rmsmass = returnscatter(np.log10(mass[select_chi2]), ln_massout[select_chi2]/np.log(10.0))
 plt.show()
+
+savetxt("ln_mass_input_output_crossvalidation.txt", zip(nameout, np.log(mass), ln_massout,nu_max_in, delta_nu_in), fmt = "%s") 
+# ln_mass_Kepler ln_mass_The_Cannon, nu_max, delta_nu
+
 
 #cbar_ax = f.add_axes([0.92, 0.20, 0.01, 0.65])
 #test = colorbar(s1, cax=cbar_ax) 
@@ -192,14 +232,14 @@ for ax in [ax1, ax2, ax3, ax4, ax5,ax6]:
     ax.plot(ax.get_xlim(), ax.get_xlim(), "k-")
 
 
-biast,rmst = returnscatter(t, tout)
-biasg,rmsg = returnscatter(g, gout)
-biasfeh,rmsfeh = returnscatter(feh, fehout)
-biasalpha,rmsalpha = returnscatter(alpha, alphaout)
+biast,rmst = returnscatter(t[select_chi2], tout[select_chi2])
+biasg,rmsg = returnscatter(g[select_chi2], gout[select_chi2])
+biasfeh,rmsfeh = returnscatter(feh[select_chi2], fehout[select_chi2])
+biasalpha,rmsalpha = returnscatter(alpha[select_chi2], alphaout[select_chi2])
 
 f1 = 12
 #axall_bottom = [ax1a,ax2a,ax3a,ax4a,ax5a,ax6a]
-biases = [str(round(biast,1)),str(round(biasg,2)),str(round(biasfeh,3)),str(round(biasalpha,3)),str(round(biasmass,2)), str(round(biasage,2))]
+biases = [str(round(biast,1)),str(abs(round(biasg,3))),str(round(biasfeh,2)),str(abs(round(biasalpha,2))),str(abs(round(biasmass,2))), str(round(biasage,2))]
 rmses = [str(round(rmst,1)),str(round(rmsg,2)),str(round(rmsfeh,2)),str(round(rmsalpha,2)),str(round(rmsmass,2)), str(round(rmsage,2))]
 for ax,biasval,rmsval in zip(axall_bottom, biases, rmses):
     biasval = 'bias = '+biasval
@@ -211,17 +251,6 @@ for ax,biasval,rmsval in zip(axall_bottom, biases, rmses):
                 xytext=(1, 164), textcoords='offset points',
                 ha='left', va='top')
   
-#ax1.text(0.45, 0.95,"bias, rms= "+str(round(biast,1))+", "+str(round(rmst,2)), ha='center', va='center', 
-#              transform=ax1.transAxes, fontsize = f1)
-#ax2.text(0.45, 0.95,"bias, rms= "+str(round(biasg,2))+", "+str(round(rmsg,2)), ha='center', va='center', 
-#              transform=ax2.transAxes, fontsize = f1)
-#ax3.text(0.45, 0.95,"bias, rms= "+str(round(biasfeh,3))+", "+str(round(rmsfeh,2)), ha='center', va='center', 
-#              transform=ax3.transAxes, fontsize = f1)
-#ax4.text(0.45, 0.95,"bias, rms= "+str(round(biasalpha,3))+", "+str(round(rmsalpha,2)), ha='center', va='center', 
-#              transform=ax4.transAxes, fontsize = f1)
-#ax5.text(0.45, 0.95,"bias, rms= "+str(round(biasmass,3))+", "+str(round(rmsmass,2)), ha='center', va='center', 
-#              transform=ax5.transAxes, fontsize = f1)
-#ax6.text(0.45, 0.95,"bias, rms= "+str(round(biasage,3))+", "+str(round(rmsage,2)), ha='center', va='center', 
 #              transform=ax6.transAxes, fontsize = f1)
 
 fsize = 20

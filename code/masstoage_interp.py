@@ -36,7 +36,7 @@ def makeage(fehval, massval):
         fage = fage_1
     else:
         fage = (fage_1*dist2 + fage_2*dist1) / (dist1+dist2) 
-    print fehval, massval 
+    print fehval, massval , fage
     return fage , interpflag
 
 
