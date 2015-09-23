@@ -266,7 +266,7 @@ becomes
 
 We have shown in previous work \citep{Ness2015} that \tc\ does a good job
 of modeling stellar spectra and delivering stellar parameters and
-chemical abundances for stars with spectra taken by the \apogee\ project \citep{Majewski2012}.  \apogee\ is an SDSS \footnote{\url{www.sdss.org}} (Eisenstein et al. 2011) infrared survey of the Milky Way disk, bulge and halo and has provided H-band spectra (1500-1700 nm) of about 150,000 stars in the public data release DR12.  Of this sample, there is a subset of stars that also have been observed by the Kepler satellite, with measurements of \numax\ and \deltanu, which provide stellar mass estimates for these stars in this particular Kepler field.  In this project, we are once again using \apogee\ data, and once again
+chemical abundances for stars with spectra taken by the \apogee\ project \citep{Majewski2012}.  \apogee\ is an SDSS \footnote{\url{www.sdss.org}} \citep{E2011} infrared survey of the Milky Way disk, bulge and halo and has provided H-band spectra (1500-1700 nm) of about 150,000 stars in the public data release DR12.  Of this sample, there is a subset of stars that also have been observed by the Kepler satellite, with measurements of \numax\ and \deltanu, which provide stellar mass estimates for these stars in this particular Kepler field.  In this project, we are once again using \apogee\ data, and once again
 using \tc. 
 
 We work with the continuum-normalized DR12 spectra, and the method of continuum
@@ -473,7 +473,7 @@ Examining the CN molecular regions in more detail, the two CN regions shown in F
 \subsection{Masses in monoabundance label space}
 %\subsection{The mass label in monoabundance age distribution of the \apokasc\ sample}
 
-We use small regions of monoabundance space to demonstrate that we have a bone fide spectral mass label, from which we infer true stellar ages. We explore the age label in monoabundance space so as to demonstrate that in our age label we deliver information which in itself is unique and does not reflect some combination of the other four labels. We wish to illustrate in particular, that the mass label that we use to infer age is not simply another expression of the \alphafe\ label. The \alphafe\ label itself is often used as an overall age proxy in abundance studies given gross expectations from stellar evolution and chemical yields in stellar populations. 
+We use small regions of monoabundance space to demonstrate that we have a bona fide spectral mass label, from which we infer true stellar ages. We explore the age label in monoabundance space so as to demonstrate that in our age label we deliver information which in itself is unique and does not reflect some combination of the other four labels. We wish to illustrate in particular, that the mass label that we use to infer age is not simply another expression of the \alphafe\ label. The \alphafe\ label itself is often used as an overall age proxy in abundance studies given gross expectations from stellar evolution and chemical yields in stellar populations. 
 
 In Figure \ref{fig:alphabins}, the \apokasc\ set of reference stars used to train \tc\ are shown in the \alphafe-\feh\ plane. These stars are binned into small monoabundance boxes in this Figure and the panel at the far left indicates how many stars are in each of these bins. The colormap represents the mean age and the age dispersion from \tc\ that is obtained in cross-validation, at left and centre panels respectively. 
 
@@ -636,11 +636,20 @@ The comparison for the age-label determined for the red clump sample of stars, t
 
 
 
-% made with Apogee_ages/Marie_compare/readin_age_clump.py
+% made with Apogee_ages/redclump_age/readin_age_clump.py
+%makescatteragemass2.py
 \begin{figure}[h]
 \centering
-        \includegraphics[scale=0.4]{./plots/massage_hist.pdf}
+        \includegraphics[scale=0.4]{./plots/massage_hist2.pdf}
   \caption{The mass label for the red clump sample from training on mass, compared to the age label for the red clump sample from training on age. The age distribution peaks at 2.5 Gyr for the red clump sample, coloured by \feh\ and 99 percent of the stars are within 0 $<$ age $<$ 14 Gyr}
+\label{fig:agemass}
+\end{figure}
+
+%/Users/ness/new_laptop/Apogee_ages/corner.py/maketriangle.py
+\begin{figure}[h]
+\centering
+        \includegraphics[scale=0.4]{/Users/ness/new_laptop/Apogee_ages/corner.py/training.pdf}
+  \caption{Label space of the training data - credit DFM}
 \label{fig:agemass}
 \end{figure}
 
@@ -700,6 +709,8 @@ for valuable discussions and contributions.
 This project made use of
   The NASA Astrophysics Data System,
   and open-source code in the \project{numpy} and \project{scipy} packages.
+  
+  KITP Galarcheo program: This research was supported in part by the National Science Foundation under Grant No. NSF PHY11-25915.\\
 
 Funding for SDSS-III has been provided by the Alfred P. Sloan Foundation, the Participating Institutions, 
 the National Science Foundation, and the U.S. Department of Energy Office of Science. The SDSS-III web site is \url{http://www.sdss3.org/}.
@@ -715,4 +726,6 @@ SDSS-III is managed by the Astrophysical Research Consortium for the Participati
 \bibliography{tc.bib}
 
 \end{document}
+
+% notes to generate red clump catalogue of masses and ages for mass trained on mass and age trained on age: /Users/ness/new_laptop/Apogee_ages/redclump_age/readin_age_clump.py
 
