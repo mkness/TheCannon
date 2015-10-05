@@ -69,7 +69,7 @@
 \altaffiltext{2}{Center for Cosmology and Particle Physics, Department of Phyics, New York University, 4 Washington Pl., room 424, New York, NY 10003, USA}
 \altaffiltext{3}{Center for Data Science, New York University, 726 Broadway, 7th Floor, New York, NY 10003, USA}
 \altaffiltext{4}{Department of Astronomy, California Institute of Technology, 1200 East California Blvd, Pasadena, CA 91125, USA}
-\altaffiltext{4}{Department of Astronomy, The Ohio State University, Columbus, OH 43210, USA; Center for Cosmology and Astroparticle Physics, The Ohio State University, Columbus, OH 43210, USA}
+\altaffiltext{5}{Department of Astronomy, The Ohio State University, Columbus, OH 43210, USA; Center for Cosmology and Astroparticle Physics, The Ohio State University, Columbus, OH 43210, USA}
 \email{ness@mpia.de}
 
 \begin{abstract}%
@@ -149,10 +149,10 @@ stellar parameters and element-abundances from spectroscopy. For stars that have
 
 Following this approach, Martig et al., (2015) have used red giants in the \apokasc\ sample of stars, for which seismic parameters are known from \kepler\ \citep{P2014} and \teff, \logg, \feh, \alphafe\  are \xfe\ are measured from \apogee\ spectra \citep{Ahn2014}. Martig et al., (2015) have found a tight correlation between the masses determined from the standard seismic scaling relations and the [C/N] measurement from \apogee.  They determine a model for stellar mass and age, as a function of C and N abundance measurements. 
 
-In this paper, we set out to develop a data-driven and far-reaching connection between the astroseismic and the spectroscopic results for giant stars, with the ultimate goal of determining stellar masses of giants, and hence ages, directly from spectra. The goal is to derive age estimates that do not simply reflect the abundances of the star's birth material (such as joint \feh\ and \alphafe\ estimates); we aim for age estimates that give meaningful results, {\sl even at a given [Fe/H] and [$\alpha$/Fe]}. \textbf{We are however, with spectroscopic data, determining only the surface property of stars. The physical properties of mass and derived age can only be inferred, given theoretical expectations from stellar models between these physical quantities and stellar spectra. However, \tc\ is a direct framework to characterize the relationship between the surface spectroscopy and interior asteroseismology, in order to jointly infer stellar properties, learning about stellar interiors from surface spectroscopy}.
+In this paper, we set out to develop a data-driven and far-reaching connection between the astroseismic and the spectroscopic results for giant stars, with the ultimate goal of determining stellar masses of giants, and hence ages, directly from spectra. The goal is to derive age estimates that do not simply reflect the abundances of the star's birth material (such as joint \feh\ and \alphafe\ estimates); we aim for age estimates that give meaningful results, {\sl even at a given [Fe/H] and [$\alpha$/Fe]}. \textbf{We are however, with spectroscopic data, determining only the surface property of stars. The physical properties of mass and derived age can only be inferred, given theoretical expectations from stellar models between these physical quantities and stellar spectra}.
 
 For this purpose, we use a set of 1639 \apokasc\ stars from the \apogee\ DR12 spectral sample with stellar mass and \logg\ measurements from astroseismology \citep{P2014}, along with DR12's  \teff, \feh\ and \alphafe (see Figure \ref{fig:triangle} in the Appendix).  Using \tc~ \citep{Ness2015} we then generate a data-driven generative model for the five stellar labels \teff, \logg, \feh, \alphafe\ and mass. This model quantifies the information content at each pixel.  
-Therefore, we can examine the origin of the information on these labels directly in the spectra. We have shown previously, in  \citet[][and Ho et al., in prep]{Ness2015}   that \tc\ is successful for delivering the labels of \teff, \logg, \feh\  and \alphafe\ for \apogee\ stars. With a training set of stars with know masses, we can expand the same approach to include a fifth stellar label, mass (mass). 
+Therefore, we can examine the origin of the information on these labels directly in the spectra. We have shown previously, in  \citet[][and Ho et al., in prep]{Ness2015}   that \tc\ is successful for delivering the labels of \teff, \logg, \feh\  and \alphafe\ for \apogee\ stars. With a training set of stars with know masses, we can expand the same approach to include a fifth stellar label, mass. \textbf{With these data,  \tc\ is a direct framework to characterize the relationship between the surface spectroscopy and interior asteroseismology, in order to jointly infer stellar properties, learning about stellar interiors from surface spectroscopy}.
 
 In Section \ref{sec:methods} we describe the implementation and application of \tc\ for the case at hand. We also lay out the verification of the mass label estimates, and we illustrate where in the spectrum the information on the various labels originates. 
 
@@ -242,7 +242,7 @@ We work with the continuum-normalized DR12 spectra, and the method of continuum
 estimation turns out to be important for performance. We use the aspcapStar files provided by \apogee, but apply our own signal-to-noise invariant continuum normalization by fitting a low-order polynomial to `true' continuum pixels, as described in \citet{Ness2015}. 
 %
 Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and (log) mass. The label range of the training data set is shown in the Appendix, in Figure \ref{fig:triangle}. 
- The five training labels adopted are from the \aspcap-corrected values  \citep{Meszaros2013} for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$. The mass label was determined from the  \deltanu\ and \numax\ measurements using the standard seismic scaling relation given in \citet{SilvaA2011,Chaplin2011} and repeated in Equation \ref{eq:mass}. 
+ The five training labels adopted are from the \aspcap-corrected values  \citep{Meszaros2013} for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$. The mass label was determined from the  \deltanu\ and \numax\ measurements using the standard seismic scaling relation \citep[e.g.][]{K1995}, as in Equation \ref{eq:mass}. 
 
 \begin{equation} \label{eq:mass}
 M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( \frac{\Delta \nu}{\Delta \nu_{\odot}}\right)^{-4} \ \left( \frac{T_{\mathrm{eff}}}{T_{\mathrm{eff,\odot}}}\right)^{1.5} \ 
@@ -250,7 +250,7 @@ M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( 
 
 We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz, as per \citet{Martig2014}. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are those used for the \apokasc\ catalogue and were obtained by \cite{Hekker2013}.
 
-\textbf{Note that the method is general and that modified scaling relations can be adopted in order to determine mass from the the astroseismic parameters. The results at the test step will be directly tied to the assumptions in the training step.} 
+\textbf{Note that modified scaling relations can be adopted in order to determine mass from the the astroseismic parameters. \tc\ is a generalised method and in all cases, the results at the test step will be directly tied to the assumptions in the training step. \tc\ is implemented here as described in \citet{Ness2015} but using the model in Equation \ref{eq:quad}, with the mass label coming from the equation described in Equation \ref{eq:mass}}.  
 
 \subsubsection{Test Data} 
 
@@ -290,7 +290,7 @@ In Figure \ref{fig:spectra}, the spectrum of one of the red clump stars (not in 
 Figure \ref{fig:spectra} illustrates that the generated model from \tc\ provides a very good fit to the data. In fact the generative model from \tc\ is a better fit to the data than the best fit synthetic model from \aspcap. That the model from \tc\ is a good fit to the data demonstrates that the five-labels that we use to train, as well as our polynomial model, are sufficient to very well describe the behavior of the flux of a typical red clump star, given the training set of reference stars from the \apokasc\ catalogue. Note in this Figure, that one of the regions where \aspcap\ performs most poorly is at the Brackett line (see Section 3.3.1), which is highly \logg\ sensitive (Figure \ref{fig:logg}). This may indicate a problem with the model stellar atmospheres or it's associated oscillator strength for this feature (or the lines it is blended with). 
 
 
-%run -i makeredclumpplot.py
+%run -i makeredclumpplot2.py
 \begin{figure}[hp]
 \centering
       \includegraphics[scale=0.5]{./plots/spectra_fits_7.png}

@@ -46,7 +46,7 @@ xmajorLocator   = MultipleLocator(10)
 ######rcParams['figure.figsize'] = 22.0, 10.0
 
 import pickle 
-a = open('coeffs_2nd_order_5HWR_2.pickle', 'r') # was originally just coeffs_2nd_order_5.pickle but that is corrupted 
+a = open('coeffs_2nd_order_5.pickle', 'r') # was originally just coeffs_2nd_order_5.pickle but that is corrupted 
 bc = pickle.load(a)
 coeffs = bc[4]
 wl_star = bc[0][:,0,0] 
@@ -211,6 +211,7 @@ cent_wl7 = 16369 # highest alpha
 # mass
 cent_wl4 = 15241 # highest mass for _5 and _5 HWR
 cent_wl8 = 15332 # second highest mass for _5
+cent_wl8 = 16191 # second highest mass for _5
 # V
 cent_wla = 15929 # highest mass for _5 and _5 HWR
 cent_wlb = 16410.7 # second highest mass for _5
