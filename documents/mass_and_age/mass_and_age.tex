@@ -217,12 +217,13 @@ becomes
 
 \subsection{Data}
 
-\subsubsection{Training Data} 
-
 We have shown in previous work \citep{Ness2015} that \tc\ does a good job
 of modeling stellar spectra and delivering stellar parameters and
 chemical abundances for stars with spectra taken by the \apogee\ project \citep{Majewski2012}.  \apogee\ is an SDSS \footnote{\url{www.sdss.org}}  \citep{E2011} infrared survey of the Milky Way disk, bulge and halo and has provided H-band spectra (1500-1700 nm) of about 150,000 stars in the public data release DR12.  
 The three labels of \teff, \logg\ and \feh\ delivered with \tc\ were demonstrated in \citet{Ness2015}.  In this work we determine two additional labels, of \alphafe\ and mass. We train on log mass and we infer age, using stellar evolution models as described in Section 2.3. Our five labels are provided to \tc\ in the training step, and delivered by \tc\ in the test step.
+
+\subsubsection{Training Data} 
+
 
  The training set is comprised of 1639 stars taken from the \kepler\ field, the so called \apokasc\ sample \citep{P2014}  of stars observed by \apogee.
 This sample of stars have high-quality infrared
@@ -232,26 +233,28 @@ higher cadence) photometric observations of more than $10^5$ stars,
 providing (at least for giant stars) measurements of the
 asteroseismological frequencies and frequency splittings that indicate
 stellar interior density structure.
-The two global asteroseismic parameters are the \numax\ and \deltanu. These are the measurements from \kepler\ that indicate the interior structure of the star \citep[see][and references therein]{P2014}.
+The two global asteroseismic parameters are the \numax\ and \deltanu\ quantities. These are the measurements from \kepler\ that indicate the interior structure of the star \citep[see][and references therein]{P2014}.
 The asteroseismological measurements are used---with stellar models---to infer stellar masses and thus provide labels.
 
-Our training set of 1639 \apokasc\ stars are from \citet{Martig2014} and selected from the full \apokasc\ sample in \citet{P2014} based on additional quality cuts. This sample includes only stars with no warning or error in the \aspcap\ \code{FLAG} parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the \deltanu\ and \numax\ less than 10\,percent are included. The \apokasc\ stars comprise a high signal-to-noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
+Our training set of 1639 \apokasc\ stars are described in \citet{Martig2014} and selected from the full \apokasc\ sample in \citet{P2014} based on additional quality cuts. This sample includes only stars with no warning or error in the \aspcap\ \code{FLAG} parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the \deltanu\ and \numax\ less than 10\,percent are included. The \apokasc\ stars comprise a high signal-to-noise (SNR) sample, with an average SNR $\approx$ 330 $\pm$ 155. 
 
 We work with the continuum-normalized DR12 spectra, and the method of continuum
 estimation turns out to be important for performance. We use the aspcapStar files provided by \apogee, but apply our own signal-to-noise invariant continuum normalization by fitting a low-order polynomial to `true' continuum pixels, as described in \citet{Ness2015}. 
 %
-Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and mass.
- The five training labels adopted are from the \aspcap-corrected values  \citep{Meszaros2013} for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$. The mass label was determined from the  \deltanu\ and \numax\ measurements using the standard seismic scaling relation given in \citet{SilvaA2011,Chaplin2011} and repeated in Equation \ref{eq:mass}.
+Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and (log) mass. The label range of the training data set is shown in the Appendix, in Figure \ref{fig:triangle}. 
+ The five training labels adopted are from the \aspcap-corrected values  \citep{Meszaros2013} for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$. The mass label was determined from the  \deltanu\ and \numax\ measurements using the standard seismic scaling relation given in \citet{SilvaA2011,Chaplin2011} and repeated in Equation \ref{eq:mass}. 
 
 \begin{equation} \label{eq:mass}
-M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\mbox{star}}}}\right)^3\  \left( \frac{\Delta \nu}{\Delta \nu_{\mbox{star}}}\right)^{-4} \ \left( \frac{T_{\mathrm{eff}}}{T_{\mathrm{eff,\mbox{star}}}}\right)^{1.5} \ 
+M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( \frac{\Delta \nu}{\Delta \nu_{\odot}}\right)^{-4} \ \left( \frac{T_{\mathrm{eff}}}{T_{\mathrm{eff,\odot}}}\right)^{1.5} \ 
 \end{equation}
 
-We adopt  $T_{\mathrm{eff,\mbox{star}}}=5777$ K, $\nu_{\mathrm{max,\mbox{star}}}=3140\ \mu$Hz, $\Delta \nu_{\mbox{star}}=135.03\ \mu$Hz, as per \citet{Martig2014}. The solar values  $\Delta \nu_{\mbox{star}}$ and $\nu_{\mathrm{max,\mbox{star}}}$ are those used for the \apokasc\ catalogue and were obtained by \cite{Hekker2013}.
+We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz, as per \citet{Martig2014}. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are those used for the \apokasc\ catalogue and were obtained by \cite{Hekker2013}.
+
+\textbf{Note that the method is general and that modified scaling relations can be adopted in order to determine mass from the the astroseismic parameters. The results at the test step will be directly tied to the assumptions in the training step.} 
 
 \subsubsection{Test Data} 
 
-We train out model using the \apokasc\ sample and then determine our five stellar labels of \teff, \logg, \feh, \alphafe\ and mass for \apogee's DR12 red clump catalogue \citet{Bovy2014} and all red giants in \apogee's DR12 data release that are within the label range of our training dataset. The label range of the training data set is shown in the Appendix, in Figure \ref{fig:corner}.  The test data is treated in the exact same way as the training data, as described in \citet{Ness2015} where we work with continuum normalized \apogee\ aspcapStar files and apply our own additional continuum normalization procedure. 
+We train out model using the \apokasc\ sample and then determine our five stellar labels of \teff, \logg, \feh, \alphafe\ and (log) mass for \apogee's DR12 red clump catalogue \citet{Bovy2014} and all red giants in \apogee's DR12 data release that are within the label range of our training dataset.  The test data is treated in the exact same way as the training data, as described in \citet{Ness2015} where we work with continuum normalized \apogee\ aspcapStar files and apply our own additional continuum normalization procedure. 
 
 \subsection{From Masses to Ages}
 
