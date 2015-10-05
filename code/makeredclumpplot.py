@@ -46,11 +46,11 @@ xmajorLocator   = MultipleLocator(10)
 ######rcParams['figure.figsize'] = 22.0, 10.0
 
 import pickle 
-#a = open('coeffs_2nd_order_5.pickle', 'r')
-#bc = pickle.load(a)
-#coeffs = bc[4]
+a = open('coeffs_2nd_order_5HWR_2.pickle', 'r') # was originally just coeffs_2nd_order_5.pickle but that is corrupted 
+bc = pickle.load(a)
+coeffs = bc[4]
 wl_star = bc[0][:,0,0] 
-#a.close() 
+a.close() 
 
 def makespec(t,g,feh,alpha,mass): 
     nlabels = 5
@@ -174,7 +174,7 @@ def plotstars(filein, wl, params,prefix,cent_wl1, cent_wl2,cent_wl3, cent_wl4,ce
   ax6.set_yticklabels([])
   ax7.set_yticklabels([])
   ax8.set_yticklabels([])
-  savefig_mkn(fig, prefix, transparent=False, bbox_inches='tight', pad_inches=0.5)
+  #savefig_mkn(fig, prefix, transparent=False, bbox_inches='tight', pad_inches=0.5)
   return 
 
 

@@ -52,9 +52,7 @@
 
 \begin{document}
 
-
-
-% To do. 
+% To do/future work. 
 % 1. release two catalogues :
 % 1a) trained on log mass and 1b) trained on log mass
 %2. resample the errors in label space - add a random error to the mass term and rerun the labels through the cannon and see if the standard deviation and bias in the take one out test is any different - if not we know the noisiness in the training set is not an issue
@@ -64,12 +62,14 @@
 \author{M.~Ness\altaffilmark{1},
         David~W.~Hogg\altaffilmark{1,2,3},
         H.-W.~Rix\altaffilmark{1},
-        M.~Martig \altaffilmark{1}, \&
-        A.Y.~Q~Ho \altaffilmark{1, 4}}
+        M.~Martig \altaffilmark{1}, 
+        A.Y.~Q~Ho \altaffilmark{1, 4},
+        Pinsonneault, Marc H. \altaffilmark{5}}
 \altaffiltext{1}{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg, Germany}
 \altaffiltext{2}{Center for Cosmology and Particle Physics, Department of Phyics, New York University, 4 Washington Pl., room 424, New York, NY 10003, USA}
 \altaffiltext{3}{Center for Data Science, New York University, 726 Broadway, 7th Floor, New York, NY 10003, USA}
 \altaffiltext{4}{Department of Astronomy, California Institute of Technology, 1200 East California Blvd, Pasadena, CA 91125, USA}
+\altaffiltext{4}{Department of Astronomy, The Ohio State University, Columbus, OH 43210, USA; Center for Cosmology and Astroparticle Physics, The Ohio State University, Columbus, OH 43210, USA}
 \email{ness@mpia.de}
 
 \begin{abstract}%
@@ -112,14 +112,6 @@ stars: fundamental parameters
 techniques: spectroscopic
 }
 
-%\section*{Questions from MKN}
-%
-%\ldots Do I do enough to show that the mass/age is coming from CN regions \\
-%\ldots To do - rewrite interpolation between mass to age and understand why Bovy 2014 truncates at 0.8 Gyr (where as we truncate at 0.3 Gyr) \\
-%\ldots Is there enough quantative discussion of the age distribution as a function of $(R_{GAL},z)$ of the red clump sample - should I go into more detail/reference a bunch of literature here? \\
-%\ldots MKN add label range of training dataset (and test dataset - similarly to original paper figs).
-%
-
 \section{Introduction}\label{sec:Intro}
 
 Age-dating of stars is fundamental to understanding and reconstructing the formation and evolution history of the Milky Way. Measurements for both the elemental abundances of an extensive set of stars across the Milky Way and their ages would be a powerful constraint on galaxy and also on chemical evolution (presuming the chemical information is derived from material from which the stars have formed).
@@ -130,7 +122,6 @@ For the most part, age estimates from spectroscopic surveys have been determined
 In that regime, stellar evolutionary isochrones are well separated (at a given metallicity), and for well-measured \teff, \logg\ and \feh, ages follow from isochrone matching. 
 Such stellar parameters are typically derived from high-resolution spectroscopy, which delivers low associated errors on the parameters \citep[e.g.][]{Bensby2013, Casagrande2011, haywood2013, B2014}.  To date, the largest homogeneous data set of stellar ages in the galactic disk has been derived in this fashion, from the Geneva Cophenhagen Survey (GCS). Yet, all 16,682 main sequence stars from GCS are located in the immediate solar neighbourhood of $<0.1$~kpc \citep{nordstrom2004short}.
 Recent analogous analyses \citep[e.g.][]{haywood2013, B2014} have pushed to greater distances, but still remain limited to essentially the solar radius.
-
 
 To map stellar ages throughout the Milky Way, one needs more luminous stars, in evolutionary phases that are prevalent 
 across most ages and metallicities. Giant stars satisfy these criteria. However, for giant stars isochrones of different ages nearly overlap, making it all but impossible to get precise ages from \teff , \logg\  and \feh\ measurements, unless we have tiny errors in these measurements
@@ -158,7 +149,7 @@ stellar parameters and element-abundances from spectroscopy. For stars that have
 
 Following this approach, Martig et al., (2015) have used red giants in the \apokasc\ sample of stars, for which seismic parameters are known from \kepler\ \citep{P2014} and \teff, \logg, \feh, \alphafe\  are \xfe\ are measured from \apogee\ spectra \citep{Ahn2014}. Martig et al., (2015) have found a tight correlation between the masses determined from the standard seismic scaling relations and the [C/N] measurement from \apogee.  They determine a model for stellar mass and age, as a function of C and N abundance measurements. 
 
-In this paper, we set out to develop a data-driven and far-reaching connection between the astroseismic and the spectroscopic results for giant stars, with the ultimate goal of determining stellar masses of giants, and hence ages, directly from spectra. The goal is to derive age estimates that do not simply reflect the abundances of the star's birth material (such as joint \feh\ and \alphafe\ estimates); we aim for age estimates that give meaningful results, {\sl even at a given [Fe/H] and [$\alpha$/Fe]}.
+In this paper, we set out to develop a data-driven and far-reaching connection between the astroseismic and the spectroscopic results for giant stars, with the ultimate goal of determining stellar masses of giants, and hence ages, directly from spectra. The goal is to derive age estimates that do not simply reflect the abundances of the star's birth material (such as joint \feh\ and \alphafe\ estimates); we aim for age estimates that give meaningful results, {\sl even at a given [Fe/H] and [$\alpha$/Fe]}. \textbf{We are however, with spectroscopic data, determining only the surface property of stars. The physical properties of mass and derived age can only be inferred, given theoretical expectations from stellar models between these physical quantities and stellar spectra. However, \tc\ is a direct framework to characterize the relationship between the surface spectroscopy and interior asteroseismology, in order to jointly infer stellar properties, learning about stellar interiors from surface spectroscopy}.
 
 % {\bf: HWR is not sure whether casting this as ``spectroscopy is determining interior properties'' is a defensible statement. We are -- with spectroscopy --
 % strictly determining surface properties, e.g. the surface CNO abundance; everything else is ``inference''; I am not sure we can claim that the
