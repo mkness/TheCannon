@@ -71,8 +71,7 @@
 The mass of a star is arguably its most fundamental parameter.
 For red giant stars, which are tracers luminous enough to be observed
 across the Galaxy, it implies a stellar evolution age.
-Yet, stellar masses and ages have never been derived directly from
-spectra for red giants.
+It has proven to be extremely difficult to infer ages and masses directly from red giant spectra using traditional methods.
 From the \kepler\ and \apogee\ surveys, samples of several thousand
 stars exist with high-quality spectra and astroseismic masses.
 Here we show that from these data we can build a data-driven spectral
@@ -92,6 +91,7 @@ variations that vary sensibly with Galactic position.
 Such stellar age constraints across the Milky Way open up new avenues
 in Galactic archeology.
 \end{abstract}
+%The impact of systematic errors in the current and initial masses derived with our method is addressed, and directions for future improvements are discussed.
 
 \keywords{
 Galaxy: stellar content
@@ -125,7 +125,10 @@ However, for basically all post main sequence stars, in particular stars on the 
 powerful constraint on the stars' age \citep[see e.g.,][]{Martig2014}. In that case the challenge is reduced to estimating stellar masses for extensive samples
 of giant stars throughout the Galaxy; these masses then imply ages.
 
-In recent years, asteroseismology surveys such as \most, \corot, and \kepler, have
+To map stellar ages throughout the Milky Way, one needs more luminous stars, in evolutionary phases that are prevalent across most ages and metallicities. Giant stars satisfy these criteria. However, the evolutionary mass tracks for stars of very different mass converge to a narrow range of effective temperatures in a highly metallicity-sensitive fashion.  For reference, consider a typical solar abundance red giant at \logg\ = 2 with an age of 5 Gyr.  For the PARSEC isochrones   \citep{Bressan2012}, age differences of +/- 2 Gyr correspond to changes in \teff\ at fixed \logg\ of only XXX K, compared to shifts of YYY K for a 0.10 dex difference in \feh.  Furthermore, core helium burning stars that have experienced significant prior mass loss (hereafter red clump, or RC, stars) are located close in the HR Diagram to less evolved first ascent red giant branch (hereafter Red Giant, or RGB) stars.  Even if the observational data is exact, absolute comparisons to stellar isochrones are uncertain; the absolute \teff\ of theoretical models, for example, is highly sensitive to the assumed efficiency of convection, typically parameterized with a mixing length.  However, for basically all post main sequence stars, in particular stars on the red giant branch (RGB) or in the red clump (RC), the stellar mass should be a powerful constraint on the stars' age \citep[see e.g.][]{Martig2014}. In that case the challenge is reduced to estimating stellar masses for extensive samples of giant stars throughout the Galaxy; these masses then imply ages.
+
+
+In recent years, asteroseismology surveys such as \most\ \citep{most2005}, \corot\ \citep{corot2009}, and \kepler\ \citep{Bedding2010}, have
 been extremely successful in producing information
 about stellar interiors and hence masses, in particular for giant stars. 
 These missions operate by taking high-cadence, high-precision stellar
@@ -253,7 +256,7 @@ We train out model using the \apokasc\ sample and then determine our five stella
 
 \subsection{From Masses to Ages}
 
-To transform the mass label determined by \tc\ to an inferred age label for each star, we use the PARSEC isochrones \citep{Bressan2012} with a mass loss parameter of $\eta_{\mbox{Reimers}}$ = 0.2 and adopt the red clump evolutionary state to set the relationship between mass and age at each metallicity.  The mapping of mass to age is directly tied to the models and subject to assumptions including the models chosen, the stellar mass loss parameter and the evolutionary state. These assumptions lead to small absolute differences in the age scaling of the stars given the mass. However,  the relative ages are consistent and quantitatively we draw no different conclusions in any of our results by varying these primary input assumptions \citep[see also][]{Bovy2014}. Assuming a red clump evolutionary state for example, instead of a red giant evolutionary state for interpolating mass to age, does not change the age distribution of the sample. Individual stellar age differences are on the order of 5\,percent between these two evolutionary states. 
+To transform the mass label determined by \tc\ to an inferred age label for each star, we use the PARSEC isochrones with a mass loss parameter of $\eta_{\mbox{Reimers}}$ = 0.2 and adopt the red clump evolutionary state to set the relationship between mass and age at each metallicity.  The mapping of mass to age is directly tied to the models and subject to assumptions including the models chosen, the stellar mass loss parameter and the evolutionary state. These assumptions lead to small absolute differences in the age scaling of the stars given the mass. However,  the relative ages are consistent and quantitatively we draw no different conclusions in any of our results by varying these primary input assumptions \citep[see also][]{Bovy2014}. Assuming a red clump evolutionary state for example, instead of a red giant evolutionary state for interpolating mass to age, does not change the age distribution of the sample. Individual stellar age differences are on the order of 5\,percent between these two evolutionary states. 
 
 \section{Results}
 
@@ -412,13 +415,9 @@ The input label for the inferred age is from the seismic scaling relations for t
 
 \section{Masses and Ages for APOGEE Red Giant Stars in DR12} 
 
-For the following sections, the results for the ages of stars are inferred from their output mass label determined by \tc. We train on log mass, as described in Section 2.2, where the mass label for the \apokasc\ stars has been determined using the standard seismic scaling relations. We transform the output mass to age as described in Section 2.3, for mapping the age distribution of the red giant stars in \apogee's DR12 across the disk, as shown in Figures \ref{fig:redclump_age} and \ref{fig:allage}. 
+For the following sections, the results for the ages of stars are inferred from their output mass label determined by \tc. We train on log mass, as described in Section 2.2, where the mass label for the \apokasc\ stars has been determined using the standard seismic scaling relations. We transform the output mass to age as described in Section 2.3, for mapping the age distribution of the red giant stars in \apogee's DR12 across the disk, as shown in Figures \ref{fig:redclump_age} and \ref{fig:allage}. Our stellar labels determined by \tc\ for 80,000 red giant stars from DR12  (including $\approx$ 20,000 red clump stars) are provided in an online Table, with a partial extract shown in the Appendix in Table \ref{tab:online}. 
 
-In the Appendix, we provide, in Table \ref{tab:online} not only the stellar labels determined by \tc\ for training on log mass, but also for the case of training directly on log age. We provide the output labels from \tc\ for \teff, \logg, \feh, \alphafe, mass from training on (log) mass and age from training on (log) age, for 80,000 DR12 red giant (including $\approx$ 20,000 red clump stars). Note that the mass label we provide in Table \ref{tab:online} from training on log mass, can be transformed to age directly, for each star, using interpolation between (any choice of) isochrones. 
 
-Mapping the output mass to age using stellar models enforces fixed upper and lower age limits. For the log age labels, however, which are directly output by \tc\ from training on log age, there is no physical constraint on minimum or maximum ages, at the test step. Training on log age, returning ages of stars with age  $>$ 14 Gyrs is mathematically possible. However, at test time on \apogee\ DR12 data, the vast majority of stars are in physically realistic label space, 0 $<$ age $<$ 14 Gyr and the stars with unphysically large ages typically have large associated $\chi^2_{reduced}$ values (included in Table \ref{tab:online}). 
-
-For training on log age directly rather than log mass, the same set of reference stars are used. The ages for the reference set of stars for training have been determined by Martig et al., (2015), who use interpolation between PARSEC isochrones, with optimized scaling relations, as a function of evolutionary state.
 
 
 
@@ -493,7 +492,7 @@ In addition to the red clump stars, we have determined stellar masses and inferr
 \label{fig:allage}
 \end{figure}
 
-In Figure \ref{fig:allage} we show the fractional age distribution for the 60,000 red giant stars in DR12. Note the 5\% stars where the $\chi_{reduced}^2$ $>$ 3 have been removed. The distances to all of the red giant stars have been determined via interpolation to Parsec isochrones, from the stellar parameters. The panels are the same as for Figure \ref{fig:redclump_age} except now shown in terms of fractional ages (Stars with ages $<$ 5 Gyr) and for a larger extent in $(R_{GAL},z)$, as the red giant stars cover a much larger spatial region than the red clump alone. The distance uncertainty for the red giant stars is much larger than for the red clump, at about 30\%. Distances toward the bulge are particularly uncertain and likely underestimated due to the high and differential reddening in this direction (see Ness et al., 2015, in prep).  
+In Figure \ref{fig:allage} we show the fractional age distribution for the 60,000 red giant stars in DR12. Note the 5\% stars where the $\chi_{reduced}^2$ $>$ 3 have been removed. The distances to all of the red giant stars have been determined via interpolation to PARSEC isochrones, from the stellar parameters. The panels are the same as for Figure \ref{fig:redclump_age} except now shown in terms of fractional ages (Stars with ages $<$ 5 Gyr) and for a larger extent in $(R_{GAL},z)$, as the red giant stars cover a much larger spatial region than the red clump alone. The distance uncertainty for the red giant stars is much larger than for the red clump, at about 30\%. Distances toward the bulge are particularly uncertain and likely underestimated due to the high and differential reddening in this direction (see Ness et al., 2015, in prep).  
 
 Figure \ref{fig:allage} demonstrates that the highest fraction of young red giant stars is in the plane of the disk and this youngest fraction flares in height with increasing radius (see the far left panel).  The stars in the outer-most region of the disk are predominantly young and stars at the solar radius at large heights from the plane are almost all old. At a given height from the plane, the stars are on average younger moving out in radius from the centre of the Galaxy. For low-alpha sequence only (middle panel), the stars toward the centre of the Galaxy comprise almost exclusively old stars and stars in the outer regions are predominantly young.  Young stars appear at all heights from the plane, even conditioned on abundances for the low-alpha sequence and the mono-abundance population. Overall the trends of the red giant sample are the same as that of the red clump sample. 
 
@@ -515,7 +514,13 @@ Third, we show using the red clump sample of \citet{Bovy2014} that the ages of s
 
 The mean age map of the Milky Way disk as traced by the red clump stars shown in Figure \ref{fig:redclump_age} indicates a flaring of the disk as a function of age. Moving out in radius, younger stars are present at larger and larger heights from the plane and at small radii the youngest stars are located in significant fraction only in the plane of the disk. In the median age maps shown in Figure \ref{fig:redclump_age}, there are old stars present even for the low-alpha sequence. Therefore, the low-alpha sequence is not a homogeneously young population. The oldest stars are located preferentially at larger heights from the plane compared to the younger stars, which truncate in their distribution nearer to the plane. The age distribution trends seen in the red clump sample as a function of $(R,z)$ shown in Figure \ref{fig:redclump_age} are also seen in the red giant sample shown in Figure \ref{fig:allage}, which spans a larger extent in $(R,z)$. %Distance uncertainties are significantly higher for the red giants compared to the red clump stars. 
 
-In the Appendix we provide our table of stellar labels for 80,000 red giant stars from DR12. We also show the label range of the training set of the 1639 \apokasc\ stars used to determine these labels. Finally, we demonstrate the relationship between the mass and age labels output from \tc\ from training on log mass and log age, respectively, which matches theoretical expectations. 
+For our analysis of stellar ages presented in Figures 7 - 10, we transform our mass labels into stellar age as described in Section 4.1. Mapping the output mass labels from \tc\ to a stellar age using stellar models enforces fixed upper and lower age limits. It is also possible, however, to use \tc\ to train directly on log age rather than mass. In this case, there is no physical constraint on minimum or maximum ages, at the test step.  
+
+We provide in Table \ref{tab:online}, in the Appendix,  a partial extract showing our stellar labels for 80,000 red giant stars from DR12 (including $\approx$ 20,000 red giant stars). This table is available in full online. We tabulate the \teff, \logg, \feh\ and \alphafe\ as well as the stellar mass label determined by \tc\ for training on log mass and  the stellar age label determined by \tc\ for the case of training directly on log age. For training on log age directly rather than log mass, the same set of reference stars are used. The label space of these stars is shown in the Appendix. The ages for the reference set of stars for training have been determined by Martig et al., (2015), who use interpolation between PARSEC isochrones, with optimized scaling relations, as a function of evolutionary state. 
+
+%Although there is no physical constraint on the ages, at test time on \apogee\ DR12 data, the vast majority of stars are in physically realistic label space, 0 $<$ age $<$ 14 Gyr and the stars with unphysically large ages typically have large associated $\chi^2_{reduced}$ values (included in Table \ref{tab:online}). 
+
+
 
 
 \section*{Appendix}
@@ -533,7 +538,11 @@ In the Appendix we provide our table of stellar labels for 80,000 red giant star
 In Table 1, we provide the stellar parameters of \teff, \logg, \feh, \alphafe, mass and age for the DR12 red clump stars and red giant stars that are within the label range of our training set. The mass label from \tc\ is obtained for training on log mass and the age label from \tc\ is obtained for directly training on log age.  The mass label we provide can be used to infer stellar ages, using interpolation between any selected stellar isochrones and given a set of assumptions. The age inferred from the mass label from \tc, as described in Section 4.1, was used to generate the stellar ages presented in Figures 7 - 10. Training on mass and inferring age, there are stars that are artificially truncated to the maximum age from the isochrones (where masses determined by \tc\ are lower than the smallest value from the stellar evolution tracks). 
 
 Training on log age directly instead of log mass,  \tc\ works mathematically in the same way, as described in Section 2.1. The cross-validation result for training on age directly, instead of mass, is shown in Figure \ref{fig:validation2}. The uncertainties on the labels are similar to that of Figure 1, for training on mass. There is no physical limit in the test step of \tc\ that prohibits ages (or masses) that exceed or are smaller than that of the training set. 
-\tc\ therefore is not constrained to a physically allowed regime. Therefore, training on log age results in a small subset of stars that are older than the age of the universe at the the test step, although the vast majority of stars are in physically realistic label space, 0 $<$ age $<$ 14 Gyr: only 1 percent of stars are outside of this range.  The comparison for the age-label determined for the red clump sample of stars, training on age, and the mass label determined for the red clump stars, training on mass, is shown in Figure \ref{fig:agemass}. Two PARSEC tracks for red clump masses and ages are shown, demonstrating that the data follow theoretical expectations. 
+\tc\ therefore is not constrained to a physically allowed regime. Therefore, training on log age results in a small subset of stars that are older than the age of the universe at the the test step, although the vast majority of stars are in physically realistic label space, 0 $<$ age $<$ 14 Gyr: only 1 percent of stars are outside of this range and typically have large associated $\chi^2_{reduced}$ values.  The comparison for the age-label determined for the red clump sample of stars, training on age, and the mass label determined for the red clump stars, training on mass, is shown in Figure \ref{fig:agemass}. Two PARSEC tracks for red clump masses and ages are shown, demonstrating that the data follow theoretical expectations. 
+
+
+%
+%However, at test time on \apogee\ DR12 data, the vast majority of stars are in physically realistic label space, 0 $<$ age $<$ 14 Gyr and the stars with unphysically large ages typically have large associated $\chi^2_{reduced}$ values (included in Table \ref{tab:online}). 
 
 
 The label range of our training set of 1639 \apokasc\ stars is provided in Figure \ref{fig:triangle}. 
