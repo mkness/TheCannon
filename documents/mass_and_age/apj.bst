@@ -1,7 +1,51 @@
-
+%%
+%% $Log: apj.bst,v $
+%% Revision 1.10 2013/03/11 13:01:55 alberto
+%% Reworked code to use format.pid for articles without proper
+%% pagination which then leads the system to use either an eprint
+%% id or a DOI; this will solve most problems with citing early
+%% access articles (no volume of page available, but online).
+%% Removed bibliography count from preamble since it seems to
+%% confuse some versions of latex.
+%% 
+%% Revision 1.9 2013/2/19 Erik Tollerud <erik.tollerud@yale.edu> 
+%% fixes for spurious error messages due to rev 1.8 changes
+%% also fixed missing publisher field printing in "book"
+%%
+%% Revision 1.8  2013/01/10 16:31:34  alberto
+%% Added proper formatting of arXiv eprint entries output by ADS
+%% (thse are article records, but the eprint id is printed only 
+%% if no traditional page number is available).  Also added support
+%% for ASCL entries under the "misc" category.
+%%
+%% Revision 1.7  2011/11/21 13:10:12  alberto
+%% Implemented new ApJ formatting rules: for papers with more than
+%% 5 authors, print first 3 followed by "et al."
+%%
+%% Revision 1.6  2009/05/18 15:13:02  alberto
+%% Fixed sorting of references with truncated lists of authors
+%% in sort.format.names
+%% Fix courtesy of Stephen Fegan <sfegan@llr.in2p3.fr>
+%%
+%% Revision 1.5  2009/03/19 13:15:11  alberto
+%% Truncate \bibitem entries with more than 8 authors.
+%% Fix courtesy of Craig Wiegert <wigie@alum.mit.edu>
+%% and Andrew R. Marble <amarble@as.arizona.edu>
+%%
+%% Revision 1.4  2002/06/18 16:37:48  alberto
+%% Add comma after first author in two-author reference
+%% Fix courtesy of Tim Robishaw <robishaw@astron.berkeley.edu>
+%%
+%% Revision 1.3  2000/04/20 22:17:50  jbaker
+%% Fixed INBOOK bug, now works essentially like BOOK.
+%%
+%% Revision 1.2  1998/08/30 22:35:45  jbaker
+%% Added RCS keywords.
+%%
 %% 1998/08/12  J Baker
 %% Tweaked by hand to get correct results for ApJ.  Added functions from
 %% astrobib.
+
 
 %%
 %% This is file `apj.bst',
@@ -58,11 +102,14 @@
 
 ENTRY
   { address
+    archivePrefix
     author
     booktitle
     chapter
+    doi
     edition
     editor
+    eprint
     howpublished
     institution
     journal
@@ -332,85 +379,57 @@ FUNCTION {eng.ord}
    if$
 }
 
-MACRO {acmcs} {"ACM Comput. Surv."}
-
-MACRO {acta} {"Acta Inf."}
-
-MACRO {cacm} {"Commun. ACM"}
-
-MACRO {ibmjrd} {"IBM J. Res. Dev."}
-
-MACRO {ibmsj} {"IBM Syst.~J."}
-
-MACRO {ieeese} {"IEEE Trans. Softw. Eng."}
-
-MACRO {ieeetc} {"IEEE Trans. Comput."}
-
-MACRO {ieeetcad}
- {"IEEE Trans. Comput.-Aided Design Integrated Circuits"}
-
-MACRO {ipl} {"Inf. Process. Lett."}
-
-MACRO {jacm} {"J.~ACM"}
-
-MACRO {jcss} {"J.~Comput. Syst. Sci."}
-
-MACRO {scp} {"Sci. Comput. Programming"}
-
-MACRO {sicomp} {"SIAM J. Comput."}
-
-MACRO {tocs} {"ACM Trans. Comput. Syst."}
-
-MACRO {tods} {"ACM Trans. Database Syst."}
-
-MACRO {tog} {"ACM Trans. Gr."}
-
-MACRO {toms} {"ACM Trans. Math. Softw."}
-
-MACRO {toois} {"ACM Trans. Office Inf. Syst."}
-
-MACRO {toplas} {"ACM Trans. Prog. Lang. Syst."}
-
-MACRO {tcs} {"Theoretical Comput. Sci."}
-
-INTEGERS { nameptr namesleft numnames }
+INTEGERS { nameptr namesleft numnames numtrunc }
 
 FUNCTION {format.names}
 { 's :=
+  #0 'numtrunc :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
   numnames 'namesleft :=
-    { namesleft #0 > }
-    { s nameptr
-      "{vv~}{ll}{, jj}{, f.}" format.name$
+  numnames #5 > 
+    { #3 'numtrunc := }
+    {}
+  if$
+  { namesleft #0 > }
+  { s nameptr
+    "{vv~}{ll}{, jj}{, f.}" format.name$
     't :=
-      nameptr #1 >
-        {
-          namesleft #1 >
-            { ", " * t * }
-            {
-              numnames #2 >
-                { "," * }
-                'skip$
-              if$
-              s nameptr "{ll}" format.name$ duplicate$ "others" =
-                { 't := }
-                { pop$ }
-              if$
-              t "others" =
-                {
-                  " {et~al.}" *
-                }
-                { " \& " * t * }
-              if$
-            }
-          if$
-        }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
+    nameptr #1 >
+      {
+	nameptr #1 - numtrunc = 
+	  { 
+	    #1 'namesleft :=
+	    "others" 't :=
+	  }
+	  {}
+	if$
+
+        namesleft #1 >
+          { ", " * t * }
+          {
+            numnames #1 >
+              { "," * }
+              'skip$
+            if$
+            s nameptr "{ll}" format.name$ duplicate$ "others" =
+              { 't := }
+              { pop$ }
+            if$
+            t "others" =
+              {
+                " {et~al.}" *
+              }
+              { " \& " * t * }
+            if$
+          }
+        if$
+      }
+      't
+    if$
+    nameptr #1 + 'nameptr :=
+    namesleft #1 - 'namesleft :=
+  }
   while$
 }
 
@@ -617,6 +636,39 @@ FUNCTION {output.bibitem}
   newline$
   ""
   before.all 'output.state :=
+}
+
+
+FUNCTION {format.doi}
+{ doi empty$
+    { "" }
+    { "doi:" doi * }
+  if$
+}
+
+FUNCTION {format.eprint}
+{ eprint empty$
+    { "" }
+    { archivePrefix empty$
+        { "" }
+        { archivePrefix ":" * }
+      if$
+      eprint field.or.null
+      *
+    }
+  if$
+}
+
+% Formats a persistent identifier (PID)
+% (typically a DOI or an eprint id)
+% You can easily swap the order of which PID
+% gets picked
+%
+FUNCTION {format.pid}
+{ eprint empty$
+    { format.doi }
+    { format.eprint }
+  if$
 }
 
 FUNCTION {n.dashify}
@@ -1033,7 +1085,10 @@ FUNCTION {article}
       format.pages output
     }
   if$
-  format.journal.pages
+  pages empty$
+    { format.pid output }
+    { format.journal.pages }
+  if$
   format.note output
   fin.entry
 }
@@ -1069,6 +1124,7 @@ FUNCTION {book}
 %  if$
   format.pages output
   format.note output
+  format.pid output
   fin.entry
 }
 
@@ -1083,6 +1139,7 @@ FUNCTION {booklet}
   howpublished output
   address output
   format.note output
+  format.pid output
   fin.entry
 }
 
@@ -1103,7 +1160,7 @@ FUNCTION {inbook}
   if$
   format.date "year" output.check
   date.block
-  title format.full.book.spec
+  title format.full.book.spec output
 %  format.btitle "title" output.check
 %  crossref missing$
 %    {
@@ -1190,6 +1247,7 @@ FUNCTION {manual}
   organization output
   address output
   format.note output
+  format.pid output
   fin.entry
 }
 
@@ -1205,6 +1263,7 @@ FUNCTION {mastersthesis}
   school "school" output.check
   address output
   format.note output
+  format.pid output
   fin.entry
 }
 
@@ -1218,6 +1277,7 @@ FUNCTION {misc}
   format.title output
   howpublished output
   format.note output
+  format.pid output
   fin.entry
 }
 
@@ -1233,6 +1293,7 @@ FUNCTION {phdthesis}
   school "school" output.check
   address output
   format.note output
+  format.pid output
   fin.entry
 }
 
@@ -1281,6 +1342,7 @@ FUNCTION {techreport}
   institution "institution" output.check
   address output
   format.note output
+  format.pid output
   fin.entry
 }
 
@@ -1293,6 +1355,7 @@ FUNCTION {unpublished}
   date.block
 %  format.title "title" output.check
   format.note "note" output.check
+  format.pid output
   fin.entry
 }
 
@@ -1408,25 +1471,35 @@ FUNCTION {sort.format.names}
   #1 'nameptr :=
   ""
   s num.names$ 'numnames :=
-  numnames 'namesleft :=
-    { namesleft #0 > }
+  numnames #8 >
     { s nameptr
       "{vv{ } }{ll{ }}{  f{ }}{  jj{ }}"
       format.name$ 't :=
-      nameptr #1 >
-        {
-          "   "  *
-          namesleft #1 = t "others" = and
-            { "zzzzz" * }
-            { t sortify * }
-          if$
-        }
-        { t sortify * }
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
+      t sortify *
+      "   "  *
+      "zzzzz" *
     }
-  while$
+    { numnames 'namesleft :=
+      { namesleft #0 > }
+      { s nameptr
+        "{vv{ } }{ll{ }}{  f{ }}{  jj{ }}"
+        format.name$ 't :=
+        nameptr #1 >
+          {
+            "   "  *
+            namesleft #1 = t "others" = and
+              { "zzzzz" * }
+              { t sortify * }
+            if$
+          }
+          { t sortify * }
+        if$
+        nameptr #1 + 'nameptr :=
+        namesleft #1 - 'namesleft :=
+      }
+    while$
+    }
+  if$
 }
 
 FUNCTION {sort.format.title}
@@ -1584,7 +1657,8 @@ FUNCTION {begin.bib}
     'skip$
     { preamble$ write$ newline$ }
   if$
-  "\begin{thebibliography}{" number.label int.to.str$ * "}" *
+%  "\begin{thebibliography}{" number.label int.to.str$ * "}" *
+  "\begin{thebibliography}{}"
   write$ newline$
   "\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi"
   write$ newline$

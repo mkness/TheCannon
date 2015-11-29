@@ -58,7 +58,7 @@
         David~W.~Hogg\altaffilmark{1,2,3},
         H.-W.~Rix\altaffilmark{1},
         M.~Martig \altaffilmark{1}, 
-       Pinsonneault, Marc H. \altaffilmark{4},
+     Marc~H.~Pinsonneault\altaffilmark{4},
         A.Y.~Q~Ho \altaffilmark{1, 5}}
 \altaffiltext{1}{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg, Germany}
 \altaffiltext{2}{Center for Cosmology and Particle Physics, Department of Phyics, New York University, 4 Washington Pl., room 424, New York, NY 10003, USA}
@@ -73,7 +73,7 @@ For red giant stars, tracers luminous enough to be observed
 across the Galaxy, mass implies a stellar evolution age.
 It has proven to be extremely difficult to infer ages and masses directly from red giant spectra using existing methods.
 From the \kepler\ and \apogee\ surveys, samples of several thousand
-stars exist with high-quality spectra and astroseismic masses.
+stars exist with high-quality spectra and asteroseismic masses.
 Here we show that from these data we can build a data-driven spectral
 model using \tc, which can determine stellar masses to $\sim 0.07$~dex
 from \apogee\ \textsc{dr12} spectra of red giants; these imply age
@@ -91,7 +91,6 @@ variations that vary sensibly with Galactic position.
 Such stellar age constraints across the Milky Way open up new avenues
 in Galactic archeology.
 \end{abstract}
-%The impact of systematic errors in the current and initial masses derived with our method is addressed, and directions for future improvements are discussed.
 
 \keywords{
 Galaxy: stellar content
@@ -118,7 +117,7 @@ In that regime, stellar evolutionary isochrones are well separated (at a given m
 Such stellar parameters are typically derived from high-resolution spectroscopy, which delivers low associated errors on the parameters \citep[e.g.][]{Bensby2013, Casagrande2011, haywood2013, B2014}.  To date, the largest homogeneous data set of stellar ages in the galactic disk has been derived in this fashion, from the Geneva Cophenhagen Survey (GCS). Yet, all 16,682 main sequence stars from GCS are located in the immediate solar neighbourhood of $<0.1$~kpc \citep{nordstrom2004short}.
 Recent analogous analyses \citep[e.g.][]{haywood2013, B2014} have pushed to greater distances, but still remain limited to essentially the solar radius.
 
-To map stellar ages throughout the Milky Way, one needs more luminous stars, in evolutionary phases that are prevalent  across most ages and metallicities. Giant stars satisfy these criteria. They have the advantage that their luminosities and colors vary relatively little with age, which makes age biases in flux-limited samples weaker. Yet, this also means that giant stars isochrones of different ages nearly overlap, making it all but impossible to get precise ages from \teff , \logg\  and \feh\ measurements, unless we have tiny errors in these measurements and enormous confidence in the accuracy of stellar isochrones. For reference, consider a typical solar abundance red giant at \logg\ = 2 with an age of 5 Gyr.  For the PARSEC isochrones   \citep{Bressan2012}, age differences of +/- 2 Gyr correspond to changes in \teff\ at fixed \logg\ of only $\approx$ 10 K, compared to shifts of $\approx$ 50 K for a 0.10 dex difference in \feh.  Furthermore, core helium burning stars that have experienced significant prior mass loss (hereafter red clump, or RC, stars) are located close in the HR Diagram to less evolved first ascent red giant branch (hereafter Red Giant, or RGB) stars.  Even if the observational data is exact, absolute comparisons to stellar isochrones are uncertain; the absolute \teff\ of theoretical models, for example, is highly sensitive to the assumed efficiency of convection, typically parameterized with a mixing length.  However, for basically all post main sequence stars, in particular stars on the red giant branch (RGB) or in the red clump (RC), the stellar mass should be a powerful constraint on the stars' age \citep[see e.g.][]{Martig2014}. In that case the challenge is reduced to estimating stellar masses for extensive samples of giant stars throughout the Galaxy; these masses then imply ages.
+To map stellar ages throughout the Milky Way, one needs more luminous stars, in evolutionary phases that are prevalent  across most ages and metallicities. Giant stars satisfy these criteria. They have the advantage that their luminosities and colors vary relatively little with age, which makes age biases in flux-limited samples weaker. Yet, this also means that giant stars isochrones of different ages nearly overlap, making it all but impossible to get precise ages from \teff , \logg\  and \feh\ measurements, unless we have tiny errors in these measurements and enormous confidence in the accuracy of stellar isochrones. For reference, consider a typical solar abundance red giant at \logg\ = 2 with an age of 5 Gyr.  For the PARSEC isochrones   \citep{Bressan2012}, age differences of +/- 2 Gyr correspond to changes in \teff\ at fixed \logg\ of only $\approx$ 10 K, compared to shifts of $\approx$ 50 K for a 0.10 dex difference in \feh.  Furthermore, core helium burning stars that have experienced significant prior mass loss, red clump stars, are located close in the HR Diagram to less evolved first ascent red giant branch stars.  Even if the observational data is exact, absolute comparisons to stellar isochrones are uncertain; the absolute \teff\ of theoretical models, for example, is highly sensitive to the assumed efficiency of convection, typically parameterized with a mixing length.  However, for basically all post main sequence stars, in particular stars on the red giant branch or in the red clump, the stellar mass should be a powerful constraint on the stars' age \citep[see e.g.][]{Martig2014}. In that case the challenge is reduced to estimating stellar masses for extensive samples of giant stars throughout the Galaxy; these masses then imply ages.
 
 In recent years, asteroseismology surveys such as \most\ \citep{most2005}, \corot\ \citep{corot2009}, and \kepler\ \citep{Bedding2010}, have
 been extremely successful in producing information
@@ -137,14 +136,14 @@ were far more likely to have formed from metal-poor but $\alpha$-enhanced ISM th
 The question then naturally arises how one can combine the information from these two types of surveys, information about the stellar interior and masses from seismology; and
 stellar parameters and element-abundances from spectroscopy. For stars that have been observed by both kinds of surveys this can be done at the catalog level \citep{Martig2014}.
 
-As stars evolve to the red giant branch they develop deep surface convection zones and dredge up nuclear processed material in their interiors in a mass dependent fashion \citep{Iben1967}.  Elements whose surface abundance is particularly sensitive to this phenomenon include the light elements LiBeB, C (in particular the ratio of C12/C13) and N; C and N are measured by surveys such as APOGEE.  There is also evidence, especially in metal-poor stars, for changes in CNO abundances along the giant branch \citep{Kraft1994}, which requires a mixing process not usually included in standard models whose origin is still uncertain \citep{A2012}.  However, \textit{empirical} correlations between stars of known mass and surface abundances can yield powerful insights even without detailed knowledge of the underlying physics.
+As stars evolve to the red giant branch they develop deep surface convection zones and dredge up nuclear processed material in their interiors in a mass dependent fashion \citep{Iben1967}.  Elements whose surface abundance is particularly sensitive to this phenomenon include the light elements Li, Be, B, C (in particular the ratio of C12/C13) and N; C and N are measured by surveys such as APOGEE.  There is also evidence, especially in metal-poor stars, for changes in CNO abundances along the giant branch \citep{Kraft1994}, which requires a mixing process not usually included in standard models whose origin is still uncertain \citep{A2012}.  However, \textit{empirical} correlations between stars of known mass and surface abundances can yield powerful insights even without detailed knowledge of the underlying physics.
 
 Following this approach, Martig et al., (2015) have used red giants in the \apokasc\ sample of stars, for which seismic parameters are known from \kepler\ \citep{P2014} and \teff, \logg, \feh, \alphafe\  are \xfe\ are measured from \apogee\ spectra \citep{Ahn2014}. Martig et al., (2015) have found a tight correlation between the masses determined from the standard seismic scaling relations and the [C/N] measurement from \apogee.  They determine a model for stellar mass and age, as a function of C and N abundance measurements. 
 
-In this paper, we set out to develop a data-driven and far-reaching connection between the astroseismic and the spectroscopic results for giant stars, with the ultimate goal of determining stellar masses of giants, and hence ages, directly from spectra. The goal is to derive age estimates that do not simply reflect the abundances of the star's birth material (such as joint \feh\ and \alphafe\ estimates); we aim for age estimates that give meaningful results, {\sl even at a given [Fe/H] and [$\alpha$/Fe]}. We are however, with spectroscopic data, determining only the surface property of stars. The physical properties of mass and derived age can only be inferred, given theoretical expectations from stellar models between these physical quantities and stellar spectra.
+In this paper, we set out to develop a data-driven and far-reaching connection between the asteroseismic and the spectroscopic results for giant stars, with the ultimate goal of determining stellar masses of giants, and hence ages, directly from spectra. The goal is to derive age estimates that do not simply reflect the abundances of the star's birth material (such as joint \feh\ and \alphafe\ estimates); we aim for age estimates that give meaningful results, {\sl even at a given [Fe/H] and [$\alpha$/Fe]}. We are however, with spectroscopic data, determining only the surface property of stars. The physical properties of mass and derived age can only be inferred, given theoretical expectations from stellar models between these physical quantities and stellar spectra.
 
-For this purpose, we use a set of 1639 \apokasc\ stars from the \apogee\ DR12 spectral sample with stellar mass and \logg\ measurements from astroseismology \citep{P2014}, along with DR12's  \teff, \feh\ and \alphafe (see Figure \ref{fig:triangle} in the Appendix).  Using \tc~ \citep{Ness2015} we then generate a data-driven generative model for the five stellar labels \teff, \logg, \feh, \alphafe\ and mass. This model quantifies the information content at each pixel.  
-Therefore, we can examine the origin of the information on these labels directly in the spectra. We have shown previously, in  \citet[][and Ho et al., in prep]{Ness2015}   that \tc\ is successful for delivering the labels of \teff, \logg, \feh\  and \alphafe\ for \apogee\ stars. With a training set of stars with know masses, we can expand the same approach to include a fifth stellar label, mass. With these data,  \tc\ is a direct framework to characterize the relationship between the surface spectroscopy and interior asteroseismology, in order to jointly infer stellar properties, learning about stellar interiors from surface spectroscopy.
+For this purpose, we use a set of 1639 \apokasc\ stars from the \apogee\ DR12 spectral sample with stellar mass and \logg\ measurements from astroseismology \citep{P2014}, along with DR12's  \teff, \feh\ and \alphafe\ (see Figure \ref{fig:triangle} in the Appendix).  Using \tc~ \citep{Ness2015} we then generate a data-driven generative model for the five stellar labels \teff, \logg, \feh, \alphafe\ and mass. This model quantifies the information content at each pixel.  
+Therefore, we can examine the origin of the information on these labels directly in the spectra. We have shown previously, in  \citet[][and Ho et al., in prep]{Ness2015}   that \tc\ is successful for delivering the labels of \teff, \logg, \feh\  and \alphafe\ for \apogee\ stars. With a training set of stars with know masses, we can expand the same approach to include a fifth stellar label, mass. With these data,  \tc\ is a direct framework to characterize the relationship between the surface spectroscopy and interior astroseismology, in order to jointly infer stellar properties, learning about stellar interiors from surface spectroscopy.
 
 In Section \ref{sec:methods} we describe the implementation and application of \tc\ for the case at hand. We also lay out the verification of the mass label estimates, and we illustrate where in the spectrum the information on the various labels originates. 
 
@@ -226,7 +225,7 @@ providing (at least for giant stars) measurements of the
 asteroseismological frequencies and frequency splittings that indicate
 stellar interior density structure.
 The two global asteroseismic parameters are the \numax\ and \deltanu\ quantities. These are the measurements from \kepler\ that indicate the interior structure of the star \citep[see][and references therein]{P2014}.
-The asteroseismological measurements are used---with stellar models---to infer stellar masses and thus provide labels.
+The asteroseismic measurements are used---with stellar models---to infer stellar masses and thus provide labels.
 
 Our training set of 1639 \apokasc\ stars are described in \citet{Martig2014} and selected from the full \apokasc\ sample in \citet{P2014} based on additional quality cuts. This sample includes only stars with no warning or error in the \aspcap\ \code{FLAG} parameter provided by \apogee\ \citep{Ahn2014}, with no rotation flag set and with errors on the \deltanu\ and \numax\ less than 10\,percent are included. The \apokasc\ stars comprise a high signal-to-noise (SNR) sample, with an SNR $>$ 80. 
 
@@ -234,7 +233,7 @@ We work with the continuum-normalized DR12 spectra, and the method of continuum
 estimation turns out to be important for performance. We use the aspcapStar files provided by \apogee, but apply our own signal-to-noise invariant continuum normalization by fitting a low-order polynomial to `true' continuum pixels, as described in \citet{Ness2015}. 
 %
 Five labels are used for training of \tc, the \teff, \logg, \feh, \alphafe\ and log mass. The label range of the training data set is shown in the Appendix, in Figure \ref{fig:triangle}. 
- The five training labels adopted are from the \aspcap-corrected values  \citep{Meszaros2013} for the \teff, \feh\ and \alphafe\ and the astroseismic value for \logg, as determined from the measured $\nu_{max}$. The mass label was determined from the  \deltanu\ and \numax\ measurements using the standard seismic scaling relation \citep[e.g.][]{K1995}, as in Equation \ref{eq:mass}. 
+ The five training labels adopted are from the \aspcap-corrected values  \citep{Meszaros2013} for the \teff, \feh\ and \alphafe\ and the asteroseismic value for \logg, as determined from the measured $\nu_{max}$. The mass label was determined from the  \deltanu\ and \numax\ measurements using the standard seismic scaling relation \citep[e.g.][]{K1995}, as in Equation \ref{eq:mass}. 
 
 \begin{equation} \label{eq:mass}
 M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( \frac{\Delta \nu}{\Delta \nu_{\odot}}\right)^{-4} \ \left( \frac{T_{\mathrm{eff}}}{T_{\mathrm{eff,\odot}}}\right)^{1.5} \ 
@@ -242,7 +241,10 @@ M= \left( \frac{\nu_{\mathrm{max}}}{\nu_{\mathrm{max,\odot}}}\right)^3\  \left( 
 
 We adopt  $T_{\mathrm{eff,\odot}}=5777$ K, $\nu_{\mathrm{max,\odot}}=3140\ \mu$Hz, $\Delta \nu_{\odot}=135.03\ \mu$Hz, as per \citet{Martig2014}. The solar values  $\Delta \nu_{\odot}$ and $\nu_{\mathrm{max,\odot}}$ are those used for the \apokasc\ catalogue and were obtained by \cite{Hekker2013}.
 
-Note that modified scaling relations can be adopted in order to determine mass from the the astroseismic parameters. \tc\ is a generalised method and in all cases, the results at the test step will be directly tied to the assumptions in the training step. \tc\ is implemented here as described in \citet{Ness2015} but using the model in Equation \ref{eq:quad}, with the mass label coming from the equation described in Equation \ref{eq:mass}.  
+Note that modified scaling relations can be adopted in order to determine mass from the the asteroseismic parameters. \tc\ is a generalized method and in all cases, the results at the test step will be directly tied to the assumptions in the training step. \tc\ is implemented here as described in \citet{Ness2015} but using the model in Equation \ref{eq:quad}, with the mass label coming from the equation described in Equation \ref{eq:mass}.  
+
+The scaling relationships rely on a combination of theoretically motivated and empirical arguments.  As such, their absolute values need to be calibrated by comparison with fundamental masses.  Radii are in reasonable agreement with parallax \citep{SA2012} and interferometry \citep{Huber2012} measurements.  However, there appear to be modest but real offsets between the expected and asteroseismic masses of open cluster red giants \citep{Brogaard2012} and somewhat larger ones for halo giants \citep{Epstein2014}.  These differences may depend on evolutionary state \citep{Miglio2012}, but are otherwise systematic rather than random in nature.  We therefore proceed with the masses as indicated by the unmodified relations, with the caution that there could be zero-point differences, metallicity-dependent stretches in the mass scale, and evolutionary-state dependent changes.  Despite these important caveats, we demonstrate that the relative masses inferred from these scalings produce sensible inferences about galactic properties.  It is straightforward to adopt corrected masses as new calibrations of the scaling relations arise.
+
 
 \subsubsection{Test Data} 
 
@@ -250,7 +252,14 @@ We train out model using the \apokasc\ sample and then determine our five stella
 
 \subsection{From Masses to Ages}
 
-To transform the mass label determined by \tc\ to an inferred age label for each star, we use the PARSEC isochrones with a mass loss parameter of $\eta_{\mbox{Reimers}}$ = 0.2 and adopt the red clump evolutionary state to set the relationship between mass and age at each metallicity.  The mapping of mass to age is directly tied to the models and subject to assumptions including the models chosen, the stellar mass loss parameter and the evolutionary state. These assumptions lead to small absolute differences in the age scaling of the stars given the mass. However,  the relative ages are consistent and quantitatively we draw no different conclusions in any of our results by varying these primary input assumptions \citep[see also][]{Bovy2014}. Assuming a red clump evolutionary state for example, instead of a red giant evolutionary state for interpolating mass to age, does not change the age distribution of the sample. Individual stellar age differences are on the order of 5\,percent between these two evolutionary states. 
+Our asteroseismic calibration set measures only \textit{current} masses; a model is required to map these masses to their initial values.  In addition, the mapping of stellar mass to age depends on the adopted input physics Ð for example, the treatment of convective core overshooting for massive stars Ð as well as the detailed mixture of heavy elements and the assumed initial helium abundance \citep[see][for a detailed discussion]{
+blom2010}.  For red giants, the importance of mass loss depends sensitively on the luminosity and whether or not the star is a first ascent red giant or a red clump star.  Using the general formulation of \citet{R1975}, one would expect on dimensional grounds to have mass loss occur primarily on the upper red giant branch, when the surface gravity is low; there could also be mass loss associated with the ignition of helium in a degenerate medium.  Mass loss is therefore only likely to be important for red clump stars and for very luminous first ascent giants; the latter are rare in our sample.   
+
+Globular cluster data requires modest (of order 0.2 solar masses) integrated mass loss on the giant branch with a stochastic dispersion of order 0.03 solar masses \citep[e.g.][]{Lee1990}.  The mass loss for higher metallicity red giants is less well-established, with some suggestion from Kepler data for a relatively weak mass loss \citep{Miglio2012}; note, however, that recent summaries of globular cluster data imply a larger scaling constant of order 0.48 \citep{McD2015}.  We therefore adopt a modest mass loss prescription ($\eta_{\mbox{Reimers}}$=0.2) to map current onto initial mass, with the caution that this may underestimate the effect for red clump stars.  For a recent discussion of the age uncertainties for red giants with asteroseismic masses see \citet{Casagrande2015}. 
+
+ For our purposes, we are interested primarily in differential ages and in checking whether or not the usage of asteroseismic masses results in plausible age properties, not in rigorous absolute age measurements.  In the sections that follow, we explicitly distinguish between the ages of red giant and red clump stars to separate out the red clump sample whose ages depend on the assumptions concerning mass loss from the red giant sample that is relatively insensitive. (Also note that assuming a red clump evolutionary state for example, instead of a red giant evolutionary state for interpolating mass to age, does not change the age distribution of the sample. Individual stellar age differences are on the order of 5\,percent between these two evolutionary states).  Finally, we note that a real astrophysical sample will include both mergers of low mass stars and stars that have had their envelopes stripped by a companion; care must be taken in population modeling to distinguish such astrophysical backgrounds from very young or old populations respectively.
+
+%To transform the mass label determined by \tc\ to an inferred age label for each star, we use the PARSEC isochrones with a mass loss parameter of $\eta_{\mbox{Reimers}}$ = 0.2 and adopt the red clump evolutionary state to set the relationship between mass and age at each metallicity.  The mapping of mass to age is directly tied to the models and subject to assumptions including the models chosen, the stellar mass loss parameter and the evolutionary state. These assumptions lead to small absolute differences in the age scaling of the stars given the mass. However,  the relative ages are consistent and quantitatively we draw no different conclusions in any of our results by varying these primary input assumptions \citep[see also][]{Bovy2014}. Assuming a red clump evolutionary state for example, instead of a red giant evolutionary state for interpolating mass to age, does not change the age distribution of the sample. Individual stellar age differences are on the order of 5\,percent between these two evolutionary states. 
 
 \section{Results}
 
@@ -263,14 +272,14 @@ For the take-stars out test we train the spectral model iteratively on 90\,perce
 %run -i plotdiff_5labels_10percent_linear trained on 1500 stars
 %/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_5labels_10percent_contour.py
 %/Users/ness/new_laptop/TheCannon/TheCannon/code/ plotdiff_6labels_10percent_contour.py
-\begin{figure}[p]
+\begin{figure}[h]
 \centering
         \includegraphics[scale=0.4]{./plots/validation_1639_6_quad.pdf}
   \caption{Cross validation of the training dataset of 1639 stars, for the \teff, \logg, \feh, \alphafe\ and mass labels: the results for \tc's labels for training performed on 90\% of the \apokasc\ stars, showing the performance at test time on the 10\% of the stars not included in training, run 10 times. The panel on the far right is the derived age label from the mass determined with \tc, using interpolation with PARSEC isochrones. The 31 stars with a $\chi_{reduced}^2$ statistic of $>$ 2 (2\% of the training data) have been removed.}
 \label{fig:validation1}
 \end{figure}
 
-This \figurename\ shows that \tc 's purely mathematical approach of label transfer estimates the stellar labels with accuracies of 31K in \teff, 0.07 dex in \logg, 0.02 in \feh, 0.02 in \alphafe\ and  0.07 dex in log mass, or 0.21 dex in the inferred log age (Gyr) over the label-range of the reference stars. It is important to remember that the objects plotted are the left-out objects and the spectra of these objects are completely detached from the training step,  except that they have the same experimental set-up and are drawn from a part of label space that is represented by the remaining reference objects.
+This \figurename\ shows that \tc 's purely mathematical approach of label transfer estimates the stellar labels with accuracies of 31K in \teff, 0.07 dex in \logg, 0.02 in \feh, 0.02 in \alphafe\ and  0.07 dex in log mass, or 0.21 dex in the inferred log age (Gyr) over the label-range of the reference stars. Notably, the uncertainty on the mass (20 percent) is only slightly larger than the \apokasc\ catalogue uncertainty of 12\%. It is important to remember that the objects plotted are the left-out objects and the spectra of these objects are completely detached from the training step,  except that they have the same experimental set-up and are drawn from a part of label space that is represented by the remaining reference objects.
 
 
 \subsection{\tc's generative model at the test step: the red clump stars}
@@ -285,7 +294,7 @@ Figure \ref{fig:spectra} illustrates that the generated spectral model from \tc\
 %run -i makeredclumpplot2.py
 \begin{figure}[hp]
 \centering
-      \includegraphics[scale=0.5]{./plots/spectra_fits_7.png}
+      \includegraphics[scale=0.5]{./plots/spectra_fits_7.pdf}
   \caption{A spectrum of one of the red clump stars in the catalogue of \citet{Bovy2014} shown in black, with the best fit model from \tc\ in red. The eight wavelength regions shown correspond to the highest first-order coefficient amplitudes shown in Figures 2 to 5 (from top to bottom). The best fit model from \aspcap\ is shown in the grey dashed line.}
 \label{fig:spectra}
 \end{figure}
@@ -296,9 +305,9 @@ Figure \ref{fig:spectra} illustrates that the generated spectral model from \tc\
 
 \tc\ is a generative model that determines a coefficient at every pixel, or wavelength. These coefficients describe how the flux depends on the stellar labels, given the model (in this work, in Equation \ref{eq:quad}).   A near-zero coefficient for a given pixel indicates that the flux at that pixel is independent of the labels. Conversely, the largest values of the coefficients are where the spectra changes most significantly with the label or labels. Here we examine the origin of the highest coefficients for the first order, linear coefficients. We use the first order coefficients to identify some key regions of the spectra that contain the most information with respect to the labels, and to determine which elements and molecules in particular these coefficients correlate with. 
 
-Figures \ref{fig:logg} to \ref{fig:mass} show the first order coefficients of our model described in Equation \ref{eq:quad} over a narrow wavelength range ($\approx$ 30 Angstroms), centered on where the first order coefficients reach their largest amplitude. The 0$^{\mbox{th}}$ order coefficient is shown in the top panel and the first order linear terms $\theta_l$ where $l$ = \teff, \logg, \feh, \alphafe\ and mass are shown in the middle panels. For a given set of labels, we can use \tc's model to generate the spectra (using all coefficients). The generated spectra is shown in the bottom panel of each Figure, for a representative set of stellar labels. These spectra are made at three steps across each stellar label, for each respective first order coefficient. This directly illustrates how the flux changes with each label in regions where the coefficient associated with that label is highest.  
+Figures \ref{fig:logg} to \ref{fig:mass} show the first order coefficients of our model described in Equation \ref{eq:quad} over a narrow wavelength range ($\approx$ 30 Angstroms), centered on where the first order coefficients reach their largest amplitude. The 0$^{\mbox{th}}$ order coefficient is shown in the top panel and the first order linear terms $\theta_l$, where $l$ = \teff, \logg, \feh, \alphafe\ and mass, are shown in the middle panels. For a given set of labels, we can use \tc's model to generate the spectra (using all coefficients). The generated spectra is shown in the bottom panel of each Figure, for a representative set of stellar labels. These spectra are made at three steps across each stellar label, for each respective first order coefficient. This directly illustrates how the flux changes with each label in regions where the coefficient associated with that label is highest.  
 
-We use the DR12 \apogee\ linelist (Shetrone et al., 2015, in preparation), Kurucz model atmospheres \citep{castelli2004} and the stellar synthesis code MOOG \citep{sneden1979}, to determine which elements correspond to the absorption features in the spectra where the highest first order coefficients are located. The elements and molecules are marked on the 0$^{\mbox{th}}$ order coefficient spectra in the top panel of each of the Figures. The 0$^{\mbox{th}}$ order-coefficient vector $\theta_0$, or the baseline spectrum of the model is, essentially, the intersect spectrum of the training set of stars. 
+We use the DR12 \apogee\ linelist (Shetrone et al., 2015, submitted), Kurucz model atmospheres \citep{castelli2004} and the stellar synthesis code MOOG \citep{sneden1979}, to determine which elements correspond to the absorption features in the spectra where the highest first order coefficients are located. The elements and molecules are marked on the 0$^{\mbox{th}}$ order coefficient spectra in the top panel of each of the Figures. The 0$^{\mbox{th}}$ order-coefficient vector $\theta_0$, or the baseline spectrum of the model is, essentially, the intersect spectrum of the training set of stars. 
 
 The absorption features in the H-band are heavily blended with OH, CN, CO and $^2$C molecules and the figures indicate which absorption features are comprised of blends of molecules and elements, at the stellar parameter space of \apogee\ stars. The elements that show the most significant changes with the labels show gratifying accord with expectations from stellar physics and these are discussed below, for each of the five labels. 
 
@@ -308,10 +317,9 @@ Figure \ref{fig:logg} shows two 30 Angstrom regions of the spectra centered on t
 
 % run run -i makeplot_scatter_test18_step/spectra in /Apogee_ages/
  %run -i makeplot_scatter_test18_step_spectraB.py
-\begin{figure}[p]
+\begin{figure}[hp]
 \centering
- % \includegraphics[scale=0.31]{./plots/validation.png}
-    \includegraphics[scale=0.51]{./plots/coeffs_g_3.png}
+    \includegraphics[scale=0.51]{./plots/coeffs_g_3.pdf}
   \caption{The 0$^{\mbox{th}}$ and first order coefficients ($\theta_0$ , $\theta_{\mbox{$l$}}$) of the model trained on the \aspcap\ stars showing the two 30 Angstrom wavelength regions where the \logg\ coefficient (in dark blue) reaches its highest absolute amplitudes. The 0$^{\mbox{th}}$ coefficient (at top) describes the intersect spectrum and a number of spectral absorption features are marked. The middle panel shows all coefficients, each normalized to their highest amplitude, for all \textit{$l$} = \teff, \logg, \feh, \alphafe\ and mass coefficients, where all coefficients are shown in transparent lines except for the \logg, which is of interest here. The bottom panels show the generated spectra from \tc's model, for three increasing values of \logg, which span the full range of \logg\ values in the training set. The selected parameters for this star are set around the fiducial point of the stars in the training set, and represent a typical \apokasc\ spectra. The panel at left where the \logg\ coefficient reaches its highest amplitude shows the \logg\ information is concentrated to the wings of the strong Mg feature in the spectra, dissimilarly to the \alphafe\ information which is in the core as seen from the cyan coefficient. The panels at right show the broadening of the flux as a consequence of the H Brackett-11 line which, like Mg,  is similarly gravity sensitive due to pressure broadening effects (see the text). The labels of the fiducial spectra are indicated in the bottom right hand panel.}
 \label{fig:logg}
 \end{figure}
@@ -336,9 +344,9 @@ The coupling of the data-driven model to stellar physics and mapping to the elem
 
 
 % run run -i makeplot_scatter_test18/spectra_step in /Apogee_ages/
-\begin{figure}[p]
+\begin{figure}[hp]
 \centering
-    \includegraphics[scale=0.51]{./plots/coeffs_t_3.png}
+    \includegraphics[scale=0.51]{./plots/coeffs_t_3.pdf}
   \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest \teff\ coefficient (in green). The \teff\ coefficient is typically anti-correlated with the \feh\ and \alphafe\ coefficients and traces the absorption profiles, reaching the highest amplitudes at the core of metal lines across the entire spectrum.}
 \label{fig:teff}
 \end{figure}
@@ -354,9 +362,9 @@ The largest coefficient in \alphafe\ corresponds to the core of the strong (alph
 
 
 % run run -i makeplot_scatter_test18_step_spectra in /Apogee_ages/ 
-\begin{figure}[p]
+\begin{figure}[hp]
 \centering
-    \includegraphics[scale=0.51]{./plots/coeffs_af_3.png}
+    \includegraphics[scale=0.51]{./plots/coeffs_af_3.pdf}
   \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest \feh\ coefficient (in magenta), at left and highest \alphafe\ coefficient (in cyan), at right. The largest coefficient in \feh\ is from an Mn (iron-peak) line which correlates with \feh. Note that for this line in the mid-panel at left, the \alphafe\ coefficient is near-zero where the \feh\ information is highest. The highest amplitude of the \alphafe\ coefficient is seen in the core of one of the strong Mg lines in the \apogee\ spectra, shown in the panel at right.}
 \label{fig:feha}
 \end{figure}
@@ -368,7 +376,7 @@ The largest coefficient in \alphafe\ corresponds to the core of the strong (alph
 Finally, having verified that \tc\ delivers physically sensible origins of the \teff, \logg, \feh\ and \alphafe\ labels, we examine the origin of the mass information from which we can infer age of \apogee\ stars. 
 These first four labels are most straightforward  to convincingly derive: indeed they are standard labels that are routinely determined from a stellar spectrum. However, delivering a mass label, mass, directly from stellar spectra marks a significant step forward in the exploitation of stellar spectra. 
 
-With the exception of a few specific indices which have been used previously to derive mass and inferred age, this work is the first claim of the success of a generalized approach for the extraction of stellar mass from spectra.  Mathematically this works (as per the cross validation) and now we examine the interpretability of the mass label in terms of direct spectral signatures. 
+With the exception of a few specific indices which have been used previously to derive mass and inferred age, this work is the first claim of the success of a generalized approach for the extraction of stellar mass from spectra.  Mathematically this works (as per the cross validation) and now we examine the interpretability of the mass label in terms of direct spectral signatures.  For example, consider the case of main sequence stars.  In this case, mass is correlated strongly with effective temperature and more weakly with surface gravity in a composition dependent fashion.  A Cannon-like approach with mass labels would therefore be likely to have very similar spectral correlations, producing something equivalent to isochrone fitting for photometry.  Red giants have a wide range in log g and different mass tracks differ only subtly in effective temperature, with a very strong metallicity dependence.  One might therefore fear that any mass estimates would have very large random uncertainties, which is clearly not the case based on our results from Section 3.1.
 
 From previous analyses in the UV and optical wavelength regions, we might expect spectral mass indicators, if present, to be realized in (i) chromospheric activity (emission), (ii) dredge-up effects (and changing line strengths and profiles of particular elements) or (iii) some combination of individual elemental abundances that reflect the enrichment history of the Milky Way with time (changing element ratios in the spectra). 
 
@@ -378,12 +386,15 @@ From the synthesized spectra in the bottom left-hand panel, it is apparent that 
 
 The changes in spectra as a function of mass are in general very subtle compared to the other labels. This is likely responsible for the relatively large scatter in the mass label determined with the take-stars out test, shown in Figure 1. Note the other stellar labels have been historically well determined from spectra, even without general mathematical methods like \tc\ (which can optimally exploit all of the available and potential information). The correlations contained in the traditional stellar labels of \teff, \logg, \feh\ and \alphafe\ are more straightforward to extract (e.g. \feh\ correlates with the cores of most absorption features in the spectra). This highlights the strength of an approach like \tc\ to determine and quantify the information that can be truly extracted from data, particularly as a function of signal to noise. 
 
-Examining the CN molecular regions in more detail, the two CN regions shown in Figure \ref{fig:mass} with the highest mass coefficients are in fact a blend of CN molecules containing both $^{12}$C and $^{13}$C. Similarly, the CO feature at right is a blend of both $^{12}$C and $^{13}$C. It is this ratio which may drive the changing line profile as a function of mass and may play an important role in delivering the mass information from \apogee\ spectra. This is because the $^{12}$C/$^{13}$C ratio is known as one of the best diagnostics of deep mixing in stellar interiors and so is known to contain information with respect to stellar mass.  In addition to being diagnostics of stellar mass, by being markers of the mixing history of the stars, carbon isotope ratios have also used to differentiate first ascent giants and red clump stars \citep[see][and references therein]{Taut2013}. These elements change abundances during dredge-up, which is effectively the mixing during stellar evolution whereby the CN in the hydrogen envelope of a stars interior are bought up to the surface. This happens as the star evolves off the main sequence and up the giant branch \citep{Gilroy1991}. As a consequence of the first dredge up, $^{12}$C decreases while $^{13}$C and $^{14}$N show corresponding increases \citep{Taut2010}. 
+Examining the CN molecular regions in more detail, the two CN regions shown in Figure \ref{fig:mass} with the highest mass coefficients are in fact a blend of CN molecules containing both $^{12}$C and $^{13}$C. Similarly, the CO feature at right is a blend of both $^{12}$C and $^{13}$C. It is this ratio which may drive the changing line profile as a function of mass and may play an important role in delivering the mass information from \apogee\ spectra. This is because the $^{12}$C/$^{13}$C ratio is known as one of the best diagnostics of deep mixing in stellar interiors and so is known to contain information with respect to stellar mass.  
+
+Changes in isotope ratios complement information from the carbon to nitrogen ratio, and the combination is more powerful than any one indicator.   In addition to their diagnostic power for mass, they also serve as markers of evolutionary state; carbon isotope ratios have already been used in the literature to differentiate first ascent giants from red clump stars \citep[][and references therein]{Taut2013}.  The empirical data therefore naturally accounts for both the traditional first dredge-up effect, incorporating material processed in the core of the main sequence precursor \citep{Taut2010}, and in situ giant branch mixing \citep{Gilroy1991}.  This is true even in the absence of a predictive theory for the origin of the latter phenomenon. 
 
 
-\begin{figure}[p]
+
+\begin{figure}[hp]
 \centering
-    \includegraphics[scale=0.51]{./plots/coeffs_m_3.png}
+    \includegraphics[scale=0.51]{./plots/coeffs_m_3.pdf}
   \caption{Same as for Figure \ref{fig:logg} but showing the two 30 Angstrom regions centered at the highest mass coefficients (in red). The bottom panels show that that spectra change line shape and depth with varying mass and the mass coefficients are highest in region of CN and CO molecular blends. In particular, these blends corresponding to the highest mass coefficient in this Figure comprise both $^{12}$C and $^{13}$C. Where the mass coefficients are negative, the flux is shallower at lower mass. Where the mass coefficient is positive, the flux is deeper at lower mass.}
 \label{fig:mass}
 \end{figure}
@@ -399,9 +410,8 @@ The input label for the inferred age is from the seismic scaling relations for t
 
 % made in run -i makealphamap4_logmass_oneplot.py
 %  in Apogee_ages after running plotdiff_5labels2 or run -i  plotdiff_5labels_10percent_contour_copy.py
-\begin{figure}[p]
+\begin{figure}[hp]
 \centering
-% \includegraphics[scale=0.38]{./plots/alpha_feh_rc.pdf}
   \includegraphics[scale=0.4]{./plots/alpha_feh_rc2.pdf}
     \caption{The \feh-\alphafe\ planes at left and centre for the training set of \apokasc\ stars, colored by mean age of the stars in each bin at left,  and the age dispersion at centre, where the number of stars in each bin is indicated at left. The far right hand panel shows the stars in the \feh-\alphafe\ plane where the individual stars $i$ have been subtracted from the mean age in their respective bin, taking both the age from \tc\ and the age from \kepler. The panel on the far right shows the correlation in the input and output age label delivered by \tc\ in cross-validation within a narrow bin in abundance space.  }
 \label{fig:alphabins}
@@ -412,17 +422,12 @@ The input label for the inferred age is from the seismic scaling relations for t
 For the following sections, the results for the ages of stars are inferred from their output mass label determined by \tc. We train on log mass, as described in Section 2.2, where the mass label for the \apokasc\ stars has been determined using the standard seismic scaling relations. We transform the output mass to age as described in Section 2.3, for mapping the age distribution of the red giant stars in \apogee's DR12 across the disk, as shown in Figures \ref{fig:redclump_age} and \ref{fig:allage}. Our stellar labels determined by \tc\ for 80,000 red giant stars from DR12  (including $\approx$ 20,000 red clump stars) are provided in an online Table, with a partial extract shown in the Appendix in Table \ref{tab:online}. 
 
 
-
-
-
-%We provide a tabulated catalogue of stellar parameter (\teff, \logg, \feh, \alphafe), mass and age labels from \tc\ for 80,000 DR12 red giant (including $\approx$ 20,000 red clump stars) in Table \ref{tab:online}. Our results the for  log mass label are from training on log mass and our results for the log age label are from training on a log age label, for the same set of reference stars.  
-
-
-
 \subsection{Stellar ages for the red clump sample}
 
 The \apogee\ DR12 sample comprises primarily red giant stars plus a valuable subset of  $\approx$ 20,000 red clump stars, identified by \citet{Bovy2014}.  These stars have individual distance uncertainties of 5\,percent. These red clump stars cover a large radial extent of the disk, spanning distances of 4 -- 15 kpc and are located predominantly at heights $|z|$ $<$ 3.0 kpc from the plane. The red clump sample is a representative and unbiased sample of Milky Way disk stars and has an expected age distribution peaking at about 1.8 Gyr with a tail out to old ages \citep[see Figure 15 of][]{Bovy2014}. We take our model, trained using the reference \apokasc\ stars and determine the stellar parameters and masses for these red clump stars. We then infer ages by interpolating in label space onto PARSEC isochrones.
-%, given the \feh\ and mass labels. 
+
+The red clump may seem to be a surprising choice to use for age studies, as stars in this evolutionary state are known to experience stochastic and significant mass loss relative to prior epochs.  However, we do account for this mass loss, and given other uncertainties, age estimates for red clump stars are not dramatically more unreliable than those for first ascent giant branch stars \citep[see][for a recent discussion]{Casagrande2015}. The higher age uncertainties are also compensated for to some degree by having more reliable distances.
+
 
 
 
@@ -430,12 +435,11 @@ The \apogee\ DR12 sample comprises primarily red giant stars plus a valuable sub
 
 We have determined the masses and (from PARSEC isochrones) inferred the ages for the $\approx$ 20,000 red clump stars that have distances known to approximately 5 percent. We use these results to show the age distribution of the Milky Way's disk. The full catalogue of the stellar labels determined with \tc\ for the red clump sample is included in Table \ref{tab:online}, in the Appendix. This data represents the largest homogeneous sample of stars in the Milky Way with mass and associated age labels, and extends the age mapping of the Milky Way from the previous local neighborhood only (GCS) to trace the inner to outer disk, from 4 -- 15 kpc.  
 
-%run -i makealphafeh_imshow_3panel.py and readin_ages.py
+
 %run -i makealphafeh_imshow_4panel.py and readin_ages.py
-\begin{figure}[p]
+\begin{figure}[hp]
 \centering
  \includegraphics[scale=0.5]{./plots/redclump_4panel.pdf}\\
-%  \includegraphics[scale=0.25]{./plots/redclump_4panel.png}
     \caption{The $\approx$ 17,065 red clump sample of stars. The top left panel shows all stars colored by median age, where the median age$_{\mbox{RC}}$ does not represent the median age of the population from which it was drawn. The density distribution of this sample is shown at the top right and the sequences we use for examining the age of the disk, of the low$-\alpha$ sequence and mono-abundance population bins are indicated. The bottom panels show the \feh-\rgal\ distribution for the young and intermediate stars, in the low$-\alpha$ sequence.}
 \label{fig:redclump}
 \end{figure}
@@ -445,7 +449,7 @@ Figure \ref{fig:redclump} shows the median age of the red clump stars in the \al
 
 The bottom panels of Figure \ref{fig:redclump} show density maps of the \feh\ of the youngest stars (at left) and the intermediate-oldest stars (at right), as a function of radius. At bottom left, there are 1669 stars with ages $<$ 1 Gyr and at right, there are 6716 stars with ages $>$ 5 Gyr. Note that there is an apparent over-density at about 8 kpc across all \feh, for the intermediate age selection. These are the stars in the \kepler\ field in the sample.
 
-Importantly, the median age of the red clump sample is not the median age of the population from which is is drawn. The red clump age distribution, from stellar evolution theory, is peaked at young ages. As discussed in \citet{Bovy2014}, the red clump population is a long lived evolutionary phase (and one for which precise distances can be determined), and is an excellent population tracer. At the same time, the fraction of the mass in the red clump is a function of the overall star formation history or age distribution of the Milky Way's disk.  The red clump whilst being an excellent tracer of the Milky Way disk does not represent the unbiased stellar distribution function of ages in the Milky Way disk. 
+Importantly, the median age of the red clump sample is not the median age of the population from which is is drawn. The red clump age distribution, from stellar evolution theory, is peaked at young ages. As discussed in \citet{Bovy2014}, the red clump population is a long lived evolutionary phase (and one for which precise distances can be determined), and is an excellent population tracer. At the same time, the fraction of the mass in the red clump is a function of the overall star formation history or age distribution of the Milky Way's disk.  The red clump, whilst being an excellent tracer of the Milky Way disk, does not represent the unbiased stellar distribution function of ages in the Milky Way disk. 
 
 The \feh\ distribution for intermediate age stars, as a function of \rgal\ is less tightly correlated with radius compared to the youngest stars in the red clump sample. That the \feh-radius correlation weakens with age likely reflects dynamical evolution processes in the Milky Way which redistribute the stars in the disk, such as radial migration. Intermediate stars, being longer lived, would have experienced a more significant dynamical timescale over which these processes take effect and so are scattered more from their original birth radii.  The youngest stars have been subject to a shorter dynamical evolution history and their current origin likely more tightly traces the origin of their birthplace, reflected in the correlation between radius and \feh, tracing the chemical enrichment of the gas which increases toward the centre of the Galaxy.  
 
@@ -460,9 +464,8 @@ The histogram at far right shows the very different distributions of young and o
 
 % made in /Users/ness/new_laptop/Apogee_ages/dwh/makeplots_mkn.py 
 % now made in /Users/ness/new_laptop/Apogee_ages/run -i makerzage_4panel.py
-\begin{figure}[p]
+\begin{figure}[hp]
 \centering
-%    \includegraphics[scale=0.42]{./plots/median_3panel.png}
         \includegraphics[scale=0.43]{./plots/agealphamap_hist.pdf}
     \caption{$(R_{GAL},z)$ Maps of the median age of the  \apogee\ red clump stars showing $\approx$ 17,065 stars at far left, the low-alpha-sequence only in the second panel from left and a small abundance bin in the low-alpha sequence third panel from left. The final panel, at right is a histogram of the different age distributions as a function of age, showing all stars across $z$, for a young, intermediate and old selection.  }
 \label{fig:redclump_age}
@@ -476,17 +479,14 @@ The centre and far right panels show a restricted distribution in  $z$, as the y
 In addition to the red clump stars, we have determined stellar masses and inferred ages (assuming the red giant evolutionary state) for the 60,000 red giant stars in DR12 which span the label-range of our training set in \teff, \logg, \feh\ and \alphafe. We include the labels for these red giant stars in Table \ref{tab:online}. 
 
 %run -i readin_play_logmass.py in /Users/ness/new_laptop/Apogee_Ages/results/
-\begin{figure}[p]
+\begin{figure}[hp]
 \centering
-%    \includegraphics[scale=0.42]{./plots/median_3panel.png}
-    %    \includegraphics[scale=0.43]{./plots/agealphamap_hist_all2.pdf}
-     %           \includegraphics[scale=0.43]{./plots/agealphamap_jet.pdf}
               \includegraphics[scale=0.43]{./plots/agealphamap_hist2.pdf}
     \caption{$(R_{GAL},z)$ Maps of the median age of the \apogee\  red giant stars showing all $\approx$ 60,000 stars at far left, the low-alpha-sequence only of these stars in the second panel from left and a small abundance bin in the low-alpha sequence third panel from left. The final panel, at right is a histogram of the different age distributions as a function of age, showing all stars across $z$, for a young, intermediate and old selection.  }
 \label{fig:allage}
 \end{figure}
 
-In Figure \ref{fig:allage} we show the fractional age distribution for the 60,000 red giant stars in DR12. Note the 5\% stars where the $\chi_{reduced}^2$ $>$ 3 for \tc\ model have been removed. The distances to all of the red giant stars have been determined via interpolation to PARSEC isochrones, from the stellar parameters. The panels are the same as for Figure \ref{fig:redclump_age} except now shown in terms of fractional ages (Stars with ages $<$ 5 Gyr) and for a larger extent in $(R_{GAL},z)$, as the red giant stars cover a much larger spatial region than the red clump alone. The distance uncertainty for the red giant stars is much larger than for the red clump, at about 30\%. Distances toward the bulge are particularly uncertain and likely underestimated due to the high and differential reddening in this direction (see Ness et al., 2015, in prep).  
+In Figure \ref{fig:allage} we show the fractional age distribution for the 60,000 red giant stars in DR12. Note the 5\% stars where the $\chi_{reduced}^2$ $>$ 3 for \tc\ model have been removed. The distances to all of the red giant stars have been determined via interpolation to PARSEC isochrones, from the stellar parameters and by adopting the RJCE-WISE extinction value for that line of sight, provided in the \apogee\ DR12 data \citep{Majewski2011,Zasowski2013}. The panels are the same as for Figure \ref{fig:redclump_age} except now shown in terms of fractional ages (Stars with ages $<$ 5 Gyr) and for a larger extent in $(R_{GAL},z)$, as the red giant stars cover a much larger spatial region than the red clump alone. The distance uncertainty for the red giant stars is much larger than for the red clump, at about 30\%. Distances toward the bulge are particularly uncertain and likely underestimated due to the high and differential reddening in this direction (see Ness et al., 2015b, submitted).  
 
 Figure \ref{fig:allage} demonstrates that the highest fraction of young red giant stars is in the plane of the disk and this youngest fraction flares in height with increasing radius (see the far left panel).  The stars in the outer-most region of the disk are predominantly young and stars at the solar radius at large heights from the plane are almost all old. At a given height from the plane, the stars are on average younger moving out in radius from the centre of the Galaxy. For low-alpha sequence only (middle panel), the stars toward the centre of the Galaxy comprise almost exclusively old stars and stars in the outer regions are predominantly young.  Young stars appear at all heights from the plane, even conditioned on abundances for the low-alpha sequence and the mono-abundance population. Overall the trends of the red giant sample are the same as that of the red clump sample. 
 
@@ -497,24 +497,18 @@ We have provided three demonstrations of the validity of the stellar masses and 
 
 The well matched generative model to the data (see Figure \ref{fig:spectra}), from \tc's best fit labels, verifies that these five labels and polynomial model (see Section 2.1) are sufficient to very well model the behavior of the flux with the labels at test time (see Figure \ref{fig:spectra}).  In fact, the data-driven model of \tc\ trained on these five labels only (no individual abundances) provides a better match to the real data than the synthetic stellar models utilized by \aspcap.
 
-%We have shown that at test time for the red clump stars, which we use in Section 4 to explore the age distribution of stars in the Milky Way, that the best fit model from \tc\ is an excellent match to the real data at test time. 
-
-
-
 Second, we have shown that the spectral mass (or age) indicators discovered by \tc\ are associated in the space of the actual spectra with elements that can be ``dredged-up'' (see Figure \ref{fig:mass}). Specifically, the mass information comes from the CN and CO molecules in the spectra.  Although the mass information in the \apogee\ spectral region originates from these features, in other wavelength regions it could derive from different elements or molecules. If mass information is present, it can be determined using \tc\ for other surveys, such as GALAH \citep{Freeman2012}. 
 
 
 Third, we show using the red clump sample of \citet{Bovy2014} that the ages of stellar structures in the Milky Way follow gross expectations, even conditioned on abundances. To demonstrate that we have a real age indicator and not a simple proxy for chemical enhancement that is tightly correlated with age (such as \alphafe) we have examined the age information within small mono-abundance boxes in \feh-\alphafe\ space for the training sample. Figure \ref{fig:alphabins} shows that there is age information within the mono-abundance bins. Furthermore, Figure \ref{fig:redclump} demonstrates the different \feh-radial profiles for the young and old red clump populations conditioned on abundances. For the low-alpha sequence only, the stars show an \feh\ distribution with radius that is consistent with radial mixing processes that are expected to be relevant for the intermediate and old populations but not the youngest stars.
 
-The mean age map of the Milky Way disk as traced by the red clump stars shown in Figure \ref{fig:redclump_age} confirms the common wisdom that disk-thickness depends on age. Moving out in radius, younger stars are present at larger and larger heights from the plane and at small radii the youngest stars are located in significant fraction only in the plane of the disk. In the median age maps shown in Figure \ref{fig:redclump_age}, there are old stars present even for the low-alpha sequence. Therefore, the low-alpha sequence is not a homogeneously young population. The oldest stars are located preferentially at larger heights from the plane compared to the younger stars, which truncate in their distribution nearer to the plane. The age distribution trends seen in the red clump sample as a function of $(R,z)$ shown in Figure \ref{fig:redclump_age} are also seen in the red giant sample shown in Figure \ref{fig:allage}, which spans a larger extent in $(R,z)$. %Distance uncertainties are significantly higher for the red giants compared to the red clump stars. 
+The mean age map of the Milky Way disk as traced by the red clump stars shown in Figure \ref{fig:redclump_age} confirms the common wisdom that disk-thickness depends on age. Moving out in radius, younger stars are present at larger and larger heights from the plane and at small radii the youngest stars are located in significant fraction only in the plane of the disk. In the median age maps shown in Figure \ref{fig:redclump_age}, there are old stars present even for the low-alpha sequence. Therefore, the low-alpha sequence is not a homogeneously young population. The oldest stars are located preferentially at larger heights from the plane compared to the younger stars, which truncate in their distribution nearer to the plane. The age distribution trends seen in the red clump sample as a function of $(R,z)$ shown in Figure \ref{fig:redclump_age} are also seen in the red giant sample shown in Figure \ref{fig:allage}, which spans a larger extent in $(R,z)$. 
 
 For our analysis of stellar ages presented in Figures 7 - 10, we transform our mass labels into stellar age as described in Section 4.1. Mapping the output mass labels from \tc\ to a stellar age using stellar models enforces fixed upper and lower age limits. It is also possible, however, to use \tc\ to train directly on log age rather than mass. In this case, there is no physical constraint on minimum or maximum ages, at the test step.  
 
 We provide in Table \ref{tab:online}, in the Appendix,  a partial extract showing our stellar labels for 80,000 red giant stars from DR12 (including $\approx$ 20,000 red giant stars). This table is available in full online. We tabulate the \teff, \logg, \feh\ and \alphafe\ as well as the stellar mass label determined by \tc\ for training on log mass and  the stellar age label determined by \tc\ for the case of training directly on log age. For training on log age directly rather than log mass, the same set of reference stars are used. The label space of these stars is shown in the Appendix. The ages for the reference set of stars for training have been determined by Martig et al., (2015), who use interpolation between PARSEC isochrones, with optimized scaling relations, as a function of evolutionary state. 
 
-%Although there is no physical constraint on the ages, at test time on \apogee\ DR12 data, the vast majority of stars are in physically realistic label space, 0 $<$ age $<$ 14 Gyr and the stars with unphysically large ages typically have large associated $\chi^2_{reduced}$ values (included in Table \ref{tab:online}). 
-
-
+ There are several promising avenues for improving our results.  Improved absolute calibrations for asteroseismic mass and radius would be highly desirable.  Our methodology would also benefit from quantifying mass loss and its stochastic uncertainty, especially for red clump stars.  A more complete stellar population study should also include corrections for the products of interacting binary star evolution, and include the impact of the IMF and star formation history on the derived mass and age distributions.  There is also the possibility of using the mass trends identified in this paper to quantify first dredge up and in situ red giant branch mixing as a function of mass and the initial abundance mixture, and to test physical theories of stellar structure and evolution.
 
 
 \section*{Appendix}
@@ -535,10 +529,6 @@ Training on log age directly instead of log mass,  \tc\ works mathematically in 
 \tc\ therefore is not constrained to a physically allowed regime. Therefore, training on log age results in a small subset of stars that are older than the age of the universe at the the test step, although the vast majority of stars are in physically realistic label space, 0 $<$ age $<$ 14 Gyr: only 1 percent of stars are outside of this range and typically have large associated $\chi^2_{reduced}$ values.  The comparison for the age-label determined for the red clump sample of stars, training on age, and the mass label determined for the red clump stars, training on mass, is shown in Figure \ref{fig:agemass}. Two PARSEC tracks for red clump masses and ages are shown, demonstrating that the data follow theoretical expectations. 
 
 
-%
-%However, at test time on \apogee\ DR12 data, the vast majority of stars are in physically realistic label space, 0 $<$ age $<$ 14 Gyr and the stars with unphysically large ages typically have large associated $\chi^2_{reduced}$ values (included in Table \ref{tab:online}). 
-
-
 The label range of our training set of 1639 \apokasc\ stars is provided in Figure \ref{fig:triangle}. 
 
 
@@ -547,7 +537,7 @@ The label range of our training set of 1639 \apokasc\ stars is provided in Figur
 \begin{figure}[h!]
 \centering
         \includegraphics[scale=0.4]{./plots/massage_hist2.pdf}
-  \caption{The mass label for the red clump sample from training on mass, compared to the age label for the red clump sample from training on age. The age distribution peaks at 2.5 Gyr for the red clump sample, which is coloured by \feh. Almost all (99 percent) of the stars are within 0 $<$ age $<$ 14 Gyr. Two theoretical mass and red clump age tracks are shown, at \feh\ = +0.3 and --0.7, from PARSEC isochrones. }
+  \caption{The mass label for the red clump sample from training on mass, compared to the age label for the red clump sample from training on age. The age distribution peaks at 2.5 Gyr for the red clump sample, which is colored by \feh. Almost all (99 percent) of the stars are within 0 $<$ age $<$ 14 Gyr. Two theoretical mass and red clump age tracks are shown, at \feh\ = +0.3 and --0.7, from PARSEC isochrones. }
 \label{fig:agemass}
 \end{figure}
 
@@ -588,7 +578,7 @@ Our code and documentation is located on Github. \footnote{https://github.com/mk
 
 \section*{Acknowledgments}
 It is a pleasure to thank Maria Bergemann (MPIA)
-  John Bochanski (Rider), Morgan Fouesneau (MPIA),
+  John Bochanski (Rider), Morgan Fouesneau (MPIA), Ricardo Schiavon (Liverpool John Moores University), 
   Dan Foreman-Mackey (UW), Amelia Stutz (MPIA) and Ben Weiner (Arizona State).
 for valuable discussions and contributions.
 This project made use of
@@ -598,7 +588,7 @@ This project made use of
 The research has received funding from the European Research Council under the European Union's Seventh Framework Programme (FP 7) ERC Grant Agreement n.
 [321035].
   
-We thank the Kavali Institute Theoreitcal Physics Galactic Archeology Program: this research was supported in part by the National Science Foundation under Grant No. NSF PHY11-25915.\\
+We thank the Kavali Institute Theoretical Physics Galactic Archeology Program: this research was supported in part by the National Science Foundation under Grant No. NSF PHY11-25915.\\
  
 Funding for SDSS-III has been provided by the Alfred P. Sloan Foundation, the Participating Institutions, 
 the National Science Foundation, and the U.S. Department of Energy Office of Science. The SDSS-III web site is \url{http://www.sdss3.org/}.
