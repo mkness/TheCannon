@@ -1,0 +1,1 @@
+/Users/ness/new_laptop/Apogee_DR12_play/makelist_snr_290_cnalmgnaosvmnni_andy.py
