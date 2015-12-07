@@ -53,7 +53,7 @@
 \begin{document}
 
 
-\title{[X/Fe] with The Cannon....}
+\title{Precision abundance measurements for chemical tagging with The Cannon: you may wish to change this title as chemical tagging is likely more suitable for no filters in. }
 \author{M.~Ness\altaffilmark{1},
         David~W.~Hogg\altaffilmark{1,2,3},
         H.-W.~Rix\altaffilmark{1} et al.,}
@@ -64,7 +64,10 @@
 \email{ness@mpia.de}
 
 \begin{abstract}%
-words here... 
+Large stellar data sets which have a high dimensionality of chemical information renders stars tools with which to reconstruct the Galaxy's formation. Critical to this end and the pursuits of chemical tagging and galactic archeology is high precision measurements on the individual elemental abundances. We use \tc\ to achieve such high precision abundance measurement using APOGEE spectra. We achieve errors that are 2-3 times smaller than current approaches.  This method works by exploiting a subset of high signal to noise APOGEE data as a reference set to train \tc's model. We train the model on 14 labels which are the stellar parameters of \teff, \logg, \feh\ and \alphafe\ and 10 individual abundance measurements. This model is then deployed on lower signal to noise data and returns the stellar parameters and abundances to a precision of $<$ 0.1 dex at a SNR of 50, for most elements.  We deliver a catalog of these element measurements for XXX red giant stars (including 20,000 red clump stars) in APOGEE which span the entire disk (from the Galactic center to $R\sim 20$~kpc). \textit{OR, I could just deliver the results for the red clump stars which have ages to keep this constrained}. 
+We implement filters for each element so as to restrict our model to learn only the relationship between each individual element and the flux for the regions that element is present in the spectra and not the covariances between each element and other lines (elements) in the spectra. In principle, learning these covariances is also a powerful measure of the dimensionality of the abundance space and we demonstrate the implication of filtering versus not filtering..something like that...
+Such precision abundance measurements as delivered by \tc\ are critical for undertaking Galactic archeology.
+
 
 \end{abstract}
 
@@ -84,7 +87,25 @@ techniques: spectroscopic
 
 \section{Introduction}\label{sec:Intro}
 
-words here...
+With the multitude of large stellar surveys underway, stars are now exceptional tools to reconstruct the galaxy's formation and evolution. The integrated information density and dimensionality coupled with the rapidly growing spatial extent of stellar tracers opens up opportunities for new methods to be explored. The data are powerful, but current methodologies employed in their analysis do not exploit the full information content nor dimensionality of the data. Doing this is critical for ambitious pursuits of chemical tagging \citep[e.g.][]{Ting2015} and galactic archeology \citep{Freeman2002, Martell2015}. 
+
+\section{data}
+
+Apogee data not ideal as does not probe that many different processes: Galah much better
+
+different nucleosynthetic processes and so birth conditions
+
+Deliver the elements that YS Ting analyses in his paper. 
+
+
+\section{Other notes} 
+
+\tc\ exploits the full information in the spectrum, at all pixels and provides errors on the order of 2-3 times smaller than current approaches (or, correspondingly, a precision requiring 4-9 times shorter exposures). %This is demonstrated in Figure \ref{fig:snr}, which shows the performance of \tc\ compared to \apogee's pipeline \aspcap\ for the stellar parameters of \teff, \logg, \feh\ and \alphafe. 
+
+The individual abundances delivered with \tc\ that complement the age information are at \textbf{ higher precision, at a lower signal to noise, than is currently being achieved}. Figure \ref{fig:X} shows a sample of our abundance precisions determined with \tc\ compared to the current performance, as demonstrated using the example of the \aspcap\ results. With \tc\ I wish to deliver a catalogue of high precision individual abundance labels and ages for the public data releases of \apogee\ \textit{and other high-resolution spectroscopic surveys}. Such high precision abundances are critical for chemical tagging prospects. \\% \citep[e.g.][]{Bovy2015}. \\
+
+%\caption{\small{Same as Figure \ref{fig:snr} and for the same set of calibration stars, but showing the performance of \tc\ and \apogee's pipeline \aspcap\ for a sample of individual elements. With \tc\ we can achieve an individual abundance precision on most elements of $<$0.1 dex at S/N of 50 and $<$ 0.05 dex at S/N of 80.}
+
 
 
 \section*{Acknowledgments}
