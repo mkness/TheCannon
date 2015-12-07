@@ -64,9 +64,11 @@
 \email{ness@mpia.de}
 
 \begin{abstract}%
-Large stellar data sets which have a high dimensionality of chemical information renders stars tools with which to reconstruct the Galaxy's formation. Critical to this end and the pursuits of chemical tagging and galactic archeology is high precision measurements on the individual elemental abundances. We use \tc\ to achieve such high precision abundance measurement using APOGEE spectra. We achieve errors that are 2-3 times smaller than current approaches.  This method works by exploiting a subset of high signal to noise APOGEE data as a reference set to train \tc's model. We train the model on 14 labels which are the stellar parameters of \teff, \logg, \feh\ and \alphafe\ and 10 individual abundance measurements. This model is then deployed on lower signal to noise data and returns the stellar parameters and abundances to a precision of $<$ 0.1 dex at a SNR of 50, for most elements.  We deliver a catalog of these element measurements for XXX red giant stars (including 20,000 red clump stars) in APOGEE which span the entire disk (from the Galactic center to $R\sim 20$~kpc). \textit{OR, I could just deliver the results for the red clump stars which have ages to keep this constrained and do some demonstrative science on this...}. 
-We implement filters for each element so as to restrict our model to learn only the relationship between each individual element and the flux for the regions that element is present in the spectra and not the covariances between each element and other lines (elements) in the spectra. In principle, learning these covariances is also a powerful measure of the dimensionality of the abundance space and we demonstrate the implication of filtering versus not filtering..something like that...
-Such precision abundance measurements as delivered by \tc\ are critical for undertaking Galactic archeology.
+Large stellar data sets which have the property of a high dimensionality in their measured chemical abundance information render stars tools to reconstruct the Galaxy's formation. Critical to this end and the pursuits of chemical tagging and galactic archeology is high precision measurements on the individual elemental abundances. We use \tc\ to achieve such high precision abundance measurement using APOGEE spectra. We achieve errors that are 2-3 times smaller than current approaches.  This method works by propagating the precision achieved at high signal to noise with current approaches to the lower signal to noise data. We use a subset of high signal to noise APOGEE data as a reference set, to train \tc's model, for a set of 14 labels including the stellar parameters of \teff, \logg, \feh\ and \alphafe\ and 10 individual abundance measurements. We achieve a precision of $<$ 0.1 dex at a SNR of 50, for most elements.  We deliver a catalog of these element measurements for XXX red giant stars (including 20,000 red clump stars) in APOGEE which span the entire disk (from the Galactic center to $R\sim 20$~kpc). \textit{OR, I could just deliver the results for the red clump stars which have ages to keep this constrained and do some demonstrative science on this...}. 
+For the derivation of the individual abundances we have implemented filters which restrict our model to the lines of each particular element. In principle, exploiting the entire spectrum even for measurements of individual abundances is a powerful measure of the covariances between each element and other lines (elements) in the spectra and thus informative about the true dimensionality of the data and we demonstrate the differences achieved by these approaches. The precision abundance measurements we determine with \tc\ demonstrate the advantages gained in combining the known physical properties of stars and stellar models with a data driven approach. Such precision stellar measurements are critical for prospects of Galactic archeology.
+
+%We implement filters for each element so as to restrict our model to learn only the relationship between each individual element and the flux for the regions that element is present in the spectra and not the covariances between each element and other lines (elements) in the spectra. In principle, learning these covariances is also a powerful measure of the dimensionality of the abundance space and we demonstrate the implication of filtering versus not filtering..something like that...
+%Such precision abundance measurements as delivered by \tc\ are critical for undertaking Galactic archeology.
 
 
 \end{abstract}
@@ -87,11 +89,14 @@ techniques: spectroscopic
 
 \section{Introduction}\label{sec:Intro}
 
-With the multitude of large stellar surveys underway, stars are now exceptional tools to reconstruct the galaxy's formation and evolution. The integrated information density and dimensionality coupled with the rapidly growing spatial extent of stellar tracers opens up opportunities for new methods to be explored. The data are powerful, but current methodologies employed in their analysis do not exploit the full information content nor dimensionality of the data. Doing this is critical for ambitious pursuits of chemical tagging \citep[e.g.][]{Ting2015} and galactic archeology \citep{Freeman2002, Martell2015}. 
+With the multitude of large stellar surveys underway, stars are now exceptional tools to reconstruct the galaxy's formation and evolution. 
+The integrated information density and dimensionality coupled with the rapidly growing spatial extent of stellar tracers opens up opportunities for new methods to be explored. The data are powerful, but current methodologies employed in their analysis do not exploit the full information content nor dimensionality of the data. Doing this is critical for ambitious pursuits of chemical tagging \citep[e.g.][]{Ting2015} and galactic archeology \citep{Freeman2002, Martell2015}. 
+
+\ldots point out this is as very nice synergy between physics and a data driven model....
 
 \section{data}
 
-Apogee data not ideal as does not probe that many different processes: Galah much better
+Apogee data not ideal as does not probe that many different processes: Galah much better: Although, now apogee has Y and Nd they have in the spectra. 
 
 different nucleosynthetic processes and so birth conditions
 
