@@ -103,6 +103,16 @@ different nucleosynthetic processes and so birth conditions
 
 Deliver the elements that YS Ting analyses in his paper. 
 
+\section{Filters} 
+
+To ensure that the astrophysical information for each element [X/Fe] is derived from that element, \textit{filters} were implemented for each of the elements 
+(but not the primary parameters of \teff, \logg, \feh\ and \alphafe). These assigned a 1 or a 0 to every wavelength, where a null value does not use that pixel and a value of 1 uses that pixel for \tc's model to learn the behaviour of flux with the element label value for the training set of stars. The values of 1 were set for each filter using the linelist, every place the element appeared in the linelist a bandwidth of +/- 1 Angstroms was assigned, that allowed that narrow region around the element for training tc's model and thus the derivation of inforamtion on that element. 
+
+/Users/ness/new_laptop/Apogee_age/makeelements_makefilters.py is where made the filters 
+
+The filters were determined using the \apogee\ DR12 linelist \citep{Shetrone2015}. 
+
+Without filters, the performance in the rms of the primary parameters is worse (by X amount) and elements are both better and worse than with - depending on the element - because of correlations in elements so information derived from this.Also may wish to note where the correlations break down and filtered results do not equal not filtered results as this is very interesting - appears at around -1. in \feh. could be either as information not available for that element at low metallicity so relies on correlations without filters or else the correlation itself is changing.   
 
 \section{Other notes} 
 
