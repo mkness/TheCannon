@@ -53,7 +53,7 @@
 \begin{document}
 
 
-\title{Precision abundance measurements for chemical tagging with The Cannon: you may wish to change this title as chemical tagging is likely more suitable for no filters in. }
+\title{Precision abundance measurements for chemical tagging in spectroscopic surveys with The Cannon}
 \author{M.~Ness\altaffilmark{1},
         David~W.~Hogg\altaffilmark{1,2,3},
         H.-W.~Rix\altaffilmark{1}.,
@@ -65,7 +65,7 @@
 \email{ness@mpia.de}
 
 \begin{abstract}%
-Large stellar data sets which have the property of a high dimensionality in their measured chemical abundance information render stars tools to reconstruct the Galaxy's formation. Critical to this end and the pursuits of chemical tagging and galactic archeology is high precision measurements on the individual elemental abundances. We use \tc\ to achieve such high precision abundance measurement using APOGEE spectra. We achieve errors that are 2-3 times smaller than current approaches.  This method works by propagating the precision achieved at high signal to noise with current approaches to the lower signal to noise data. We use a subset of high signal to noise APOGEE data as a reference set, to train \tc's model, for a set of 14 labels including the stellar parameters of \teff, \logg, \feh\ and \alphafe\ and 10 individual abundance measurements. We achieve a precision of $<$ 0.1 dex at a SNR of 50, for most elements.  We deliver a catalog of these element measurements for XXX red giant stars (including 20,000 red clump stars) in APOGEE which span the entire disk (from the Galactic center to $R\sim 20$~kpc). \textit{OR, I could just deliver the results for the red clump stars which have ages to keep this constrained and do some demonstrative science on this...}. 
+Large stellar data sets which have the property of a high dimensionality in their measured chemical abundance information render stars tools to reconstruct the Galaxy's formation. Critical to this end and the pursuits of chemical tagging and galactic archeology is high precision measurements on the individual elemental abundances. We use \tc\ to achieve such high precision abundance measurement using APOGEE spectra for red giants. We achieve errors that are 2-3 times smaller than current approaches.  This method works by propagating the precision achieved at high signal to noise with current approaches to the lower signal to noise data. We use a subset of high signal to noise APOGEE data as a reference set, to train \tc's model, for a set of 23 labels including the stellar parameters of \teff, \logg, \feh\ and \alphafe\ and 19 individual abundance measurements. We achieve a precision of $<$ 0.1 dex at a SNR of 50, for most elements.  We deliver a catalog of these element measurements for XXX red giant stars (including 20,000 red clump stars) in APOGEE which span the entire disk (from the Galactic center to $R\sim 20$~kpc). 
 For the derivation of the individual abundances we have implemented filters which restrict our model to the lines of each particular element. In principle, exploiting the entire spectrum even for measurements of individual abundances is a powerful measure of the covariances between each element and other lines (elements) in the spectra and thus informative about the true dimensionality of the data and we demonstrate the differences achieved by these approaches. The precision abundance measurements we determine with \tc\ demonstrate the advantages gained in combining the known physical properties of stars and stellar models with a data driven approach. Such precision stellar measurements are critical for prospects of Galactic archeology.
 
 %We implement filters for each element so as to restrict our model to learn only the relationship between each individual element and the flux for the regions that element is present in the spectra and not the covariances between each element and other lines (elements) in the spectra. In principle, learning these covariances is also a powerful measure of the dimensionality of the abundance space and we demonstrate the implication of filtering versus not filtering..something like that...
@@ -93,26 +93,155 @@ techniques: spectroscopic
 With the multitude of large stellar surveys underway, stars are now exceptional tools to reconstruct the galaxy's formation and evolution. 
 The integrated information density and dimensionality coupled with the rapidly growing spatial extent of stellar tracers opens up opportunities for new methods to be explored. The data are powerful, but current methodologies employed in their analysis do not exploit the full information content nor dimensionality of the data. Doing this is critical for ambitious pursuits of chemical tagging \citep[e.g.][]{Ting2015} and galactic archeology \citep{Freeman2002, Martell2015}. 
 
-\ldots point out this is as very nice synergy between physics and a data driven model....
+In this paper we optimally combine the input from stellar physics with a data-driven model, to use the high-precision element abundance labels delivered by \apogee's \aspcap\ pipeline, which determines stellar parameters and abundances using a very large grid of stellar models that vary in 7 dimensions (citation) to each spectra. We train on a small subset of stars which have been observed at high signal to noise (SNR) and even with a very small training set can capture the behaviour of flux as a function of our labels for 19 individual elements and 4 stellar parameters with a simple quadratic model, using the implementation of The Cannon described in \citet{Ness2015}. The only additional complexity to the model is that we have added filters for each of the individual elements [X/Fe]. These filters have selected only where the elements appear in the line list, for each element respectively, so that \tc\ is truly measuring each particular individual abundance and not exploiting covariances that exist (and in some cases are very strong) between elements (although there is merit for chemical tagging in also exploiting these as well). 
 
-\section{data}
+\ldots Surveys define their SNR requirements through the precision for individual abundances; here we demonstrate what is possible.
 
-Apogee data not ideal as does not probe that many different processes: Galah much better: Although, now apogee has Y and Nd they have in the spectra. 
+\ldots - summarise the paper of YST and what they determined from APOGEE data and then point to section where show comparison of The Cannon's results for the same elements as ASPCAP for YS's high alpha-sequence.
 
-different nucleosynthetic processes and so birth conditions
 
-Deliver the elements that YS Ting analyses in his paper. 
+\ldots In Section X we demonstrate the improvement as a function of SNR compared to current approaches and compare filtered versus unfiltered approach. This demonstrates we achieve error bars which are 2-3 times smaller and this is critical for chemical tagging and also shows that can get higher precision labels with less observing time; can probe further out into the disk getting fainter targets or observe larger numbers of stars. 
+ 
+ \ldots In Section Y we demonstrate we are on the same scale as \aspcap's high SNR data which shows an rms of x and as SNR decreases the rms increases, as a result of the lower fidelity of \aspcap's results. 
 
-\section{Filters} 
+
+\ldots different nucleosynthetic processes and so birth conditions \\ 
+
+%\ldots point out this is as very nice synergy between physics and a data driven model....
+
+\section{Data}
+
+\ldots we use the APOGEE DR12 data: copy the text used in the mass and age paper and change a little bit as a summary of the data. 
+
+\ldots we use the latest released elements for the red giants in \apogee\ of DR13 data release, which comprise 19 elements of C, N, O, Na, Mg, Al, Si, P, S, K, Ca
+Ti, V, Cr, Mn, Fe, Co, Ni, Rd. 
+
+\ldots Summarise differences to DR13: small differences in temperatures are uncalibrated and \logg\ calibration is different; \tc\ will only learn what is input to the training set; for prospects of chemical tagging it is the precision that is important so if scale is offset this does not have consequences for this. However, with training sets in common and cross over it will be possible to deliver the abundances on the same scale for the GALAH survey (Buder et al., in prep). 
+
+\ldots Future data releases will also include the elements Nd, Y, Ge, Cu
+
+\ldots In terms of actual chemical tagging - Apogee data not ideal as does not probe that many different processes: Galah much better: Although, now apogee has Y and Nd they have in the spectra.  
+
+\subsection{Training set} 
+
+\ldots - is an interpolation method so works with a small training set directly and the size of the training set does not need to scale exponentially with the number of labels. = discussion of why works with small training set. 
+
+\ldots - how training set selected: high SNR subset of DR13: is 2000 stars at SNR $\approx$ 300 and selected at random from DR13 so reflects the density of the parameter space of the data
+
+\ldots Spans a parameter range of the following: (all abundances and individual elements) 
+
+\ldots With no star bad flag set 
+
+
+
+\ldots put in cross validation test showing that this works; similarly to the mass and age by training on 90\% and taking 10\% out, 10 times.
+
+\subsection{Higher Precision Labels delivered: validation using individual visit spectra} 
+
+\ldots Using this training set ran through calibration set - which is cluster set of Meszaros: individual visits have been run through for this for ASPCAP. A total of 1800 stars across a large SNR. 
+
+\ldots with this set of stars can compare and demonstrate how much better we do than aspcap
+
+\ldots with this set of stars can also examine rms of filtered versus unfiltered results. 
+
+
+\section{Filtering of elements} 
+
+\ldots Discuss what the filters are, why they are important and discuss comparisons of unfiltered and filtered results ,showing the rms on the calibration set but also 1 to 1 plots. 
+
+\ldots Put in a table of the number of pixels used for each filter...
 
 To ensure that the astrophysical information for each element [X/Fe] is derived from that element, \textit{filters} were implemented for each of the elements 
 (but not the primary parameters of \teff, \logg, \feh\ and \alphafe). These assigned a 1 or a 0 to every wavelength, where a null value does not use that pixel and a value of 1 uses that pixel for \tc's model to learn the behaviour of flux with the element label value for the training set of stars. The values of 1 were set for each filter using the linelist, every place the element appeared in the linelist a bandwidth of +/- 1 Angstroms was assigned, that allowed that narrow region around the element for training tc's model and thus the derivation of inforamtion on that element. 
 
-/Users/ness/new_laptop/Apogee_age/makeelements_makefilters.py is where made the filters 
+%/Users/ness/new_laptop/Apogee_age/makeelements_makefilters.py is where made the filters 
 
 The filters were determined using the \apogee\ DR12 linelist \citep{Shetrone2015}. 
+I actually instead made the filters based directly on the linelist itself in the end. For each element and its filter, everywhere that element appeared in the linelist I set the pixel at that wavelength (and all pixels within +/- 1 Angstrom) to 1 (where 1 = use that pixel and 0 = do not use that pixel). Some elements, like Na, only have a couple of 1 Angstrom bandwidths as Na only appears a few times in the linelist, so this element training uses < 1 % of the spectra, where as elements like N and C use 35 and 10% of pixels in the spectra respectively. 
 
 Without filters, the performance in the rms of the primary parameters is worse (by X amount) and elements are both better and worse than with - depending on the element - because of correlations in elements so information derived from this.Also may wish to note where the correlations break down and filtered results do not equal not filtered results as this is very interesting - appears at around -1. in \feh. could be either as information not available for that element at low metallicity so relies on correlations without filters or else the correlation itself is changing.   
+
+
+\section{APOGEE value-added individual abundances catalogue}
+
+\ldots description: only covers the following range which is that of the training set 
+\ldots description: number of stars
+\ldots put in comparison to ASCAP
+\ldots say something about filtered versus unfiltered
+\ldots do we see anything remarkable - we can make maps of everything and have a look; Na and Mn look interesting. 
+
+\ldots The catalogue we deliver we only provide for stars across the range of the training set and do not release abundances for the most metal-poor subset of stars \feh\ $<$ --1.5
+\ldots Note I could upgrade to add these to the training set and rerun.
+\ldots show some maps or science results for these elements  - e.g. Na map 
+
+\subsection{Tests on the individual elements}
+
+\ldots bootstrapping as done in the first Cannon paper to see how much things vary
+
+
+% run -i /Users/ness/new_laptop/whitepaper/14labels/14labelsplotrms_apogee_14labels_3_paper.py
+
+\begin{figure}
+%\centering
+\flushleft
+  \includegraphics[scale=0.45]{/Users/ness/new_laptop/whitepaper/14labels/14labels_zoom.pdf}
+    \caption{ This will be in two plots; one for stellar parameters and then one for all of the elements; ask Hotzman for this cal set run through DR13 as currently this comparison is for DR12. }
+\label{fig:cn}
+\end{figure}
+
+
+% run -i makecorner_triangle_14.py - currently this is done for cal set but do this for DR13 dataset. 
+
+\begin{figure}
+%\centering
+\flushleft
+  \includegraphics[scale=0.2]{/Users/ness/new_laptop/whitepaper/14labels/14_triangle.pdf}
+    \caption{Do for DR13 catalogue data, credit dan foreman mackey }
+\label{fig:cn}
+\end{figure}
+
+\section{Tightness in chemical space}
+
+\begin{figure}
+%\centering
+\flushleft
+  \includegraphics[scale=0.25]{/Users/ness/new_laptop/Apogee_elements/14labels/ASPCAP_YS.png}
+    \includegraphics[scale=0.25]{/Users/ness/new_laptop/Apogee_elements/14labels/TC_YS.png}
+    \caption{ASPCAP results at left and The Cannon results at right for the same stars in the high-alpha sequence; from paper by YST.}
+\label{fig:cn}
+\end{figure}
+
+\section{Mapping the element trends in the Galaxy}
+
+\begin{figure}
+\center
+  \includegraphics[scale=0.4]{/Users/ness/new_laptop/AAS_2016/na_all.png}
+    \caption{An example of mapping the element trends in the MW with high precision abundance measurements - can reach father away.}
+\label{fig:cn}
+\end{figure}
+
+\section{Comparison to ASPCAP results} 
+
+\begin{figure}
+%\centering
+\flushleft
+  \includegraphics[scale=0.2]{/Users/ness/new_laptop/AAS_2016/namg_apogee_lowsnr.png}
+  \includegraphics[scale=0.2]{/Users/ness/new_laptop/AAS_2016/namg_apogee_highsnr.png}
+    \caption{Low SNR $<$ 200 at left and High SNR $>$ 200 subset at right; put numbers of stars in}
+\label{fig:cn}
+\end{figure}
+
+%\begin{figure}[hp]
+%%\centering
+%\flushleft
+%
+%    \caption{The Cannon results for element space }
+%\label{fig:cn}
+%\end{figure}
+
+\section{Conclusions}
+
+
 
 \section{Other notes} 
 
