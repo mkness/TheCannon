@@ -3,6 +3,8 @@
 A method for building data-driven models for high-resolution stellar spectra.
 Designed with *APOGEE2*, *Gaia-ESO*, *RAVE* and *HERMES* data in mind, but applicable generally.
 
+Find the user friendly version of The Cannon with worked examples here (by Anna Y.Q Ho): https://github.com/annayqho/TheCannon
+
 ## Authors
 
 - Melissa Ness (MPIA)
