@@ -1,0 +1,502 @@
+% This file is part of The Cannon.
+% Copyright 2016 David W. Hogg (NYU).
+
+% to-do
+% - add in chemical results
+% - explain chemical tagging?
+% - preview chemical tagging
+
+\documentclass[pdftex]{beamer}
+%\input{vc}
+% 1.77778 is the ratio of 16 to 9
+\setlength{\paperheight}{2.9in}
+\setlength{\paperwidth}{1.77778\paperheight}
+% 1.33333 is the ratio of 4 to 3
+%\setlength{\paperheight}{3.2in}
+%\setlength{\paperwidth}{1.33333\paperheight}
+% textwidth
+\setlength{\textwidth}{0.85\paperwidth}
+% import the next thing *after* the papersize
+\input{hogg_presentation} % hogg standard colors
+
+\newcommand{\credits}{{\footnotesize (Ness, Hogg, \etal)}}
+\newcommand{\teff}{T_{\mathrm{eff}}}
+\newcommand{\logg}{\log g}
+\newcommand{\feh}{[\mathrm{Fe / H}]}
+
+\title{Data-driven models of stars}
+\author[David W. Hogg (NYU)]{David W. Hogg \\
+  \textsl{\footnotesize Center for Cosmology and Particle Physics,
+                 New~York~University} \\
+  \textsl{\footnotesize Center for Data Science,
+                 New~York~University} \\
+  \textsl{\footnotesize Max-Planck-Insitut f\"ur Astronomie, Heidelberg}}
+\date{2015 July 31}
+
+\newcommand{\conclusions}{%
+\begin{frame}
+  \frametitle{conclusions}
+  \begin{itemize}
+  \item A data-driven label transfer system provides \apogee\ stars with labels comparable in quality to the \apogee\ physics-driven pipeline.
+    \begin{itemize}
+    \item \tc\ (Ness \etal, \textit{ApJ} submitted)
+    \item ``labels'' $\equiv (\teff,\logg,\feh)$
+    \end{itemize}
+  \item \tc\ uses \emph{no physical model of stars}.
+  \item The method and the training set are both immature zeroth steps.
+  \item There is hope for a consistent system of stellar parameters and chemical abundances across all future surveys.
+    \begin{itemize}
+    \item \gaia\ \& \project{Gaia-ESO}
+    \item \sdssiii\ \project{SEGUE} \& \apogee; \sdssiv\ \project{APOGEE-2}
+    \item \project{HERMES} / \project{GALAH}
+    \end{itemize}
+  \item \texttt{\giturl}
+  \end{itemize}
+\end{frame}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+  {\footnotesize \textit{in collaboration with:}\\
+  \emph{Melissa~Ness}~(MPIA), Hans-Walter~Rix~(MPIA), \\
+  Anna~Ho~(MPIA), Gail~Zasowski~(JHU), and Dan~Foreman-Mackey~(NYU)}
+\end{frame}
+
+%\conclusions
+
+\begin{frame}
+  \frametitle{Annie Jump Cannon}
+  \begin{itemize}
+  \item O B A F G K M
+    \begin{itemize}
+    \item temperature sequence!
+    \item alphabetical order (A B F G K M O) is hydrogen-line-strength order
+    \end{itemize}
+  \item Cannon understood the temperature sequence of stars without the benefit of physical models
+    \begin{itemize}
+    \item data-driven non-linear dimensionality reduction
+    \item ``manifold learning''
+    \item (using a huge amount of prior knowledge)
+    \end{itemize}
+  \item namesake of \tc
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{chemodynamics}
+  \begin{itemize}
+  \item stars populate orbits in the Milky Way
+    \begin{itemize}
+    \item conserved ``actions''
+    \item (or chaotic equivalents)
+    \end{itemize}
+  \item stars are formed from particular gas clouds
+    \begin{itemize}
+    \item stars have conserved surface abundances
+    \end{itemize}
+  \item the combined action-chemical space will be far more
+    informative than either taken independently
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{chemodynamics}
+  \begin{itemize}
+  \item top priority for many new projects
+    \begin{itemize}
+    \item \gaia\ \& \project{Gaia-ESO}
+    \item \project{HERMES} \& \project{GALAH}
+    \item \sdssiii\ \apogee
+    \end{itemize}
+  \item terrifying inconsistencies in current approaches
+    \begin{itemize}
+    \item models of stars are \emph{amazingly good}\ldots
+    \item \ldots but chemical signatures are \emph{incredibly tiny}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{exoplanets}
+  \begin{itemize}
+  \item extra-solar planets are always measured relative to their host stars
+  \item you only understand a planet \emph{as well as you can understand the star}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{the paradox of precision astrophysics}
+  \begin{itemize}
+  \item models are incredibly \emph{explanatory}
+    \begin{itemize}
+    \item $\Lambda$CDM
+    \item stellar spectroscopy
+    \item helioseismology
+    \end{itemize}
+  \item and yet...
+  \item<2-> models are \emph{wrong} (ruled out) in detail
+    \begin{itemize}
+    \item $\chi^2 \gg \nu$
+    \item ``The $\chi^2$ statistic is a measure of the size of your data!''
+    \end{itemize}
+  \item<2-> missing physics, approximation, computation, \emph{gastrophysics}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{physics-driven models}
+  \begin{itemize}
+  \item put in everything you know
+    \begin{itemize}
+    \item gravity, atomic and molecular transitions, radiation
+    \end{itemize}
+  \item make approximations to make things computable
+    \begin{itemize}
+    \item ``sub-grid'' models, mixing length, etc
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{machine learning}
+  \begin{itemize}
+  \item the most extreme of data-driven models
+  \item ``the data \emph{is} the model''
+    \begin{itemize}
+    \item none of your knowledge is relevant
+    \end{itemize}
+  \item learn (fit) an exceedingly flexible model
+    \begin{itemize}
+    \item explain or cluster the data
+    \item transformation from data to ``labels''
+    \end{itemize}
+  \item concept of non-parametrics
+  \item concept of train, validate, and test
+  \item many packages and implementations
+    \begin{itemize}
+    \item (and outrageous successes)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{when does machine learning help you?}
+  \begin{itemize}
+  \item train \& test situation
+  \item training data are statistically identical to the test data
+    \begin{itemize}
+    \item same noise amplitude
+    \item same distance or redshift distribution
+    \item same luminosity distribution
+    \item \emph{never true!}
+    \end{itemize}
+  \item training data have accurate and precise labels
+  \item therefore, we \emph{can't use vanilla machine learning!}
+    \begin{itemize}
+    \item (astronomers rarely can)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{data-driven models (my personal usage)}
+  \begin{itemize}
+  \item make use of things you \emph{strongly believe}
+    \begin{itemize}
+    \item noise model \& instrument resolution
+    \item causal structure (shared parameters)
+    \end{itemize}
+  \item capitalize on huge amounts of data
+  \item exceedingly flexible model
+  \item concept of train, validate, and test
+  \item every situation will be \emph{bespoke}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{label transfer for stars}
+  \begin{itemize}
+  \item a few of your stars have good labels (from somewhere)
+  \item can you use this to label the other stars?
+  \item why would you want to do this?
+    \begin{itemize}
+    \item<2> you don't have good models at your wavelengths?
+    \item<2> you want two surveys to be on the same ``system''?
+    \item<2> you have some stars at high SNR, some at low SNR?
+    \item<2> you spent human time on some stars but can't on all?
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{stellar spectra}
+  \begin{itemize}
+  \item<1-> stars are very close to black-bodies
+  \item<1-> to first order, a stellar spectrum depends on \emph{effective temperature} $\teff$ and \emph{surface gravity} $\logg$
+  \item<2-> to second order, \emph{metallicity} $\feh$ and rotation
+  \item<3> to third order, tens of chemical abundances
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{stellar spectra}
+  \begin{itemize}
+  \item all chemical information is in \emph{absorption lines} corresponding to atomic and molecular transitions
+  \item some 30 elements are visible in the best stars
+  \item spectroscopy at $$R\equiv\frac{\lambda}{\Delta\lambda}>20,000$$ is the primary tool
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{stellar astrophysics}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/four_examples3.pdf}
+         \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/iso2_2.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\sdssiii\ \apogee}
+  \begin{itemize}
+  \item Galactic archaeology
+  \item \apogee\ DR10: 56,000 stars
+  \item \apogee\ DR12: 156,000 stars (98,000 giants)
+  \item $R=22,500$ spectra in $1.5<\lambda<1.7\,\mu\mathrm{m}$
+  \item precise RVs and stellar parameters
+  \item plan for a dozen abundances for every star
+  \item (our own home-built and special continuum normalization; ask me!)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\sdssiii\ \apogee}
+  \,\hfill\includegraphics[height=\figureheight]{../documents/paper1/plots/four_examples3.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{train, validate, and test}
+  \begin{itemize}
+  \item split the data into three disjoint subsets
+  \item in the \emph{training step} you set the parameters of your model using the training set
+  \item the validation set is used to set hyperparameters or model complexity
+  \item in the \emph{test step} you apply the model to the test set---new data---to make predictions or deliver results
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: training set}
+  \begin{itemize}
+  \item 543 stars (too few) from 19 clusters (too few)
+  \item $\teff, \logg, \feh$ labels from \apogee
+    \begin{itemize}
+    \item calling parameters and abundances ``labels''
+    \item slight adjustments to labels to get them onto possible isochrones
+    \end{itemize}
+  \item \emph{terrible} coverage of the main sequence
+    \begin{itemize}
+    \item only the Pleiades
+    \item home-made Pleiades labels (by Ness)
+    \item no $\feh$ spread at high $\logg$.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: training set}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/training_aspcap2.pdf}
+         \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/training_mkn2.pdf}
+\end{frame}
+
+\newcommand{\flux}{f}
+\newcommand{\fluxes}{\boldsymbol{\flux}}
+\newcommand{\labels}{\boldsymbol{\ell}}
+\newcommand{\pars}{\boldsymbol{\theta}}
+
+\begin{frame}
+  \frametitle{\tc: model}
+  \begin{itemize}
+  \item a \emph{generative model} of the \apogee\ spectra
+    \begin{itemize}
+    \item given label vector $\labels$, predict flux vector $\fluxes$
+    \item probabilistic prediction $p(\fluxes\given\labels,\pars)$
+    \end{itemize}
+  \item use every spectral pixel's uncertainty variance $\sigma^2_{\lambda n}$ responsibly
+  \item details:
+    \begin{itemize}
+    \item spectral expectation is quadratic in the labels
+    \item every wavelength $\lambda$ treated independently
+    \item an intrinsic Gaussian scatter $s^2_\lambda$ at every wavelength $\lambda$
+    \item 80,000 free parameters in $\pars$!
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: model}
+{\footnotesize
+  \begin{eqnarray}
+    \ln p(\fluxes_n\given\labels_n,\pars) &=& \sum_{\lambda=1}^L \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda,s^2_\lambda)
+    \nonumber \\
+    \ln p(\flux_{\lambda n}\given\labels_n,\pars_\lambda,s^2_\lambda) &=& -\frac{1}{2}\,\frac{[f_{\lambda n} - \transpose{\pars_\lambda}\cdot\labels_n]^2}{\sigma^2_{\lambda n} + s^2_\lambda} + \ln (\sigma^2_{\lambda n} + s^2_\lambda)
+    \nonumber \\
+    \transpose{\labels} &\equiv& \left\{1, \teff, \logg, \feh,\right.
+    \nonumber \\
+                        & & \left.\teff^2, \teff\,\logg, \cdots, \feh^2\right\}
+    \nonumber \\
+    \transpose{\pars} &\equiv& \left\{\pars_\lambda, s^2_\lambda\right\}_{\lambda=1}^L
+    \nonumber
+  \end{eqnarray}
+}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: model}
+  \begin{itemize}
+  \item $\ln p(\fluxes_n\given\labels_n,\pars)$
+  \item \emph{training step}: optimize w.r.t.\ parameters $\pars$ at fixed labels
+    $\labels$ using training-set data
+    \begin{itemize}
+    \item linear least squares
+    \item every wavelength $\lambda$ treated independently
+    \end{itemize}
+  \item \emph{test step}: optimize w.r.t.\ labels $\labels$ at fixed
+    parameters $\pars$ using test-set (survey) data
+    \begin{itemize}
+    \item non-linear optimization
+    \item every star treated independently
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: model training}
+  \,\hfill\includegraphics<1>[width=\figurewidth]{./data_model_cyan.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: model training}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/R1_continuum5.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: model training cross-validation}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/takeout_histc.png}
+\end{frame}
+
+\newcommand{\results}{%
+\begin{frame}
+  \frametitle{\tc: results}
+  \begin{itemize}
+  \item \tc\ is far faster than physical modeling
+    \begin{itemize}
+    \item model trains in \emph{seconds} (thousands of fits)
+    \item \tc\ labels all 56,000 stars in \apogee\ DR10 in two hours
+    \item (pure Python on a laptop)
+    \end{itemize}
+  \item labels appear sensible
+    \begin{itemize}
+    \item \tc\ labels lie near sensible isochrones
+    \item scatter against \apogee\ labels consistent with \apogee\ precision
+    \end{itemize}
+  \item successfully puts labels on dwarfs
+  \end{itemize}
+\end{frame}}
+
+\results
+
+\begin{frame}
+  \frametitle{\tc: test time}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/4431_v19.png}
+         \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/4383_v19.png}
+         \includegraphics<3>[height=\figureheight]{../documents/paper1/plots/4399_v19.png}
+         \includegraphics<4>[height=\figureheight]{../documents/paper1/plots/4309_v19.png}
+         \includegraphics<5>[height=\figureheight]{../documents/paper1/plots/4311_v19.png}
+         \includegraphics<6>[height=\figureheight]{../documents/paper1/plots/4255_v19.png} 
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: comparison with \apogee\ labels}
+  \,\hfill\includegraphics[height=\figureheight]{../documents/paper1/plots/cplot2.png} 
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: label veracity}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/iso2_2.png}
+         \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/iso2a_2.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: works at low signal-to-noise}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/SNR100to200.png}
+         \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/SNR20to30.png}
+\end{frame}
+
+\results
+
+\begin{frame}
+  \frametitle{\tc: label transfer from \apogee\ to \project{LAMOST}}
+  \,\hfill\includegraphics[width=\figurewidth]{LAMOST.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: shortcuts and choices}
+  \begin{itemize}
+  \item no Bayes; no partial or noisy labels
+  \item quadratic order
+    \begin{itemize}
+    \item replacing polynomial with a Gaussian process
+    \item continuous model complexity; non-parametric
+    \end{itemize}
+  \item spectral representation
+  \item too-small training set
+  \item only three labels
+    \begin{itemize}
+    \item age, [$\alpha$/Fe]
+    \item splitting the giant branch
+    \item how to go to many elements?
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\tc: masses and ages for red giants}
+  \,\hfill\includegraphics<1>[width=\figurewidth]{6labels_mass.png}%
+          \includegraphics<2>[width=\figurewidth]{6labels_age.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{applications for data-driven models}
+  \begin{itemize}
+  \item \kepler\ and \project{K2} light curves
+    \begin{itemize}
+    \item the first systematic exoplanet catalog from \project{K2} data
+    \item Foreman-Mackey \etal\ (arXiv:1502.04715)
+    \end{itemize}
+  \item building a consistent all-sky stellar parameter system for \gaia
+  \item quasar target selection
+    \begin{itemize}
+    \item \project{XDQSO} and \project{XDQSOz}
+    \item Bovy \etal, 2011 (ApJ 729 141), 2012 (ApJ 749 41)
+    \end{itemize}
+  \item CMB foregrounds
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{data-driven models}
+  \begin{itemize}
+  \item incredibly powerful tools
+    \begin{itemize}
+    \item clustering, \emph{label transfer}, prediction, de-noising
+    \end{itemize}
+  \item make use of things you strongly believe
+    \begin{itemize}
+    \item especially the noise model
+    \end{itemize}
+  \item every situation will be \emph{bespoke}
+    \begin{itemize}
+    \item expect to get dirty
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\end{document}
