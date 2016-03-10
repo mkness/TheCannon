@@ -2,12 +2,12 @@
 % Copyright 2016 David W. Hogg (NYU).
 
 % to-do
+% - remove some of the endless ``we're good''
 % - add in chemical results
-% - explain chemical tagging?
-% - preview chemical tagging
+% - add in k-means result
 
 \documentclass[pdftex]{beamer}
-%\input{vc}
+\input{vc}
 % 1.77778 is the ratio of 16 to 9
 \setlength{\paperheight}{2.9in}
 \setlength{\paperwidth}{1.77778\paperheight}
@@ -26,31 +26,26 @@
 
 \title{Data-driven models of stars}
 \author[David W. Hogg (NYU)]{David W. Hogg \\
-  \textsl{\footnotesize Center for Cosmology and Particle Physics,
-                 New~York~University} \\
-  \textsl{\footnotesize Center for Data Science,
-                 New~York~University} \\
+  \textsl{\footnotesize Simons Center for Data Analysis, New York} \\
+  \textsl{\footnotesize Center for Cosmology and Particle Physics, Dept.~Physics, NYU} \\
+  \textsl{\footnotesize Center for Data Science, NYU} \\
   \textsl{\footnotesize Max-Planck-Insitut f\"ur Astronomie, Heidelberg}}
-\date{2015 July 31}
+\date{MacConochie Colloquium / 2016 March 10}
 
 \newcommand{\conclusions}{%
 \begin{frame}
   \frametitle{conclusions}
   \begin{itemize}
-  \item A data-driven label transfer system provides \apogee\ stars with labels comparable in quality to the \apogee\ physics-driven pipeline.
+  \item A data-driven model provides physical parameters to stars with better quality than any physics-driven pipeline.
+  \item \tc\ makes use of \emph{no physics}.
+  \item Prospects for a consistent system of stellar parameters and chemical abundances across all future surveys.
     \begin{itemize}
-    \item \tc\ (Ness \etal, \textit{ApJ} submitted)
-    \item ``labels'' $\equiv (\teff,\logg,\feh)$
+    \item \sdss\ \project{SEGUE} \& \apogee; \sdssiv\ \project{APOGEE-2}
+    \item \project{LAMOST}; \project{HERMES} / \project{GALAH}; \project{Gaia-ESO}
     \end{itemize}
-  \item \tc\ uses \emph{no physical model of stars}.
-  \item The method and the training set are both immature zeroth steps.
-  \item There is hope for a consistent system of stellar parameters and chemical abundances across all future surveys.
-    \begin{itemize}
-    \item \gaia\ \& \project{Gaia-ESO}
-    \item \sdssiii\ \project{SEGUE} \& \apogee; \sdssiv\ \project{APOGEE-2}
-    \item \project{HERMES} / \project{GALAH}
-    \end{itemize}
-  \item \texttt{\giturl}
+  \item Prospects for exoplanet and Milky Way science.
+  \item Everything open-source.
+  \item \emph{Melissa~Ness}~(MPIA), \emph{Andy~Casey}~(Cambridge), Hans-Walter~Rix~(MPIA), Anna~Ho~(MPIA)
   \end{itemize}
 \end{frame}}
 
@@ -58,12 +53,9 @@
 
 \begin{frame}
   \titlepage
-  {\footnotesize \textit{in collaboration with:}\\
-  \emph{Melissa~Ness}~(MPIA), Hans-Walter~Rix~(MPIA), \\
-  Anna~Ho~(MPIA), Gail~Zasowski~(JHU), and Dan~Foreman-Mackey~(NYU)}
 \end{frame}
 
-%\conclusions
+\conclusions
 
 \begin{frame}
   \frametitle{Annie Jump Cannon}
