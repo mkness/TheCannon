@@ -1,11 +1,6 @@
 % This file is part of The Cannon.
 % Copyright 2016 David W. Hogg (NYU).
 
-% to-do
-% - remove some of the endless ``we're good''
-% - add in chemical results
-% - add in k-means result
-
 \documentclass[pdftex]{beamer}
 \input{vc}
 % 1.77778 is the ratio of 16 to 9
@@ -36,20 +31,22 @@
 \begin{frame}
   \frametitle{conclusions}
   \begin{itemize}
-  \item A data-driven model provides physical parameters to stars with better quality than any physics-driven pipeline.
-  \item \tc\ makes use of \emph{no physics}.
+  \item \emph{A data-driven model provides physical parameters to stars with better quality than any physics-driven pipeline.}
+    \begin{itemize}
+    \item \tc\---no physics is harmed
+    \end{itemize}
   \item Prospects for a consistent system of stellar parameters and chemical abundances across all future surveys.
     \begin{itemize}
-    \item \sdss\ \project{SEGUE} \& \apogee; \sdssiv\ \project{APOGEE-2}
-    \item \project{LAMOST}; \project{HERMES} / \project{GALAH}; \project{Gaia-ESO}
+    \item \sdss\ \project{\acronym{SEGUE}} \& \apogee; \sdssiv\ \project{\acronym{APOGEE-2}}
+    \item \project{\acronym{LAMOST}}; \project{\acronym{HERMES}} / \project{\acronym{GALAH}}; \project{Gaia-\acronym{ESO}}
     \end{itemize}
   \item Prospects for exoplanet and Milky Way science.
   \item Everything open-source.
-  \item \emph{Melissa~Ness}~(MPIA), \emph{Andy~Casey}~(Cambridge), Hans-Walter~Rix~(MPIA), Anna~Ho~(MPIA)
+  \item \emph{Melissa~Ness}~(MPIA), \emph{Andy~Casey}~(Cambridge), \emph{Anna~Y.~Q.~Ho}~(Caltech), Hans-Walter~Rix~(MPIA)
   \end{itemize}
 \end{frame}}
 
-\begin{document}
+\begin{document}\sloppy\sloppypar\raggedright\raggedbottom
 
 \begin{frame}
   \titlepage
@@ -97,8 +94,8 @@
   \begin{itemize}
   \item top priority for many new projects
     \begin{itemize}
-    \item \gaia\ \& \project{Gaia-ESO}
-    \item \project{HERMES} \& \project{GALAH}
+    \item \gaia\ \& \project{Gaia-\acronym{ESO}}
+    \item \project{\acronym{HERMES}} \& \project{\acronym{GALAH}}
     \item \sdssiii\ \apogee
     \end{itemize}
   \item terrifying inconsistencies in current approaches
@@ -226,8 +223,8 @@
   \begin{itemize}
   \item<1-> stars are very close to black-bodies
   \item<1-> to first order, a stellar spectrum depends on \emph{effective temperature} $\teff$ and \emph{surface gravity} $\logg$
-  \item<2-> to second order, \emph{metallicity} $\feh$ and rotation
-  \item<3> to third order, tens of chemical abundances
+  \item<2-> to second order, \emph{metallicity} $\feh$
+  \item<3> to third order, tens of \emph{chemical abundances}, rotation
   \end{itemize}
 \end{frame}
 
@@ -381,7 +378,7 @@
   \item \tc\ is far faster than physical modeling
     \begin{itemize}
     \item model trains in \emph{seconds} (thousands of fits)
-    \item \tc\ labels all 56,000 stars in \apogee\ DR10 in two hours
+    \item \tc\ labels $10^5$ stars per hour
     \item (pure Python on a laptop)
     \end{itemize}
   \item labels appear sensible
@@ -425,11 +422,6 @@
 \results
 
 \begin{frame}
-  \frametitle{\tc: label transfer from \apogee\ to \project{LAMOST}}
-  \,\hfill\includegraphics[width=\figurewidth]{LAMOST.png}
-\end{frame}
-
-\begin{frame}
   \frametitle{\tc: shortcuts and choices}
   \begin{itemize}
   \item no Bayes; no partial or noisy labels
@@ -450,45 +442,41 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{\tc: label transfer from \apogee\ to \project{\acronym{LAMOST}}}
+  \,\hfill\includegraphics[width=\figurewidth]{LAMOST.png}
+\end{frame}
+
+\begin{frame}
   \frametitle{\tc: masses and ages for red giants}
   \,\hfill\includegraphics<1>[width=\figurewidth]{6labels_mass.png}%
           \includegraphics<2>[width=\figurewidth]{6labels_age.png}
 \end{frame}
 
 \begin{frame}
-  \frametitle{applications for data-driven models}
-  \begin{itemize}
-  \item \kepler\ and \project{K2} light curves
-    \begin{itemize}
-    \item the first systematic exoplanet catalog from \project{K2} data
-    \item Foreman-Mackey \etal\ (arXiv:1502.04715)
-    \end{itemize}
-  \item building a consistent all-sky stellar parameter system for \gaia
-  \item quasar target selection
-    \begin{itemize}
-    \item \project{XDQSO} and \project{XDQSOz}
-    \item Bovy \etal, 2011 (ApJ 729 141), 2012 (ApJ 749 41)
-    \end{itemize}
-  \item CMB foregrounds
-  \end{itemize}
+  \frametitle{\tc: detailed abundances}
+  \,\hfill\includegraphics<1>[                  width=\figurewidth]{regularized-model-validation.pdf}%
+          \includegraphics<2>[trim=0 0 0 3.0in, width=\figurewidth]{regularized-model-validation.pdf}%
+          \includegraphics<3>[trim=0 0 0 6.0in, width=\figurewidth]{regularized-model-validation.pdf}%
+          \includegraphics<4>[trim=0 0 0 9.0in, width=\figurewidth]{regularized-model-validation.pdf}%
+          \includegraphics<5>[                  width=0.5\figurewidth]{M15_comparison.pdf}%
+          \includegraphics<6>[trim=0 0 0 4.0in, width=0.5\figurewidth]{M15_comparison.pdf}%
+          \includegraphics<7>[trim=0 0 0 8.0in, width=0.5\figurewidth]{M15_comparison.pdf}%
+          \includegraphics<8>[trim=0 0 0 12.in, width=0.5\figurewidth]{M15_comparison.pdf}%
+          \includegraphics<9>[width=\figurewidth]{sparse-first-order-coefficients.pdf}%
+          \includegraphics<10>[trim=0.5in 2in 0.5in 2in, width=\figurewidth]{sn.pdf}%
 \end{frame}
 
 \begin{frame}
-  \frametitle{data-driven models}
+  \frametitle{read more}
   \begin{itemize}
-  \item incredibly powerful tools
-    \begin{itemize}
-    \item clustering, \emph{label transfer}, prediction, de-noising
-    \end{itemize}
-  \item make use of things you strongly believe
-    \begin{itemize}
-    \item especially the noise model
-    \end{itemize}
-  \item every situation will be \emph{bespoke}
-    \begin{itemize}
-    \item expect to get dirty
-    \end{itemize}
+  \item original paper on \tc\ and \apogee: \emph{Ness} \etal, arXiv:1501.07604
+  \item red-giant masses and ages: \emph{Ness} \etal, arXiv:1511.08204
+  \item chemical tagging: Hogg \etal, arXiv:1601.05413
+  \item labeling \project{\acronym{LAMOST}}: \emph{Ho} \etal, arXiv:1602.00303
+  \item chemical abundances: \emph{Casey} \etal, arXiv:tomorrow
   \end{itemize}
 \end{frame}
+
+\conclusions
 
 \end{document}
