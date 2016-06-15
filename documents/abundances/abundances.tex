@@ -1,4 +1,4 @@
-% This file is part of The Cannon project.
+% This file is part of \tc\   project.
 % Copyright 2015 the authors.
 
 % style notes
@@ -53,7 +53,7 @@
 \begin{document}
 
 
-\title{Precision abundance measurements for chemical tagging in spectroscopic surveys with The Cannon}
+\title{Precision abundance measurements for chemical tagging in spectroscopic surveys with \tc\  }
 \author{M.~Ness\altaffilmark{1},
         David~W.~Hogg\altaffilmark{1,2,3},
         H.-W.~Rix\altaffilmark{1}.,
@@ -65,13 +65,21 @@
 \email{ness@mpia.de}
 
 \begin{abstract}%
-Large stellar data sets which have the property of a high dimensionality in their measured chemical abundance information render stars tools to reconstruct the Galaxy's formation. Critical to this end and the pursuits of chemical tagging and galactic archeology is high precision measurements on the individual elemental abundances. We use \tc\ to achieve such high precision abundance measurement using APOGEE spectra for red giants. We achieve errors that are 2-3 times smaller than current approaches.  This method works by propagating the precision achieved at high signal to noise with current approaches to the lower signal to noise data. We use a subset of high signal to noise APOGEE data as a reference set, to train \tc's model, for a set of 23 labels including the stellar parameters of \teff, \logg, \feh\ and \alphafe\ and 19 individual abundance measurements. We achieve a precision of $<$ 0.1 dex at a SNR of 50, for most elements.  We deliver a catalog of these element measurements for XXX red giant stars (including 20,000 red clump stars) in APOGEE which span the entire disk (from the Galactic center to $R\sim 20$~kpc). 
-For the derivation of the individual abundances we have implemented filters which restrict our model to the lines of each particular element. In principle, exploiting the entire spectrum even for measurements of individual abundances is a powerful measure of the covariances between each element and other lines (elements) in the spectra and thus informative about the true dimensionality of the data and we demonstrate the differences achieved by these approaches. The precision abundance measurements we determine with \tc\ demonstrate the advantages gained in combining the known physical properties of stars and stellar models with a data driven approach. Such precision stellar measurements are critical for prospects of Galactic archeology.
 
-%We implement filters for each element so as to restrict our model to learn only the relationship between each individual element and the flux for the regions that element is present in the spectra and not the covariances between each element and other lines (elements) in the spectra. In principle, learning these covariances is also a powerful measure of the dimensionality of the abundance space and we demonstrate the implication of filtering versus not filtering..something like that...
-%Such precision abundance measurements as delivered by \tc\ are critical for undertaking Galactic archeology.
+The high precision of individual element abundances -- needed for chemical tagging and galactic archeology -- drives the SNR requirements for stellar 
+spectroscopic surveys to $\gtrsim~100$ per resolution element. We have shown that \tc\   can provide the same precision as conventional techniques
+for the primary stellar labels ( \teff, \logg, [M/H] and \alphafe\ ) 
+ but at $\sim 1/3$ the SNR. Here we demonstrate that \tc\ (without any modifications) can offer a comparable precision gain at all spectral SNR when 
+applied to all 23 labels of APOGEE's DR13: \teff, \logg, \feh\ and \alphafe\ and 19 further individual abundances (C, N, O, Na, Mg, Al, Si, P, S K, Ca, Ti, V, Cr, Mn, Fe, Co, Ni, Rb). 
+After training on a remarkably small subset of 2000 giants with high SNR from APOGEE DR13 we achieve a precision of $<$ 0.1 dex for all elements, at spectral SNR of only 50.
+This offers the possibility of achieving currently envisioned goals in galactic archeology with only a quarter of the spectroscopic observing time.
+We explore two variants of the training step: one in which the model coefficients for any given label/abundance are only fit in 
+wavelength windows that appear a priori informative on that label; this reduces the impact of astrophysical correlations between different labels, but at the expense 
+of higher shot noise. Alternatively, we fit the coefficients of all labels at all pixels.
+Which approach provides more precise, or more robust label estimates, depends on the label and the SNR under consideration.
+A full, Cannon-based catalogue of high-precision abundances for DR13, including 19 individual elements and 4 stellar parameters is presented in Casey et al. (2016). 
 
-
+%We propagate the performance of APOGEE's stellar parameter pipeline ASPCAP at high SNR to lower SNR and achieve a precision of $<$ 0.1 dex at a SNR = 50 for all elements
 \end{abstract}
 
 \keywords{
@@ -88,16 +96,29 @@ stars: fundamental parameters
 techniques: spectroscopic
 }
 
+\section{}
+%\section{Scope} 
+%
+%Demonstrating \tc\   ``as is'' works for individual abundances \\
+%Showing the performance of \tc\   as a function of signal to noise compared to aspcap \\
+%Demonstrating the comparison of the unfiltered versus filtered approach \\
+%Will proceed with DR13 data - and reference Andy Casey for the catalogue \\
+%
+%\section{To do} 
+%make an improved reference set of data that covers down to low metallicity \\
+%clean my code \\
+
+
 \section{Introduction}\label{sec:Intro}
 
 With the multitude of large stellar surveys underway, stars are now exceptional tools to reconstruct the galaxy's formation and evolution. 
 The integrated information density and dimensionality coupled with the rapidly growing spatial extent of stellar tracers opens up opportunities for new methods to be explored. The data are powerful, but current methodologies employed in their analysis do not exploit the full information content nor dimensionality of the data. Doing this is critical for ambitious pursuits of chemical tagging \citep[e.g.][]{Ting2015} and galactic archeology \citep{Freeman2002, Martell2015}. 
 
-In this paper we optimally combine the input from stellar physics with a data-driven model, to use the high-precision element abundance labels delivered by \apogee's \aspcap\ pipeline, which determines stellar parameters and abundances using a very large grid of stellar models that vary in 7 dimensions (citation) to each spectra. We train on a small subset of stars which have been observed at high signal to noise (SNR) and even with a very small training set can capture the behaviour of flux as a function of our labels for 19 individual elements and 4 stellar parameters with a simple quadratic model, using the implementation of The Cannon described in \citet{Ness2015}. The only additional complexity to the model is that we have added filters for each of the individual elements [X/Fe]. These filters have selected only where the elements appear in the line list, for each element respectively, so that \tc\ is truly measuring each particular individual abundance and not exploiting covariances that exist (and in some cases are very strong) between elements (although there is merit for chemical tagging in also exploiting these as well). 
+In this paper we optimally combine the input from stellar physics with a data-driven model, to use the high-precision element abundance labels delivered by \apogee's \aspcap\ pipeline, which determines stellar parameters and abundances using a very large grid of stellar models that vary in 7 dimensions (citation) to each spectra. We train on a small subset of stars which have been observed at high signal to noise (SNR) and even with a very small training set can capture the behaviour of flux as a function of our labels for 19 individual elements and 4 stellar parameters with a simple quadratic model, using the implementation of \tc\   described in \citet{Ness2015}. The only additional complexity to the model is that we have added filters for each of the individual elements [X/Fe]. These filters have selected only where the elements appear in the line list, for each element respectively, so that \tc\ is truly measuring each particular individual abundance and not exploiting covariances that exist (and in some cases are very strong) between elements (although there is merit for chemical tagging in also exploiting these as well). 
 
 \ldots Surveys define their SNR requirements through the precision for individual abundances; here we demonstrate what is possible.
 
-\ldots - summarise the paper of YST and what they determined from APOGEE data and then point to section where show comparison of The Cannon's results for the same elements as ASPCAP for YS's high alpha-sequence.
+\ldots - summarise the paper of YST and what they determined from APOGEE data and then point to section where show comparison of \tc\  's results for the same elements as ASPCAP for YS's high alpha-sequence.
 
 
 \ldots In Section X we demonstrate the improvement as a function of SNR compared to current approaches and compare filtered versus unfiltered approach. This demonstrates we achieve error bars which are 2-3 times smaller and this is critical for chemical tagging and also shows that can get higher precision labels with less observing time; can probe further out into the disk getting fainter targets or observe larger numbers of stars. 
@@ -106,6 +127,21 @@ In this paper we optimally combine the input from stellar physics with a data-dr
 
 
 \ldots different nucleosynthetic processes and so birth conditions \\ 
+
+\section{Notes} 
+
+
+We deliver a catalog of these element measurements for XXX red giant stars (including 20,000 red clump stars) in APOGEE which span the entire disk (from the Galactic center to $R\sim 20$~kpc). 
+For the derivation of the individual abundances we have implemented filters which restrict our model to the lines of each particular element. In principle, exploiting the entire spectrum even for measurements of individual abundances is a powerful measure of the covariances between each element and other lines (elements) in the spectra and thus informative about the true dimensionality of the data and we demonstrate the differences achieved by these approaches. The precision abundance measurements we determine with \tc\ demonstrate the advantages gained in combining the known physical properties of stars and stellar models with a data driven approach. Such precision stellar measurements are critical for prospects of Galactic archeology.
+
+
+ for chemical abundances have defined the minimal signal to noise
+
+Large stellar data sets which have the property of a high dimensionality in their measured chemical abundance information render stars tools to reconstruct the Galaxy's formation. Critical to this end and the pursuits of chemical tagging and galactic archeology is high precision measurements on the individual elemental abundances. We use \tc\ to achieve such high precision abundance measurement using APOGEE spectra for red giants. We achieve errors that are 2-3 times smaller than current approaches.  This method works by propagating the precision achieved at high signal to noise with current approaches to the lower signal to noise data. We use a subset of high signal to noise APOGEE data as a reference set, to train \tc's model, for a set of 23 labels including the stellar parameters of \teff, \logg, \feh\ and \alphafe\ and 19 individual abundance measurements. We achieve a precision of $<$ 0.1 dex at a SNR of 50, for most elements.  We deliver a catalog of these element measurements for XXX red giant stars (including 20,000 red clump stars) in APOGEE which span the entire disk (from the Galactic center to $R\sim 20$~kpc). 
+For the derivation of the individual abundances we have implemented filters which restrict our model to the lines of each particular element. In principle, exploiting the entire spectrum even for measurements of individual abundances is a powerful measure of the covariances between each element and other lines (elements) in the spectra and thus informative about the true dimensionality of the data and we demonstrate the differences achieved by these approaches. The precision abundance measurements we determine with \tc\ demonstrate the advantages gained in combining the known physical properties of stars and stellar models with a data driven approach. Such precision stellar measurements are critical for prospects of Galactic archeology.
+
+%We implement filters for each element so as to restrict our model to learn only the relationship between each individual element and the flux for the regions that element is present in the spectra and not the covariances between each element and other lines (elements) in the spectra. In principle, learning these covariances is also a powerful measure of the dimensionality of the abundance space and we demonstrate the implication of filtering versus not filtering..something like that...
+%Such precision abundance measurements as delivered by \tc\ are critical for undertaking Galactic archeology.
 
 %\ldots point out this is as very nice synergy between physics and a data driven model....
 
@@ -189,6 +225,15 @@ Without filters, the performance in the rms of the primary parameters is worse (
 \label{fig:cn}
 \end{figure}
 
+% run -i makefilter_paperplot.py - currently this is done for cal set but do this for DR13 dataset. 
+
+\begin{figure}
+\centering
+  \includegraphics[scale=0.5]{/Users/ness/TheCannon_elem/filters.pdf}
+    \caption{The filters used with percentages }
+\label{fig:cn}
+\end{figure}
+
 
 % run -i makecorner_triangle_14.py - currently this is done for cal set but do this for DR13 dataset. 
 
@@ -207,7 +252,7 @@ Without filters, the performance in the rms of the primary parameters is worse (
 \flushleft
   \includegraphics[scale=0.25]{/Users/ness/new_laptop/Apogee_elements/14labels/ASPCAP_YS.png}
     \includegraphics[scale=0.25]{/Users/ness/new_laptop/Apogee_elements/14labels/TC_YS.png}
-    \caption{ASPCAP results at left and The Cannon results at right for the same stars in the high-alpha sequence; from paper by YST.}
+    \caption{ASPCAP results at left and \tc\   results at right for the same stars in the high-alpha sequence; from paper by YST.}
 \label{fig:cn}
 \end{figure}
 
@@ -235,7 +280,7 @@ Without filters, the performance in the rms of the primary parameters is worse (
 %%\centering
 %\flushleft
 %
-%    \caption{The Cannon results for element space }
+%    \caption{\tc\   results for element space }
 %\label{fig:cn}
 %\end{figure}
 
