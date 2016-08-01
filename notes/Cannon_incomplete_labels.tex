@@ -1,0 +1,200 @@
+% This is based on the LLNCS.DEM the demonstration file of
+% the LaTeX macro package from Springer-Verlag
+% for Lecture Notes in Computer Science,
+% version 2.4 for LaTeX2e as of 16. April 2010
+%
+% See http://www.springer.com/computer/lncs/lncs+authors?SGWID=0-40209-0-0-0
+% for the full guidelines.
+%
+%\documentclass{llncs}
+\documentclass[12pt, letterpaper, preprint]{aastex}
+%\usepackage{bm, graphicx, subfigure, amsmath, morefloats}
+\bibliographystyle{apj}
+\usepackage{float, bm, graphicx, subfigure, amsmath, morefloats}
+\usepackage{color}
+%\usepackage{caption}
+%\usepackage{subcaption}
+\usepackage[caption=false]{subfig}
+\usepackage{tabularx}
+
+% naming macros
+\newcommand{\tc}{\textsl{The~Cannon}} 
+\newcommand{\cannon}{\textsl{Cannon}} 
+\newcommand{\apogee}{APOGEE}
+%\newcommand{\apogee}{\textsl{APOGEE}} 
+\newcommand{\aspcap}{ASPCAP}
+%\newcommand{\aspcap}{\textsl{ASPCAP}}
+\newcommand{\lamost}{LAMOST}
+%\newcommand{\lamost}{\textsl{LAMOST}}
+\newcommand{\apokasc}{APOKASC}
+\newcommand{\segue}{SEGUE}
+%\newcommand{\segue}{\textsl{SEGUE}}
+\newcommand{\rave}{RAVE}
+%\newcommand{\rave}{\textsl{RAVE}}
+\newcommand{\galah}{GALAH}
+%\newcommand{\galah}{\textsl{GALAH}}
+\newcommand{\gaiaeso}{Gaia-ESO}
+\newcommand{\gaia}{Gaia}
+\newcommand{\kepler}{\textsl{Kepler}}
+\newcommand{\ulyss}{\textsl{ULySS}}
+
+
+
+% math and symbol macros
+%\newcommand{\set1}[1]{\bm{#1}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\teff}{\mbox{$\rm T_{eff}$}}
+\newcommand{\feh}{\mbox{$\rm [Fe/H]$}}
+\newcommand{\mh}{\mbox{$\rm [Fe/H]$}}
+\newcommand{\alphafe}{\mbox{$\rm [\alpha/M]$}}
+\newcommand{\alpham}{\mbox{$\rm [\alpha/M]$}}
+\newcommand{\logg}{\mbox{$\rm \log g$}}
+\newcommand{\ak}{\mbox{$\rm A_k$}}
+\newcommand{\av}{\mbox{$\rm A_v$}}
+\newcommand{\cm}{\mbox{$\rm [C/M]$}}
+\newcommand{\nm}{\mbox{$\rm [N/M]$}}
+\newcommand{\starlabel}{\ell}
+\newcommand{\starlabelvec}{\set{\starlabel}}
+\newcommand{\given}{\,|\,}
+\newcommand{\angstrom}{\mbox{\AA}}
+\newcommand{\vl}{\vec{l}}
+\newcommand{\vthe}{\vec{\theta}}
+\newcommand{\vdel}{\vec{\delta}}
+\newcommand{\vlobs}{\vec{l}^{obs}}
+\newcommand{\vlo}{\vec{l^{o}}}
+
+\newcommand{\ntrobj}{9952}
+\newcommand{\nallobj}{454,180}
+\newcommand{\ntestobj}{444,228}
+\newcommand{\snr}{S/N}
+\newcommand{\afebias}{-0.00247}
+\newcommand{\afescat}{0.0391}
+\newcommand{\tefferr}{4.4 K}
+\newcommand{\nbssamples}{20}
+\newcommand{\loggerr}{0.012 dex}
+\newcommand{\feherr}{0.0060 dex}
+\newcommand{\afeerr}{0.0042 dex}
+
+\newcommand{\todo}[1]{{[\bf $1$]}}
+\newcommand{\Comment}[2]{ [{\color{red}\sc #1 :} {{\color{cyan} \it #2}}]}
+
+\begin{document}
+
+\title{Notes on {\it The Cannon} with \\Imperfect or Incomplete Labels}
+%
+%\titlerunning{Incomplete Cannon}  % abbreviated title (for running head)
+%                                     also used for the TOC unless
+%                                     \toctitle is used
+%
+\author{Hans-Walter Rix}
+%\institute{MPIA}
+%
+%\authorrunning{HWRix} % abbreviated author list (for running head)
+%
+%%%% list of authors for the TOC (use if author list has to be modified)
+
+
+\maketitle              % typeset the title of the contribution
+
+\begin{abstract}
+Modifying {\it The Cannon} ton incorporate imperfect, or even partially missing, training labels  {\bf may} straightforward, both conceptually and computationally.
+\end{abstract}
+%
+\section{Basic Considerations}
+
+These are HWR’s thoughts from Jan. 2016 on how to implement The Cannon accounting for imperfect, or even missing, reference labels in the training step of the Cannon; whipped into shape by conversation with DFM \& DWH July 2016.
+
+These considerations are relevant in three regimes: 1) training labels always have errors! 2) central labels, such as \logg , may exist for all objects in the training sample, but for a (possibly only very small) 
+subset may have {\it exceptionally} precise labels (e.g. from astro-seismology). 3) one may want to, or need to, combine two different reference sets for the training step, but they have a (known) label space of different dimension, or disjoint axis, e.g. $[\vec{X}_1/H]$ vs $[\vec{X}_2/H]$.
+
+It appears that this case works out to be a modification of the likelihood equations (4) and (5) in Ness et al 15.
+Throughout, we’ll use the ‘vectoriser’ to make $\ell$ the vector of polynomial label combinations in which The Cannon is always linear (save the issue of the scatter term); see Eq. 6 in Ness et al. The solution presented here 
+holds strictly true only if the uncertainties in the vectorizer labels are all Gaussian and Gaussian; but it may constitute a sensile approximation also in realistic situation.
+
+We will start out with a grossly simplified, but illustrative toy case, and then generalize. 
+To start, we consider one pixel of a spectrum ``f'', only one label $l$, a linear Cannon, and we have $n$ reference spectra, where we have imperfect knowledge of the reference label, $\{l^{obs}\}\equiv\{l^o,\delta\}$:
+
+\begin{equation}
+p\bigl ( l ~|~ l^{obs}\bigr ) = 1/\sqrt{2\pi \delta^2}\ 
+\exp{\Bigl ( -\frac{1}{2}\frac{(l-l^0)^2}{\delta^2}\Bigr )}.
+\end{equation}
+%
+In the case of perfect reference label knowledge, the model parameter $\theta$ will then be chosen as the one that maximizes the likelihood:
+\begin{equation}
+p\bigl ( \set{f,\sigma}_n~|~ \theta, s, \set{l}_n\bigr ) = 
+\prod_{n=1}^{N_*}  1/\sqrt{2\pi (\sigma_n^2+s^2)}\ 
+\exp{\Bigl ( -\frac{1}{2}\frac{(f_n-1-\theta \cdot l_n)^2}{\sigma_n^2+s^2}\Bigr )},
+\end{equation}
+where $\set{...}_n$ denotes the set of $N_*$ reference objects.
+
+With imperfect knowledge of the $N_*$ reference labels, $\set{l^{obs}}_n$,  -- or even ``no'' specific knowledge about the reference label in some cases -- this must and can be generalized to:
+
+\begin{equation}
+\begin{aligned}
+p\bigl ( \set{f,\sigma}_n~|~ \theta, s, \set{l^{obs}}_n\bigr )= \prod_{n=1}^{N_*} 
+\Biggl ( 1/\sqrt{2\pi (\sigma_n^2+s^2)}\ \times \\
+  \int_{-\infty}^\infty dl_n
+\exp{\Bigl ( -\frac{1}{2}\frac{(f_n-1-\theta \cdot l_n)^2}{\sigma_n^2+s^2}\Bigr )}\times
+1/\sqrt{2\pi \delta_n^2}\
+\exp{\Bigl ( -\frac{1}{2}\frac{(l_n-l_n^0)^2}{\delta_n^2}\Bigr )}\Biggr )=\\
+=\prod_{n=1}^{N_*} 1/\sqrt{2\pi (\delta_n^2\theta^2 + \sigma_n^2+s^2)}\times
+\exp{\Bigl ( -\frac{1}{2}\frac{(f_n-1-\theta \cdot l_n^o)^2}{\delta_n^2\theta^2+\sigma_n^2+s^2}\Bigr )}.
+\end{aligned}
+\end{equation}
+
+In the end, we take $\theta$ and $s$ to be:
+\begin{eqnarray}
+\theta,s \leftarrow \mbox{argmax}_{\theta, s} = 
+\prod_{n=1}^{N_*} 1/\sqrt{2\pi (\delta_n^2\theta^2 + \sigma_n^2+s^2)}\times
+\exp{\Bigl ( -\frac{1}{2}\frac{(f_n-1-\theta \cdot l_n^o)^2}{\delta_n^2\theta^2+\sigma_n^2+s^2}\Bigr )},
+\end{eqnarray}
+where it is worth noting that $\theta$ appears in qualitatively different ways than before. Nonetheless, the functional form is analytic and straightforward to evaluate (and hopefully also to maximize).
+
+\section{Generalization to multiple labels per object}
+
+How can we generalize this? Let's assume at the next step that {\it The Cannon} has K labels, but remains {\it linear}
+\footnote{\tc is always linear (save the scatter term) in the vectorizer, $\ell$ of the labels (Eq.6 in Ness et al 2015)      }.
+
+\begin{equation}
+\begin{aligned}
+p\bigl ( \set{f,\sigma}_n~|~ \vthe, s, \set{\vlobs}_n\bigr )=
+\prod_{n=1}^{N_*} \  \int_{-\infty}^\infty dl_1 ...  \int_{-\infty}^\infty dl_K~
+p\Bigl ( (f,\sigma)_n~|~ \vthe, s, \vl_n\Bigr )\cdot
+\prod_{k=1}^K p\Bigl ( l_{nk} | l^{obs}_{nk}\Bigr ),
+\end{aligned}
+\end{equation}
+where the vectors $\vthe$ and $\vlobs$ have length $K$.
+Tedious calculation leads to the plausible, and pleasingly simple result:
+
+\begin{equation}
+\begin{aligned}
+p\bigl ( \set{f,\sigma}_n~|~ \vthe, s, \set{\vlobs}_n\bigr )=
+\prod_{n=1}^{N_*} 1/\sqrt{2\pi (\vdel_n^2\cdot\vthe^2 + \sigma_n^2+s^2)}\times
+\exp{\Biggl ( -\frac{1}{2}\frac{(f_n-1-\vthe \cdot \vec{l}^0_n)^2}{\vdel_n^2\cdot\vthe^2+\sigma_n^2+s^2}\Biggr )},
+\end{aligned}
+\end{equation}
+
+\section{Discussion}
+
+If the math turns out to be right, this would imply that \tc~ can be trained straighforwardly on imperfect, or even missing, training labels: one would
+have to {\tt argmax} Eq. 6 with respect to $\vthe$ and $\vec{s}_\lambda$.
+Eq. 6 would also provide a framework for simultaneously training on different reference set with non-identical label-space.
+The above forms of the likelihood function simplify to the familiar form in the limit $\delta \rightarrow 0$. 
+
+In general, we will have/know some form of error bars $\delta_{kn}$ on the $k^{th}$ label of the $n^{th}$ star, and simply use those errors.
+In the case of a `missing' label, say a stellar abundance, the corresponding
+$\delta_{kn}$ should be set to some prior expectation; in practice the training sample properties may serve as a guide.
+
+But the above only works for the {\it linear} regime. Is that a severe limitation?
+The suggestion is to use the ``vectorizer'' of the labels $\ell$ (in which the Cannon is linear; modulo the scatter term $s$, Eq.6 in Ness et al 2015); this vectorizer (Casey's language) has terms such as $T_{eff}\cdot\log{g}$, etc..
+The question is how to get the $\delta_{kn}$ for such a term, that accounts for the co-variances between $T_{eff}$ and $\log{g}$.
+There easiest approach is to just make make $\delta^2$ simply the (uncorrelated) product of the two constituent
+labels; alternatively we can use the ``gradient spectra'' (e.g. theoretical, or the leading-order solutions) to get the co-variance (Ting et al 2016);
+or ? [To be worried about later..]
+
+Also: these more complex $\delta_{kn}$ won't lead to a Gaussian error distribution. Hogg conjectures that, as for Gaussian processes, this non-Gaussianity won't matter too much in practice.
+
+Now it's time to try this out in practice..
+
+
+\end{document}
