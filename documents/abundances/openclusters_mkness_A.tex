@@ -148,7 +148,7 @@ For our training data, we correct for these systematic biases for each element s
 %We therefore input as our training labels our own LSF-corrected versions of \aspcap's corrected (for temperature and logg systematics) DR13 values. 
 % /Users/ness/new_laptop/Apogee_DR12_play/DR13_calibrated
 %run -i makelist_LSFscatter_H_paper.py
-\begin{figure*}[h!]
+\begin{figure*}[]
 %\centering
 %\includegraphics[scale=0.6]{/Users/ness/new_laptop/Apogee_DR12_play/DR13_calibrated/training_input.pdf} 
 \includegraphics[scale=0.6]{training_input.pdf} 
@@ -167,7 +167,7 @@ For our training data, we correct for these systematic biases for each element s
 
 %run -i makeself.py
 
-\begin{figure*}[h!]
+\begin{figure*}
 %\centering
 %\includegraphics[scale=0.45]{/Users/ness/new_laptop/Apogee_elements/redclump_chi2/training/crossval_5026.pdf} 
 \includegraphics[scale=0.45]{crossval_5026.pdf} 
@@ -187,10 +187,10 @@ From the goodness of fit $\chi^2$ metric which we determined for each star, we e
 
 Figures \ref{fig:c1} to \ref{fig:c8} show the cluster individual abundances plotted coloured by \teff, with their corresponding error bars. Typical absolute dispersion measurements for the clusters range from 0.01 -- 0.1 depending on the element.  The cyan points in the background are the training data. The DR13 input abundance labels that we adopt for training are corrected for systematic variations with temperature, except for C and N, which are known to have astrophysical variations along the giant branch (and then also corrected for LSF variation as described in Section 4). For the open clusters, we note that the coolest stars do seem to have the highest measurements of [N/Fe], within a cluster. 
 
-We report the measured mean and dispersion for our 92 open cluster stars in Table 1 as well as the \aspcap\ results (where available) and provide the measurements for each star as well as their 2MASS ID's in our online table. Our results compare very well to the \aspcap\ results, but using \tc, we obtain far higher precision and so report dispersions on the order of 20-50\% lower than \aspcap, in most cases. We are concerned with precision and not accuracy and there is a discussion in \citet{Holtzman2015} regarding the scale of the open clusters with respect to the literature. Overall, we note there is a large literature dispersion in individual element measurements from high resolution spectroscopy (e.g. see Table 3 of Souto et al., 2016 for a literature comparison of one of the open clusters, NGC2420). 
+We report the measured mean and dispersion for our 92 open cluster stars in Table 1 as well as the \aspcap\ results (where available) and provide the measurements for each star as well as their 2MASS ID's in our online table. Our results compare very well to the \aspcap\ results, but using \tc, we obtain far higher precision and so report dispersions on the order of 20-50\% lower than \aspcap, in most cases. We are concerned with precision and not accuracy and there is a discussion in \citet{Holtzman2015} regarding the scale of the open clusters with respect to the literature. Overall, we note there is a large literature dispersion in individual element measurements from high resolution spectroscopy (e.g. see Table 3 of \citet{Souto2016} for a literature comparison of one of the open clusters, NGC2420). 
 
 
-\begin{table*}[!h]
+\begin{table*}[h]
 \centering
 \tiny
 \begin{tabular}{ | p{0.04\textwidth} | c| c | c | c | c | c | c | c | }
@@ -362,37 +362,40 @@ We find that for given this model, for each cluster, the intrinsic mean is very 
 
 \subsection{Absolute measurements}
 
-We have demonstrated in Tables 1 and 2 that our absolute measurements, (by design) agree very well with those of \aspcap, only our dispersions are much smaller due to higher precision measurements with \tc. Comparing to the literature reveals a significant variation in the absolute values of measured abundances, which is a long standing and known problem in the community  (e.g Smiljanic et al., 2014) that is now being addressed by placing different surveys directly on a common ( \apogee\ ) scale \citep[e.g.][]{Ho2016,Casey2016}. We are interested, for the purposed of chemical tagging and for assessing chemical similarity and dissimilarity of stars in general, only precision. We can make these chemical assessments within individual surveys with large numbers of stars, like \apogee\, RAVE and GALAH or among surveys if they are placed directly on the same scale. 
+We have demonstrated in Tables 1 and 2 that our absolute measurements, (by design) agree very well with those of \aspcap, only our dispersions are much smaller due to higher precision measurements with \tc. Comparing to the literature reveals a significant variation in the absolute values of measured abundances, which is a long standing and known problem in the community  \citep[e.g.][]{smil2014} that is now being addressed by placing different surveys directly on a common ( \apogee\ ) scale \citep[e.g.][]{Ho2016,Casey2016}. We are interested, for the purposed of chemical tagging and for assessing chemical similarity and dissimilarity of stars in general, only precision. We can make these chemical assessments within individual surveys with large numbers of stars, like \apogee\, RAVE and GALAH or among surveys if they are placed directly on the same scale. 
 
-Examining the literature on individual clusters, many have been studied by independent groups and here we briefly review some of the absolute measurements in the literature although note again that we are concerned with precision and not the absolute abundance scale and that this is what is relevant for chemical tagging. The open cluster NGC2420 has been studied by \citet{Souto2016} using \apogee\ spectra and we report vey similar dispersions to their careful by hand analysis. We also compare well with their individual abundance measurements to the degree that the \aspcap\ results are similar (see their discussion). For NGC7789,  our absolute Mg measurement is low compared to all literature values by $\sim$ 0.1--0.2 dex although there is a very broad range in all measured abundances in the literature for this cluster (see Table 2 of \citet{Overbeek2015}). \citet{Lui2016} studied solar twins in M67 and found, similarly to our analysis, no spread in the elements with Z $<$ 30. However, they report chemical inhomogeneity within this cluster for the neutron-capture elements, which are not measured by \apogee. While our \feh\ abundance agrees very well with the spectroscopic study of NGC188 by \citet{Friel2010} all individual abundance measurements we determine show lower enhancement in the \apogee\ results by about 0.1-0.2 dex and a similar offset is seen for M67 between our results and this study. \citet{Car2013} examined star to star variations in the C and N abundances using the CN and CH band strengths for three open clusters in common with our study, of NGC2158, NGC2420 and NGC7789 and found a spread consistent with the uncertainties on the measurements except for NGC7789, although only a very small number of stars were used in their analysis and they note more stars are required to confirm this result. Although we only report 5 stars in our study we find no intrinsic variation of elements with respect to Fe in this cluster.  Comparing our results for NGC6819 to the recent spectroscopic study of \citet{LB2015}, our \feh\ is slightly super-solar compared to their sub-solar result but measured element enhancements in common are similar. From their study of turn-off stars in the old super-metal rich cluster NGC6719, \citet{Bo2015} find both a  very similar \feh\ and individual enhancement values to our results. 
+Examining the literature on individual clusters, many have been studied by independent groups and here we briefly review some of the absolute measurements in the literature although note again that we are concerned with precision and not the absolute abundance scale and that this is what is relevant for chemical tagging. The open cluster NGC2420 has been studied by \citet{Souto2016} using \apogee\ spectra and we report vey similar dispersions to their careful by hand analysis. We also compare well with their individual abundance measurements to the degree that the \aspcap\ results are similar (see their discussion). For NGC7789,  our individual abundances compare well with \citet{Overbeek2015} except for Mg,  which is low compared to the literature values by $\sim$ 0.1--0.2 dex (although we note that there is a very broad range in all measured abundances in the literature for this cluster as per Table 2 of \citet{Overbeek2015}). \citet{L2016} studied solar twins in M67 and found, similarly to our analysis, no spread in the elements with Z $<$ 30. However, they report chemical inhomogeneity within this cluster for the neutron-capture elements, which are not measured by \apogee. While our \feh\ abundance agrees very well with the spectroscopic study of NGC188 by Friel et al., (2010), all individual abundance measurements we determine show lower enhancement in the \apogee\ results by about 0.1-0.2 dex and a similar offset is seen for M67 between our results and this study. \citet{Car2013} examined star to star variations in the C and N abundances using the CN and CH band strengths for three open clusters in common with our study, of NGC2158, NGC2420 and NGC7789 and found a spread consistent with the uncertainties on the measurements except for NGC7789, although only a very small number of stars were used in their analysis and they note more stars are required to confirm this result. Although we only report 5 stars in our study we find no intrinsic variation of elements with respect to Fe in this cluster.  Comparing our results for NGC6819 to the recent spectroscopic study of \citet{LB2015}, our \feh\ is slightly super-solar compared to their sub-solar result but measured element enhancements in common are similar. From their study of turn-off stars in the old super-metal rich cluster NGC6719, \citet{Bo2015} find both a  very similar \feh\ and individual enhancement values to our results. 
 
 
 \subsection{Intra and Inter cluster similarity: nearest neighbour pairs}
 
+As noted in the discussion,  our sample of open clusters is limited and our intra-cluster similarity that we measure in general, depends very strongly on the selection of the clusters included in that comparison (FeH distribution, age distribution; radius distribution, etc. Therefore, whist we use a $\chi^2$ metric to compare among and within our sample of clusters, to set the expectation of similarity for nearest neighbour stars in abundance space that are both born and not born together, we do not make any  strong astrophysical conclusions from this. This serves only use this as an example and expectation of how close pairs of stars which are born together are, compared to pairs of stars which are not born together.  
 
-We determine the nearest chemical neighbour for each star, n. This is defined as a $\chi^2$ minimisation over the sum of all elements i = 1 to 20 for every star: \\
+We determine the nearest chemical neighbour for each star, n using a $\chi^2$ minimisation over the sum of all elements i = 1 to 20 for every star ${x_i}_n$: \\
 
-${\chi_i^2}_n$ = min $ \sum_{i=1}^{20}  \frac{(x_i - x_{i_N})^2}{\sigma_i^2 - \sigma_{i_N}l^2}$  \\
+${\chi_i^2}_n$ = min $ \sum_{i=1}^{20}  \frac{(x_i - x_{i_N})^2}{\sigma_i^2 + \sigma_{i_N}^2}$  \\
 
-x$_i$ = is the i abundance measurements for the star n and  $x_{i_N}$ represents all abundance measurements for stars n = 1 to N. \\
-Similarly, $\sigma_i$ is the error on the measurement of star n and $\sigma_{i_N}$ represents the error on all stars n = 1 to N: \\
+Where x$_i$ = are the i abundance measurements for the star n and  $x_{i_N}$ represents all abundance measurements for stars 1 to N (excluding star n that is being compared to). \\
+Similarly, $\sigma_i$ is the error on the measurement of star n and $\sigma_{i_N}$ represents the error on all stars n = 1 to N (not including the comparison star $n$): \\
 The errors are the quadratic sum of the cross-validation error and formal error on the individual abundance measurement (scaled for signal to noise as per the Appendix) 
-This $\chi^2$ metric is then calculated for stars within the same cluster and for all stars that are not in the same cluster as star n and the results for these two sets of pairs are shown in Figure \ref{fig:chi2}. 
-
-Figure\ref{chi2} demonstrates that the stars within clusters are more chemically similar than between clusters. This indicates that chemical tagging is not infeasible and we propose that finding pairs of stars in abundance space that are chemically near-identical may serve as a beacon for stars that were co-natal.  We note that many stars within clusters are also far apart in their chemical similarity, and indistinguishable from nearest-neighbour stars that were born in different clusters via their $\chi^2$ metric. This is why it is nearest neighbour pairs of stars in particular that we propose are worth searching for in large data sets; this is indicative that standard clustering algorithms will not work to reconstruct co-natal groups of stars in full when the stars sit within the main distribution of abundance space. If groups of stars are chemically isolated from the main distribution, the dissimilarity is relatively less of a problem for clustering algorithms and will find and group these stars together \citep[see][for success of chemical tagging of targeted metal-poor globular clusters]{Hogg2016}.
-
-As noted in the discussion,  our sample of open clusters is limited and our intra-cluster similarity that we measure in general, depends very strongly on the selection of the clusters included in that comparison (FeH distribution, age distribution; radius distribution, etc. Therefore, whist we use a $\chi^2$ metric to compare among and within our sample of clusters, to set the expectation of similarity for nearest neighbour stars in abundance space that are both born and not born together, we do not make any  strong astrophysical conclusions from this. This serves only use this as an example and expectation of how close pairs of stars which are born together are, compared to pairs of stars which are not born together.  Figure \ref{fig:chi2} shows the distribution of nearest neighbours in 20-element abundance space for stars that are in the same cluster and stars that are in different clusters. 
-
+This $\chi^2$ metric is then calculated for stars within the same cluster and for all stars that are not in the same cluster and the results for these two sets of pairs are shown in Figure \ref{fig:chi2} which shows the distribution of nearest neighbours in 20-element abundance space for stars that are in the same cluster in the black histogram and stars that are in different clusters in the red dashed histogram. 
 
  %run -i makehistabund_general_oconly
  %nn_diff = chitest[unid]
  % nn_same = chitest[unid]
-\begin{figure*}[h!]
+\begin{figure*}%[h]
+\centering
 %\includegraphics[scale=0.2]{/Users/ness/new_laptop/Apogee_elements/DR13/oldnorm/chi2red.pdf} 
-\includegraphics[scale=0.5]{chi2red.pdf} 
-  \caption{reduced chi2 distribution of nearest neighbour pairs of stars within and between clusters. There are 52 pairs in the intra-cluster distribution and 58 in the inter-cluster distribution}
+\includegraphics[scale=0.4]{chi2red.pdf} 
+  \caption{The reduced chi2 distribution of nearest neighbour pairs of stars within and between clusters. There are 52 pairs in the intra-cluster distribution and 58 in the inter-cluster distribution}
 \label{fig:chi2}
 \end{figure*}
+
+
+Figure \ref{fig:chi2} demonstrates that the stars within clusters are more chemically similar than between clusters. This indicates that chemical tagging is not infeasible and we propose that finding pairs of stars in abundance space that are chemically near-identical may serve as a beacon for stars that were co-natal.  We note that many stars within clusters are also far apart in their chemical similarity, and indistinguishable from nearest-neighbour stars that were born in different clusters via their $\chi^2$ metric. This is why it is nearest neighbour pairs of stars in particular that we propose are worth searching for in large data sets; this is indicative that standard clustering algorithms will not work to reconstruct co-natal groups of stars in full when the stars sit within the main distribution of abundance space. If groups of stars are chemically isolated from the main distribution, the dissimilarity is relatively less of a problem for clustering algorithms and will find and group these stars together \citep[see][for success of chemical tagging of targeted metal-poor globular clusters]{Hogg2016}.
+
+
+
 
 %Even stars from the same cluster can have very distant neighbours, the metric we can infer that if stars have chi2 > 2.8 they are not from a common birth site. 
 
@@ -403,13 +406,13 @@ As noted in the discussion,  our sample of open clusters is limited and our intr
 \section{Conclusion}
 
 
-By making modifications to \tc\ in order to cope with the variation in the abundance measurements input at training time on the LSF of each star we have been able to determine very precise abundances for 92 identified red giant members of the eight open clusters targeted in \apogee\ for the purpose of calibration. We report an intrinsic dispersion in all abundance measurements consistent with $\sigma=$ 0 except for \feh\ which has a spread in four of the clusters: $\sigma_i$=0.01, 0.02,  0.03, 0.03 in M67, NGC2420 NGC2158 and NGC6791 respectively. 
+By making modifications to \tc\ in order to cope with the variation in the abundance measurements input at training time on the LSF of each star we have been able to determine very precise abundances for 92 identified red giant members of the eight open clusters targeted in \apogee\ for the purpose of calibration. We report an intrinsic dispersion in all abundance measurements consistent with $\sigma_i=$ 0 except for \feh\ which has a spread in four of the clusters: $\sigma_i$=0.01, 0.02,  0.03, 0.03 in M67, NGC2420 NGC2158 and NGC6791 respectively. 
 
-Characterising inter and intra cluster homogeneity is key to trace star formation and the formation of the disk via chemical tagging and ur measurements within clusters that indicate clusters are born from a well mixed homogeneous gas cloud are consistent with the previous results for elements Z $<$ 30. We use our relatively large high signal to noise \apogee\ sample to demonstrate that the nearest neighbour pairs within clusters are more chemically similar than among clusters and set an expectation to apply to \apogee\ disk stars that when stars have a $chi^2$ abundance difference of $>$ 2.8 measured from their 20 elements, they are not born together. 
+Characterising inter and intra cluster homogeneity is key to trace star formation and the formation of the disk via chemical tagging and our measurements within clusters that indicate clusters are born from a well mixed homogeneous gas cloud are consistent with the previous results for elements Z $<$ 30. We use our relatively large high signal to noise \apogee\ sample to demonstrate that the nearest neighbour pairs within clusters are more chemically similar than among clusters and set an expectation to apply to \apogee\ disk stars that when stars have a $\chi^2$ abundance difference of $>$ 2.8 measured from their 20 elements, they are not born together. 
 
 Chemical tagging, as originally envisioned \citep{freeman2002}, requires on the 
 order of millions of stars, with precisions for a multitude of individual 
-abundances of 0.03 dex \citep{Ting2015}. We propose that in the limit of smaller sample sizes, the pair metric will be a powerful method to serve as a beacon of conatal stars and this metric will enable the characterisation of most to least similar stars chemically in the disk, and trace how nearest neighbour pairs in abundance space are connected to their current locations and orbits, as will be provided by year 3 of Gaia data. 
+abundances of 0.03 dex \citep{Ting2015}. We propose that in the limit of smaller sample sizes, the pair metric will be a powerful method to serve as a beacon of co-natal stars and this metric will enable the characterisation of most to least similar stars chemically in the disk, and trace how nearest neighbour pairs in abundance space are connected to their current locations and orbits, as will be provided by year 3 of Gaia data. 
 
 %Fe of $\sigma_i$ $=$ 0.03 dex in NGC6819, $\sigma_i$$=$0.03 in NGC2158, $\sigma_i$$=$ 0.01 in M67,  $\sigma_i$$=$ 0.02 in NGC2420 and $\sigma_i$ = 0.01 in NGC6791. NGC2420, NGC7789 and NGC188 all have intrinsic iron dispersions consistent with  $\sigma_i$$=$0. 
 
@@ -426,28 +429,15 @@ abundances of 0.03 dex \citep{Ting2015}. We propose that in the limit of smaller
 %run -i makecompare_nofilt_dr13.py
 %run -i snr_plot.py'
 %To do: Also show when implement the filtering on this Figure and discuss that much worse for some elements as coming in at training much worse:
-Using a calibration set of data available as part of the public release of DR13, which included the co-added spectra and all individual visits, the precision of \tc\ was assessed as a function of signal to noise. Each data point in Figure \ref{fig:snr_error} was determined by measuring the dispersion of the difference between the high signal to noise and low signal to noise value of the labels for each of the 1000 stars in the calibration set. The Figure shows the dependence across SNR of 10 to 200, where the precision flattens above SNR of about 150. \tc\ and \aspcap\ compare well at high SNR but at low SNR \tc\ is more precise by a factor of 2-4 (also see Ness et al., 2015). In this comparison, \aspcap\ is restricted to the wavelength intervals for individual elements and show that can not perform well for the elements where aspcap can not perform well - use the unmasked version to get the highest precision for all the elements - can only get a subset of elements as training on imprecise labels. Learns correlations but clearly can reproduce the input at take 10 percent out cross validation so verified that if test data representatitve of training data this is good; any divergence can also be assessed by fit of data to model , including around individual elements. only used global chi2 in this paper but could image doing a chi2 around each element. 
+Using a calibration set of data available as part of the public release of DR13, which includes both co-added spectra and individual visit spectra for a set of $\approx$ 1000 open cluster, globular cluster and calibration stars, the precision of \tc\ was assessed as a function of signal to noise, using both a masked and unmasked version of \tc. Each data point in Figure \ref{fig:snr_error} is determined by measuring the dispersion of the difference between the high signal to noise and low signal to noise value of the labels for each of the 1000 stars in the calibration set. The Figure shows the dependence across SNR of 10 to 200, where the precision flattens above SNR of about 150. \tc\ and \aspcap\ compare well at high SNR but at low SNR \tc\ is more precise by a factor of 2-4 \citep[also see][]{Ness2015}. In this comparison, \aspcap\ is restricted to the wavelength intervals for individual elements determined using element masking as described in \citet{GP2016}. 
+
+The unmasked version of \tc\ shown in this Figure of is the standard implementation as per \citet{Ness2015} where for all labels, the entire spectra is used to train the dependence between flux and label. \tc\ effectively learns which regions of the spectra are sensitive to which labels \citep[e.g.][]{Ness2016, Ho2016b} and can, and will, also use correlations. Conversely, for the masked version of \tc, for the individual abundance label determinations, we restrict \tc\ to use only pixels where the element is present in the spectra, for each element (which is not restricted to `clean' lines but can and does include blended regions). The masks are determined for each element by using spectral models to calculate spectral derivatives for every element, that quantify the flux change as each element is varied in the model atmosphere. For each element mask, we use pixels that contribute to the 80th percentile of the cumulative information content in the spectra for that element and set all other pixels to be excluded from \tc's model. Generically: sometimes filtering will shrink uncertainties, sometimes enlarge it; in both cases for reasons that can be understood. 
+
+We find that for the stellar parameters, which themselves do not have masks, the element masking improves their precision, by removing the additional noise of the overall model introduced by the cross-correlations when all pixels are used. However, as demonstrated in Figure \ref{fig:snr_error}, for elements that are more poorly measured at input (e.g. Na, Co, Cu), from \aspcap, implementing masking significantly degrades the performance of \tc\ compared to when all pixels are able to be used and \tc\ can learn correlations. The improvement with \tc\ using masking is dramatically less compared to no masking, for poor input labels. 
 
 
-masking discussion \\
-results with and without filters\\
-Masking - used derivaties from YS - took 80\% level of information from cumulative addition of pixels with information \\
-does not work well for the bad elements \\
-that is why we did without masking \\
-The Cannon does learn where information is - e.g. Ho et al., 2016 and cross validation demonstrtative we are getting X/Fe back \\
-Also just able to take advantage of the correltaions \\
-- our aim is to get highest precision. achieved if the cannon can make use of all of the information: using all correlations; our aim is tagging and cross validation shows we reproduce - include filter version in the abstract
-our precision for filters is XX times larger and about 30\% smaller than aspcap. Our open cluters are high snr and we preform comparably to aspcap at this snr. 
+% and shows that we can only be can not perform well for the elements where aspcap can not perform well - use the unmasked version to get the highest precision for all the elements - can only get a subset of elements as training on imprecise labels. Learns correlations but clearly can reproduce the input at take 10 percent out cross validation so verified that if test data representatitve of training data this is good; any divergence can also be assessed by fit of data to model , including around individual elements. only used global chi2 in this paper but could image doing a chi2 around each element. 
 
-
- exactly the same abundances - this is what is the challenge to tagging 
-propose not inter but intra that limit tagging ability.
-of clusters, the two are extremely simimalr. 
-proceed to mapping abundance space similarity for metal-rich end of disk not find common orign but abundances alone; prospect for pairs. 
-
-We find that the open clusters are very homogeneous, in their alpha, iron-peak and light elements that we measure. We are able to measure the 20 abundance of NGC, M67 and . Clusters are proxies for general birth sites and we want to understand just how homogenous these birth sites are: thus how similar two sibling stars are expected to be. 
-
- our aim is to set the calibration to assess the chemical dimensionality of the Milky Way:
 %We use \tc\ to determine the precision with which we can measure chemical abundances of stars in the \apogee\ survey. We do this to pursue our aim of classifying stars that are most chemically similar and here use the open clusters to calibrate the precision we can measure as indicative of homogenous birth sites. To achieve our precision measurements, we have had to remove critical systematics, of abundance variation with the point spread function. 
 
 %makegradientfilters_works_informationcriterion.py
@@ -456,7 +446,7 @@ We find that the open clusters are very homogeneous, in their alpha, iron-peak a
 
 %run -i snr_plot.py
 
-\begin{figure*}[h!]
+\begin{figure*}
 %\includegraphics[scale=0.45]{/Users/ness/new_laptop/Apogee_elements/19labels/snrplot.pdf} 
 %\includegraphics[scale=0.45]{/Users/ness/new_laptop/Apogee_elements/19labels/rms_snr_both_dr132.pdf} 
 \includegraphics[scale=0.45]{rms_snr_both_dr132.pdf} 

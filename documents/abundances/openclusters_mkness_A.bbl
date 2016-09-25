@@ -1,13 +1,28 @@
 \begin{thebibliography}{}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
+\bibitem[{{Boesgaard} {et~al.}(2015){Boesgaard}, {Lum}, \&
+  {Deliyannis}}]{Bo2015}
+{Boesgaard}, A.~M., {Lum}, M.~G., \& {Deliyannis}, C.~P. 2015, \apj, 799, 202
+
 \bibitem[{{Bovy}(2016)}]{Bovy2016}
 {Bovy}, J. 2016, \apj, 817, 49
 
-\bibitem[{{Casey} {et~al.}(2016){Casey}, {Hogg}, {Ness}, {Rix}, {Ho}, \&
-  {Gilmore}}]{Casey2016}
-{Casey}, A.~R., {Hogg}, D.~W., {Ness}, M., {et~al.} 2016, ArXiv e-prints,
-  arXiv:1603.03040
+\bibitem[{{Carrera} \& {Mart{\'{\i}}nez-V{\'a}zquez}(2013)}]{Car2013}
+{Carrera}, R., \& {Mart{\'{\i}}nez-V{\'a}zquez}, C.~E. 2013, \aap, 560, A5
+
+\bibitem[{{Casey} {et~al.}(2016{\natexlab{a}}){Casey}, {Hogg}, {Ness}, {Rix},
+  {Ho}, \& {Gilmore}}]{Casey2016}
+{Casey}, A.~R., {Hogg}, D.~W., {Ness}, M., {et~al.} 2016{\natexlab{a}}, ArXiv
+  e-prints, arXiv:1603.03040
+
+\bibitem[{{Casey} {et~al.}(2016{\natexlab{b}}){Casey}, {Hawkins}, {Hogg},
+  {Ness}, {Walter-Rix}, {Kordopatis}, {Kunder}, {Steinmetz}, {Koposov}, {Enke},
+  {Sanders}, {Gilmore}, {Zwitter}, {Freeman}, {Casagrande}, {Matijevi{\v c}},
+  {Seabroke}, {Bienaym{\'e}}, {Bland-Hawthorn}, {Gibson}, {Grebel}, {Helmi},
+  {Munari}, {Navarro}, {Reid}, {Siebert}, \& {Wyse}}]{Casey2016b}
+{Casey}, A.~R., {Hawkins}, K., {Hogg}, D.~W., {et~al.} 2016{\natexlab{b}},
+  ArXiv e-prints, arXiv:1609.02914
 
 \bibitem[{{Cirasuolo} {et~al.}(2012){Cirasuolo}, {Afonso}, {Bender},
   {Bonifacio}, {Evans}, {Kaper}, {Oliva}, {Vanzi}, {Abreu}, {Atad-Ettedgui},
@@ -88,6 +103,12 @@
 {Frinchaboy}, P.~M., {Thompson}, B., {Jackson}, K.~M., {et~al.} 2013, \apjl,
   777, L1
 
+\bibitem[{{Garc{\'{\i}}a P{\'e}rez} {et~al.}(2016){Garc{\'{\i}}a P{\'e}rez},
+  {Allende Prieto}, {Holtzman}, {Shetrone}, {M{\'e}sz{\'a}ros}, {Bizyaev},
+  {Carrera}, {Cunha}, \& {Garc{\'{\i}}a-Hern{\'a}ndez}}]{GP2016}
+{Garc{\'{\i}}a P{\'e}rez}, A.~E., {Allende Prieto}, C., {Holtzman}, J.~A.,
+  {et~al.} 2016, \aj, 151, 144
+
 \bibitem[{{Gilmore} {et~al.}(2012){Gilmore}, {Randich}, {Asplund}, {Binney},
   {Bonifacio}, {Drew}, {Feltzing}, {Ferguson}, {Jeffries}, {Micela},
   {Negueruela}, {Prusti}, {Rix}, {Vallenari}, {Alfaro}, {Allende-Prieto},
@@ -97,10 +118,14 @@
 {Gilmore}, G., {Randich}, S., {Asplund}, M., {et~al.} 2012, The Messenger, 147,
   25
 
-\bibitem[{{Ho} {et~al.}(2016){Ho}, {Ness}, {Hogg}, {Rix}, {Liu}, {Yang},
-  {Zhang}, {Hou}, \& {Wang}}]{Ho2016}
-{Ho}, A.~Y.~Q., {Ness}, M.~K., {Hogg}, D.~W., {et~al.} 2016, ArXiv e-prints,
-  arXiv:1602.00303
+\bibitem[{{Ho} {et~al.}(2016{\natexlab{a}}){Ho}, {Ness}, {Hogg}, {Rix}, {Liu},
+  {Yang}, {Zhang}, {Hou}, \& {Wang}}]{Ho2016}
+{Ho}, A.~Y.~Q., {Ness}, M.~K., {Hogg}, D.~W., {et~al.} 2016{\natexlab{a}},
+  ArXiv e-prints, arXiv:1602.00303
+
+\bibitem[{{Ho} {et~al.}(2016{\natexlab{b}}){Ho}, {Ness}, {Hogg}, {Rix}, {Liu},
+  {Yang}, {Zhang}, {Hou}, \& {Wang}}]{Ho2016b}
+---. 2016{\natexlab{b}}, ArXiv e-prints, arXiv:1602.00303
 
 \bibitem[{{Hogg} {et~al.}(2016){Hogg}, {Casey}, {Ness}, {Rix},
   {Foreman-Mackey}, {Hasselquist}, {Ho}, {Holtzman}, {Majewski}, {Martell},
@@ -118,6 +143,21 @@
   {Wilson}, {Wood-Vasey}, {Zamora}, \& {Zasowski}}]{Holtzman2015}
 {Holtzman}, J.~A., {Shetrone}, M., {Johnson}, J.~A., {et~al.} 2015, \aj, 150,
   148
+
+\bibitem[{{Kunder} {et~al.}(2016){Kunder}, {Kordopatis}, {Steinmetz},
+  {Zwitter}, {McMillan}, {Casagrande}, {Enke}, {Wojno}, {Valentini},
+  {Chiappini}, \& {Matijevic}}]{Kunder2016}
+{Kunder}, A., {Kordopatis}, G., {Steinmetz}, M., {et~al.} 2016, ArXiv e-prints,
+  arXiv:1609.03210
+
+\bibitem[{{Lee-Brown} {et~al.}(2015){Lee-Brown}, {Anthony-Twarog},
+  {Deliyannis}, {Rich}, \& {Twarog}}]{LB2015}
+{Lee-Brown}, D.~B., {Anthony-Twarog}, B.~J., {Deliyannis}, C.~P., {Rich}, E.,
+  \& {Twarog}, B.~A. 2015, \aj, 149, 121
+
+\bibitem[{{Liu} {et~al.}(2016){Liu}, {Asplund}, {Yong}, {Mel{\'e}ndez},
+  {Ram{\'{\i}}rez}, {Karakas}, {Carlos}, \& {Marino}}]{L2016}
+{Liu}, F., {Asplund}, M., {Yong}, D., {et~al.} 2016, \mnras, 463, 696
 
 \bibitem[{{Majewski} {et~al.}(2012){Majewski}, {Nidever}, {Smith}, {Damke},
   {Kunkel}, {Patterson}, {Bizyaev}, \& {Garc{\'{\i}}a
@@ -167,6 +207,10 @@
 {Ness}, M., {Hogg}, D.~W., {Rix}, H.-W., {Ho}, A.~Y.~Q., \& {Zasowski}, G.
   2015, \apj, 808, 16
 
+\bibitem[{{Ness} {et~al.}(2016){Ness}, {Hogg}, {Rix}, {Martig}, {Pinsonneault},
+  \& {Ho}}]{Ness2016}
+{Ness}, M., {Hogg}, D.~W., {Rix}, H.-W., {et~al.} 2016, \apj, 823, 114
+
 \bibitem[{{Overbeek} {et~al.}(2015){Overbeek}, {Friel}, {Jacobson}, {Johnson},
   {Pilachowski}, \& {M{\'e}sz{\'a}ros}}]{Overbeek2015}
 {Overbeek}, J.~C., {Friel}, E.~D., {Jacobson}, H.~R., {et~al.} 2015, \aj, 149,
@@ -184,6 +228,10 @@
 {Schiavon}, R.~P., {Zamora}, O., {Carrera}, R., {et~al.} 2016, \mnras,
   arXiv:1606.05651
 
+\bibitem[{{Smiljanic} {et~al.}(2014){Smiljanic}, {Korn}, {Bergemann}, {Frasca},
+  {Magrini}, {Masseron}, {Pancino}, \& {Ruchti}}]{smil2014}
+{Smiljanic}, R., {Korn}, A.~J., {Bergemann}, M., {et~al.} 2014, AAP, 570, A122
+
 \bibitem[{{Souto} {et~al.}(2016){Souto}, {Cunha}, {Smith}, {Allende Prieto},
   {Pinsonneault}, {Zamora}, {Anibal Garc{\'{\i}}a-Hern{\'a}ndez}, {Meszaros},
   {Bovy}, {Elia Garc{\'{\i}}a P{\'e}rez}, {Anders}, {Bizyaev}, {Carrera},
@@ -191,6 +239,9 @@
   {Tang}, {Villanova}, \& {Geisler}}]{Souto2016}
 {Souto}, D., {Cunha}, K., {Smith}, V., {et~al.} 2016, ArXiv e-prints,
   arXiv:1607.06102
+
+\bibitem[{{Ting} {et~al.}(2015){Ting}, {Conroy}, \& {Goodman}}]{Ting2015}
+{Ting}, Y.-S., {Conroy}, C., \& {Goodman}, A. 2015, \apj, 807, 104
 
 \bibitem[{{Ting} {et~al.}(2016){Ting}, {Conroy}, \& {Rix}}]{Ting2016}
 {Ting}, Y.-S., {Conroy}, C., \& {Rix}, H.-W. 2016, \apj, 816, 10
