@@ -30,14 +30,14 @@
 \begin{frame}
   \frametitle{conclusions}
   \begin{itemize}
-  \item \emph{A data-driven model provides physical parameters to stars with better quality than any physics-driven pipeline.}
+  \item \emph{A data-driven model measures physical parameters of stars with better quality than any physics-driven pipeline.}
     \begin{itemize}
     \item \tc\---no physics is harmed
     \end{itemize}
   \item Prospects for a consistent system of stellar parameters and chemical abundances across all future surveys.
     \begin{itemize}
     \item \sdss\ \project{\acronym{SEGUE}} \& \apogee; \sdssiv\ \project{\acronym{APOGEE-2}}
-    \item \project{\acronym{LAMOST}}; \project{\acronym{HERMES}} / \project{\acronym{GALAH}}; \project{Gaia-\acronym{ESO}}
+    \item \project{\acronym{LAMOST}}; \project{\acronym{RAVE}} ; \project{\acronym{GALAH}}; \project{Gaia-\acronym{ESO}}
     \end{itemize}
   \item Prospects for exoplanet and Milky Way science.
   \item Everything open-source.
@@ -47,11 +47,11 @@
 
 \begin{document}\sloppy\sloppypar\raggedright\raggedbottom
 
+\conclusions
+
 \begin{frame}
   \titlepage
 \end{frame}
-
-\conclusions
 
 \begin{frame}
   \frametitle{Annie Jump Cannon}
@@ -106,33 +106,6 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{exoplanets}
-  \begin{itemize}
-  \item extra-solar planets are always measured relative to their host stars
-  \item you only understand a planet \emph{as well as you can understand the star}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{the paradox of precision astrophysics}
-  \begin{itemize}
-  \item models are incredibly \emph{explanatory}
-    \begin{itemize}
-    \item $\Lambda$CDM
-    \item stellar spectroscopy
-    \item helioseismology
-    \end{itemize}
-  \item and yet...
-  \item<2-> models are \emph{wrong} (ruled out) in detail
-    \begin{itemize}
-    \item $\chi^2 \gg \nu$
-    \item ``The $\chi^2$ statistic is a measure of the size of your data!''
-    \end{itemize}
-  \item<2-> missing physics, approximation, computation, \emph{gastrophysics}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
   \frametitle{physics-driven models (my usage)}
   \begin{itemize}
   \item put in everything you know
@@ -169,7 +142,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{when does machine learning help you?}
+  \frametitle{when does (vanilla) machine learning help you?}
   \begin{itemize}
   \item train \& test situation
   \item training data are statistically identical to the test data
@@ -223,7 +196,7 @@
   \item<1-> stars are very close to black-bodies
   \item<1-> to first order, a stellar spectrum depends on \emph{effective temperature} $\teff$ and \emph{surface gravity} $\logg$
   \item<2-> to second order, \emph{metallicity} $\feh$
-  \item<3> to third order, tens of \emph{chemical abundances}, rotation
+  \item<3> to third order, tens of \emph{chemical abundances}, rotation, turbulence, activity
   \end{itemize}
 \end{frame}
 
@@ -246,8 +219,7 @@
   \frametitle{\sdssiii\ \apogee}
   \begin{itemize}
   \item Galactic archaeology
-  \item \apogee\ DR10: 56,000 stars
-  \item \apogee\ DR12: 156,000 stars (98,000 giants)
+  \item \apogee\ DR12 \& DR13: 156,000 stars (98,000 giants)
   \item $R=22,500$ spectra in $1.5<\lambda<1.7\,\mu\mathrm{m}$
   \item precise RVs and stellar parameters
   \item plan for a dozen abundances for every star
@@ -271,7 +243,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{\tc: training set}
+  \frametitle{\tc: Experiment 1: training set}
   \begin{itemize}
   \item 543 stars (too few) from 19 clusters (too few)
   \item $\teff, \logg, \feh$ labels from \apogee
@@ -289,7 +261,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{\tc: training set}
+  \frametitle{\tc: Experiment 1; training set}
   \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/training_aspcap2.pdf}
          \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/training_mkn2.pdf}
 \end{frame}
@@ -392,7 +364,7 @@
 \results
 
 \begin{frame}
-  \frametitle{\tc: test time}
+  \frametitle{\tc: Experiment 1: test time}
   \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/4431_v19.png}
          \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/4383_v19.png}
          \includegraphics<3>[height=\figureheight]{../documents/paper1/plots/4399_v19.png}
@@ -402,12 +374,12 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{\tc: comparison with \apogee\ labels}
+  \frametitle{\tc: Experiment 1: comparison with \textsl{\acronym{ASPCAP}} labels}
   \,\hfill\includegraphics[height=\figureheight]{../documents/paper1/plots/cplot2.png} 
 \end{frame}
 
 \begin{frame}
-  \frametitle{\tc: label veracity}
+  \frametitle{\tc: Experiment 1: label veracity}
   \,\hfill\includegraphics<1>[height=\figureheight]{../documents/paper1/plots/iso2_2.png}
          \includegraphics<2>[height=\figureheight]{../documents/paper1/plots/iso2a_2.png}
 \end{frame}
@@ -457,18 +429,18 @@
           \includegraphics<2>[trim=0 0 0 3.0in, width=\figurewidth]{regularized-model-validation.pdf}%
           \includegraphics<3>[trim=0 0 0 6.0in, width=\figurewidth]{regularized-model-validation.pdf}%
           \includegraphics<4>[trim=0 0 0 9.0in, width=\figurewidth]{regularized-model-validation.pdf}%
-          \includegraphics<5>[                  width=0.5\figurewidth]{M15_comparison.pdf}%
-          \includegraphics<6>[trim=0 0 0 4.0in, width=0.5\figurewidth]{M15_comparison.pdf}%
-          \includegraphics<7>[trim=0 0 0 8.0in, width=0.5\figurewidth]{M15_comparison.pdf}%
-          \includegraphics<8>[trim=0 0 0 12.in, width=0.5\figurewidth]{M15_comparison.pdf}%
+          \includegraphics<5>[                  width=0.5\figurewidth]{M15_comparison.png}%
+          \includegraphics<6>[trim=0 0 0 4.0in, width=0.5\figurewidth]{M15_comparison.png}%
+          \includegraphics<7>[trim=0 0 0 8.0in, width=0.5\figurewidth]{M15_comparison.png}%
+          \includegraphics<8>[trim=0 0 0 12.in, width=0.5\figurewidth]{M15_comparison.png}%
           \includegraphics<9>[width=\figurewidth]{sparse-first-order-coefficients.pdf}%
           \includegraphics<10>[trim=0.5in 2in 0.5in 2in, width=\figurewidth]{sn.pdf}%
 \end{frame}
 
 \begin{frame}
   \frametitle{\tc: detailed abundances (Ness)}
-  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/abundances/20elem7_tc2_nofilt.pdf}
-          \includegraphics<2>[height=\figureheight]{../documents/abundances/20elem12_tc2_nofilt.pdf}
+  \,\hfill\includegraphics<1>[height=\figureheight]{../documents/abundances/20elem7_tc2_nofilt.png}
+          \includegraphics<2>[height=\figureheight]{../documents/abundances/20elem12_tc2_nofilt.png}
 \end{frame}
 
 \begin{frame}
