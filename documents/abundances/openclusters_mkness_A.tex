@@ -81,10 +81,10 @@ techniques: spectroscopic
 %\title{Chemical Pairs I: assessment of the homogenity of open clusters}
 %\title{Chemical nearest neighbours: The precision of the measurements of APOGEE spectra}
 %\title{Chemical nearest neighbours I: open clusters are not nearest neigbours in chemical space}
-\title{Precision Abundances for eight open clusters in APOGEE  }
+\title{Precision Abundances for stars in eight open clusters in APOGEE: The chemical similarity of stars with a common birth origin  }
 \author{M.~Ness\altaffilmark{1},
         H-W.~Rix\altaffilmark{1}, 
-        D.~W.~Hogg\altaffilmark{1,2,3},
+        David~W.~Hogg\altaffilmark{1,2,3},
          A.R. Casey\altaffilmark{5}, M. Fouesneau\altaffilmark{2}, Y-S. Ting\altaffilmark{6}}
         % paper title 2: constraints on the effect of radial migration in the Milky Way at a median timescale of 3 Gyr - AMY
         % observational constraints 
@@ -101,47 +101,51 @@ techniques: spectroscopic
 
 \begin{abstract} 
 
-We report 20 precision abundances for 92 red giant stars in 8 targeted open clusters in the \apogee\ dataset measured by \tc. To obtain our high precision results, we had to make modifications to \tc\ to deal with fiber LSF variations that introduce systematic abundance offsets. We measure the abundance variations in the clusters, which are general proxies for single stellar birth sites, in order to understand how homogeneous these birth sites are -- and how similar two sibling stars in the \apogee\ dataset are expected to be. We measure Fe, C, N, O, Na, Mg, Al, Si, S, K, Ca, Ti, V, Mn, Ni, P, Cr, Co, Cu, Rb for stars in NGC7789, NGC6819, NGC6791, NGC2420, NGC2158, NGC188 and M67. We find the measured scatter in [X/Fe] of the clusters in these 20 elements to be typically 0.01 $-$ 0.07 dex. We construct a model of our cluster data given the abundance errors for each cluster at the signal to noise (SNR) of each observation and conclude that open clusters have no \textit{intrinsic} scatter in the alpha, light and iron-peak elements that we measure. However, the clusters NGC2420, M67, NGC2158 and NGC6791 have a small (0.01 - 0.03 dex) intrinsic scatter in \feh. From examining the distribution of nearest chemical neighbours both between and among clusters, we conclude that if two stars in the \apogee\ dataset have a $\chi^2_{red}$ $>$ 2.8,  as determined from the 20 elements measured by \apogee, then they are likely to be not born together.  
+We report 20 precision abundances (Fe, C, N, O, Na, Mg, Al, Si, S, K, Ca, Ti, V, Mn, Ni, P, Cr, Co, Cu, Rb) for each of 92 red giant stars in 8 targeted open clusters (NGC7789, NGC6819, NGC6791, NGC2420, NGC2158, NGC188 and M67) in the \apogee\ dataset modeled by \tc. To obtain our high precision results, we had to make modifications to \tc\ to deal with fiber LSF variations that introduce systematic abundance offsets. We measure the abundance variations in the clusters, which are general proxies for single stellar birth sites, in order to understand how homogeneous these birth sites are -- and how similar two sibling stars in the \apogee\ dataset are expected to be. Using our proper error deconvolution we find the intrinsic scatter in all elements to be $<$ 2\%, for all clusters.  The abundance measurements made here are sufficiently precise---and span a large enough number of elements---to clearly identify that two stars taken from different clusters do not have a common origin. We provide a threshold for this non-common-origin classification, and propose that it can be used as a tool for chemical separation of stars into distinct birth categories, for projects related to chemical tagging.  
 \end{abstract}
+%We find the measured scatter in [X/Fe] of the clusters in these 20 elements to be typically 0.01 $-$ 0.07 dex. We construct a model of our cluster data given the abundance errors for each cluster at the signal to noise (SNR) of each observation and conclude that open clusters have no detectable \textit{intrinsic} scatter in the alpha, light and iron-peak elements that we measure. However, the clusters NGC2420, M67, NGC2158 and NGC6791 have a small (0.01 - 0.03 dex) intrinsic scatter in \feh.
+
 
 \section{Introduction}
 
-There now exists a plethora of spectroscopic data across the disk of the Milky Way for which large numbers of abundances have been measured. This data is being delivered by current surveys including Gaia-ESO \citep{gilmore2012}, APOGEE \citep{Majewski2015}, RAVE \citep{Kunder2016, Casey2016b} and GALAH \citep{Freeman2012, deSilva2015} and there are numerous future spectroscopic surveys being planned e.g. 4MOST \citep{deJong2015}, MOONS \citep{C2012}, WEAVE \citep{D2012}. Large volumes of data, combined with new techniques to optimally exploit the data and deliver high precision stellar abundances (e.g. The Cannon; \citep{Ness2015, Casey2016} enable us to examine the distribution in abundance space of the stars in the Milky Way disk and halo and then use this information to trace back the assembly history of the Galaxy. One discrete way to pursue this is to identify stars of common birth sites via their abundance signatures, so called chemical tagging \citep{freeman2002}. To do this, we need to first know what the spread is in the abundance measurements of stars that are known to be born together.  The dispersion that we measure in groups of stars that are born together, or clusters, is a combination of the intrinsic dispersion of the cluster and the measurement precision we can achieve. Measuring this total dispersion for the clusters is necessary to calibrate our expectations in assessing the chemical abundance distribution and dimensionality of the Milky Way disk and for being able to determine when stars are likely to be \textit{not} born together. 
+There now exists a plethora of spectroscopic data across the Milky Way for which large numbers of abundances have been measured. This data is being delivered by current surveys including Gaia-ESO \citep{gilmore2012}, APOGEE \citep{Majewski2015}, RAVE \citep{Kunder2016, Casey2016b} and GALAH \citep{Freeman2012, deSilva2015} and there are numerous future spectroscopic surveys being planned e.g. 4MOST \citep{deJong2015}, MOONS \citep{C2012}, WEAVE \citep{D2012}. Large volumes of data, combined with new techniques to optimally exploit the data and deliver high precision stellar abundances (e.g. The Cannon; \citep{Ness2015, Casey2016} enable us to examine the distribution in abundance space of the stars in the Milky Way disk and halo and then use this information to trace back the assembly history of the Galaxy. One way to pursue this is to identify stars of common birth sites via their abundance signatures, so called chemical tagging \citep{freeman2002}. To do this, we need to first know what the spread is in the abundance measurements of stars that are known to be born together.  The dispersion that we measure in groups of stars that are born together, or clusters, is a combination of the intrinsic dispersion of the cluster and the measurement precision we can achieve. Measuring this total dispersion for the clusters is necessary to calibrate our expectations in assessing the chemical abundance distribution and dimensionality of the Milky Way disk and for being able to determine when stars are likely to be \textit{not} born together. 
 
-Recently, \citet{Bovy2016} used a data-driven methodology to demonstrate that three open clusters in \apogee; M67, NGC6819 and NGC2410 are chemically homogeneous. Bovy (2016) used the stellar spectra directly, showing that after removing temperature trends, the cluster spectra form one-dimensional sequences. This novel approach was motivated by the difficulties in obtaining consistent high precision stellar abundances and it is optimal to achieve very high precision limits on the intrinsic cluster abundance dispersions, and so assess homogeneity of a single birth site itself. However, the limitation in such a method is that it does not return an absolute abundance measurement. Our aim is to to address the problem of providing consistent high-precision abundances.  Absolute measurements are needed to measure the chemical diversity, distribution and, conditioned on expectations of the properties of open clusters, the chemical dimensionality of the disk: that is, measuring how many discrete building blocks the disk is made up of.  The high precision abundance measurements for the open cluster stars in \apogee\ and their inter-cluster abundance dispersions, which we determine, provides the expectation properties for stars that are born together -- and also not born together. With our modifications to the Cannon and carefully selected high-fidelity training set, we achieve near the precision of Bovy et al, (2016) for many elements, but report absolute abundance measurements, for 92 open cluster stars. 
+Three of the open clusters in \apogee considered here; M67, NGC6819 and NGC2410 were demonstrated to be chemically homogeneous from the stellar spectra directly, showing that after removing temperature trends, the cluster spectra form one-dimensional sequences \citep{Bovy2016}. This novel data-driven approach was motivated by the difficulties in obtaining consistent high precision stellar abundances and it is optimal to achieve very high precision limits on the intrinsic cluster abundance dispersions, and so assess homogeneity of a single birth site itself. However, the limitation in such a method is that it does not return absolute abundance measurements. Our aim is to to address the problem of providing consistent high-precision abundances across temperature and gravity.  Absolute measurements are needed to measure the chemical diversity, distribution and, conditioned on expectations of the properties of open clusters, the chemical dimensionality and variability of the disk: for example, measuring how many discrete building blocks the disk is made up of.  The high precision abundance measurements for the open cluster stars in \apogee\ and their inter-cluster abundance dispersions, which we determine, provides the expectation properties for stars that are born together -- and also not born together. With our modifications to the Cannon and carefully selected high-fidelity training set, we achieve near the precision of Bovy et al, (2016) for many elements, but report absolute abundance measurements, for 92 open cluster stars. 
 
-The key ingredients for delivering our high precision measurements are (i) our modifications both \tc\ and to the training set abundances to correct for the abundance variation across fiber number, due to the varying Line Spread Function (LSF) across the APOGEE plate and (ii) selecting a high fidelity training set from ASPCAP. For our training set, we used 5000 high signal to noise stars and trained our data driven model on a total of 23 labels;  three stellar parameters, \teff, \logg\ and \feh, 19 [X/Fe] individual abundances from DR13 \citep{Holtzman2015}, plus the mean LSF of the star.   In Section 3 we present our training set and in Section 4 we discuss our modifications to \tc\ and training set in order to cope with the problem of mean abundance changing as a function of LSF. In Section 5 we show the precision we achieve for our abundances, from the cross-validation of the training set and report the abundances we obtain for the individual clusters. In Section 6 we discuss our results and determine the intrinsic spread in each element using our cluster model and characterising the inter and intra-cluster stellar similarity using nearest neighbour chemical pairs.  Finally in Section 7 we demonstrate the distance between pairs of stars that are nearest neighbours in 20-element abundance space measured from the \apogee\ spectra, demonstrating that pairs within clusters are more chemically similar than pairs among clusters. We use this to set and expectation as to the minimum distance between stars that are not born together. 
+The key ingredients for delivering our high precision measurements are (i) our modifications both \tc\ and to the training set abundances to correct for abundance variations across fiber number caused by the varying Line Spread Function (LSF) across the APOGEE plate and (ii) selecting a high fidelity training set from ASPCAP. For our training set, we used 5000 high signal-to-noise stars and trained our data-driven model on a total of 23 labels:  three stellar parameters, \teff, \logg\ and \feh, 19 [X/Fe] individual abundances from DR13 \citep[][Johnson et al., 2016, submitted]{Holtzman2015}, plus the mean LSF of the star.   In Section 3 we present our training set and in Section 4 we discuss our modifications to \tc\ and training set in order to cope with the problem of mean abundance changing as a function of LSF. In Section 5 we show the precision we achieve for our abundances, from the cross-validation of the training set and report the abundances we obtain for the individual clusters. In Section 6 we discuss our results and determine the intrinsic spread in each element using our cluster model and characterising the inter and intra-cluster stellar similarity using nearest neighbour chemical pairs.  Finally in Section 7 we demonstrate the distance between pairs of stars that are nearest neighbours in 20-element abundance space measured from the \apogee\ spectra, demonstrating that pairs within clusters are more chemically similar than pairs among clusters. We use this to set and expectation as to the minimum distance between stars that are not born together. 
 
 
 \section{Method}
 %, which we found to have minor systematic dependencies on the LSF (see Section 4)
 
-We used \tc\ to deliver our high precision abundances, using the quadratic model implementation outlined in \citet{Ness2015}, but train on many labels similarly to \citet{Casey2016}. We found that the mean abundance measurements for \apogee\ stars correlates with the LSF, which varies across the \apogee\ plate of 300 fibers and we therefore made modifications to \tc\ in order to correct for this variation in our measurements of abundances. There modifications were twofold; (1) to \tc\ code itself and (2) to the \aspcap\ DR13 labels input for training our model.  We measured the mean LSF for every star for both the training and test set of stars, and included this LSF value as a single additional data point for \tc\, which is then handled similarly to the flux of the star in \tc's model. In total, we train on 23 labels comprised of the 3 stellar parameters, of \teff, \logg\ and \feh\ and 19 abundances that were released in DR13, corrected for the LSF dependence as measured for the training set, as well as the LSF itself included as a data point for each star.  To properly and optimally correct for the variation in the LSF would require a full modeling of the LSF for each star when deriving the stellar abundance and individual element labels themselves. However, as the LSF variations are already imprinted onto the aspcap abundances we need for training, we adopt this post-correction procedure to account for this by adjusting both the input labels and including the LSF in our model. % the approach we take to include the LSF in our Cannon model and to also make corrections to our training data for the LSF variation is a consequence of this
+We used \tc\ \citep{Ness2015}\footnote{Named after Annie Jump-Cannon} to deliver our high precision abundances, using the quadratic model implementation outlined in \citet{Ness2015}, but train on many labels similarly to \citet{Casey2016}. We found that the mean abundance measurements for \apogee\ stars correlates with the LSF, which varies across the \apogee\ plate of 300 fibers and we therefore made modifications to \tc\ in order to correct for this variation in our measurements of abundances. There modifications were twofold; (1) to \tc\ code itself and (2) to the \aspcap\ DR13 labels input for training our model.  We measured the mean LSF for every star for both the training and test set of stars, and included this LSF value as a single additional data point for \tc\, which is then handled similarly to the flux of the star in \tc's model. In total, we train on 23 labels comprised of the 3 stellar parameters, of \teff, \logg\ and \feh\ and the 19 abundances that were released in DR13, corrected for the LSF dependence as measured for the training set, as well as the LSF itself included as a data point for each star.  To properly and optimally correct for the variation in the LSF would require a full modeling of the LSF for each star when deriving the stellar abundance and individual element labels themselves. However, as the LSF variations are already imprinted onto the aspcap abundances we need for training, we adopt this post-correction procedure to account for this by adjusting both the input labels and including the LSF in our model. % the approach we take to include the LSF in our Cannon model and to also make corrections to our training data for the LSF variation is a consequence of this
 
 \section{The \apogee\ Data}
 
-We used the \apogee\ spectra and stellar parameter and abundances from the SDSS-IV public data release DR13 (Johnson et al., 2016, in prep.). We performed our own signal-to-noise independent continuum normalization on the aspcapstar files, similarly to \citet{Ness2015}, by fitting a second order polynomial to pixels identified with weak parameter dependences. For the new DR13 data we selected again around 5\% of the pixels using a criteria of 0.985 $>$ flux $>$ 1.025 and ($|\theta_{Teff}|$, $|\theta_{logg}|$, $|\theta_{[Fe/H]}|$) $<$  (0.005,0.005,0.005). 
+We used the \apogee\ spectra \citep{sdssiv, Majewski2012} and stellar parameter and abundances from the SDSS-IV public data release DR13 (Johnson et al., 2016, in prep.). We performed our own signal-to-noise independent continuum normalization on the aspcapstar files, similarly to \citet{Ness2015}, by fitting a second order polynomial to pixels identified with weak parameter dependences. For the new DR13 data we selected again around 5\% of the pixels using a criteria of 0.985 $>$ flux $>$ 1.025 and ($|\theta_{Teff}|$, $|\theta_{logg}|$, $|\theta_{[Fe/H]}|$) $<$  (0.005,0.005,0.005). 
 
 \subsection{Training Data} 
 
-We constructed a training set of data comprised of 5000 stars that span the chemical space of the stars of the Milky Way disk (and, subsequently, the chemical and parameter space of the  test set of stars of red giant open cluster members).  For our training labels we used the DR13-corrected labels with small additional corrections for the LSF dependence (see Section 4). We selected high SNR stars for our training set (SNR $>$ 200) and took care to remove highly anomalous abundance measurements. We also excluded all stars with any bad flag set.  Our training data spans the following range in stellar parameters:\\
+As discussed in \citet{Ness2015}, \tc\ has two steps, a training and a test step. For the training step, we constructed a training set of data, made up of 5000 stars that span the chemical space of the stars of the Milky Way disk (and, subsequently, the chemical and parameter space of the  test set of stars of red giant open cluster members).  For our training labels we used the so called \aspcap\ DR13-corrected labels with small additional LSF-corrections for the LSF dependence (see Section 4). We selected high SNR stars for our training set (SNR $>$ 200) and took care to remove highly anomalous abundance measurements. We also excluded all stars with any bad flag set.  Our training data spans the following range in stellar parameters:\\
 
-\noindent{\teff\ = 3650 $-$ 5760 K } \\
-\logg\ = 0.45 $-$ 3.95 dex \\
-\feh\ = --1.7 $-$ 0.36 dex \\
+\noindent{ 3650 $<$ \teff\ $<$ 5760 K } \\
+ 0.45 $<$  \logg\ $<$ 3.95 dex \\
+--1.7 $<$ \feh\ $<$ 0.36 dex \\
 
 \subsection{Test Data} 
 
 Our test data are the 97 stars in the open clusters, where our membership is taken from the cross over between those identified by \citet{Meszaros2013} and those in the \apogee\ calibration file table \footnote{cal$\_$dr13.fits available at sdss.org}. For NGC2420 we took an additional 3 stars to those identified in \citet{Meszaros2013}  which were studied by \citet{Souto2016}
 % as well as  an additional member for NGC188 which we identified using the nearest neighbour approach described in Section 6.3 when determining nearest neighbours for the red clump sample of \citet{Bovy2015}
 
-\section{Modifications to \tc\ to address LSF variation}
+\section{Modifications to \tc\ to address LSF variations}
 
-Removing systematics that bias the abundance measurements of stars of different spectral types presents one of the most significant practical challenges to consistent and precise abundance measurements. There are measured systematic trends with temperature and surface gravity and these are dealt with in \apogee\ via a post-calibration as described in \citet{Holtzman2015}: the trends are first determined by fitting the offsets for a set of calibration stars, of open and globular cluster stars plus asteroseismic targets (with very precise \logg\ values derived from the asteroseismic parameters) and then the results for all \apogee\ stars are adjusted by these fits.  A more subtle systematic signature that we found is mapped onto the abundances is fiber number, which is due to the variation of the line spread function across the observing plate and potentially signatures of nonuniform characteristics of the electronics, such as the persistence, which affects only part of the chip from which the spectra is read out (up to fiber number $\approx$ 50 at the lowest values of LSF). 
+Removing systematics that bias the abundance measurements of stars of different spectral types presents one of the most significant practical challenges to consistent and precise abundance measurements. There are measured systematic trends with temperature and surface gravity and these are dealt with in \apogee\ via a post-calibration \citep{Holtzman2015} and called so called DR13-corrected labels: the trends are first determined by fitting the offsets for a set of calibration stars, of open and globular cluster stars plus asteroseismic targets (with very precise \logg\ values derived from the asteroseismic parameters) and then the results for all \apogee\ stars are adjusted by these fits.  A more subtle systematic signature that we found is mapped onto the abundances is fiber number, which is due to the variation of the line spread function across the observing plate and potentially signatures of nonuniform characteristics of the electronics, such as the persistence, which affects only part of the chip from which the spectra are read out (fiber numbers $\leq$ 50). 
 
-The relationship between the LSF and the measured abundances is shown in Figure \ref{fig:training}. This Figure shows the mean DR13 abundances of our training set of stars,  as a function of the LSF for the stars, measured from the apStarLSF files provided by \apogee. For mapping the overall trends of abundances across the disk these trends are not significant and will not affect global inferences of example the abundance trends based on the measurements across $(R,z)$, which are on average inclusive of all fiber numbers independent of position on the sky (except for targeted co-natal groups like streams and open and globular clusters). However, these trends are extremely important to remove when deriving the most precise abundances possible and it is necessary to remove these trends to use the abundances in concert to examine chemical similarity. For example, in measuring a distance in abundance space metric between stars (Section 7), if there is a systematic dependence on the mean measurement and dispersion of that measurement as a function of LSF, then stars that have the same fiber number are found as preferential nearest chemical neighbours, which is the case using the \aspcap-scale abundances. We also note that the absolute abundance spreads of the clusters with low fiber numbers, which equates to the lowest LSF (e.g. NGC2158, NGC6791, M67) are higher than those with high fiber number,  particularly for problematic elements such as Cu, the mean abundance of which  changes very quickly with LSF or fiber number at the lowest LSF values, which is equivalent to the lowest fiber numbers. 
+The relationship between the LSF and the measured abundances is shown in Figure \ref{fig:training}. This Figure shows the mean DR13 abundances of our training set of stars,  as a function of the LSF for the stars, measured from the apStarLSF files provided by \apogee. For mapping the overall trends of abundances across the disk these trends are not significant and will not affect global measured abundance trends and inferences, for example with respect to the abundance trends based on the measurements across $(R,z)$, which are on average inclusive of all fiber numbers independent of position on the sky (except for targeted co-natal groups like streams and open and globular clusters). However, these trends are extremely important to remove when deriving the most precise abundances possible and it is necessary to remove these trends to use the abundances in concert to examine chemical similarity. For example, in measuring an abundance-space distance between stars (Section 7), if there is a systematic dependence on the mean measurement and dispersion of that measurement as a function of LSF, then stars that have the same fiber number are found as preferential nearest chemical neighbours, which is the case using the \aspcap-scale abundances. We also note that the absolute \aspcap\ abundance spreads of the clusters with low fiber numbers, which equates to the lowest LSF (e.g. NGC2158, NGC6791, M67) appear higher than those with high fiber number,  particularly for problematic elements such as Cu, the mean abundance of which  changes very quickly with LSF or fiber number at the lowest LSF values, which is equivalent to the lowest fiber numbers. 
 
-To correct for the LSF we add two processing steps to \tc,  the first affects the input training labels, the second \tc's model: (i) we determine and use LSF-corrected input abundance labels for our training data and (ii) we include the LSF as both a label in \tc, similarly to the stellar parameters and abundances and we include the LSF as a data point for our model for each star, which is treated in \tc's model in exactly the same way as the flux.  We also include the LSF as a data point as we ab-initio know, or can measure the mean LSF using the apStarLSF files produced for each star. 
+To correct for the LSF we add two processing steps to \tc,  the first affects the input training labels, the second \tc's model: (i) We determine and use LSF-corrected input abundance labels for our training data and (ii) we include the LSF as a label in \tc, similarly to the stellar parameters and abundances and we include the LSF as a data point for our model for each star, which is treated in \tc's model in exactly the same way as the flux.  We also include the LSF as a data point as we ab-initio know, or can measure the mean LSF using the apStarLSF files produced for each star. 
+
+\textbf{PLACEHOLDER: DWH ADD} \\
 
 For our training data, we correct for these systematic biases for each element show in Figure \ref{fig:training} by fitting a 5$^{th}$ order polynomial to the mean trend of each element and adjusting each element by the offset given by the fit, so as the mean of every abundance as a function of LSF is then 0. These values become our input LSF-corrected training labels.  For most elements this correction is very small and for some it is negligible, but for elements like Cu it can be as high as 0.2 dex for the lowest LSF value (see Figure \ref{fig:training}). 
 
@@ -152,7 +156,7 @@ For our training data, we correct for these systematic biases for each element s
 %\centering
 %\includegraphics[scale=0.6]{/Users/ness/new_laptop/Apogee_DR12_play/DR13_calibrated/training_input.pdf} 
 \includegraphics[scale=0.6]{training_input.pdf} 
-  \caption{The mean measurements of the \aspcap\ DR13-corrected labels as a function of measured LSF for the 5000 stars used for the training set. The dispersion around the mean measurement is shown in the gray shaded region. The largest difference in the mean and the dispersion around the mean is written at the top of each panel. We correct for these offsets to produce LSF-corrected labels that we use for training for \tc. For many elements this correction is negligible, for some, like Cu, this is significant.  }
+  \caption{The mean measurements of the \aspcap\ DR13-corrected labels as a function of measured LSF for the 5000 stars used for the training set. The FWHM of the mean measurement is shown in the gray shaded region. The largest difference in the mean and the dispersion around the mean is written at the top of each panel. We correct for these offsets to produce LSF-corrected labels that we use for training for \tc. For many elements this correction is negligible, for some, like P or Cu, this is significant.  }
 \label{fig:training}
 \end{figure*}
 
@@ -165,6 +169,7 @@ For our training data, we correct for these systematic biases for each element s
 
 \subsection{Cross validation of training set} 
 
+%/Users/ness/new_laptop/Apogee_elements/redclump_chi2/training/
 %run -i makeself.py
 
 \begin{figure*}
@@ -175,9 +180,9 @@ For our training data, we correct for these systematic biases for each element s
 \label{fig:cross}
 \end{figure*}
 
-The precision with which we can determine our labels is measured using the cross-validation test on the training set, (similarly to \citet{Ness2015, Ho2016, Casey2016}). Our cross-validation performance, for our leave-10-percent-out test is shown in Figure \ref{fig:cross}. The stars in this Figure have all been excluded from the training set. The model that is constructed when the stars are excluded, in 10 $\times$ 10-percent subsets is the model that is used to derive their plotted labels. The x-axis shows the input training labels and the y-axis shows \tc's best fit labels. We are able to recover the labels to high precision. For the stellar parameters the precision is approximately $<$ 45 K in \teff, $<$ 0.1 dex in logg and $<$ 0.02 dex in \feh. For individual abundances, the precision is on the order of 0.02 -- 0.12 dex, depending on the element. 
+The precision with which we can determine our labels is measured using the cross-validation test on the training set, (similarly to \citet{Ness2015, Ho2016, Casey2016}). Our cross-validation performance, for our leave-10-percent-out test is shown in Figure \ref{fig:cross}. The stars in this Figure have all been excluded from the training set. The model that is constructed when the stars are excluded, in 10 X 10-percent subsets is the model that is used to derive their plotted labels. The x-axis shows the input training labels and the y-axis shows \tc's best fit labels. We are able to recover the labels to high precision. For the stellar parameters the precision is approximately $<$ 45 K in \teff, $<$ 0.1 dex in logg and $<$ 0.02 dex in \feh. For individual abundances, the precision is 0.02 to 0.12 dex, depending on the element. 
 
-In the Appendix we include an expanded discussion of the precision which we additionally characterise as a function of SNR and of the choice that we make to run \tc\ with unrestricted wavelength coverage for each element. It is also possible to use masking in order to constrain which pixels are used for each element so \tc\ can not use correlated information in the spectra. While this improves the precision of some of the labels, the performance with masking is poor for noisy input labels and therefore this ultimately restricts our results to return return fewer elements. Our implementation of \tc\ assumes perfect input training labels but in the case where the training labels come in with high errors, as is the case with some of the \apogee\ DR13 labels, when masking is implemented and correlations can not be used by \tc\ to learn how the flux varies with the labels these noisy labels are more poorly reproduced in cross-validation. Therefore, for achieving the highest precision in the regime of some noisy input labels where \tc\ assumes perfect inputs, we do not restrict \tc\ with masking for the elements. Eilers et al., in preparation, demonstrates the improvements in performance and flexibility that are obtained  with \tc\ by implementing imperfect errors, with input errors on the training labels at test time. However the trade-off is that the training step is substantially more computationally expensive to take these errors into account. 
+In the Appendix we include an expanded discussion of the precision which we additionally characterise as a function of SNR and of the choice that we make to run \tc\ with unrestricted wavelength coverage for each element. It is also possible to use masking in order to constrain which pixels are used for each element so \tc\ can not use correlated information in the spectra. While this improves the precision of some of the labels, the performance with masking is poor for noisy input labels and therefore this ultimately restricts our results to return return fewer elements. Our implementation of \tc\ assumes perfect input training labels but in the case where the training labels come in with high errors, as is the case with some of the \apogee\ DR13 labels, when masking is implemented and correlations can not be used by \tc\ to learn how the flux varies with the labels these noisy labels are more poorly reproduced in cross-validation. Therefore, for achieving the highest precision in the regime of some noisy input labels where \tc\ assumes perfect inputs, we do not restrict \tc\ with masking for the elements. Elsewhere (Eilers et al., in preparation), we demonstrate the improvements in performance and flexibility that are obtained  with \tc\ by implementing imperfect errors, with input errors on the training labels at test time. However the trade-off is that the training step is substantially more computationally expensive to take these errors into account. 
 
 \subsection{Open Cluster Results} 
 
@@ -187,7 +192,7 @@ From the goodness of fit $\chi^2$ metric which we determined for each star, we e
 
 Figures \ref{fig:c1} to \ref{fig:c8} show the cluster individual abundances plotted coloured by \teff, with their corresponding error bars. Typical absolute dispersion measurements for the clusters range from 0.01 -- 0.1 depending on the element.  The cyan points in the background are the training data. The DR13 input abundance labels that we adopt for training are corrected for systematic variations with temperature, except for C and N, which are known to have astrophysical variations along the giant branch (and then also corrected for LSF variation as described in Section 4). For the open clusters, we note that the coolest stars do seem to have the highest measurements of [N/Fe], within a cluster. 
 
-We report the measured mean and dispersion for our 92 open cluster stars in Table 1 as well as the \aspcap\ results (where available) and provide the measurements for each star as well as their 2MASS ID's in our online table. Our results compare very well to the \aspcap\ results, but using \tc, we obtain far higher precision and so report dispersions on the order of 20-50\% lower than \aspcap, in most cases. We are concerned with precision and not accuracy and there is a discussion in \citet{Holtzman2015} regarding the scale of the open clusters with respect to the literature. Overall, we note there is a large literature dispersion in individual element measurements from high resolution spectroscopy (e.g. see Table 3 of \citet{Souto2016} for a literature comparison of one of the open clusters, NGC2420). 
+We report the measured mean and dispersion for our 92 open cluster stars in Table 1 as well as the \aspcap\ results (where available) and provide the measurements for each star as well as their 2MASS ID's in our online table. Our results compare very well to the \aspcap\ results, but using \tc, we obtain far higher precision and so report dispersions on the order of 20 to 50\% lower than \aspcap, in most cases. We are concerned more with precision here and less so with accuracy and there is a discussion in \citet{Holtzman2015} regarding the scale of the open clusters with respect to the literature. Overall, we note there is a large literature dispersion in individual element measurements from high resolution spectroscopy (e.g. see Table 3 \citep{Souto2016} for a literature comparison of one of the open clusters, NGC2420). 
 
 
 \begin{table*}[h]
@@ -252,30 +257,33 @@ Rb & 0.06 $\pm$ 0.09 & 0.1 $\pm$ 0.05  & -0.07 $\pm$ 0.22  & -0.04 $\pm$ 0.1 & 0
 \ref{tab2}
 \end{table*}
 
-
+%/Users/ness/new_laptop/Apogee_elements/redclump_chi2/training   
+%run -i showfigfit
 \begin{figure*}
 \centering
      %   \includegraphics[scale=0.5]{/Users/ness/new_laptop/Apogee_elements/redclump_chi2/training/elementfit.pdf}
            \includegraphics[scale=0.5]{elementfit.pdf}
-  \caption{ Example of one star in the cluster NGC6791 with SNR = 260, showing that the fit of the model is very good, at top across a 300 Angstrom span showing the model scatter across this region and also zoomed in around lines of individual elements. The model is in cyan and the data is in black. }
+  \caption{ Example of one star in the cluster NGC6791 with SNR = 260, with the model in cyan and the data in black, showing that the model is a good fit to the data. The top panel shows a 300 Angstrom wavelength range and the second panel shows the model scatter across this region. The lower panels show 16 Angstrom ranges of spectra zoomed in around lines of individual elements highlighting the goodness of fit to the individual element absorption features. }
 \label{fig:typical}
 \end{figure*}
 
+%makehistabund_general_oconly.py
+%makehistabund_general_oconly_feh.py
 \begin{figure*}
 \centering
   %      \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem7_tc2_nofilt.png}
     %      \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem7_tc2_nofilt.pdf}
-               \includegraphics[scale=0.5]{20elem7_tc2_nofilt.pdf}
-  \caption{ M67 stars with SNR = 438 $\pm$ 266 }
+               \includegraphics[scale=0.5]{20elem7_tc2_nofilt.png}
+  \caption{ M67 stars with a median SNR = 438  coloured by effective temperature. The grey points show the training data. }
 \label{fig:c1}
-\end{figure*}
+\end{figure*} %$\pm$ 266,
 
 \begin{figure*}
 \centering
    %     \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem12_tc2_nofilt.png}
  % \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem12_tc2_nofilt.pdf}   
-  \includegraphics[scale=0.5]{20elem12_tc2_nofilt.pdf}  
-  \caption{ NGC2420 stars with SNR = 311 $\pm$ 248 }
+  \includegraphics[scale=0.5]{20elem12_tc2_nofilt.png}  
+  \caption{ As per Figure \ref{fig:c1} but for NGC2420 stars with  a median SNR = 311 } % $\pm$ 248
 \label{fig:c2}
 \end{figure*}
 
@@ -283,8 +291,8 @@ Rb & 0.06 $\pm$ 0.09 & 0.1 $\pm$ 0.05  & -0.07 $\pm$ 0.22  & -0.04 $\pm$ 0.1 & 0
 \centering
       %  \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem11_tc2_nofilt.png}
            %    \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem11_tc2_nofilt.pdf}
-                     \includegraphics[scale=0.5]{20elem11_tc2_nofilt.pdf}
-  \caption{ NGC2158 stars with SNR = 96 $\pm$ 37 }
+                     \includegraphics[scale=0.5]{20elem11_tc2_nofilt.png}
+  \caption{ NGC2158 stars with a median SNR = 96  } %$\pm$ 37
 \label{fig:c3}
 \end{figure*}
 
@@ -292,8 +300,8 @@ Rb & 0.06 $\pm$ 0.09 & 0.1 $\pm$ 0.05  & -0.07 $\pm$ 0.22  & -0.04 $\pm$ 0.1 & 0
 \centering
         %\includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem10_tc2_nofilt.png}
        %       \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem10_tc2_nofilt.pdf}
-                 \includegraphics[scale=0.5]{20elem10_tc2_nofilt.pdf}
-  \caption{ NGC188 stars with SNR = 462 $\pm$ 381}
+                 \includegraphics[scale=0.5]{20elem10_tc2_nofilt.png}
+  \caption{As per Figure \ref{fig:c1} but for NGC188 stars with a median SNR = 462 } %$\pm$ 381
 \label{fig:c4}
 \end{figure*}
 
@@ -301,8 +309,8 @@ Rb & 0.06 $\pm$ 0.09 & 0.1 $\pm$ 0.05  & -0.07 $\pm$ 0.22  & -0.04 $\pm$ 0.1 & 0
 \centering
         %\includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem10_tc2_nofilt.png}
          %     \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem8_tc2_nofilt.pdf}
-           \includegraphics[scale=0.5]{20elem8_tc2_nofilt.pdf}
-  \caption{ M71 stars with SNR = 249 $\pm$ 78}
+           \includegraphics[scale=0.5]{20elem8_tc2_nofilt.png}
+  \caption{As per Figure \ref{fig:c1} but for M71 stars with a median SNR = 249 } %$\pm$ 78
 \label{fig:c5}
 \end{figure*}
 
@@ -311,8 +319,8 @@ Rb & 0.06 $\pm$ 0.09 & 0.1 $\pm$ 0.05  & -0.07 $\pm$ 0.22  & -0.04 $\pm$ 0.1 & 0
 \centering
      %   \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem-3_tc2_nofilt.png}
  %         \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem-3_tc2_nofilt.pdf}
-    \includegraphics[scale=0.5]{20elem-3_tc2_nofilt.pdf}
-  \caption{ NGC6791 stars with SNR = 159 $\pm$ 186 }
+    \includegraphics[scale=0.5]{20elem-3_tc2_nofilt.png}
+  \caption{As per Figure \ref{fig:c1} but for NGC6791 stars with a median SNR = 159 } % $\pm$ 186 
 \label{fig:c6}
 \end{figure*}
 
@@ -320,8 +328,8 @@ Rb & 0.06 $\pm$ 0.09 & 0.1 $\pm$ 0.05  & -0.07 $\pm$ 0.22  & -0.04 $\pm$ 0.1 & 0
 \centering
       %  \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem-2_tc2_nofilt.png}
     %    \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem-2_tc2_nofilt.pdf}
-        \includegraphics[scale=0.5]{20elem-2_tc2_nofilt.pdf}
-  \caption{ NGC6819 stars with SNR = 303 $\pm$ 183 }
+        \includegraphics[scale=0.5]{20elem-2_tc2_nofilt.png}
+  \caption{As per Figure \ref{fig:c1} but for NGC6819 stars with a median SNR = 303 } %  $\pm$ 183
 \label{fig:c7}
 \end{figure*}
 
@@ -329,8 +337,8 @@ Rb & 0.06 $\pm$ 0.09 & 0.1 $\pm$ 0.05  & -0.07 $\pm$ 0.22  & -0.04 $\pm$ 0.1 & 0
 \centering
 %        \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem-1_tc2_nofilt.png}
 % \includegraphics[scale=0.5]{/Users/ness/Dropbox/new_laptop/Apogee_elements/DR13/oldnorm/20elem-1_tc2_nofilt.pdf}
-  \includegraphics[scale=0.5]{20elem-1_tc2_nofilt.pdf}
-  \caption{ NGC7789 stars with SNR = 657 $\pm$ 165 }
+  \includegraphics[scale=0.5]{20elem-1_tc2_nofilt.png}
+  \caption{As per Figure \ref{fig:c1} but for NGC7789 stars with a median SNR = 657 } % $\pm$ 165
 \label{fig:c8}
 \end{figure*}
 
@@ -339,25 +347,30 @@ Rb & 0.06 $\pm$ 0.09 & 0.1 $\pm$ 0.05  & -0.07 $\pm$ 0.22  & -0.04 $\pm$ 0.1 & 0
 \section{Discussion}
 
 
-Stars in open clusters are believed to be born from single star forming aggregates and therefore, thought to be chemically homogeneous \citep[e.g.][]{deSilva2007,deSilva2009, Martell2016}. Such chemical similarity of stars born together has been used to identify members of moving groups or co-natal groups in the Milky Way including using abundances alone \citep[e.g.][]{Majewski2012a, Hogg2016} as well as chemically exceptional groups of stars \citep[e.g.][]{Schiavon2016, Martell2016}.  Using APOGEE data and \aspcap\ abundances, \citet{Ting2016} placed a constraint on the initial cluster mass function for the old disk stars in the Milky Way.  Although many individual clusters have been studied in numerous studies, including using \apogee\ data \citep[e.g.][]{Souto2016, Cuhna2015, F2013} and the inter-cluster dispersion is demonstrated to be relatively small and on the order of measurement errors themselves, there has very little assessment in the literature as to the true intrinsic dispersion of clusters in their many elements other than Bovy et al., 2016 who was able to put firm and very small limits on the intrinsic inter-cluster dispersion, although without delivering individual abundance measurements, for 3 of the APOGEE clusters. 
+Stars in open clusters are believed to be born from single star forming aggregates and therefore, thought to be chemically homogeneous \citep[e.g.][]{deSilva2007,deSilva2009, Martell2016}. Such chemical similarity of stars born together has been used to identify members of moving groups or co-natal groups in the Milky Way including using abundances alone \citep[e.g.][]{Majewski2012a, Hogg2016} as well as chemically exceptional groups of stars \citep[e.g.][]{Schiavon2016, Martell2016}.  Using  \apogee\ data and \aspcap\ abundances, \citet{Ting2016} placed a constraint on the initial cluster mass function for the old disk stars in the Milky Way.  Although many individual clusters have been studied in numerous studies, including using \apogee\ data \citep[e.g.][]{Souto2016, Cuhna2015, F2013} and the intra-cluster dispersion is demonstrated to be relatively small and on the order of measurement errors themselves, there has very little assessment in the literature as to the true intrinsic dispersion of clusters in their many elements. Only with a data-driven approach that did not provide absolute measurements has any firm constraint been placed on the intrinsic intra-cluster dispersion for \apogee\ clusters \citep{Bovy2016}, which was been found to be very small, for three of the clusters we study here. 
 
 %, our aim to determine the intrinsic abundance dispersion of the \apogee\ clusters given our measurements and measurement errors and
-There has been some investigation of the statistical intra-cluster similarity \citep[][]{M2014, deSilva2015} and while we can not draw any strong astrophysical conclusions from our dataset of clusters, we use the 8 calibration clusters to set the expectation for when stars in the \apogee\ sample are \textit{not} born together, in the same molecular cloud. This latter quantification in particular will be relevant for assessing the much larger sample of \apogee\ data and chemical dimensionality of the Milky Way disk. We note that our sample of open clusters is extremely limited and our intra-cluster similarity that we measure in general, depends very strongly on  the selection of the clusters included in that comparison (i.e. the \feh\ distribution, age distribution; radius distribution, etc..). However, these clusters have a similar distribution in abundance space to the \apogee\ field red clump sample and while we do not make any strong astrophysical conclusions from our assessment of inter and intra-cluster similarity, we use this as an example of the level of minimal level of similarity to which stars that are not born together are similar and also the extent of the level of dis-similarity between pairs of stars that are known to be born together.  This sets some level of empirical expectation for the exploration of the stars of the disk. 
+There has been some investigation of the statistical inter- and intra-cluster similarity \citep[][]{M2014, deSilva2015} and while we can not draw any strong astrophysical conclusions from our dataset of clusters, we use the 8 calibration clusters to set the expectation for when stars in the \apogee\ sample are \textit{not} born together, in the same molecular cloud by examining inter-cluster similarity. This latter quantification in particular will be relevant for assessing the much larger sample of \apogee\ data and chemical dimensionality and diversity of the Milky Way disk. We note that our sample of open clusters is extremely limited and our intra-cluster similarity that we measure in general, depends very strongly on  the selection of the clusters included in that comparison (i.e. the \feh\ distribution, age distribution; radius distribution, etc..). However, these clusters have a similar distribution in abundance space to the \apogee\ field red clump sample and while we do not make any strong astrophysical conclusions from our assessment of inter and intra-cluster similarity, we use this as an example of the level of minimal level of similarity to which stars that are not born together are chemically alike and also the extent of the level of dis-similarity between pairs of stars that are known to be born together.  This sets some level of empirical expectation for the exploration in the realm of chemical tagging. 
+\textbf{DWH asked to reword the above paragraph} 
 
 
 \subsection{Modeling the Intrinsic Dispersion}
 
-Our measured abundances within clusters are on the order of the precision we achieve in the quadratic sum of the cross-validation and formal measurement errors for the individual stars for each element. This indicates that our clusters are near homogeneous in their measured abundances. However, whether or not open clusters have any intrinsic spread in their abundances is critical for the pursuit of chemical tagging and understanding the formation of these systems \citep[][]{Bovy2016, Lui2016} so we wish to formally determine for each element, for each cluster, what the true mean and intrinsic dispersion is, given our data. 
+Our measured abundances within clusters are on the order of the precision we achieve in the quadratic sum of the cross-validation and formal measurement errors for the individual stars for each element. This indicates that our clusters are near homogeneous in their measured abundances. However, whether or not open clusters have any intrinsic spread in their abundances is critical for the pursuit of chemical tagging and understanding the formation of these systems \citep[][]{Bovy2016, Lui2016}. We wish to formally determine for each element, for each cluster, what the true mean and intrinsic dispersion is, given our data. 
 
-To do this, we minimise the negative log likelihood of our cluster model, which represents the distribution of the elements within a cluster, for each element $i$, for $n$ stars, for the mean \textcolor{blue}{$\bar{x}$} and dispersion \textcolor{blue}{$\sigma_n$}. 
-
-We also optimise over the sigma-clipping of the input data $\delta x_{i, n}$ so that if there is an anomalous data point this may be excluded at the optimal solution to our model.  The sigma clipping is set at a minimum value of 1.5, however only in two cases of the 7 clusters for the 20 elements is the minimum reached at this clipping; on average the optimal sigma-clipping is $\approx$ 3: almost all stars are therefore included in the measurement of the intrinsic mean and dispersion.\\
+To do this, for each cluster, we minimise the negative log likelihood of our cluster model, which represents the distribution of the elements within a cluster, for each element $i$, for each of our $n$ stars in that cluster, for the mean \textcolor{blue}{$\bar{x}$} and dispersion \textcolor{blue}{$\sigma_n$}. 
 
 $P({x_i} | \textcolor{blue}{\bar{x}, \sigma_x, i }) =  \prod_{n=1}^{N} \frac{1}{\sqrt{2 \pi (\delta x_{ \textcolor{blue}{i}, n} ^2 + \textcolor{blue}{{\sigma}_n^2}})} . e ^ - {\frac{\textcolor{blue}{(\bar{x}} - x_{\textcolor{blue}{i}, n})^2 }{2(\delta x_i^2 + \textcolor{blue}{\sigma_n^2)}}}$ \\
 
+We also optimise over the sigma-clipping of the input data $\delta x_{i, n}$ and we set the minimum value of $\sigma$ = 1.5. In only two cases of the 7 clusters for the 20 elements is the optimal solution reached at this level of sigma clipping; on average the optimal sigma-clipping is $\approx$ 3: almost all stars \textbf{mkn:put in fraction} are therefore included in the measurement of the intrinsic mean and dispersion.\\
+
+
+
 In this optimisation, the input data that we are summing over is the measurement for that element $i$ for every star, $x_n$  and the error on that measurement, $\delta x_n^2$, where for each element $i$, where we take $\delta x_n^2$ to be the quadrature error of the formal error on the star and the signal-to-noise dependent cross validation error for that element (measured using repeat observations of the \apogee\ calibration stars as shown in the Appendix). 
 
-We find that for given this model, for each cluster, the intrinsic mean is very near to that of the measured mean assuming a Gaussian distribution for all stars. Furthermore the intrinsic dispersions for all element enhancements with respect to iron are zero, with the exception of Ni ($=$ 0.02 dex) in NGC2158, N ($\sigma_i$$=$ 0.13 dex) in N188 (although there are only 3 stars in this cluster and one anomalous measurement driving this, so this measurement is not robust on the basis of small sample size) and Mg ($\sigma_i$$=$ 0.01) in NGC6791. If our errors on these measurements are overestimated by up to 20\% however the small dispersions for Ni and Mg in NGC2158 and NGC6791 also become consistent with zero. We do find intrinsic dispersion in the \feh\ abundance for a number of the clusters, which persists even if we assume an error under-estimate of up to 20\%. We report an intrinsic dispersion in \feh\ of $\sigma_i$ $=$ 0.03 dex in NGC6819, $\sigma_i$$=$0.03 in NGC2158, $\sigma_i$$=$ 0.01 in M67,  $\sigma_i$$=$ 0.02 in NGC2420 and $\sigma_i$ = 0.01 in NGC6791. NGC2420, NGC7789 and NGC188 all have intrinsic iron dispersions consistent with  $\sigma_i$$=$0. These intrinsic dispersion measurements are consistent with the findings of Bovy for M67 and NGC2420 although our NGC6819 intrinsic dispersion is 0.01 larger than the upper limit Bovy (2016) places for the Fe measurement of this open cluster. 
+We find that for each cluster, the intrinsic mean is very near to that of the measured mean assuming a Gaussian distribution for all stars. Furthermore the intrinsic dispersions for all element enhancements with respect to iron are zero, with the exception of Ni ($=$ 0.02 dex) in NGC2158, N ($\sigma_i$$=$ 0.13 dex) in N188 (although there are only 3 stars in this cluster and one anomalous measurement driving this, so this measurement is not robust on the basis of small sample size) and Mg ($\sigma_i$$=$ 0.01) in NGC6791. If our errors on these measurements are overestimated by up to 20\% however the small dispersions for Ni and Mg in NGC2158 and NGC6791 also become consistent with zero. 
+
+We do find intrinsic dispersion in the \feh\ abundance for a number of the clusters, which persists even if we assume an error under-estimate of up to 20\%. We report an intrinsic dispersion in \feh\ of $\sigma_i$ $=$ 0.03 dex in NGC6819, $\sigma_i$$=$0.03 in NGC2158, $\sigma_i$$=$ 0.01 in M67,  $\sigma_i$$=$ 0.02 in NGC2420 and $\sigma_i$ = 0.01 in NGC6791. NGC2420, NGC7789 and NGC188 all have intrinsic iron dispersions consistent with  $\sigma_i$$=$0. These intrinsic dispersion measurements are consistent with the findings of Bovy for M67 and NGC2420 although our NGC6819 intrinsic dispersion is 0.01 larger than the upper limit Bovy (2016) places for the Fe measurement of this open cluster. 
 
 
 \subsection{Absolute measurements}
@@ -366,14 +379,45 @@ We have demonstrated in Tables 1 and 2 that our absolute measurements, (by desig
 
 Examining the literature on individual clusters, many have been studied by independent groups and here we briefly review some of the absolute measurements in the literature although note again that we are concerned with precision and not the absolute abundance scale and that this is what is relevant for chemical tagging. The open cluster NGC2420 has been studied by \citet{Souto2016} using \apogee\ spectra and we report vey similar dispersions to their careful by hand analysis. We also compare well with their individual abundance measurements to the degree that the \aspcap\ results are similar (see their discussion). For NGC7789,  our individual abundances compare well with \citet{Overbeek2015} except for Mg,  which is low compared to the literature values by $\sim$ 0.1--0.2 dex (although we note that there is a very broad range in all measured abundances in the literature for this cluster as per Table 2 of \citet{Overbeek2015}). \citet{L2016} studied solar twins in M67 and found, similarly to our analysis, no spread in the elements with Z $<$ 30. However, they report chemical inhomogeneity within this cluster for the neutron-capture elements, which are not measured by \apogee. While our \feh\ abundance agrees very well with the spectroscopic study of NGC188 by Friel et al., (2010), all individual abundance measurements we determine show lower enhancement in the \apogee\ results by about 0.1-0.2 dex and a similar offset is seen for M67 between our results and this study. \citet{Car2013} examined star to star variations in the C and N abundances using the CN and CH band strengths for three open clusters in common with our study, of NGC2158, NGC2420 and NGC7789 and found a spread consistent with the uncertainties on the measurements except for NGC7789, although only a very small number of stars were used in their analysis and they note more stars are required to confirm this result. Although we only report 5 stars in our study we find no intrinsic variation of elements with respect to Fe in this cluster.  Comparing our results for NGC6819 to the recent spectroscopic study of \citet{LB2015}, our \feh\ is slightly super-solar compared to their sub-solar result but measured element enhancements in common are similar. From their study of turn-off stars in the old super-metal rich cluster NGC6719, \citet{Bo2015} find both a  very similar \feh\ and individual enhancement values to our results. 
 
+\subsection{Intrinsic Dispersion}
+best fit & upper limit - take more observations
+
+\begin{figure*}
+\centering
+   \includegraphics[scale=0.4]{N6819_intrinsic.pdf}
+ \includegraphics[scale=0.4]{M67_intrinsic.pdf}\\
+   \includegraphics[scale=0.4]{N6791_intrinsic.pdf}
+     \includegraphics[scale=0.4]{N2420_intrinsic.pdf}\\
+  \includegraphics[scale=0.4]{N2158_intrinsic.pdf}
+   \includegraphics[scale=0.4]{N7789_intrinsic.pdf} \\
+     \includegraphics[scale=0.4]{N188_intrinsic.pdf}
+   \includegraphics[scale=0.4]{M71_intrinsic.pdf}\\
+  \caption{  } %$\pm$ 37
+\label{fig:c3}
+\end{figure*}
+
+
+\begin{figure*}
+\centering
+   \includegraphics[scale=0.4]{N6819_ratio.pdf}
+ \includegraphics[scale=0.4]{M67_ratio.pdf}\\
+   \includegraphics[scale=0.4]{N6791_ratio.pdf}
+     \includegraphics[scale=0.4]{N2420_ratio.pdf}\\
+  \includegraphics[scale=0.4]{N2158_ratio.pdf}
+   \includegraphics[scale=0.4]{N7789_ratio.pdf} \\
+     \includegraphics[scale=0.4]{N188_ratio.pdf}
+   \includegraphics[scale=0.4]{M71_ratio.pdf}\\
+  \caption{  } %$\pm$ 37
+\label{fig:c3}
+\end{figure*}
 
 \subsection{Intra and Inter cluster similarity: nearest neighbour pairs}
 
 As noted in the discussion,  our sample of open clusters is limited and our intra-cluster similarity that we measure in general, depends very strongly on the selection of the clusters included in that comparison (FeH distribution, age distribution; radius distribution, etc. Therefore, whist we use a $\chi^2$ metric to compare among and within our sample of clusters, to set the expectation of similarity for nearest neighbour stars in abundance space that are both born and not born together, we do not make any  strong astrophysical conclusions from this. This serves only use this as an example and expectation of how close pairs of stars which are born together are, compared to pairs of stars which are not born together.  
 
-We determine the nearest chemical neighbour for each star, n using a $\chi^2$ minimisation over the sum of all elements i = 1 to 20 for every star ${x_i}_n$: \\
+We determine the nearest chemical neighbour for each star, n using a distance minimisation over the sum of all elements i = 1 to 20 for every star ${x_i}_n$: \\
 
-${\chi_i^2}_n$ = min $ \sum_{i=1}^{20}  \frac{(x_i - x_{i_N})^2}{\sigma_i^2 + \sigma_{i_N}^2}$  \\
+${D_i^2}_n$ = min $ \sum_{i=1}^{20}  \frac{(x_i - x_{i_N})^2}{\sigma_i^2 + \sigma_{i_N}^2}$  \\
 
 Where x$_i$ = are the i abundance measurements for the star n and  $x_{i_N}$ represents all abundance measurements for stars 1 to N (excluding star n that is being compared to). \\
 Similarly, $\sigma_i$ is the error on the measurement of star n and $\sigma_{i_N}$ represents the error on all stars n = 1 to N (not including the comparison star $n$): \\
@@ -383,11 +427,12 @@ This $\chi^2$ metric is then calculated for stars within the same cluster and fo
  %run -i makehistabund_general_oconly
  %nn_diff = chitest[unid]
  % nn_same = chitest[unid]
+ % for correct errors: run -i makehistabund_general_oconly_feh_HWRmodel2.py
 \begin{figure*}%[h]
 \centering
 %\includegraphics[scale=0.2]{/Users/ness/new_laptop/Apogee_elements/DR13/oldnorm/chi2red.pdf} 
 \includegraphics[scale=0.4]{chi2red.pdf} 
-  \caption{The reduced chi2 distribution of nearest neighbour pairs of stars within and between clusters. There are 52 pairs in the intra-cluster distribution and 58 in the inter-cluster distribution}
+  \caption{The nearest neighbour distance distribution for pairs of stars within and between clusters. There are 60 pairs in the intra-cluster distribution and 65 in the inter-cluster distribution}
 \label{fig:chi2}
 \end{figure*}
 
@@ -397,7 +442,7 @@ Figure \ref{fig:chi2} demonstrates that the stars within clusters are more chemi
 
 
 
-%Even stars from the same cluster can have very distant neighbours, the metric we can infer that if stars have chi2 > 2.8 they are not from a common birth site. 
+%Even stars from the same cluster can have very distant neighbours, the metric we can infer that if stars have chi2 > 4.0 they are not from a common birth site. 
 
 %Here show the nearest neighbour and that find new member of NGC188 in this way and reference paper in prep: was outside of the nominal radius of the open cluster. ID of one found this one. 
 
@@ -408,7 +453,7 @@ Figure \ref{fig:chi2} demonstrates that the stars within clusters are more chemi
 
 By making modifications to \tc\ in order to cope with the variation in the abundance measurements input at training time on the LSF of each star we have been able to determine very precise abundances for 92 identified red giant members of the eight open clusters targeted in \apogee\ for the purpose of calibration. We report an intrinsic dispersion in all abundance measurements consistent with $\sigma_i=$ 0 except for \feh\ which has a spread in four of the clusters: $\sigma_i$=0.01, 0.02,  0.03, 0.03 in M67, NGC2420 NGC2158 and NGC6791 respectively. 
 
-Characterising inter and intra cluster homogeneity is key to trace star formation and the formation of the disk via chemical tagging and our measurements within clusters that indicate clusters are born from a well mixed homogeneous gas cloud are consistent with the previous results for elements Z $<$ 30. We use our relatively large high signal to noise \apogee\ sample to demonstrate that the nearest neighbour pairs within clusters are more chemically similar than among clusters and set an expectation to apply to \apogee\ disk stars that when stars have a $\chi^2$ abundance difference of $>$ 2.8 measured from their 20 elements, they are not born together. 
+Characterising inter and intra cluster homogeneity is key to trace star formation and the formation of the disk via chemical tagging and our measurements within clusters that indicate clusters are born from a well mixed homogeneous gas cloud are consistent with the previous results for elements Z $<$ 30. We use our relatively large high signal to noise \apogee\ sample to demonstrate that the nearest neighbour pairs within clusters are more chemically similar than among clusters and set an expectation to apply to \apogee\ disk stars that when stars have a $\chi^2$ abundance difference of $>$ 4.0 measured from their 20 elements, they are not born together. 
 
 Chemical tagging, as originally envisioned \citep{freeman2002}, requires on the 
 order of millions of stars, with precisions for a multitude of individual 
@@ -431,9 +476,9 @@ abundances of 0.03 dex \citep{Ting2015}. We propose that in the limit of smaller
 %To do: Also show when implement the filtering on this Figure and discuss that much worse for some elements as coming in at training much worse:
 Using a calibration set of data available as part of the public release of DR13, which includes both co-added spectra and individual visit spectra for a set of $\approx$ 1000 open cluster, globular cluster and calibration stars, the precision of \tc\ was assessed as a function of signal to noise, using both a masked and unmasked version of \tc. Each data point in Figure \ref{fig:snr_error} is determined by measuring the dispersion of the difference between the high signal to noise and low signal to noise value of the labels for each of the 1000 stars in the calibration set. The Figure shows the dependence across SNR of 10 to 200, where the precision flattens above SNR of about 150. \tc\ and \aspcap\ compare well at high SNR but at low SNR \tc\ is more precise by a factor of 2-4 \citep[also see][]{Ness2015}. In this comparison, \aspcap\ is restricted to the wavelength intervals for individual elements determined using element masking as described in \citet{GP2016}. 
 
-The unmasked version of \tc\ shown in this Figure of is the standard implementation as per \citet{Ness2015} where for all labels, the entire spectra is used to train the dependence between flux and label. \tc\ effectively learns which regions of the spectra are sensitive to which labels \citep[e.g.][]{Ness2016, Ho2016b} and can, and will, also use correlations. Conversely, for the masked version of \tc, for the individual abundance label determinations, we restrict \tc\ to use only pixels where the element is present in the spectra, for each element (which is not restricted to `clean' lines but can and does include blended regions). The masks are determined for each element by using spectral models to calculate spectral derivatives for every element, that quantify the flux change as each element is varied in the model atmosphere. For each element mask, we use pixels that contribute to the 80th percentile of the cumulative information content in the spectra for that element and set all other pixels to be excluded from \tc's model. Generically: sometimes filtering will shrink uncertainties, sometimes enlarge it; in both cases for reasons that can be understood. 
+The unmasked version of \tc\ shown in this Figure is the implementation as per \citet{Ness2015} where for all labels, the entire spectra is used to train the dependence between flux and label. \tc\ effectively learns which regions of the spectra are sensitive to which labels \citep[e.g.][]{Ness2016, Ho2016b} and can, and will, also use correlations at each wavelength that inform the labels. Conversely, for the masked version of \tc, for the individual abundance label determinations, we restrict \tc\ to use only pixels where the element is present in the spectra, for each element (which is not restricted to `clean' lines but can and does include blended regions). The masks are determined for each element by using spectral models to calculate spectral derivatives for every element, that quantify the flux change as each element is varied in the model atmosphere. For each element mask, we use pixels that contribute to the 80th percentile of the cumulative information content in the spectra for that element and set all other pixels to be excluded from \tc's model. Generically: sometimes filtering will shrink uncertainties, sometimes enlarge it; in both cases for reasons that can be understood. 
 
-We find that for the stellar parameters, which themselves do not have masks, the element masking improves their precision, by removing the additional noise of the overall model introduced by the cross-correlations when all pixels are used. However, as demonstrated in Figure \ref{fig:snr_error}, for elements that are more poorly measured at input (e.g. Na, Co, Cu), from \aspcap, implementing masking significantly degrades the performance of \tc\ compared to when all pixels are able to be used and \tc\ can learn correlations. The improvement with \tc\ using masking is dramatically less compared to no masking, for poor input labels. 
+We find that for the stellar parameters, which themselves do not have masks, the element masking improves their precision. This reduction in scatter of these labels is effectively due to removing the additional noise of the overall model introduced by the cross-correlations when all pixels are used. However, as demonstrated in Figure \ref{fig:snr_error}, for elements that are more poorly measured at input (e.g. Na, Co, Cu), from \aspcap, implementing masking significantly degrades the performance of \tc\ compared to when all pixels are able to be used and \tc\ can learn correlations. The improvement with \tc\ using masking is dramatically less compared to no masking, for poor input labels. Therefore, for the case of masking and thereby restricting \tc\ to specific wavelength regions for example to learn about an element only from those element absorption features without learning cross correlations, can only perform well and significantly better than \aspcap\ when the label itself is high fidelity. If the label is poorly measured, it will perform poorly with the masked version of \tc. 
 
 
 % and shows that we can only be can not perform well for the elements where aspcap can not perform well - use the unmasked version to get the highest precision for all the elements - can only get a subset of elements as training on imprecise labels. Learns correlations but clearly can reproduce the input at take 10 percent out cross validation so verified that if test data representatitve of training data this is good; any divergence can also be assessed by fit of data to model , including around individual elements. only used global chi2 in this paper but could image doing a chi2 around each element. 
@@ -450,7 +495,7 @@ We find that for the stellar parameters, which themselves do not have masks, the
 %\includegraphics[scale=0.45]{/Users/ness/new_laptop/Apogee_elements/19labels/snrplot.pdf} 
 %\includegraphics[scale=0.45]{/Users/ness/new_laptop/Apogee_elements/19labels/rms_snr_both_dr132.pdf} 
 \includegraphics[scale=0.45]{rms_snr_both_dr132.pdf} 
-  \caption{SNR dependent performance for each label of \tc\ in red and \aspcap\ in black and with masking in blue - discuss this}
+  \caption{SNR dependent performance for each label of \tc\ in red without masking, as implemented in this work and in blue with masking implemented. The results for \aspcap\  are shown in black.}
 \label{fig:snr_error}
 \end{figure*}
 
