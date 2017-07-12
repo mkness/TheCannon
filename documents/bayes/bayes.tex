@@ -1,4 +1,98 @@
+% This file is part of The Cannon.
+% Copyright 2017 the authors.
+
 \documentclass[12pt, letterpaper]{article}
+
+\newcommand{\given}{\,|\,}
+\newcommand{\transpose}[1]{{#1}^{\!{\mathsf{T}}}}
+
 \begin{document}
-Hello World!
+
+\paragraph{A likelihood for \textsl{The Cannon}}
+~
+
+\noindent
+David W. Hogg (NYU) (Flatiron) (MPIA)
+
+\paragraph{Summary:}
+There are many stars. Each star has a spectrum (many pixels per star)
+and labels (a few labels per star). Both of these are noisily
+observed. The model for each star's spectrum is quadratic in the
+labels. We want to sample in the space of all labels and all quadratic
+polynomial coefficients.
+
+\paragraph{Likelihood function:}
+There are $N$ stars $n$, for each of which we have spectral data $y_n$.
+Each data point $y_n$ is a $M$-vector.
+Each star $n$ has its own individual (possibly diagonal) covariance
+matrix $\Sigma_n$ that (approximately) describes the noise
+contributing to point $y_n$.
+
+Each star also has observations or measurements of some physical labels
+$x_n$ (like mass, age, and composition).
+Each label data point is a $K$-vector.
+Again, there is an individual (probably not diagonal) covariance
+matrix $\Pi_n$ that (approximately) describes the noise contributing to
+label measurement $x_n$.
+
+For each star we have true labels $\xi_n$ that we can think of as
+being the true stellar parameters, that we would know if we had better
+label measurements. These are latent variables.
+And for each observed spectrum $y_n$ we can think of there being a
+true spectrum $\eta_n$ that we would have observed if our data had
+been less noisy.
+The idea of the basic, most simple model is that the expectation $\eta_n$ for
+the spectral data point $y_n$ is quadratic in the true labels $\xi_n$,
+and that the noise in both is Gaussian. Let's start with the specrtral
+expectation $\eta_n$:
+
+In the simplest case, we can think of each pixel $m$ of the spectrum
+separately.
+That is, the true spectrum $M$-vector $\eta_n$ is made up of scalar
+pixels $\eta_{nm}$.
+Each pixel $\eta_{nm}$ of the true spectrum $\eta_n$ is
+deterministically related to the true label $\xi_n$ by a quadratic:
+\begin{eqnarray}
+  \eta_{nm} &=& A_m + \transpose{\xi_n}\cdot B_m
+  + \frac{1}{2}\,\transpose{\xi_n}\cdot C_m\cdot\xi_n
+\quad ,
+\end{eqnarray}
+where $A_m$, $B_m$, and $C_m$ are parameters: $A_m$ is a scalar, $B_m$
+is a $K$-vector and $C_m$ is a symmetric $K\times K$ matrix.
+(All vectors are column vectors.)
+Because $\eta_n$ is a $M$-vector, there are $M$ sets of parameters
+$[A_m, B_m, C_m]$, one for every pixel $m$.
+
+The likelihood function is composed of normals:
+\begin{eqnarray}
+  p(x_n\given\xi_n) &=& N(x_n\given \xi_n, \Pi_n)
+  \\
+  p(y_n\given\eta_n) &=& N(y_n\given \eta_n, \Sigma_n)
+\quad ,
+\end{eqnarray}
+where $N(a\given b, c)$ is the Normal for $a$ with mean $b$ and
+variance $c$
+The full-data likelihood function is
+\begin{eqnarray}
+  L &=& \prod_{n=1}^N p(x_n\given\xi_n)\,p(y_n\given\eta_n)
+\quad ,
+\end{eqnarray}
+and implicitly this $L$ is a function of all the true labels $\xi_n$ for
+all stars and the all the parameters $A_m$, $B_m$, and $C_m$ at all
+wavelengths.
+
+To summarize: Data are $[x_n, y_n]$, one pair of vectors per star.
+Parameters are true labels $\xi_n$, one per star, and
+coefficients $[A_m, B_m, C_m]$, one set per pixel.
+The variances $\Sigma_n$ and $\Pi_n$ are treated as known and fixed.
+
+\paragraph{Orders of magnitude:}
+Typically, $N=10^5$, $M=10^4$, and $K=3$ to $30$, but we have both
+smaller and bigger problems we can do. In particular, it is easy to
+cut down both $N$ and $M$, especially for demonstration of concept
+(which would be publishable).
+
+Let me know if you have questions about any of the above, and we will
+clarify.
+
 \end{document}
